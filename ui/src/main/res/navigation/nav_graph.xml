@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/routeListFragment">
+
+    <fragment
+        android:id="@+id/routeListFragment"
+        android:name="ru.javacat.ui.RouteListFragment"
+        tools:layout="@layout/fragment_route_list"
+        android:label="RouteListFragment" >
+        <action
+            android:id="@+id/action_routeListFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
+        <action
+            android:id="@+id/action_routeListFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/routeFragment"
+        android:name="ru.javacat.ui.RouteFragment"
+        tools:layout="@layout/fragment_route"
+        android:label="RouteFragment" >
+        <action
+            android:id="@+id/action_routeFragment_to_transportFragment"
+            app:destination="@id/transportFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_driverFragment"
+            app:destination="@id/driverFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newOrderFragment"
+        android:name="ru.javacat.ui.NewOrderFragment"
+        tools:layout="@layout/fragment_new_order"
+        android:label="NewOrderFragment" >
+        <action
+            android:id="@+id/action_newOrderFragment_to_companyFragment"
+            app:destination="@id/companyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/driverFragment"
+        android:name="ru.javacat.ui.DriverFragment"
+        tools:layout="@layout/fragment_driver"
+        android:label="DriverFragment" />
+    <fragment
+        android:id="@+id/transportFragment"
+        android:name="ru.javacat.ui.TransportFragment"
+        tools:layout="@layout/fragment_transport"
+        android:label="TransportFragment" />
+    <fragment
+        android:id="@+id/companyFragment"
+        android:name="ru.javacat.ui.CompanyFragment"
+        tools:layout="@layout/fragment_company"
+        android:label="CompanyFragment" >
+        <action
+            android:id="@+id/action_companyFragment_to_addEmployeeFragment"
+            app:destination="@id/addEmployeeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEmployeeFragment"
+        android:name="ru.javacat.ui.AddEmployeeFragment"
+        tools:layout="@layout/fragment_add_employee"
+        android:label="AddEmployeeFragment" />
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="ru.javacat.ui.OrderListFragment"
+        tools:layout="@layout/fragment_order_list"
+        android:label="OrderListFragment" />
+</navigation>
