@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -36,8 +38,15 @@ dependencies {
 
     implementation(project(":domain"))
 
+    implementation(libs.bundles.room)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.hilt)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    ksp(libs.room.compiler)
+
+
+//    implementation("androidx.core:core-ktx:1.9.0")
+//    implementation("androidx.appcompat:appcompat:1.6.1")
+//    implementation("com.google.android.material:material:1.10.0")
 }

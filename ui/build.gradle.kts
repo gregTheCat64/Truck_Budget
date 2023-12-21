@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -40,11 +42,17 @@ dependencies {
 
     implementation(project(":domain"))
 
+    implementation(libs.bundles.room)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.hilt)
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+    ksp(libs.room.compiler)
+
+//    implementation("androidx.core:core-ktx:1.12.0")
+//    implementation("androidx.appcompat:appcompat:1.6.1")
+//    implementation("com.google.android.material:material:1.10.0")
+//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+//    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+//    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 }

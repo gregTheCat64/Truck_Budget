@@ -7,7 +7,7 @@ data class Order(
     val endDate: LocalDate,
     val startLocation: String,
     val endLocation: String,
-    val price: Long,
+    val price: Int,
     val customer: Customer,
     val paymentDeadline: LocalDate?,
     val sentDocsNumber: String?,
