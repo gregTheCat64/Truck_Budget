@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("com.google.dagger.hilt.android")
+    id ("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,7 +45,13 @@ dependencies {
     implementation(project(":ui"))
 
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
+    implementation(libs.bundles.nav)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.room)
+    //ksp(libs.room.compiler)
 }

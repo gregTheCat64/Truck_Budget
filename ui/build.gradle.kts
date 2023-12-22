@@ -42,12 +42,17 @@ dependencies {
 
     implementation(project(":domain"))
 
-    implementation(libs.bundles.room)
-    implementation(libs.bundles.retrofit)
     implementation(libs.bundles.coroutines)
     implementation(libs.hilt)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation (libs.androidx.constraintlayout)
+    implementation (libs.androidx.activity.ktx)
+    implementation (libs.androidx.fragment.ktx)
+    implementation(libs.bundles.viewmodel)
+    implementation(libs.bundles.nav)
 
-    ksp(libs.room.compiler)
+    kapt(libs.hilt.compiler)
 
 //    implementation("androidx.core:core-ktx:1.12.0")
 //    implementation("androidx.appcompat:appcompat:1.6.1")

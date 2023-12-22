@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.javacat.domain.models.Vehicle
-import java.time.LocalDate
 
 @Entity(tableName = "routes_table")
 data class DbRoute (
@@ -13,7 +12,7 @@ data class DbRoute (
     val startDate: String,
     val endDate: String?,
     @Embedded
-    val driver: DbMyEmployee,
+    val driver: DbStaff,
     @Embedded
     val truck: Vehicle,
     @Embedded
