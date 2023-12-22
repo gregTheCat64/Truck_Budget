@@ -1,9 +1,11 @@
 package ru.javacat.data.db.entities
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "vehicles_table")
 data class DbVehicle(
+    @PrimaryKey
     val regNumber: String,
     val vin: String?,
     val model: String?,

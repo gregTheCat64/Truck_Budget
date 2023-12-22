@@ -2,15 +2,18 @@ package ru.javacat.data.db.entities
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import ru.javacat.domain.models.Vehicle
 import java.time.LocalDate
 
-@Entity
+@Entity(tableName = "routes_table")
 data class DbRoute (
+    @PrimaryKey
+    val id: String,
     val startDate: String,
     val endDate: String?,
     @Embedded
-    val driver: DbTruckDriver,
+    val driver: DbMyEmployee,
     @Embedded
     val truck: Vehicle,
     @Embedded
@@ -28,13 +31,6 @@ data class DbRoute (
     val isFinished: Boolean
 )
 
-@Entity
-data class DbTruckDriver (
-    val fullName: String,
-    val idNumber: Int,
-    val idReceivedDate: String,
-    val idReceivedPlace: String,
-    val registeredAt: String
-)
+
 
 

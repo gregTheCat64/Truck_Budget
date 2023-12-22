@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class Route(
     val startDate: LocalDate,
     val endDate: LocalDate?,
-    val driver: TruckDriver,
+    val driver: MyEmployee,
     val truck: Vehicle,
     val trailer: Vehicle?,
     val orderList: List<Order>,
