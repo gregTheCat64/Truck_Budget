@@ -3,14 +3,17 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 data class Order(
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-    val startLocation: String,
-    val endLocation: String,
+    val id: String,
+    val routeId: String,
+    val points: List<Point>,
     val price: Int,
     val customer: Customer,
     val paymentDeadline: LocalDate?,
     val sentDocsNumber: String?,
     val docsReceived: LocalDate?,
-    val isPaid: Boolean
+    val status: OrderStatus
 )
+
+enum class OrderStatus(){
+    IN_PROGRESS, DOCS_SHIPPED, WAITING_FOR_PAYMENT, PAID
+}

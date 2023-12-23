@@ -3,6 +3,7 @@ package ru.javacat.data.db.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Vehicle
 
 @Entity(tableName = "routes_table")
@@ -12,10 +13,10 @@ data class DbRoute (
     val startDate: String,
     val endDate: String?,
     @Embedded
-    val driver: DbStaff,
+    val driver: Staff,
     @Embedded
     val truck: Vehicle,
-    @Embedded
+    @Embedded(prefix = "trailer")
     val trailer: Vehicle?,
     //val orderList: List<Order>,
     val prepayment: Int?,

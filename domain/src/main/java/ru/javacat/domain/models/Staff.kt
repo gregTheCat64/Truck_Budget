@@ -1,8 +1,6 @@
 package ru.javacat.domain.models
 
-import java.time.LocalDate
-
-data class MyEmployee (
+data class Staff (
     val fullName: String,
     val duty: String,
     val passportNumber: Int,

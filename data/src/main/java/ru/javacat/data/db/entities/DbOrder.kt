@@ -1,10 +1,15 @@
 package ru.javacat.data.db.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.OrderStatus
+import ru.javacat.domain.models.Point
 import java.time.LocalDate
 
 @Entity(
@@ -20,17 +25,23 @@ import java.time.LocalDate
     ]
     )
 data class DbOrder(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    @ColumnInfo(index = true)
     val routeId: String,
-    val startDate:String,
-    val endDate: String,
-    val startLocation: String,
-    val endLocation: String,
+    //val points: List<Point>,
     val price: Int,
-    @Embedded
-    val customer: Customer,
+    val customerId: Int,
     val paymentDeadline: String?,
     val sentDocsNumber: String?,
     val docsReceived: String?,
-    val isPaid: Boolean
+    @TypeConverters(StatusConverter::class)
+    val status: OrderStatus
 )
+
+class StatusConverter {
+    @TypeConverter
+    fun toStatus(value: String) = enumValueOf<OrderStatus>(value)
+    @TypeConverter
+    fun fromStatus(value: OrderStatus) = value.name
+}
