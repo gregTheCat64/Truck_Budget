@@ -4,7 +4,7 @@ import androidx.room.Relation
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbRoute
 
-data class RoutesWithOrders (
+data class RouteWithOrders (
     val route: DbRoute,
 
     @Relation(
