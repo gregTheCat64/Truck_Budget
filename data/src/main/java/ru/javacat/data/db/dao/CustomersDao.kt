@@ -23,18 +23,35 @@ interface CustomersDao {
     @Query("SELECT * FROM customers_table WHERE atiNumber =:id")
     suspend fun getById(id: String): CustomersWithEmployees
 
-    @Transaction
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(
+    suspend fun insertCustomer(
+        customer: DbCustomer
+    )
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEmployee(
+        employee: DbEmployee
+    )
+
+    @Update()
+    suspend fun updateCustomer(
         customer: DbCustomer,
         employee: List<DbEmployee>
     )
 
     @Update()
-    suspend fun update(
-        customer: DbCustomer,
-        employee: List<DbEmployee>
+    suspend fun updateEmployee(
+        employee: DbEmployee
     )
+
+    @Query("DELETE FROM customers_table WHERE atiNumber =:id")
+    suspend fun removeCustomer(id: Int)
+
+    @Query("DELETE FROM employees_table WHERE id =:id")
+    suspend fun removeEmployee(id: Int)
+
+
 
     //TODO: ИЗМЕНИТЬ вставку работников отдельно от клиента
     //и заказов от поездки

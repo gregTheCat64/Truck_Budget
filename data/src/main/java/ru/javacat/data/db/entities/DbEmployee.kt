@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "employees",
+@Entity(tableName = "employees_table",
     foreignKeys = [ForeignKey(
         entity = DbCustomer::class,
         parentColumns = ["atiNumber"],

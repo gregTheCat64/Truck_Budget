@@ -30,4 +30,7 @@ interface StaffDao {
     suspend fun update(
         staff: DbStaff
     )
+
+    @Query("DELETE FROM staff_table WHERE passportNumber =:id")
+    suspend fun removeStaff(id: Int)
 }

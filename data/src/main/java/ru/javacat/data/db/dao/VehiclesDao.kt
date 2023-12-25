@@ -28,4 +28,7 @@ interface VehiclesDao {
     suspend fun update(
         dbVehicle: DbVehicle
     )
+
+    @Query("DELETE FROM vehicles_table WHERE regNumber =:id")
+    suspend fun remove(id: Int)
 }
