@@ -2,6 +2,7 @@ package ru.javacat.data.db.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbRoute
 
@@ -11,7 +12,9 @@ data class RouteWithOrders (
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "routeId"
+        entityColumn = "routeId",
+        entity = DbOrder::class
     )
-    val orders: List<DbOrder>
+    val orders: List<OrderWithPointsAndCustomer>,
+
 )

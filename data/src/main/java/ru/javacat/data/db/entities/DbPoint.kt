@@ -1,8 +1,12 @@
 package ru.javacat.data.db.entities
 
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import ru.javacat.domain.models.Location
 
 @Entity(
     tableName = "points_table",
@@ -19,7 +23,9 @@ import androidx.room.PrimaryKey
 data class DbPoint(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val orderId: String,
-    val location: String,
+    @ColumnInfo(index = true)
+    val orderId: Int,
+    @Embedded
+    val location: Location,
     val arrivalDate: String
 )

@@ -3,7 +3,7 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 data class Route(
-    val id: Int,
+    val id: String,
     val startDate: LocalDate,
     val endDate: LocalDate?,
     val driver: Staff,

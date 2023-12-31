@@ -23,7 +23,7 @@ interface StaffDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(
-        staff: Staff
+        staff: DbStaff
     )
 
     @Update()

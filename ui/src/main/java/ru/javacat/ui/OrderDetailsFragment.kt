@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.javacat.ui.databinding.FragmentTransportBinding
+import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
 
-class TransportFragment: BaseFragment<FragmentTransportBinding>() {
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentTransportBinding
-        get() = {inflater, container->
-            FragmentTransportBinding.inflate(inflater, container, false)
+class NewOrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderDetailsBinding
+        get() = {inflater, container ->
+            FragmentOrderDetailsBinding.inflate(inflater, container, false)
         }
 
     override fun onCreateView(

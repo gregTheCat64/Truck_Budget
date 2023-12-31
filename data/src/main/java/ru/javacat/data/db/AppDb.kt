@@ -8,6 +8,7 @@ import ru.javacat.data.db.dao.StaffDao
 import ru.javacat.data.db.dao.VehiclesDao
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
+import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
 import ru.javacat.data.db.entities.DbRoute
@@ -23,7 +24,8 @@ import ru.javacat.data.db.entities.DbVehicle
         DbOrder::class,
         DbStaff::class,
         DbVehicle::class,
-        DbPoint::class
+        DbPoint::class,
+        DbLocation::class
     ],
     version = 1, exportSchema = false
 )

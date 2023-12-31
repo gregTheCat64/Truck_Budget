@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.javacat.ui.databinding.FragmentDriverBinding
+import ru.javacat.ui.databinding.FragmentNewDriverBinding
 
-class DriverFragment: BaseFragment<FragmentDriverBinding>() {
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentDriverBinding
+class NewDriverFragment: BaseFragment<FragmentNewDriverBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
         get() = {inflater, container ->
-            FragmentDriverBinding.inflate(inflater, container,  false)
+            FragmentNewDriverBinding.inflate(inflater, container,  false)
         }
 
     override fun onCreateView(

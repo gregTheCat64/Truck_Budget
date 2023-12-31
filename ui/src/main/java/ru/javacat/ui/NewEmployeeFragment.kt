@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.javacat.ui.databinding.FragmentNewOrderBinding
+import ru.javacat.ui.databinding.FragmentNewEmployeeBinding
 
-class NewOrderFragment:BaseFragment<FragmentNewOrderBinding>() {
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewOrderBinding
-        get() = {inflater, container ->
-            FragmentNewOrderBinding.inflate(inflater, container, false)
+class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewEmployeeBinding =
+        {inflater, container ->
+            FragmentNewEmployeeBinding.inflate(inflater, container, false)
         }
 
     override fun onCreateView(
@@ -19,4 +20,5 @@ class NewOrderFragment:BaseFragment<FragmentNewOrderBinding>() {
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
 }

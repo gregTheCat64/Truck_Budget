@@ -17,9 +17,11 @@ import ru.javacat.data.db.models.RouteWithOrders
 @Dao
 interface CustomersDao {
 
+    @Transaction
     @Query("SELECT * FROM customers_table")
     fun getAll(): Flow<List<CustomersWithEmployees>>
 
+    @Transaction
     @Query("SELECT * FROM customers_table WHERE atiNumber =:id")
     suspend fun getById(id: String): CustomersWithEmployees
 

@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
 import ru.javacat.data.db.entities.DbRoute
@@ -16,15 +17,19 @@ import ru.javacat.data.db.models.RouteWithOrders
 @Dao
 interface RoutesDao {
 
+    @Transaction
     @Query("SELECT * FROM routes_table")
     fun getAllRoutes(): Flow<List<RouteWithOrders>>
 
-    @Query("SELECT * FROM routes_table")
+    @Transaction
+    @Query("SELECT * FROM orders_table")
     fun getAllOrders(): Flow<List<OrderWithPointsAndCustomer>>
 
+    @Transaction
     @Query("SELECT * FROM routes_table WHERE id =:id")
     suspend fun getByRouteId(id: String): RouteWithOrders
 
+    @Transaction
     @Query("SELECT * FROM orders_table WHERE id =:id")
     suspend fun getByOrderId(id: String): OrderWithPointsAndCustomer
 
@@ -37,6 +42,11 @@ interface RoutesDao {
     suspend fun insertOrder(
         order: DbOrder,
         points: List<DbPoint>
+    )
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLocation(
+        location: DbLocation
     )
 
     @Update

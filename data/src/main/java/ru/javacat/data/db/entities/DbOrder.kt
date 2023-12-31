@@ -10,6 +10,8 @@ import androidx.room.TypeConverters
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.models.Point
+import ru.javacat.domain.models.Staff
+import ru.javacat.domain.models.Vehicle
 import java.time.LocalDate
 
 @Entity(
@@ -30,6 +32,12 @@ data class DbOrder(
     @ColumnInfo(index = true)
     val routeId: String,
     //val points: List<Point>,
+    @Embedded
+    val driver: Staff,
+    @Embedded
+    val truck: Vehicle,
+    @Embedded(prefix = "trailer")
+    val trailer: Vehicle?,
     val price: Int,
     val customerId: Int,
     val paymentDeadline: String?,

@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/newOrderFragment"
         android:name="ru.javacat.ui.NewOrderFragment"
-        tools:layout="@layout/fragment_new_order"
+        tools:layout="@layout/fragment_order_details"
         android:label="NewOrderFragment" >
         <action
             android:id="@+id/action_newOrderFragment_to_companyFragment"
@@ -46,18 +46,18 @@
     </fragment>
     <fragment
         android:id="@+id/driverFragment"
-        android:name="ru.javacat.ui.DriverFragment"
-        tools:layout="@layout/fragment_driver"
+        android:name="ru.javacat.ui.NewDriverFragment"
+        tools:layout="@layout/fragment_new_driver"
         android:label="DriverFragment" />
     <fragment
         android:id="@+id/transportFragment"
-        android:name="ru.javacat.ui.TransportFragment"
-        tools:layout="@layout/fragment_transport"
+        android:name="ru.javacat.ui.NewTransportFragment"
+        tools:layout="@layout/fragment_new_transport"
         android:label="TransportFragment" />
     <fragment
         android:id="@+id/companyFragment"
-        android:name="ru.javacat.ui.CompanyFragment"
-        tools:layout="@layout/fragment_company"
+        android:name="ru.javacat.ui.AddCustomerFragment"
+        tools:layout="@layout/fragment_new_customer"
         android:label="CompanyFragment" >
         <action
             android:id="@+id/action_companyFragment_to_addEmployeeFragment"
@@ -65,8 +65,8 @@
     </fragment>
     <fragment
         android:id="@+id/addEmployeeFragment"
-        android:name="ru.javacat.ui.AddEmployeeFragment"
-        tools:layout="@layout/fragment_add_employee"
+        android:name="ru.javacat.ui.NewEmployeeFragment"
+        tools:layout="@layout/fragment_new_employee"
         android:label="AddEmployeeFragment" />
     <fragment
         android:id="@+id/orderListFragment"
