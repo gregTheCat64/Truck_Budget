@@ -13,6 +13,7 @@ hilt = "2.47"
 coroutines = "1.7.3"
 retrofit = "2.9.0"
 okhttp = "4.11.0"
+org-jetbrains-kotlin-jvm = "1.9.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
@@ -54,3 +55,5 @@ viewmodel = ["viewmodel-ktx", "livedata-ktx", "runtime-ktx"]
 nav = ["nav-fragment-ktx", "nav-ui-ktx"]
 coroutines = ["coroutines", "coroutines-core"]
 retrofit = ["retrofit", "converter-gson", "logging-interceptor"]
+[plugins]
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }

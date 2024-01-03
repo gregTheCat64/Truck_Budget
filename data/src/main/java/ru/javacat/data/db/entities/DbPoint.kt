@@ -6,7 +6,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import ru.javacat.common.utils.toLocalDate
 import ru.javacat.domain.models.Location
+import ru.javacat.domain.models.Point
 
 @Entity(
     tableName = "points_table",
@@ -28,4 +30,8 @@ data class DbPoint(
     @Embedded
     val location: Location,
     val arrivalDate: String
-)
+) {
+    fun toPointModel() = Point(
+        id, location, arrivalDate.toLocalDate()
+    )
+}

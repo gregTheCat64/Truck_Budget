@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import ru.javacat.domain.models.Employee
 
 @Entity(tableName = "employees_table",
     foreignKeys = [ForeignKey(
@@ -20,7 +21,11 @@ data class DbEmployee(
     @ColumnInfo(index = true)
     val customerAtiNumber: Int,
     val name: String,
-    val phoneNumber: String,
-    val secondNumber: String?,
+    val phoneNumber: Long,
+    val secondNumber: Long?,
     val email: String?
-)
+) {
+    fun toEmployeeModel() = Employee(
+        customerAtiNumber,name,phoneNumber,secondNumber,email)
+
+}

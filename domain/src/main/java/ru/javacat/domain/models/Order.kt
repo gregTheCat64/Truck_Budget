@@ -3,7 +3,7 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 data class Order(
-    val id: String,
+    val id: Int,
     val routeId: String,
     val points: List<Point>,
     val price: Int,

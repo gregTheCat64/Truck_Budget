@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
 
-class NewOrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
+class OrderDetailsFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderDetailsBinding
         get() = {inflater, container ->
             FragmentOrderDetailsBinding.inflate(inflater, container, false)

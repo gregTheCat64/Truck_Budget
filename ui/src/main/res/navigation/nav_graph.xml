@@ -27,13 +27,19 @@
         android:label="RouteFragment" >
         <action
             android:id="@+id/action_routeFragment_to_newOrderFragment"
-            app:destination="@id/newOrderFragment" />
+            app:destination="@id/orderDetailsFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_addCustomerFragment"
+            app:destination="@id/addCustomerFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_finishRouteFragment"
+            app:destination="@id/finishRouteFragment" />
     </fragment>
     <fragment
-        android:id="@+id/newOrderFragment"
-        android:name="ru.javacat.ui.NewOrderFragment"
+        android:id="@+id/orderDetailsFragment"
+        android:name="ru.javacat.ui.OrderDetailsFragment"
         tools:layout="@layout/fragment_order_details"
-        android:label="NewOrderFragment" >
+        android:label="orderDetailsFragment" >
         <action
             android:id="@+id/action_newOrderFragment_to_addPointsFragment"
             app:destination="@id/addPointsFragment" />
@@ -75,7 +81,7 @@
         android:label="OrderListFragment" >
         <action
             android:id="@+id/action_orderListFragment_to_newOrderFragment"
-            app:destination="@id/newOrderFragment" />
+            app:destination="@id/orderDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTransportFragment"
@@ -108,7 +114,11 @@
         android:id="@+id/addPaymentDetailsFragment"
         android:name="ru.javacat.ui.AddPaymentDetailsFragment"
         tools:layout="@layout/fragment_add_payment_details"
-        android:label="AddPaymentDetailsFragment" />
+        android:label="AddPaymentDetailsFragment" >
+        <action
+            android:id="@+id/action_addPaymentDetailsFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newCustomerFragment"
         android:name="ru.javacat.ui.NewCustomerFragment"
@@ -118,4 +128,9 @@
             android:id="@+id/action_newCustomerFragment_to_addEmployeeFragment"
             app:destination="@id/newEmployeeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/finishRouteFragment"
+        android:name="ru.javacat.ui.FinishRouteFragment"
+        tools:layout="@layout/fragment_finish_route"
+        android:label="FinishRouteFragment" />
 </navigation>
