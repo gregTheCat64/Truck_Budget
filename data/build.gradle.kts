@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.coroutines)
     implementation(libs.hilt)
+    implementation(project(mapOf("path" to ":domain")))
 
     ksp(libs.room.compiler)
 
