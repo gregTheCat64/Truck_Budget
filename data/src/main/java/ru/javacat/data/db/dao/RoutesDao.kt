@@ -44,10 +44,6 @@ interface RoutesDao {
         points: List<DbPoint>
     )
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLocation(
-        location: DbLocation
-    )
 
     @Update
     suspend fun updateRoute(
