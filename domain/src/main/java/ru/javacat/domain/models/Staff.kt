@@ -1,6 +1,7 @@
 package ru.javacat.domain.models
 
 data class Staff (
+    val id: String,
     val fullName: String,
     val duty: String,
     val passportNumber: Int,

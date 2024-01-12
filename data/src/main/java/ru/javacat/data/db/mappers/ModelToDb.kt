@@ -21,9 +21,9 @@ fun Route.toDb() = DbRoute(
     id,
     startDate.toString(),
     endDate.toString(),
-    driver,
-    truck,
-    trailer,
+    driverId,
+    truckId,
+    trailerId,
     prepayment,
     fuelUsedUp,
     fuelPrice,
@@ -38,12 +38,12 @@ fun Route.toDb() = DbRoute(
 
 fun Order.toDb(route: Route) = DbOrder(
     id,
-    routeId,
-    route.driver,
-    route.truck,
-    route.trailer,
+    route.id,
+    route.driverId,
+    route.truckId,
+    route.trailerId,
     price,
-    customer.atiNumber,
+    customerId,
     paymentDeadline.toString(),
     sentDocsNumber,
     docsReceived.toString(),
@@ -55,10 +55,11 @@ fun Point.toDb(order: Order) = DbPoint(
 )
 
 fun Vehicle.toDb() = DbVehicle(
-    regNumber, vin, model, type, yearOfManufacturing
+    id, regNumber, vin, model, type, yearOfManufacturing
 )
 
 fun Staff.toDb() = DbStaff(
+    id,
     fullName,
     duty,
     passportNumber,

@@ -13,13 +13,10 @@ class RoutesViewModel @Inject constructor(
 ): ViewModel() {
     fun getAllRoutes()= repo.allRoutes
 
-    fun getAllOrders() = repo.allOrders
 
     suspend fun insertNewRoute(route: Route){
         repo.insertRoute(route)
     }
 
-    suspend fun insertNewOrder(order: Order, route: Route){
-        repo.insertOrder(route, order)
-    }
+
 }

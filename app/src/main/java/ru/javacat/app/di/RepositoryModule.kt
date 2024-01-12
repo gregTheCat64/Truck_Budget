@@ -5,11 +5,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.javacat.data.impl.CustomerRepositoryImpl
+import ru.javacat.data.impl.OrderRepositoryImpl
 import ru.javacat.data.impl.LocationRepositoryImpl
 import ru.javacat.data.impl.RouteRepositoryImpl
 import ru.javacat.data.impl.StaffRepositoryImpl
 import ru.javacat.data.impl.VehicleRepositoryImpl
 import ru.javacat.domain.repo.CustomerRepository
+import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.LocationRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.StaffRepository
@@ -23,6 +25,10 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindsRouteRepository(impl: RouteRepositoryImpl): RouteRepository
+
+    @Singleton
+    @Binds
+    fun bindsDraftRepository(impl: OrderRepositoryImpl): OrderRepository
 
     @Singleton
     @Binds

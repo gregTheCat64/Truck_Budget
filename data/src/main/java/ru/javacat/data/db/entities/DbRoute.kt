@@ -12,12 +12,9 @@ data class DbRoute (
     val id: String,
     val startDate: String,
     val endDate: String?,
-    @Embedded
-    val driver: Staff,
-    @Embedded
-    val truck: Vehicle,
-    @Embedded(prefix = "trailer")
-    val trailer: Vehicle?,
+    val driverId: String,
+    val truckId: String,
+    val trailerId: String?,
     //val orderList: List<Order>,
     val prepayment: Int?,
     val fuelUsedUp: Int?,

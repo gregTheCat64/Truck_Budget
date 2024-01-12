@@ -26,6 +26,6 @@ data class DbEmployee(
     val email: String?
 ) {
     fun toEmployeeModel() = Employee(
-        customerAtiNumber,name,phoneNumber,secondNumber,email)
+        id, customerAtiNumber,name,phoneNumber,secondNumber,email)
 
 }

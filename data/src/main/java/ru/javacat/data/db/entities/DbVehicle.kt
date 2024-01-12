@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "vehicles_table")
 data class DbVehicle(
     @PrimaryKey
+    val id: String,
     val regNumber: String,
     val vin: String?,
     val model: String?,

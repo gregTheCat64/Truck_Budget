@@ -32,12 +32,9 @@ data class DbOrder(
     @ColumnInfo(index = true)
     val routeId: String,
     //val points: List<Point>,
-    @Embedded
-    val driver: Staff,
-    @Embedded
-    val truck: Vehicle,
-    @Embedded(prefix = "trailer")
-    val trailer: Vehicle?,
+    val driverId: String,
+    val truckId: String,
+    val trailerId: String?,
     val price: Int,
     val customerId: Int,
     val paymentDeadline: String?,
