@@ -3,12 +3,10 @@ package ru.javacat.data.db.models
 import androidx.room.Embedded
 import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
-import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbVehicle
-import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Vehicle
@@ -22,7 +20,7 @@ data class RouteWithOrders (
         entityColumn = "routeId",
         entity = DbOrder::class
     )
-    val orders: List<OrderWithPointsAndCustomerAndRoute>,
+    val orders: List<OrderWithPointsAndCustomer>,
 
     @Relation(
         parentColumn = "driverId",
