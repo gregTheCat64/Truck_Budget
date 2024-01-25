@@ -2,11 +2,11 @@ package ru.javacat.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import ru.javacat.ui.databinding.FragmentAddTransportBinding
+import ru.javacat.ui.databinding.FragmentNewRouteBinding
 
-class NewRouteFragment: BaseFragment<FragmentAddTransportBinding>() {
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddTransportBinding
+class NewRouteFragment: BaseFragment<FragmentNewRouteBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewRouteBinding
         get() = {inflater, container->
-            FragmentAddTransportBinding.inflate(inflater,container,false)
+            FragmentNewRouteBinding.inflate(inflater,container,false)
         }
 }

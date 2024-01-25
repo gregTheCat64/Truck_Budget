@@ -2,18 +2,21 @@ package ru.javacat.domain.repo
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import ru.javacat.domain.models.DraftOrder
+
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.Route
 
 interface OrderRepository {
 
     val allOrders: Flow<List<Order?>>
 
-    val editedOrder: StateFlow<DraftOrder>
+    val editedOrder: StateFlow<Order>
 
-    suspend fun updateOrder(newOrder: DraftOrder)
+    suspend fun updateOrder(newOrder: Order)
 
-    suspend fun insertOrder(routeId: String, order: Order)
+    suspend fun insertOrder(order: Order)
+
+    suspend fun getOrderById(orderId: String): Order
 
     suspend fun deleteOrder(order: Order)
 }

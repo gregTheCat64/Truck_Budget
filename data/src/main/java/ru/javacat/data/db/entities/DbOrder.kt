@@ -28,15 +28,20 @@ import java.time.LocalDate
     )
 data class DbOrder(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: String,
     @ColumnInfo(index = true)
     val routeId: String,
     //val points: List<Point>,
-    val driverId: String,
-    val truckId: String,
-    val trailerId: String?,
+//    val driverId: String,
+//    val truckId: String,
+//    val trailerId: String?,
     val price: Int,
     val customerId: Int,
+    val cargoWeight: Int?,
+    val cargoVolume: Int?,
+    val cargoName: String?,
+    val extraConditions: String?,
+    val daysToPay: Int?,
     val paymentDeadline: String?,
     val sentDocsNumber: String?,
     val docsReceived: String?,

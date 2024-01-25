@@ -41,26 +41,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:text="Ставка:"
-        style="@style/TextAppearance.Material3.BodySmall"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <TextView
-        style="@style/TextAppearance.Material3.BodyLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="35_000 руб."
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
 
     <TextView
@@ -83,6 +63,25 @@
         style="@style/TextAppearance.Material3.BodyLarge"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:text="Тип погрузки:"
+            android:layout_marginStart="16dp"
+             />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Задняя"
+            android:layout_marginStart="16dp"
+            style="@style/TextAppearance.Material3.BodyLarge"
+             />
 
         <include
             layout="@layout/horizon_line"/>
@@ -116,95 +115,7 @@
             layout="@layout/horizon_line"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Подвижной состав:"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizonLine2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Тягач"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        style="@style/TextAppearance.Material3.TitleSmall"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Регистрационный номер"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.BodySmall"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="А 965 ЕС 164"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Прицеп"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.TitleSmall"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Регистрационный номер"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.BodySmall"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="АМ 6329 64"
-        android:layout_marginStart="16dp"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Водитель"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        style="@style/TextAppearance.Material3.TitleSmall"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ФИО"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        style="@style/TextAppearance.Material3.BodySmall"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Радаев Олег Михайлович"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-
-        <include
-            layout="@layout/horizon_line"/>
 
 
         <TextView
@@ -217,6 +128,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizonLine2" />
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Ставка:"
+            style="@style/TextAppearance.Material3.BodySmall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="35_000 руб."
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Дней до оплаты:"
+            style="@style/TextAppearance.Material3.BodySmall"
+             />
+
+        <TextView
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="10"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+
+
+        <include
+            layout="@layout/horizon_line"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Документы:"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -234,6 +199,26 @@
             style="@style/TextAppearance.Material3.BodyLarge"
             />
 
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата получения док-тов"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            style="@style/TextAppearance.Material3.BodySmall"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 января 2023"
+            android:layout_marginStart="16dp"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            />
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -250,6 +235,11 @@
             style="@style/TextAppearance.Material3.BodyLarge"
             />
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Оплачен"
+            />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>

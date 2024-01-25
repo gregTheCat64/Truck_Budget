@@ -10,17 +10,17 @@ import javax.inject.Singleton
 class NewRouteViewModel @Inject constructor(
     private val repository: RouteRepository
 ):ViewModel() {
-    private val draftRoute = repository.editedRoute
+    private val route = repository.editedRoute
 
-    suspend fun editAndSaveRoute(id: String, driverId: String, truckId: String, trailerId: String? = null, prepayment: Int){
+    suspend fun updateRoute(id: String, driverId: String, truckId: String, trailerId: String? = null, prepayment: Int){
         var editedRoute = repository.getRoute(id)
         editedRoute = editedRoute.copy(id = id, driverId = driverId, truckId = truckId, trailerId = trailerId, prepayment = prepayment)
         repository.insertRoute(editedRoute)
     }
 
-    suspend fun addDataToNewRoute(id: String, driverId: String, truckId: String, trailerId: String? = null, prepayment: Int){
-        repository.updateRoute(draftRoute.value.copy(
-            id = id, driverId = driverId, truckId = truckId, trailerId = trailerId, prepayment = prepayment
-        ))
-    }
+//    suspend fun addDataToNewRoute(id: String, driverId: String, truckId: String, trailerId: String? = null, prepayment: Int){
+//        repository.updateRoute(route.value.copy(
+//            id = id, driverId = driverId, truckId = truckId, trailerId = trailerId, prepayment = prepayment
+//        ))
+//    }
 }

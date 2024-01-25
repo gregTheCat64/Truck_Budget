@@ -12,6 +12,7 @@ import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.Staff
@@ -21,9 +22,9 @@ fun Route.toDb() = DbRoute(
     id,
     startDate.toString(),
     endDate.toString(),
-    driverId,
-    truckId,
-    trailerId,
+    driver?.id?:"",
+    truck?.id?:"",
+    trailer?.id?:"",
     prepayment,
     fuelUsedUp,
     fuelPrice,
@@ -36,18 +37,20 @@ fun Route.toDb() = DbRoute(
     isFinished
 )
 
-fun Order.toDb(route: Route) = DbOrder(
+fun Order.toDb() = DbOrder(
     id,
-    route.id,
-    route.driverId,
-    route.truckId,
-    route.trailerId,
+    routeId,
     price,
-    customerId,
+    customer?.atiNumber?:0,
+    cargoWeight,
+    cargoVolume,
+    cargoName,
+    extraConditions,
+    daysToPay,
     paymentDeadline.toString(),
     sentDocsNumber,
     docsReceived.toString(),
-    status
+    status?:OrderStatus.IN_PROGRESS
 )
 
 fun Point.toDb(order: Order) = DbPoint(

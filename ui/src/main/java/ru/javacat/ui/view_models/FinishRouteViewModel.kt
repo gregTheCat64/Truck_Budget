@@ -10,9 +10,10 @@ import javax.inject.Singleton
 class FinishRouteViewModel @Inject constructor(
     private val repository: RouteRepository
 ) {
-    private val draftRoute = repository.editedRoute
+    private val route = repository.editedRoute
 
     suspend fun updateRoute(
+        id: String,
         startDate: LocalDate,
         endDate: LocalDate,
         orderList: List<Order>,
@@ -23,10 +24,10 @@ class FinishRouteViewModel @Inject constructor(
         driverSalary: Int,
         moneyToPay: Int,
         income: Int,
-        netIncome: Int,
-        isFinished: Boolean = true
+        netIncome: Int
     ){
-        draftRoute.value.copy(
+        var editedRoute = repository.getRoute(id)
+        editedRoute = editedRoute.copy(
             startDate = startDate,
             endDate = endDate,
             orderList = orderList,
@@ -40,5 +41,6 @@ class FinishRouteViewModel @Inject constructor(
             netIncome = netIncome,
             isFinished = true
         )
+        repository.insertRoute(editedRoute)
     }
 }

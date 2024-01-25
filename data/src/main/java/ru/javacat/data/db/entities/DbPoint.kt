@@ -26,7 +26,7 @@ data class DbPoint(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(index = true)
-    val orderId: Int,
+    val orderId: String,
     @Embedded
     val location: Location,
     val arrivalDate: String

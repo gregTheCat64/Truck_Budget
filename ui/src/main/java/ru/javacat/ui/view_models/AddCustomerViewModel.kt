@@ -2,6 +2,7 @@ package ru.javacat.ui.view_models
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
 
@@ -16,19 +17,12 @@ class AddCustomerViewModel @Inject constructor(
         )
     }
 
-    suspend fun updateCargoInfo(
-        weight: Int,
-        volume: Int,
-        cargoName: String,
-        extraConditions: String?
+
+    suspend fun editAndSaveOrder(
+        id:String, customerId: Int
     ){
-        repository.updateOrder(
-            draftOrder.value.copy(
-                cargoWeight = weight,
-                cargoVolume = volume,
-                cargoName = cargoName,
-                extraConditions = extraConditions
-            )
-        )
+        var editedOrder = repository.getOrderById(id)
+        editedOrder = editedOrder.copy(customerId = customerId)
+        editedOrder.route?.let { repository.insertOrder(it, editedOrder) }
     }
 }

@@ -12,7 +12,6 @@ import ru.javacat.data.db.dao.VehiclesDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.DraftRoute
 import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Order
@@ -25,10 +24,10 @@ import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val draftRoute = DraftRoute(
-    null, null, null, null, null, null, null, null,
+val draftRoute = Route(
+    "", null, null, null, null, null, emptyList(), null,
     null, null, null, null, null, null,
-    null, null
+    null, null, false
 )
 
 @Singleton
@@ -38,13 +37,13 @@ class RouteRepositoryImpl @Inject constructor(
     override val allRoutes: Flow<List<Route?>>
         get() = routesDao.getAllRoutes().map { list -> list.map { it.toRouteModel() } }
 
-    private val _editedRoute = MutableStateFlow<DraftRoute>(draftRoute)
-    override val editedRoute: StateFlow<DraftRoute>
+    private val _editedRoute = MutableStateFlow<Route>(draftRoute)
+    override val editedRoute: StateFlow<Route>
         get() = _editedRoute.asStateFlow()
 
     override suspend fun getRoute(id: String) = routesDao.getByRouteId(id).toRouteModel()
 
-    override suspend fun updateRoute(newRoute: DraftRoute) {
+    override suspend fun updateRoute(newRoute: Route) {
         _editedRoute.emit(newRoute)
     }
 

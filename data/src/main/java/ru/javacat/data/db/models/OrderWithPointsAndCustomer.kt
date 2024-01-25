@@ -6,9 +6,14 @@ import ru.javacat.common.utils.toLocalDate
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
+import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.Staff
+import ru.javacat.domain.models.Vehicle
+import java.sql.Driver
 
-data class OrderWithPointsAndCustomer (
+data class OrderWithPointsAndCustomerAndRoute (
     @Embedded
     val order: DbOrder,
 
@@ -20,17 +25,32 @@ data class OrderWithPointsAndCustomer (
 
     @Relation(
         parentColumn = "customerId",
-        entityColumn = "atiNumber"
+        entityColumn = "atiNumber",
+        entity = Customer::class
     )
-    val customer: CustomerWithEmployees
+    val customer: Customer,
+
+    @Relation(
+        parentColumn = "routeId",
+        entityColumn = "id",
+        entity = Route::class
+    )
+    val route: Route
+
+
 ) {
     fun toOrderModel(): Order {
         return Order(
             id = order.id,
-            routeId = order.routeId,
+            routeId = route.id,
             points = points.map { it.toPointModel() },
             price = order.price,
-            customer = customer.toCustomerModel(),
+            customer = customer,
+            cargoWeight = order.cargoWeight,
+            cargoVolume  = order.cargoVolume,
+            cargoName = order.cargoName,
+            extraConditions = order.extraConditions,
+            daysToPay = order.daysToPay,
             paymentDeadline = order.paymentDeadline?.toLocalDate(),
             sentDocsNumber = order.sentDocsNumber,
             docsReceived = order.docsReceived?.toLocalDate(),

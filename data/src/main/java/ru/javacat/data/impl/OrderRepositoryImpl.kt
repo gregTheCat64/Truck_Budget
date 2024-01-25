@@ -8,14 +8,13 @@ import kotlinx.coroutines.flow.map
 import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
-import ru.javacat.domain.models.DraftOrder
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val draftOrder = DraftOrder(null,null,null, null, null,
+val draftOrder = Order("","", emptyList(), 0, null,
     null,null,null,null,null,
     null,null,null, null)
 
@@ -28,15 +27,20 @@ class OrderRepositoryImpl @Inject constructor(
         get() = routesDao.getAllOrders().map {list-> list.map { it.toOrderModel() } }
 
     private val _editedOrder = MutableStateFlow(draftOrder)
-    override val editedOrder: StateFlow<DraftOrder>
+    override val editedOrder: StateFlow<Order>
         get() = _editedOrder.asStateFlow()
 
-    override suspend fun updateOrder(newOrder: DraftOrder) {
+    override suspend fun updateOrder(newOrder: Order) {
         _editedOrder.emit(newOrder)
     }
 
-    override suspend fun insertOrder(routeID:String, order: Order) {
-        dbQuery { routesDao.insertOrder(order.toDb(routeID), order.points.map { it.toDb(order) }) }
+    override suspend fun insertOrder(order: Order) {
+        dbQuery { routesDao.insertOrder(order.toDb(), order.points.map { it.toDb(order) }) }
+    }
+
+    override suspend fun getOrderById(orderId: String): Order {
+        val order = dbQuery { routesDao.getByOrderId(orderId) }
+        return order.toOrderModel()
     }
 
     override suspend fun deleteOrder(order: Order) {

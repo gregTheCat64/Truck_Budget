@@ -107,11 +107,11 @@
         tools:layout="@layout/fragment_add_points"
         android:label="AddPointsFragment" >
         <action
-            android:id="@+id/action_addPointsFragment_to_addPaymentDetailsFragment"
-            app:destination="@id/addPaymentDetailsFragment" />
-        <action
             android:id="@+id/action_addPointsFragment_to_newCustomerFragment"
             app:destination="@id/newCustomerFragment" />
+        <action
+            android:id="@+id/action_addPointsFragment_to_cargoDetailsFragment"
+            app:destination="@id/cargoDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPaymentDetailsFragment"
@@ -136,4 +136,13 @@
         android:name="ru.javacat.ui.FinishRouteFragment"
         tools:layout="@layout/fragment_finish_route"
         android:label="FinishRouteFragment" />
+    <fragment
+        android:id="@+id/cargoDetailsFragment"
+        android:name="ru.javacat.ui.CargoDetailsFragment"
+        tools:layout="@layout/fragment_cargo_details"
+        android:label="CargoDetailsFragment" >
+        <action
+            android:id="@+id/action_cargoDetailsFragment_to_addPaymentDetailsFragment"
+            app:destination="@id/addPaymentDetailsFragment" />
+    </fragment>
 </navigation>

@@ -6,8 +6,12 @@ import ru.javacat.common.utils.toLocalDate
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbRoute
+import ru.javacat.data.db.entities.DbStaff
+import ru.javacat.data.db.entities.DbVehicle
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.Staff
+import ru.javacat.domain.models.Vehicle
 
 data class RouteWithOrders (
     @Embedded
@@ -18,7 +22,28 @@ data class RouteWithOrders (
         entityColumn = "routeId",
         entity = DbOrder::class
     )
-    val orders: List<OrderWithPointsAndCustomer>,
+    val orders: List<OrderWithPointsAndCustomerAndRoute>,
+
+    @Relation(
+        parentColumn = "driverId",
+        entityColumn = "id",
+        entity = DbStaff::class
+    )
+    val driver: Staff,
+
+    @Relation(
+        parentColumn = "truckId",
+        entityColumn = "id",
+        entity = DbVehicle::class
+    )
+    val truck: Vehicle,
+
+    @Relation(
+        parentColumn = "trailerId",
+        entityColumn = "id",
+        entity = DbVehicle::class
+    )
+    val trailer: Vehicle
 
 ) {
     fun toRouteModel(): Route {
@@ -26,9 +51,9 @@ data class RouteWithOrders (
             id = route.id,
             startDate = route.startDate.toLocalDate(),
             endDate = route.endDate?.toLocalDate(),
-            driver = route.driver,
-            truck = route.truck,
-            trailer = route.trailer,
+            driver = driver,
+            truck = truck,
+            trailer = trailer,
             orderList = orders.map { it.toOrderModel() },
             prepayment = route.prepayment,
             fuelUsedUp = route.fuelUsedUp,

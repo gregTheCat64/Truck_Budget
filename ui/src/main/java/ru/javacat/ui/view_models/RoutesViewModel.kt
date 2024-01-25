@@ -18,5 +18,4 @@ class RoutesViewModel @Inject constructor(
         repo.insertRoute(route)
     }
 
-
 }
