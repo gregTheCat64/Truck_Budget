@@ -1,33 +1,27 @@
 package ru.javacat.ui.view_models
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Staff
 import ru.javacat.domain.repo.StaffRepository
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+@HiltViewModel
 class NewDriverViewModel @Inject constructor(
     private val repository: StaffRepository
 ):ViewModel() {
 
-    suspend fun addDriver(
-        id: String,
-        fullName: String,
-        passportSerial: String,
-        passportNumber: String,
-        passportReceivedDate: String,
-        passportReceivedPlace: String,
-        driveLicenseNumber: String,
-        placeOfRegistration: String
-        ){
+    suspend fun addDriver(driver: Staff){
 
         //val id = passportSerial.toString() + passportNumber.toString()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertDriver(driver)
+        }
 
-        val newDriver = Staff(
-            id, fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration
-        )
-        repository.insertDriver(newDriver)
     }
 }

@@ -12,7 +12,7 @@ data class DbRoute (
     val id: String,
     val startDate: String,
     val endDate: String?,
-    val driverId: String,
+    val driverId: Int,
     val truckId: String,
     val trailerId: String?,
     //val orderList: List<Order>,

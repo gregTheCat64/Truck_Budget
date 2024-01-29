@@ -3,7 +3,7 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 data class Staff (
-    val id: String,
+    val id: Int,
     val fullName: String,
     val passportSerial: String,
     val passportNumber: String,

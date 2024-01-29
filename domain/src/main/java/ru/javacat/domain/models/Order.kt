@@ -8,7 +8,7 @@ data class Order(
     val points: List<Point>,
     val price: Int,
     val customer: Customer?,
-    val driverId: String,
+    val driverId: Int,
     val truckId: String,
     val trailerId: String?,
     val cargoWeight: Int,

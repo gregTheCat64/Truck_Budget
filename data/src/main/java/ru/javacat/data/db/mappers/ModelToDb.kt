@@ -22,7 +22,7 @@ fun Route.toDb() = DbRoute(
     id,
     startDate.toString(),
     endDate.toString(),
-    driver?.id?:"",
+    driver?.id?:0,
     truck?.id?:"",
     trailer?.id?:"",
     prepayment,
@@ -67,7 +67,7 @@ fun Vehicle.toDb() = DbVehicle(
 fun Staff.toDb() = DbStaff(
     id,
     fullName,
-    duty,
+    passportSerial,
     passportNumber,
     passportReceivedDate,
     passportReceivedPlace,

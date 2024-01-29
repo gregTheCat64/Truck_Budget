@@ -6,17 +6,17 @@ import ru.javacat.domain.models.Staff
 
 @Entity(tableName = "staff_table")
 data class DbStaff (
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val fullName: String,
-    val duty: String,
+    val passportSerial: String,
     val passportNumber: String,
-    val passportReceivedDate: String,
-    val passportReceivedPlace: String,
+    val passportReceivedDate: String?,
+    val passportReceivedPlace: String?,
     val driveLicenseNumber: String?,
     val placeOfRegistration: String?
 ){
     fun toStaff() = Staff(
-        id,fullName, duty, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration
+        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration
     )
 }
