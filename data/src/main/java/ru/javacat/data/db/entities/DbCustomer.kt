@@ -11,4 +11,8 @@ data class DbCustomer(
     @PrimaryKey
     val atiNumber: Int,
     val companyPhone: Long?,
-)
+) {
+    fun toCustomerModel() = Customer(
+        companyName, atiNumber, companyPhone
+    )
+}

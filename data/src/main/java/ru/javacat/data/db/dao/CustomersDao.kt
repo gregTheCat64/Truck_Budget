@@ -9,18 +9,18 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
-import ru.javacat.data.db.models.CustomerWithEmployees
+import ru.javacat.data.db.models.DbCustomerWithEmployees
 
 @Dao
 interface CustomersDao {
 
     @Transaction
     @Query("SELECT * FROM customers_table")
-    fun getAll(): Flow<List<CustomerWithEmployees>>
+    fun getAll(): Flow<List<DbCustomerWithEmployees>>
 
     @Transaction
     @Query("SELECT * FROM customers_table WHERE atiNumber =:id")
-    suspend fun getById(id: String): CustomerWithEmployees
+    suspend fun getById(id: String): DbCustomerWithEmployees
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.OrderCard
 import ru.javacat.domain.models.Route
 
 interface OrderRepository {

@@ -9,14 +9,16 @@ import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.OrderCard
+import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 val draftOrder = Order("","", emptyList(), 0, null,
-    null,null,null,null,null,
-    null,null,null, null)
+    "","","",0,0,
+    null,null,null, null, null,
+    null, OrderStatus.IN_PROGRESS)
 
 @Singleton
 class OrderRepositoryImpl @Inject constructor(

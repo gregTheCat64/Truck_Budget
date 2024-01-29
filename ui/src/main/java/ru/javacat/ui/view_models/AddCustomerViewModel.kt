@@ -2,6 +2,7 @@ package ru.javacat.ui.view_models
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
@@ -11,18 +12,18 @@ class AddCustomerViewModel @Inject constructor(
     private val repository: OrderRepository
 ):ViewModel() {
     private val draftOrder = repository.editedOrder
-    suspend fun updateCustomerInfo(customerId: Int){
+    suspend fun updateCustomerInfo(customer: Customer){
         repository.updateOrder(
-            draftOrder.value.copy(customerId = customerId)
+            draftOrder.value.copy(customer = customer)
         )
     }
 
 
     suspend fun editAndSaveOrder(
-        id:String, customerId: Int
+        id:String, customer: Customer
     ){
         var editedOrder = repository.getOrderById(id)
-        editedOrder = editedOrder.copy(customerId = customerId)
-        editedOrder.route?.let { repository.insertOrder(it, editedOrder) }
+        editedOrder = editedOrder.copy(customer = customer)
+        repository.insertOrder(editedOrder)
     }
 }

@@ -16,14 +16,14 @@ class AddPaymentDetailsViewModel @Inject constructor(
         repository.updateOrder(draftOrder.value.copy(
             price = price, daysToPay = daysToPay
         ))
-        draftOrder.value.route?.let { repository.insertOrder(it, draftOrder.value) }
-    }
+        repository.insertOrder(draftOrder.value) }
+
 
     suspend fun updateDocsDetails(sentDocsNumber: String, docsReceived: LocalDate?){
         repository.updateOrder(draftOrder.value.copy(
             sentDocsNumber = sentDocsNumber, docsReceived = docsReceived
         ))
-        draftOrder.value.route?.let { repository.insertOrder(it, draftOrder.value) }
+        repository.insertOrder(draftOrder.value)
     }
 
     suspend fun editAndSaveOrder(orderId: String, price: Int, daysToPay: Int,sentDocsNumber: String, docsReceived: LocalDate?){
@@ -31,6 +31,7 @@ class AddPaymentDetailsViewModel @Inject constructor(
         editedOrder = editedOrder.copy(
             price = price, daysToPay = daysToPay, sentDocsNumber = sentDocsNumber
         )
-        editedOrder.route?.let { repository.insertOrder(it, editedOrder) }
+        //repository.insertOrder(editedOrder)
     }
+
 }

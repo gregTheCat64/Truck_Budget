@@ -1,6 +1,7 @@
 package ru.javacat.ui.view_models
 
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.OrderCard
 import ru.javacat.domain.repo.RouteRepository
 import java.time.LocalDate
 import javax.inject.Inject

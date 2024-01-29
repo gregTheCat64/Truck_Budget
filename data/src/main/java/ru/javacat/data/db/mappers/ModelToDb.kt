@@ -40,6 +40,9 @@ fun Route.toDb() = DbRoute(
 fun Order.toDb() = DbOrder(
     id,
     routeId,
+    driverId,
+    truckId,
+    trailerId,
     price,
     customer?.atiNumber?:0,
     cargoWeight,

@@ -51,6 +51,7 @@
             />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/truckLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -72,6 +73,13 @@
                 android:layout_marginStart="16dp"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/newTruckBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="добавить"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -98,6 +106,12 @@
                 android:layout_marginStart="16dp"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/newTrailerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="добавить"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -122,15 +136,14 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/newDriverBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="добавить"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
-
-
-
-
-
 
         <include
             layout="@layout/horizon_line"/>

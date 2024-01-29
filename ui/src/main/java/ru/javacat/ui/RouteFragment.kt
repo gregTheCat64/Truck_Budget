@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import ru.javacat.ui.databinding.FragmentRouteBinding
 
 class RouteFragment: BaseFragment<FragmentRouteBinding>() {
@@ -12,11 +13,21 @@ class RouteFragment: BaseFragment<FragmentRouteBinding>() {
             FragmentRouteBinding.inflate(inflater, container, false)
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        binding.newTruckBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_routeFragment_to_transportFragment)
+        }
+
+        binding.newTrailerBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_routeFragment_to_transportFragment)
+        }
+
+        binding.newDriverBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_routeFragment_to_driverFragment)
+        }
+
+        super.onViewCreated(view, savedInstanceState)
     }
 }

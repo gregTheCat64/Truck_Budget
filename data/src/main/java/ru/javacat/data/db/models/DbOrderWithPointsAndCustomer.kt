@@ -3,13 +3,15 @@ package ru.javacat.data.db.models
 import androidx.room.Embedded
 import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
+import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
-import ru.javacat.domain.models.Customer
+import ru.javacat.data.db.entities.DbRoute
+import ru.javacat.data.db.entities.DbStaff
+import ru.javacat.data.db.entities.DbVehicle
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.Route
 
-data class OrderWithPointsAndCustomer (
+data class DbOrderWithPointsAndCustomer (
     @Embedded
     val order: DbOrder,
 
@@ -22,28 +24,48 @@ data class OrderWithPointsAndCustomer (
     @Relation(
         parentColumn = "customerId",
         entityColumn = "atiNumber",
-        entity = Customer::class
+        entity = DbCustomer::class
     )
-    val customer: Customer,
+    val customer: DbCustomer,
 
     @Relation(
         parentColumn = "routeId",
         entityColumn = "id",
-        entity = Route::class
     )
-    val route: Route
+    val route: DbRoute,
+
+    @Relation(
+        parentColumn = "driverId",
+        entityColumn = "id",
+    )
+    val driver: DbStaff,
+
+    @Relation(
+        parentColumn = "truckId",
+        entityColumn = "id",
+    )
+    val truck: DbVehicle,
+
+    @Relation(
+        parentColumn = "trailerId",
+        entityColumn = "id",
+    )
+    val trailer: DbVehicle,
 
 
-) {
+    ) {
     fun toOrderModel(): Order {
         return Order(
             id = order.id,
             routeId = route.id,
             points = points.map { it.toPointModel() },
+            driverId = driver.id,
+            truckId = truck.id,
+            trailerId = trailer.id,
             price = order.price,
-            customer = customer,
-            cargoWeight = order.cargoWeight,
-            cargoVolume  = order.cargoVolume,
+            customer = customer.toCustomerModel(),
+            cargoWeight = order.cargoWeight?:0,
+            cargoVolume  = order.cargoVolume?:0,
             cargoName = order.cargoName,
             extraConditions = order.extraConditions,
             daysToPay = order.daysToPay,

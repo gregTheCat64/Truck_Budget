@@ -2,15 +2,15 @@ package ru.javacat.domain.models
 
 import java.time.LocalDate
 
-data class Order(
+data class OrderCard(
     val id: String,
     val routeId: String,
     val points: List<Point>,
     val price: Int,
-    val customer: Customer?,
-    val driverId: String,
-    val truckId: String,
-    val trailerId: String?,
+    val customerName: String,
+    val driverName: String,
+    val truck: String,
+    val trailer: String,
     val cargoWeight: Int,
     val cargoVolume: Int,
     val cargoName: String?,
@@ -21,7 +21,3 @@ data class Order(
     val docsReceived: LocalDate?,
     val status: OrderStatus?
 )
-
-enum class OrderStatus(){
-    IN_PROGRESS, DOCS_SHIPPED, DOCS_RECEIVED, WAITING_FOR_PAYMENT, PAID
-}

@@ -1,14 +1,14 @@
 package ru.javacat.data.db.models
 
-import androidx.room.Embedded
 import androidx.room.Relation
-import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.CustomerWithEmployees
 
-data class CustomerWithEmployees(
-    @Embedded
-    val customer: DbCustomer,
+data class DbCustomerWithEmployees(
+    val companyName: String,
+    val atiNumber: Int,
+    val companyPhone: Long?,
 
     @Relation(
         parentColumn = "atiNumber",
@@ -16,10 +16,10 @@ data class CustomerWithEmployees(
     )
     val employees: List<DbEmployee>
 ) {
-    fun toCustomerModel() = Customer(
-        customer.companyName,
-        customer.atiNumber,
+    fun toCustomerModel() = CustomerWithEmployees(
+        companyName,
+        atiNumber,
         employees.map { it.toEmployeeModel() },
-        customer.companyPhone
+        companyPhone
     )
 }

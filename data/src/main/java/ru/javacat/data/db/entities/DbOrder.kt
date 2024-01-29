@@ -27,14 +27,14 @@ import java.time.LocalDate
     ]
     )
 data class DbOrder(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: String,
     @ColumnInfo(index = true)
     val routeId: String,
     //val points: List<Point>,
-//    val driverId: String,
-//    val truckId: String,
-//    val trailerId: String?,
+    val driverId: String,
+    val truckId: String,
+    val trailerId: String?,
     val price: Int,
     val customerId: Int,
     val cargoWeight: Int?,
