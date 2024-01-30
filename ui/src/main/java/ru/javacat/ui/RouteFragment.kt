@@ -25,7 +25,7 @@ class RouteFragment: BaseFragment<FragmentRouteBinding>() {
         }
 
         binding.newDriverBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_routeFragment_to_driverFragment)
+            findNavController().navigate(R.id.action_routeFragment_to_newDriverFragment)
         }
 
         super.onViewCreated(view, savedInstanceState)

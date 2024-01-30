@@ -24,6 +24,10 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.passWhen.setOnClickListener {
+            showCalendar(parentFragmentManager, binding.passWhen)
+        }
+
         binding.saveBtn.setOnClickListener {
             val fullName = binding.staffName.text.toString()
             val passSerial = binding.passSerial.text.toString()

@@ -6,13 +6,13 @@ import ru.javacat.domain.models.Vehicle
 
 @Entity(tableName = "vehicles_table")
 data class DbVehicle(
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val regNumber: String,
     val vin: String?,
     val model: String?,
     val type: String?,
-    val yearOfManufacturing: Int,
+    val yearOfManufacturing: String?,
 ){
     fun toVehicle() = Vehicle(
         id, regNumber, vin, model, type, yearOfManufacturing

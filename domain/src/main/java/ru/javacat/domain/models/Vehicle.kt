@@ -1,10 +1,10 @@
 package ru.javacat.domain.models
 
 data class Vehicle (
-    val id: String,
+    val id: Int,
     val regNumber: String,
     val vin: String?,
     val model: String?,
     val type: String?,
-    val yearOfManufacturing: Int,
+    val yearOfManufacturing: String?,
 )

@@ -32,7 +32,7 @@
             android:id="@+id/action_routeFragment_to_transportFragment"
             app:destination="@id/newTransportFragment" />
         <action
-            android:id="@+id/action_routeFragment_to_driverFragment"
+            android:id="@+id/action_routeFragment_to_newDriverFragment"
             app:destination="@id/newDriverFragment" />
     </fragment>
     <fragment
@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_newOrderFragment_to_addPaymentDetailsFragment"
             app:destination="@id/addPaymentDetailsFragment" />
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_newCustomerFragment"
+            app:destination="@id/newCustomerFragment" />
     </fragment>
     <fragment
         android:id="@+id/newDriverFragment"
@@ -75,11 +78,7 @@
         android:id="@+id/addPointsFragment"
         android:name="ru.javacat.ui.AddPointsFragment"
         tools:layout="@layout/fragment_add_points"
-        android:label="AddPointsFragment" >
-        <action
-            android:id="@+id/action_addPointsFragment_to_newCustomerFragment"
-            app:destination="@id/newCustomerFragment" />
-    </fragment>
+        android:label="AddPointsFragment" />
     <fragment
         android:id="@+id/addPaymentDetailsFragment"
         android:name="ru.javacat.ui.AddPaymentDetailsFragment"

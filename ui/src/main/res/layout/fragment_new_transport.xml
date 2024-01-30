@@ -12,6 +12,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/typeOfVehicle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Тип транспорта"
@@ -25,6 +26,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/regNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Номерной знак"
@@ -41,6 +43,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="VIN"
@@ -56,6 +59,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/modelOfVehicle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Модель"
@@ -70,6 +74,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/yearOfManufacturing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Год производства"
@@ -92,6 +97,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сохранить"
