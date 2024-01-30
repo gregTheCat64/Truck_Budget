@@ -53,5 +53,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.room)
-    //ksp(libs.room.compiler)
+    ksp(libs.room.compiler)
 }

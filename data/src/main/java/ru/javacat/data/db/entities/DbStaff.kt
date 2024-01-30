@@ -14,9 +14,10 @@ data class DbStaff (
     val passportReceivedDate: String?,
     val passportReceivedPlace: String?,
     val driveLicenseNumber: String?,
-    val placeOfRegistration: String?
+    val placeOfRegistration: String?,
+    val phoneNumber: String?
 ){
     fun toStaff() = Staff(
-        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration
+        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber
     )
 }

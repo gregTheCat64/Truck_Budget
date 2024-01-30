@@ -5,20 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Staff
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.view_models.NewDriverViewModel
 
-class NewDriverFragment: BaseFragment<FragmentNewDriverBinding>() {
+@AndroidEntryPoint
+class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
     private val viewModel: NewDriverViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
-        get() = {inflater, container ->
-            FragmentNewDriverBinding.inflate(inflater, container,  false)
+        get() = { inflater, container ->
+            FragmentNewDriverBinding.inflate(inflater, container, false)
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,19 +32,17 @@ class NewDriverFragment: BaseFragment<FragmentNewDriverBinding>() {
             val passWhere = binding.passWhere.text.toString()
             val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
             val address = binding.address.text.toString()
+            val phoneNumber = binding.phoneNumber.text.toString()
 
             //val id = passSerial.toString()+passNumber.toString()
 
             val newDriver = Staff(
-                0, fullName, passSerial,passNumber,passWhen,
-                passWhere,driveLicenseNumber,address
+                0, fullName, passSerial, passNumber, passWhen,
+                passWhere, driveLicenseNumber, address, phoneNumber
             )
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                    viewModel.addDriver(newDriver)
-                }
-            }
+            viewModel.addDriver(newDriver)
+            findNavController().navigateUp()
         }
     }
 }

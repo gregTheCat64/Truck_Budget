@@ -72,7 +72,8 @@ fun Staff.toDb() = DbStaff(
     passportReceivedDate,
     passportReceivedPlace,
     driveLicenseNumber,
-    placeOfRegistration
+    placeOfRegistration,
+    phoneNumber
 )
 
 fun Location.toDb() = DbLocation(

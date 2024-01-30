@@ -16,11 +16,16 @@ class NewDriverViewModel @Inject constructor(
     private val repository: StaffRepository
 ):ViewModel() {
 
-    suspend fun addDriver(driver: Staff){
+     fun addDriver(driver: Staff){
 
         //val id = passportSerial.toString() + passportNumber.toString()
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertDriver(driver)
+            try {
+                repository.insertDriver(driver)
+            }catch (e: Error){
+                e.printStackTrace()
+            }
+
         }
 
     }

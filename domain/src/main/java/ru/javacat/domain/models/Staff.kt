@@ -10,5 +10,6 @@ data class Staff (
     val passportReceivedDate: String?,
     val passportReceivedPlace: String?,
     val driveLicenseNumber: String?,
-    val placeOfRegistration: String?
+    val placeOfRegistration: String?,
+    val phoneNumber: String?
 )
