@@ -30,25 +30,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="150dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:text="Когда:"
+                />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Дата" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="4"
+                android:text="31.01.2024"
+                />
 
             <Button
+                android:id="@+id/minusDayBtn"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/baseline_remove_circle_outline_24" />
 
             <Button
+                android:id="@+id/plusDayBtn"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +71,7 @@
 
             >
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pointEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Точка маршрута"
@@ -73,7 +79,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton2"
+            android:id="@+id/addPointBtn"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,9 +125,10 @@
 
 
     <Button
+        android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Далее"
+        android:text="Сохранить"
         android:layout_gravity="end|bottom"
         />
 

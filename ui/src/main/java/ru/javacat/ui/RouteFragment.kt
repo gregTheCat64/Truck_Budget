@@ -15,6 +15,10 @@ class RouteFragment: BaseFragment<FragmentRouteBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.addOrderBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_routeFragment_to_newOrderFragment)
+        }
+
 
         binding.newTruckBtn.setOnClickListener {
             findNavController().navigate(R.id.action_routeFragment_to_transportFragment)
