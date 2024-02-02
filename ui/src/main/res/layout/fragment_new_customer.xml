@@ -3,30 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/companyNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:errorEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/companyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Название"
-            />
+            android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/atiNumberLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:errorEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/atiNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="Код в Ати"
             />
 
@@ -38,9 +46,11 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Телефон"
+            android:inputType="phone"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -51,9 +61,26 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/formalAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Юридический адрес"
+            android:inputType="textCapSentences"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/postAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Почтовый адрес"
+            android:inputType="textCapSentences"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -64,6 +91,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/shortName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Короткое название"
@@ -75,6 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сотрудники:"
+        android:inputType="textCapSentences"
         android:layout_margin="8dp"
         android:layout_gravity="center_horizontal"
         />
@@ -87,6 +116,7 @@
         />
 
     <Button
+        android:id="@+id/addEmployeeBtn"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,6 +126,7 @@
         />
 
     <Button
+        android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

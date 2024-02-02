@@ -15,6 +15,3 @@ class DbError(override val message: String) : AppError()
 
 object UnknownError : AppError()
 
-fun String.toBase64(): String{
-    return Base64.getEncoder().encodeToString(this.toByteArray())
-}

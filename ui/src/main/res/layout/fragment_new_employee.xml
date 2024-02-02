@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="8dp"
-    >
+    android:padding="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Имя сотрудника"
+            android:inputType="textPersonName"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Телефонный номер"
+            android:inputType="phone"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,9 +43,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNumber2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Телефонный номер 2"
+            android:inputType="phone"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,24 +56,31 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="e-mail"
+            android:inputType="textEmailAddress"
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="комментарий"
+            android:inputType="textCapSentences"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

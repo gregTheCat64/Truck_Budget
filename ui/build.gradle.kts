@@ -42,6 +42,7 @@ android {
 dependencies {
 
     implementation(project(":domain"))
+    implementation(project(":common"))
 
     implementation(libs.bundles.coroutines)
     implementation(libs.hilt)

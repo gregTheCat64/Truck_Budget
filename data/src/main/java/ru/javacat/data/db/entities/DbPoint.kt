@@ -23,8 +23,8 @@ import ru.javacat.domain.models.Point
     ]
 )
 data class DbPoint(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val id: String,
     @ColumnInfo(index = true)
     val orderId: String,
     @Embedded

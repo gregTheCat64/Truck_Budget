@@ -9,8 +9,8 @@ import ru.javacat.domain.models.Employee
 @Entity(tableName = "employees_table",
     foreignKeys = [ForeignKey(
         entity = DbCustomer::class,
-        parentColumns = ["atiNumber"],
-        childColumns = ["customerAtiNumber"],
+        parentColumns = ["id"],
+        childColumns = ["customerId"],
         onUpdate = ForeignKey.CASCADE,
         onDelete = ForeignKey.CASCADE
     )]
@@ -19,13 +19,14 @@ data class DbEmployee(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(index = true)
-    val customerAtiNumber: Int,
+    val customerId: String,
     val name: String,
-    val phoneNumber: Long,
-    val secondNumber: Long?,
-    val email: String?
+    val phoneNumber: String,
+    val secondNumber: String?,
+    val email: String?,
+    val comment: String?
 ) {
     fun toEmployeeModel() = Employee(
-        id, customerAtiNumber,name,phoneNumber,secondNumber,email)
+        id, customerId,name,phoneNumber,secondNumber,email,comment)
 
 }

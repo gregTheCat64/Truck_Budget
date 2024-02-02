@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
-        android:name="ru.javacat.ui.OrderDetailsFragment"
+        android:name="ru.javacat.ui.OrderFragment"
         tools:layout="@layout/fragment_order_details"
         android:label="orderDetailsFragment" >
         <action
@@ -47,7 +47,7 @@
             android:id="@+id/action_newOrderFragment_to_addPaymentDetailsFragment"
             app:destination="@id/addPaymentDetailsFragment" />
         <action
-            android:id="@+id/action_orderDetailsFragment_to_newCustomerFragment"
+            android:id="@+id/action_orderFragment_to_newCustomerFragment"
             app:destination="@id/newCustomerFragment" />
     </fragment>
     <fragment
@@ -96,6 +96,11 @@
         <action
             android:id="@+id/action_newCustomerFragment_to_addEmployeeFragment"
             app:destination="@id/newEmployeeFragment" />
+        <argument
+            android:name="ati_arg"
+            app:argType="integer"
+            android:defaultValue="0" />
+
     </fragment>
     <fragment
         android:id="@+id/finishRouteFragment"

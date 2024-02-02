@@ -6,20 +6,26 @@ import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.CustomerWithEmployees
 
 data class DbCustomerWithEmployees(
+    val id: String,
     val companyName: String,
-    val atiNumber: Int,
+    val atiNumber: Int?,
     val companyPhone: Long?,
+    val formalAddress: String,
+    val postAddress: String,
+    val shortName: String,
 
     @Relation(
-        parentColumn = "atiNumber",
-        entityColumn = "customerAtiNumber"
+        parentColumn = "id",
+        entityColumn = "customerId"
     )
     val employees: List<DbEmployee>
 ) {
     fun toCustomerModel() = CustomerWithEmployees(
+        id,
         companyName,
         atiNumber,
         employees.map { it.toEmployeeModel() },
-        companyPhone
+        companyPhone,
+        formalAddress, postAddress, shortName
     )
 }

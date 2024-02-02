@@ -7,12 +7,16 @@ import ru.javacat.domain.models.Employee
 
 @Entity(tableName = "customers_table")
 data class DbCustomer(
-    val companyName: String,
     @PrimaryKey
-    val atiNumber: Int,
-    val companyPhone: Long?,
+    val id: String,
+    val companyName: String,
+    val atiNumber: Int?,
+    val companyPhone: String?,
+    val formalAddress: String?,
+    val postAddress: String?,
+    val shortName: String?
 ) {
     fun toCustomerModel() = Customer(
-        companyName, atiNumber, companyPhone
+        id, companyName, atiNumber, companyPhone,formalAddress, postAddress, shortName
     )
 }
