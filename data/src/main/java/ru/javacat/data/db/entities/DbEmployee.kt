@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 import ru.javacat.domain.models.Employee
 
 @Entity(tableName = "employees_table",
-    foreignKeys = [ForeignKey(
-        entity = DbCustomer::class,
-        parentColumns = ["id"],
-        childColumns = ["customerId"],
-        onUpdate = ForeignKey.CASCADE,
-        onDelete = ForeignKey.CASCADE
-    )]
+//    foreignKeys = [ForeignKey(
+//        entity = DbCustomer::class,
+//        parentColumns = ["id"],
+//        childColumns = ["customerId"],
+//        onUpdate = ForeignKey.CASCADE,
+//        onDelete = ForeignKey.CASCADE
+//    )]
     )
 data class DbEmployee(
     @PrimaryKey(autoGenerate = true)

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.data.db.models.DbCustomerWithEmployees
+import ru.javacat.domain.models.Employee
 
 @Dao
 interface CustomersDao {
@@ -18,10 +19,14 @@ interface CustomersDao {
     @Query("SELECT * FROM customers_table")
     fun getAll(): Flow<List<DbCustomerWithEmployees>>
 
+
     @Transaction
     @Query("SELECT * FROM customers_table WHERE atiNumber =:id")
     suspend fun getById(id: String): DbCustomerWithEmployees
 
+
+    @Query("SELECT * FROM customers_table WHERE companyName LIKE '%' || :search || '%'")
+    suspend fun getCustomers(search: String): List<DbCustomer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(
@@ -32,6 +37,11 @@ interface CustomersDao {
     suspend fun insertEmployee(
         employee: DbEmployee
     )
+
+    @Query("SELECT * FROM employees_table WHERE customerId =:customerId")
+    fun getEmployeesByCustomerId(
+        customerId: String
+    ): List<DbEmployee>
 
     @Update()
     suspend fun updateCustomer(

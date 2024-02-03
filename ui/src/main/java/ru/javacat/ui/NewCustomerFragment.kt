@@ -7,17 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.javacat.common.utils.toBase64
 import ru.javacat.domain.models.Customer
+import ru.javacat.ui.adapters.EmployeesAdapter
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.view_models.NewCustomerViewModel
 
 @AndroidEntryPoint
 class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
 
+
     private val viewModel: NewCustomerViewModel by viewModels()
+    private lateinit var adapter: EmployeesAdapter
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewCustomerBinding
         get() = {inflater, container->
             FragmentNewCustomerBinding.inflate(inflater, container,false)
@@ -33,11 +39,20 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = EmployeesAdapter()
+        binding.employeesRecView.adapter = adapter
+
+
+        lifecycleScope.launch {
+            viewModel.employees.collectLatest {
+                adapter.submitList(it)
+            }
+        }
 
         binding.saveBtn.setOnClickListener {
             getFieldsData()
             saveCustomer()
-
+            findNavController().navigateUp()
         }
 
         binding.companyName.addTextChangedListener(object : TextWatcher{
@@ -56,11 +71,10 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             }
         })
 
-
-
         binding.addEmployeeBtn.setOnClickListener {
             getFieldsData()
             saveCustomer()
+
             val bundle = Bundle()
             if (id.isNotEmpty()){
                 bundle.putString("id", id)
@@ -69,19 +83,6 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         }
     }
 
-//    private fun settingID() {
-//        val requestField = "Обязательное поле"
-//        if (companyName.isEmpty()) {
-//            binding.companyNameLayout.error = requestField
-//            binding.companyName.requestFocus()
-//        } else {
-//            id = if (atiNumber != null) {
-//                atiNumber.toString()
-//            } else {
-//                companyName.toBase64()
-//            }
-//        }
-//    }
 
     private fun getFieldsData(){
         val requestField = "Обязательное поле"
@@ -129,7 +130,6 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             )
             //AndroidUtils.hideKeyboard(requireView())
             viewModel.saveNewCustomer(newCustomer)
-            findNavController().navigateUp()
         }
     }
 
@@ -145,5 +145,10 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             .replace("ИП", "")
             .replace("Ип", "")
             .replace("\"", "")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (id.isNotEmpty()) viewModel.getEmployeeListByCustomerId(id)
     }
 }
