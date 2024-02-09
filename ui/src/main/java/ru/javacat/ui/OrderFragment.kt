@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -48,20 +49,19 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
+        
         initAdapters()
 
         addEditTextListeners()
 
         documentsCheckBoxListener()
 
-       binding.locationEditText.setOnClickListener {
-           binding.locationsRecView.isGone = false
-           binding.scroll.scrollToDescendant(binding.addPointBtn)
-           viewModel.getLocations()
-       }
+        viewModel.getLocations()
+
+        viewModel.getCustomers()
+
+
+
 
         binding.addPointBtn.setOnClickListener {
             val place = binding.locationEditText.text.toString()
@@ -74,7 +74,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
         binding.arrivalDate.setOnClickListener {
             parentFragmentManager.showCalendar {
-                viewModel.setDate(it)
+                viewModel.setPointDate(it)
             }
         }
 
@@ -132,7 +132,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
             override fun onCustomer(item: Customer) {
                 binding.textInputEditText.setText(item.shortName)
-                binding.customersRecView.isGone = true
+                //binding.customersRecView.isGone = true
                 AndroidUtils.hideKeyboard(requireView())
 
                 //TODO добавить во вьюмодель Клиента
@@ -151,7 +151,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             override fun onLocation(item: Location) {
                 addPoint(item)
                 viewModel.increaseDay()
-                binding.locationsRecView.isGone = true
+                //binding.locationsRecView.isGone = true
                 AndroidUtils.hideKeyboard(requireView())
             }
         })
@@ -174,8 +174,14 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     private fun addEditTextListeners(){
 
         binding.textInputEditText.setOnClickListener {
-            binding.customersRecView.isGone = false
-            viewModel.getCustomers()
+            //binding.customersRecView.isGone = false
+
+        }
+
+        binding.locationEditText.setOnClickListener {
+            //binding.locationsRecView.isGone = false
+            binding.scroll.scrollToDescendant(binding.addPointBtn)
+
         }
 
         binding.textInputEditText.addTextChangedListener(object : TextWatcher{
@@ -184,7 +190,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.customersRecView.isGone = false
+                //binding.customersRecView.isGone = false
                 viewModel.searchCustomers(p0.toString())
             }
 
@@ -200,7 +206,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.locationsRecView.isGone = false
+                //binding.locationsRecView.isGone = false
                 viewModel.searchLocations(p0.toString())
             }
 

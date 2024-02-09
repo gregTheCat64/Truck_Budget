@@ -36,7 +36,7 @@ class OrderViewModel @Inject constructor(
     private val _pointDate = MutableStateFlow<LocalDate>(LocalDate.now())
     val pointDate: StateFlow<LocalDate> = _pointDate
 
-    fun setDate(localDate: LocalDate){
+    fun setPointDate(localDate: LocalDate){
         viewModelScope.launch {
             _pointDate.emit(localDate)
         }

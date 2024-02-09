@@ -229,7 +229,7 @@
                     android:id="@+id/locationEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Точка маршрута"
+                    android:hint="Добавить город"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
