@@ -25,8 +25,11 @@ interface CustomersDao {
     suspend fun getById(id: String): DbCustomerWithEmployees
 
 
+    @Query("SELECT * FROM customers_table")
+    suspend fun getCustomers(): List<DbCustomer>
+
     @Query("SELECT * FROM customers_table WHERE companyName LIKE '%' || :search || '%'")
-    suspend fun getCustomers(search: String): List<DbCustomer>
+    suspend fun searchCustomers(search: String): List<DbCustomer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(

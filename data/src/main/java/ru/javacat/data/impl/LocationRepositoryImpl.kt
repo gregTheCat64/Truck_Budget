@@ -13,6 +13,14 @@ class LocationRepositoryImpl @Inject constructor(
     private val locationsDao: LocationsDao
 ): LocationRepository {
 
+    override suspend fun getLocations(): List<Location> {
+        return dbQuery { locationsDao.getLocations().map { it.toLocationModel() } }
+    }
+
+    override suspend fun searchLocations(search: String): List<Location> {
+        return dbQuery { locationsDao.searchLocations(search).map { it.toLocationModel() } }
+    }
+
     override suspend fun insertLocation(location: Location) {
         dbQuery { locationsDao.insertLocation(location.toDb()) }
     }

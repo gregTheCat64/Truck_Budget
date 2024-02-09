@@ -4,10 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.javacat.common.utils.toLocalDate
-import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 
 @Entity(
@@ -27,11 +25,11 @@ data class DbPoint(
     val id: String,
     @ColumnInfo(index = true)
     val orderId: String,
-    @Embedded
-    val location: Location,
+    @Embedded(prefix = "loc")
+    val location: DbLocation,
     val arrivalDate: String
 ) {
     fun toPointModel() = Point(
-        id, location, arrivalDate.toLocalDate()
+        id, location.toLocationModel(), arrivalDate.toLocalDate()
     )
 }

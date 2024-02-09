@@ -60,12 +60,12 @@ class AddPointsFragment: BaseFragment<FragmentAddPointsBinding>() {
         }
 
         binding.addPointBtn.setOnClickListener {
-            val place = binding.pointEditText.text.toString()
+            val place = binding.locationEditText.text.toString()
             val id = place.toBase64()
             println("id of $place: $id")
-            val newPoint = Point(id, Location(place), pointDate)
-            viewModel.addPoint(newPoint)
-            binding.pointEditText.text?.clear()
+            //val newPoint = Point(id, Location(place), pointDate)
+            //viewModel.addPoint(newPoint)
+            binding.locationEditText.text?.clear()
             increaseDay()
         }
     }

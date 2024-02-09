@@ -6,7 +6,8 @@ import ru.javacat.domain.models.Employee
 
 interface CustomerRepository {
 
-    suspend fun getCustomers(search: String): List<Customer>
+    suspend fun getCustomers(): List<Customer>
+    suspend fun searchCustomers(search: String): List<Customer>
     suspend fun getEmployeesByCustomerId(customerId: String): List<Employee>
     suspend fun insertCustomer(customer: Customer)
 

@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Staff
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
+import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.NewDriverViewModel
 
 @AndroidEntryPoint
@@ -25,7 +25,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.passWhen.setOnClickListener {
-            showCalendar(parentFragmentManager, binding.passWhen)
+            parentFragmentManager.showCalendar {
+
+            }
         }
 
         binding.saveBtn.setOnClickListener {

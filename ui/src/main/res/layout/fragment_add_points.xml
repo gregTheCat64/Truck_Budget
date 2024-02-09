@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/locationEditText"
+            android:id="@+id/locationLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -71,7 +71,7 @@
 
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pointEditText"
+                android:id="@+id/locationEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Точка маршрута"
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             app:spanCount="4"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/locationEditText"
+            app:layout_constraintTop_toBottomOf="@+id/locationLayout"
             tools:listitem="@layout/place_item" />
 
 

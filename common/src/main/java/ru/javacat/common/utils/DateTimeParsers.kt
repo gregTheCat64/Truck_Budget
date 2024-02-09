@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter
 fun LocalDate.asDayOfWeek(): String = format(DateTimeFormatter.ofPattern("EEE"))
 
 
-fun LocalDate.asLocalDate(): String = format(DateTimeFormatter.ofPattern("dd MMM"))
+fun LocalDate.asDayAndMonthFully(): String = format(DateTimeFormatter.ofPattern("d MMMM"))
 
-
+fun LocalDate.asDayAndMonthShortly(): String = format(DateTimeFormatter.ofPattern("d MMM"))
 
 fun String.toLocalDate(): LocalDate = LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 

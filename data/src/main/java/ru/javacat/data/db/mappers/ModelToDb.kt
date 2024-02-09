@@ -57,7 +57,7 @@ fun Order.toDb() = DbOrder(
 )
 
 fun Point.toDb(order: Order) = DbPoint(
-    id, order.id, location, arrivalDate.toString()
+    id, order.id, location.toDb(), arrivalDate.toString()
 )
 
 fun Vehicle.toDb() = DbVehicle(
@@ -77,7 +77,7 @@ fun Staff.toDb() = DbStaff(
 )
 
 fun Location.toDb() = DbLocation(
-    name
+    id,name
 )
 
 fun Customer.toDb() = DbCustomer(

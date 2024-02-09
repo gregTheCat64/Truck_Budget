@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.common.utils.asDayAndMonthFully
+import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Point
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.PointItemBinding
@@ -22,7 +24,7 @@ class PointsAdapter(
         fun bind(item: Point){
             binding.apply {
                 location.text = item.location.name
-                date.text = item.arrivalDate.toString()
+                date.text = item.arrivalDate.asDayAndMonthShortly()
                 removeBtn.setOnClickListener {
                 onPointListener.removePoint(item)
                 }

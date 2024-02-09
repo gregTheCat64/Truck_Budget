@@ -14,8 +14,12 @@ class CustomerRepositoryImpl @Inject constructor(
     private val customersDao: CustomersDao
 ): CustomerRepository {
 
-    override suspend fun getCustomers(search: String): List<Customer> {
-        return dbQuery { customersDao.getCustomers(search).map { it.toCustomerModel() } }
+    override suspend fun getCustomers(): List<Customer> {
+        return dbQuery { customersDao.getCustomers().map { it.toCustomerModel() } }
+    }
+
+    override suspend fun searchCustomers(search: String): List<Customer> {
+        return dbQuery { customersDao.searchCustomers(search).map { it.toCustomerModel() } }
     }
 
     override suspend fun getEmployeesByCustomerId(customerId: String): List<Employee> {
