@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -48,94 +48,69 @@
             android:layout_margin="16dp"
             android:text="Подвижной состав" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/truckLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="horizontal"
 
-            >
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_directions_car_24"
-                app:tint="#7F7F7F" />
+                android:layout_margin="8dp"
+                >
 
-
-            <TextView
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="А 965 ЕС 164" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Добавьте тягач"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/newTruckBtn"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="добавить" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:text="Новый" />
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:orientation="horizontal">
+            >
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_directions_car_24"
-                app:tint="#7F7F7F" />
+                android:hint="Добавьте прицеп"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="АМ 6329 64" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/newTrailerBtn"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Новый" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/newTrailerBtn"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="добавить" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:orientation="horizontal">
+            >
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_person_add_24"
-                app:tint="#7F7F7F" />
+                android:hint="Добавьте водителя"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Радаев Олег Михайлович" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/newDriverBtn"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="добавить" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/newDriverBtn"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Новый" />
 
         <include layout="@layout/horizon_line" />
 
@@ -310,17 +285,15 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Завершить рейс"
+            android:visibility="visible"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            />
+        
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Завершить рейс"
-        android:visibility="visible"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
-        />
-
-
-</FrameLayout>
+</ScrollView>

@@ -96,7 +96,7 @@
             app:spanCount="4"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/locationLayout"
-            tools:listitem="@layout/place_item" />
+            tools:listitem="@layout/name_item" />
 
 
 

@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,11 +18,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.common.utils.toBase64
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
+import ru.javacat.ui.adapters.CargoAdapter
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.LocationAdapter
+import ru.javacat.ui.adapters.OnCargoListener
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.adapters.OnLocationListener
 import ru.javacat.ui.adapters.OnPointListener
@@ -44,6 +46,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     private lateinit var pointsAdapter: PointsAdapter
     private lateinit var customersAdapter: CustomersAdapter
     private lateinit var locationAdapter: LocationAdapter
+    private lateinit var cargoAdapter: CargoAdapter
 
 
 
@@ -60,16 +63,22 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
         viewModel.getCustomers()
 
+        viewModel.getCargos()
+
 
 
 
         binding.addPointBtn.setOnClickListener {
             val place = binding.locationEditText.text.toString()
-            val newLocation = Location(0, place)
-            addPoint(newLocation)
+            if (place.isNotEmpty()){
+                val id = place.toBase64()
+                val newLocation = Location(id, place)
+                viewModel.insertNewLocation(newLocation)
 
-            binding.locationEditText.text?.clear()
-            viewModel.increaseDay()
+                addPoint(newLocation)
+                binding.locationEditText.text?.clear()
+                viewModel.increaseDay()
+            }
         }
 
         binding.arrivalDate.setOnClickListener {
@@ -108,6 +117,14 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.cargo.collectLatest {
+                    cargoAdapter.submitList(it)
+                }
+            }
+        }
+
 
         binding.plusDayBtn.setOnClickListener {
             viewModel.increaseDay()
@@ -131,7 +148,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     private fun initAdapters(){
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
             override fun onCustomer(item: Customer) {
-                binding.textInputEditText.setText(item.shortName)
+                binding.customerInputEditText.setText(item.shortName)
                 //binding.customersRecView.isGone = true
                 AndroidUtils.hideKeyboard(requireView())
 
@@ -156,6 +173,14 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             }
         })
         binding.locationsRecView.adapter = locationAdapter
+
+        cargoAdapter = CargoAdapter(object : OnCargoListener {
+            override fun onCargo(item: Cargo) {
+
+                AndroidUtils.hideKeyboard(requireView())
+            }
+        })
+        binding.cargoRecView.adapter = cargoAdapter
     }
 
     private fun documentsCheckBoxListener(){
@@ -173,7 +198,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
     private fun addEditTextListeners(){
 
-        binding.textInputEditText.setOnClickListener {
+        binding.customerInputEditText.setOnClickListener {
             //binding.customersRecView.isGone = false
 
         }
@@ -184,7 +209,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
         }
 
-        binding.textInputEditText.addTextChangedListener(object : TextWatcher{
+        binding.customerInputEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -217,12 +242,8 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     }
 
     private fun addPoint(location: Location){
-        //pointDate = binding.arrivalDate.text.toString().toLocalDate()
-        val id = location.name.toBase64()
         val pointDate = viewModel.pointDate.value
-        if (location.id == 0) {
-            viewModel.insertNewLocation(location)
-        }
+        val id = (location.name + pointDate.asDayAndMonthFully()).toBase64()
         val newPoint = Point(id, location, pointDate)
         viewModel.addPoint(newPoint)
     }

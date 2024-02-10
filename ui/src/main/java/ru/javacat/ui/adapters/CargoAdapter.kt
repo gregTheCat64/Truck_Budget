@@ -3,50 +3,50 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import ru.javacat.domain.models.Employee
-import ru.javacat.domain.models.Location
-import ru.javacat.ui.R
 
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.Point
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.NameItemBinding
 
-interface OnLocationListener{
-    fun onLocation(item: Location)
+interface OnCargoListener{
+    fun onCargo(item: Cargo)
 }
-class LocationAdapter(
-    private val onLocationListener: OnLocationListener
-): androidx.recyclerview.widget.ListAdapter<Location, LocationAdapter.Holder>(Comparator()) {
+class CargoAdapter(
+    private val onCargoListener: OnCargoListener
+): ListAdapter<Cargo, CargoAdapter.Holder>(Comparator()) {
 
-
-    class Holder(view: View, private val onLocationListener: OnLocationListener): RecyclerView.ViewHolder(view){
+    class Holder(view: View, private val onCargoListener: OnCargoListener): RecyclerView.ViewHolder(view){
         private val binding = NameItemBinding.bind(view)
 
-        fun bind(item: Location){
+        fun bind(item: Cargo){
             binding.name.text = item.name
             binding.root.setOnClickListener {
-                onLocationListener.onLocation(item)
+                onCargoListener.onCargo(item)
             }
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<Location>(){
-        override fun areItemsTheSame(oldItem: Location, newItem: Location): Boolean {
+    class Comparator: DiffUtil.ItemCallback<Cargo>(){
+        override fun areItemsTheSame(oldItem: Cargo, newItem: Cargo): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Location, newItem: Location): Boolean {
+        override fun areContentsTheSame(oldItem: Cargo, newItem: Cargo): Boolean {
             return oldItem == newItem
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item, parent, false)
-        return Holder(view, onLocationListener)
+        return Holder(view, onCargoListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
     }
+
 }

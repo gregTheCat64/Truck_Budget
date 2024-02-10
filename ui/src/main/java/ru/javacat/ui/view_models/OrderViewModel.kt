@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
+import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.LocationRepository
 import java.time.LocalDate
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val customerRepository: CustomerRepository,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val cargoRepostiory: CargoRepository
 ):ViewModel() {
     private val _points = MutableStateFlow<List<Point>?>(null)
     val points = _points.asStateFlow()
@@ -32,6 +35,9 @@ class OrderViewModel @Inject constructor(
 
     private val _locations = MutableStateFlow<List<Location>?>(null)
     val locations = _locations.asStateFlow()
+
+    private val _cargo = MutableStateFlow<List<Cargo>?>(null)
+    val cargo = _cargo.asStateFlow()
 
     private val _pointDate = MutableStateFlow<LocalDate>(LocalDate.now())
     val pointDate: StateFlow<LocalDate> = _pointDate
@@ -103,4 +109,25 @@ class OrderViewModel @Inject constructor(
             _locations.emit(result)
         }
     }
+
+    fun getCargos(){
+        viewModelScope.launch(Dispatchers.IO){
+            val result = cargoRepostiory.getCargos()
+            _cargo.emit(result)
+        }
+    }
+
+    fun searchCargos(search: String) {
+        viewModelScope.launch(Dispatchers.IO){
+            val result = cargoRepostiory.searchCargos(search)
+            _cargo.emit(result)
+        }
+    }
+
+    fun insertNewCargo(cargo: Cargo){
+        viewModelScope.launch(Dispatchers.IO){
+            cargoRepostiory.insertCargo(cargo)
+        }
+    }
+
 }

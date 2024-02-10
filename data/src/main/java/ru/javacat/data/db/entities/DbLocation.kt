@@ -8,8 +8,8 @@ import ru.javacat.domain.models.Location
     tableName = "locations_table"
 )
 data class DbLocation(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey()
+    val id: String,
     val name: String
 ) {
     fun toLocationModel() = Location(

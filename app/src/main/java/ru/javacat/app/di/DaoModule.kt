@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.javacat.data.db.AppDb
+import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CustomersDao
 import ru.javacat.data.db.dao.LocationsDao
 import ru.javacat.data.db.dao.RoutesDao
@@ -34,4 +35,8 @@ object DaoModule {
     @Provides
     @Singleton
     fun providesLocationsDao(db: AppDb): LocationsDao = db.locationsDao
+
+    @Provides
+    @Singleton
+    fun providesCargoDao(db: AppDb): CargoDao = db.cargoDao
 }

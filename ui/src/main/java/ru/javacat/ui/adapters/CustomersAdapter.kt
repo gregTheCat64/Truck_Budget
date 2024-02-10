@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.domain.models.Customer
 import ru.javacat.ui.R
-import ru.javacat.ui.databinding.CustomerItemBinding
+import ru.javacat.ui.databinding.NameItemBinding
 
 interface OnCustomerListener {
     fun onCustomer(item: Customer)
@@ -19,10 +19,10 @@ class CustomersAdapter(
 
 
     class Holder(view: View, private val onCustomerListener: OnCustomerListener): RecyclerView.ViewHolder(view){
-        private val binding = CustomerItemBinding.bind(view)
+        private val binding = NameItemBinding.bind(view)
 
         fun bind(item: Customer){
-            binding.companyName.text = item.companyName
+            binding.name.text = item.companyName
             binding.root.setOnClickListener {
                 onCustomerListener.onCustomer(item)
             }
@@ -40,7 +40,7 @@ class CustomersAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item,parent,false)
         return Holder(view, onCustomerListener)
     }
 

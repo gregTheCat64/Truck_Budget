@@ -34,7 +34,7 @@
             android:layout_marginEnd="8dp"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_edit_text"
+                android:id="@+id/customer_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Заказчик"
@@ -49,7 +49,7 @@
                 tools:itemCount="5"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/customer_item" />
+                tools:listitem="@layout/name_item" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -73,6 +73,15 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cargoRecView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/name_item"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,6 +98,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="82"
                     android:hint="Объем, м3"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -102,6 +112,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="20"
                     android:hint="Вес, т"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -240,7 +251,7 @@
                     android:layout_height="wrap_content"
                     tools:itemCount="5"
                     android:orientation="horizontal"
-                    tools:listitem="@layout/location_item"
+                    tools:listitem="@layout/name_item"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />
 

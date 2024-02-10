@@ -2,10 +2,10 @@ package ru.javacat.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.javacat.domain.models.Vehicle
+import ru.javacat.domain.models.Truck
 
-@Entity(tableName = "vehicles_table")
-data class DbVehicle(
+@Entity(tableName = "trucks_table")
+data class DbTruck(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val regNumber: String,
@@ -14,7 +14,7 @@ data class DbVehicle(
     val type: String?,
     val yearOfManufacturing: String?,
 ){
-    fun toVehicle() = Vehicle(
+    fun toTruck() = Truck(
         id, regNumber, vin, model, type, yearOfManufacturing
     )
 }

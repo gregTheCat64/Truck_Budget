@@ -9,13 +9,13 @@ import ru.javacat.data.impl.OrderRepositoryImpl
 import ru.javacat.data.impl.LocationRepositoryImpl
 import ru.javacat.data.impl.RouteRepositoryImpl
 import ru.javacat.data.impl.StaffRepositoryImpl
-import ru.javacat.data.impl.VehicleRepositoryImpl
+import ru.javacat.data.impl.TrucksRepositoryImpl
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.LocationRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.StaffRepository
-import ru.javacat.domain.repo.VehicleRepository
+import ru.javacat.domain.repo.TrucksRepository
 import javax.inject.Singleton
 
 @Module
@@ -40,7 +40,7 @@ interface RepositoryModule {
 
     @Singleton
     @Binds
-    fun bindsVehicleRepository(impl: VehicleRepositoryImpl): VehicleRepository
+    fun bindsVehicleRepository(impl: TrucksRepositoryImpl): TrucksRepository
 
     @Singleton
     @Binds

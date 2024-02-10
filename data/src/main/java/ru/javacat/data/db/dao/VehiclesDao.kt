@@ -5,30 +5,28 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
-import ru.javacat.data.db.entities.DbStaff
-import ru.javacat.data.db.entities.DbVehicle
-import ru.javacat.domain.models.Staff
+import ru.javacat.data.db.entities.DbTruck
+
 
 @Dao
-interface VehiclesDao {
+interface TrucksDao {
 
-    @Query("SELECT * FROM vehicles_table")
-    fun getAll(): Flow<List<DbVehicle>>
+    @Query("SELECT * FROM trucks_table")
+    fun getAll(): List<DbTruck>
 
-    @Query("SELECT * FROM vehicles_table WHERE regNumber =:id")
-    suspend fun getById(id: String): DbVehicle
+    @Query("SELECT * FROM trucks_table WHERE regNumber =:id")
+    suspend fun getById(id: String): DbTruck
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(
-        dbVehicle: DbVehicle
+        dbVehicle: DbTruck
     )
 
     @Update()
     suspend fun update(
-        dbVehicle: DbVehicle
+        dbVehicle: DbTruck
     )
 
-    @Query("DELETE FROM vehicles_table WHERE regNumber =:id")
+    @Query("DELETE FROM trucks_table WHERE regNumber =:id")
     suspend fun remove(id: Int)
 }

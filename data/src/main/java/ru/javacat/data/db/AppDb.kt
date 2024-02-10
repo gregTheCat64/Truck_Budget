@@ -2,7 +2,9 @@ package ru.javacat.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CustomersDao
+import ru.javacat.data.db.dao.DbCargo
 import ru.javacat.data.db.dao.LocationsDao
 import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.dao.StaffDao
@@ -26,7 +28,8 @@ import ru.javacat.data.db.entities.DbVehicle
         DbStaff::class,
         DbVehicle::class,
         DbPoint::class,
-        DbLocation::class
+        DbLocation::class,
+        DbCargo::class
     ],
     version = 1, exportSchema = false
 )
@@ -36,4 +39,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val staffDao: StaffDao
     abstract val vehiclesDao: VehiclesDao
     abstract val locationsDao: LocationsDao
+    abstract val cargoDao: CargoDao
 }
