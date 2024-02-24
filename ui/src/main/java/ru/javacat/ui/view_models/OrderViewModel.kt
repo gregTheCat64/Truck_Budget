@@ -23,7 +23,7 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val customerRepository: CustomerRepository,
     private val locationRepository: LocationRepository,
-    private val cargoRepostiory: CargoRepository
+    private val cargoRepostiory: CargoRepository,
 ):ViewModel() {
     private val _points = MutableStateFlow<List<Point>?>(null)
     val points = _points.asStateFlow()
@@ -62,13 +62,13 @@ class OrderViewModel @Inject constructor(
 
     fun getCustomers(){
         viewModelScope.launch {
-            val result = customerRepository.getCustomers()
+            val result = customerRepository.getAll()
             _customers.emit(result)
         }
     }
     fun searchCustomers(search: String) {
         viewModelScope.launch {
-            val result = customerRepository.searchCustomers(search)
+            val result = customerRepository.search(search)
             _customers.emit(result)
         }
     }
@@ -112,21 +112,21 @@ class OrderViewModel @Inject constructor(
 
     fun getCargos(){
         viewModelScope.launch(Dispatchers.IO){
-            val result = cargoRepostiory.getCargos()
+            val result = cargoRepostiory.getAll()
             _cargo.emit(result)
         }
     }
 
     fun searchCargos(search: String) {
         viewModelScope.launch(Dispatchers.IO){
-            val result = cargoRepostiory.searchCargos(search)
+            val result = cargoRepostiory.search(search)
             _cargo.emit(result)
         }
     }
 
     fun insertNewCargo(cargo: Cargo){
         viewModelScope.launch(Dispatchers.IO){
-            cargoRepostiory.insertCargo(cargo)
+            cargoRepostiory.insert(cargo)
         }
     }
 

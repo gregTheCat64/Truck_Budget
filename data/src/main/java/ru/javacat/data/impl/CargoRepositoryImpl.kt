@@ -9,9 +9,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CargoRepository @Inject constructor(
+class CargoRepositoryImpl @Inject constructor(
     private val dao: CargoDao
 ): CargoRepository {
+    override suspend fun setItem(t: Cargo) {
+
+    }
 
     override suspend fun getAll(): List<Cargo> {
         return dbQuery { dao.getCargos().map { it.toCargoModel() } }

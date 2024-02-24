@@ -1,6 +1,7 @@
 package ru.javacat.domain.models
 
 data class Location(
-    val id: String,
-    val name: String
+    val id: Long? = null,
+    val name: String,
+    val positionId: Long = 0L,
 )

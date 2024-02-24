@@ -1,12 +1,9 @@
 package ru.javacat.domain.repo
 
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import ru.javacat.domain.models.Truck
-import ru.javacat.domain.models.Vehicle
 
-interface TrucksRepository {
-
-
-    suspend fun getAllTrucks(): List<Truck>
-
-    suspend fun insertTransport(truck: Truck)
+interface TrucksRepository: BaseCrud<Truck, String>{
+    val chosenTruck: StateFlow<Truck?>
 }

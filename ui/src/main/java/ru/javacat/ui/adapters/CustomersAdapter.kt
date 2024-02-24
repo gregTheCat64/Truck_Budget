@@ -22,7 +22,7 @@ class CustomersAdapter(
         private val binding = NameItemBinding.bind(view)
 
         fun bind(item: Customer){
-            binding.name.text = item.companyName
+            binding.name.text = item.name
             binding.root.setOnClickListener {
                 onCustomerListener.onCustomer(item)
             }

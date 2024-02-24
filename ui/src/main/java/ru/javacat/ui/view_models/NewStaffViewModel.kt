@@ -11,6 +11,6 @@ class NewStaffViewModel @Inject constructor(
     private val repository: StaffRepository
 ):ViewModel() {
     suspend fun insertNewStaff(staff: Staff){
-        repository.insertDriver(staff)
+        repository.insert(staff)
     }
 }

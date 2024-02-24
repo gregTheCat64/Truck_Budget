@@ -7,11 +7,12 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbStaff
+import ru.javacat.data.db.entities.DbTruck
 
 @Dao
 interface StaffDao {
     @Query("SELECT * FROM staff_table")
-    fun getAll(): Flow<List<DbStaff>>
+    fun getAll(): List<DbStaff>
 
     @Query("SELECT * FROM staff_table WHERE passportNumber =:id")
     suspend fun getById(id: String): DbStaff
@@ -20,6 +21,10 @@ interface StaffDao {
     suspend fun insert(
         staff: DbStaff
     )
+
+    @Query("SELECT * FROM staff_table " +
+            "WHERE fullName LIKE '%' || :search || '%'")
+    suspend fun searchStaff(search: String): List<DbStaff>
 
     @Update()
     suspend fun update(

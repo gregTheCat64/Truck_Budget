@@ -26,7 +26,7 @@ interface RoutesDao {
 
     @Transaction
     @Query("SELECT * FROM routes_table WHERE id =:id")
-    suspend fun getByRouteId(id: String): DbRouteWithOrders
+    suspend fun getByRouteId(id: Long): DbRouteWithOrders
 
     @Transaction
     @Query("SELECT * FROM orders_table WHERE id =:id")
@@ -35,7 +35,7 @@ interface RoutesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRoute(
         route: DbRoute
-    )
+    ): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(
@@ -54,7 +54,7 @@ interface RoutesDao {
     )
 
     @Query("DELETE FROM routes_table WHERE id =:id")
-    suspend fun removeRoute(id: String)
+    suspend fun removeRoute(id: Long)
 
     @Query("DELETE FROM orders_table WHERE id =:id")
     suspend fun removeOrder(id: String)

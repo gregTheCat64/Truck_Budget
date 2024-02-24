@@ -25,7 +25,6 @@ import ru.javacat.domain.models.Point
 import ru.javacat.ui.adapters.CargoAdapter
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.LocationAdapter
-import ru.javacat.ui.adapters.OnCargoListener
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.adapters.OnLocationListener
 import ru.javacat.ui.adapters.OnPointListener
@@ -48,11 +47,18 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
     private lateinit var locationAdapter: LocationAdapter
     private lateinit var cargoAdapter: CargoAdapter
 
+    private val itemParam = "item"
+    private val bundle = Bundle()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
+        val args = arguments
+        val routeId = args?.getLong("route_id")?:0L
+
+        binding.orderTitle.text = "Рейс №$routeId"
+
         initAdapters()
 
         addEditTextListeners()
@@ -65,14 +71,12 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
         viewModel.getCargos()
 
-
-
-
+            //Добавляем Поинт
         binding.addPointBtn.setOnClickListener {
             val place = binding.locationEditText.text.toString()
             if (place.isNotEmpty()){
-                val id = place.toBase64()
-                val newLocation = Location(id, place)
+                //val id = place.toBase64()
+                val newLocation = Location(0,place)
                 viewModel.insertNewLocation(newLocation)
 
                 addPoint(newLocation)
@@ -81,6 +85,7 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
             }
         }
 
+            //Добавляем Дату
         binding.arrivalDate.setOnClickListener {
             parentFragmentManager.showCalendar {
                 viewModel.setPointDate(it)
@@ -93,7 +98,6 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
                     binding.arrivalDate.setText(it.asDayAndMonthFully())
                 }
             }
-
         }
 
         lifecycleScope.launch {
@@ -132,6 +136,10 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
         binding.minusDayBtn.setOnClickListener {
             viewModel.decreaseDay()
+        }
+
+        binding.customerInputEditText.setOnClickListener {
+            addItemToRoute("CUSTOMER")
         }
 
 
@@ -174,12 +182,10 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
         })
         binding.locationsRecView.adapter = locationAdapter
 
-        cargoAdapter = CargoAdapter(object : OnCargoListener {
-            override fun onCargo(item: Cargo) {
-
+        cargoAdapter = CargoAdapter {
                 AndroidUtils.hideKeyboard(requireView())
             }
-        })
+
         binding.cargoRecView.adapter = cargoAdapter
     }
 
@@ -239,6 +245,11 @@ class OrderFragment:BaseFragment<FragmentOrderDetailsBinding>() {
 
             }
         })
+    }
+
+    private fun addItemToRoute(item: String){
+        bundle.putString(itemParam, item)
+        findNavController().navigate(R.id.chooseItemFragment, bundle)
     }
 
     private fun addPoint(location: Location){

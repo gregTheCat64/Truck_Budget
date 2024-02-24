@@ -4,17 +4,21 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.javacat.data.impl.CargoRepositoryImpl
 import ru.javacat.data.impl.CustomerRepositoryImpl
 import ru.javacat.data.impl.OrderRepositoryImpl
 import ru.javacat.data.impl.LocationRepositoryImpl
 import ru.javacat.data.impl.RouteRepositoryImpl
 import ru.javacat.data.impl.StaffRepositoryImpl
+import ru.javacat.data.impl.TrailersRepositoryImpl
 import ru.javacat.data.impl.TrucksRepositoryImpl
+import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.LocationRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.StaffRepository
+import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TrucksRepository
 import javax.inject.Singleton
 
@@ -40,9 +44,18 @@ interface RepositoryModule {
 
     @Singleton
     @Binds
-    fun bindsVehicleRepository(impl: TrucksRepositoryImpl): TrucksRepository
+    fun bindsTrucksRepository(impl: TrucksRepositoryImpl): TrucksRepository
+
+    @Singleton
+    @Binds
+    fun bindsTrailersRepository(impl: TrailersRepositoryImpl): TrailersRepository
+
 
     @Singleton
     @Binds
     fun bindsLocationRepository(impl: LocationRepositoryImpl): LocationRepository
+
+    @Singleton
+    @Binds
+    fun bindsCargoRepository(impl: CargoRepositoryImpl): CargoRepository
 }

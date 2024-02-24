@@ -9,10 +9,11 @@ import ru.javacat.domain.models.Location
 )
 data class DbLocation(
     @PrimaryKey()
-    val id: String,
-    val name: String
+    val id: Long?,
+    val name: String,
+    val positionId: Long
 ) {
     fun toLocationModel() = Location(
-        id, name
+        id, name, positionId
     )
 }

@@ -24,15 +24,15 @@ import ru.javacat.domain.models.Truck
 
 fun Route.toDb() = DbRoute(
     id,
-    startDate.toString(),
-    endDate.toString(),
+    startDate?.toString() ,
+    endDate?.toString(),
     driver?.id?:0,
     truck?.id?:0,
     trailer?.id?:0,
     prepayment,
     fuelUsedUp,
     fuelPrice,
-    routeExpenses,
+    routeSpending,
     routeDuration,
     driverSalary,
     moneyToPay,
@@ -85,15 +85,15 @@ fun Staff.toDb() = DbStaff(
 )
 
 fun Location.toDb() = DbLocation(
-    id,name
+    id, name, positionId
 )
 
 fun Customer.toDb() = DbCustomer(
-    id, companyName, atiNumber, companyPhone, formalAddress, postAddress, shortName
+    id, name,positionId, atiNumber, companyPhone, formalAddress, postAddress, shortName
 )
 
 fun Employee.toDb() = DbEmployee(
     id, customerId, name, phoneNumber, secondNumber, email, comment
 )
 
-fun Cargo.toDb() = DbCargo(id, positionId, name)
+fun Cargo.toDb() = DbCargo(id, name, positionId)

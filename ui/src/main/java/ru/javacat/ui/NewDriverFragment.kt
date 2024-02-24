@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Staff
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.utils.showCalendar
@@ -47,8 +52,19 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                 passWhere, driveLicenseNumber, address, phoneNumber
             )
 
-            viewModel.addDriver(newDriver)
-            findNavController().navigateUp()
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.insertNewDriver(newDriver)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loadState.collectLatest {
+                    if (it == LoadState.Success){
+                        findNavController().navigateUp()
+                    }
+                }
+            }
         }
     }
 }

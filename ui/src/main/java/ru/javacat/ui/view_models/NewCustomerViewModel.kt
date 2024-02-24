@@ -24,16 +24,16 @@ class NewCustomerViewModel @Inject constructor(
 
     fun saveNewCustomer(customer: Customer){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertCustomer(customer)
+            repository.insert(customer)
         }
     }
 
     fun getEmployeeListByCustomerId(customerId: String){
         Log.i("CustomerVM","getEmployee")
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getEmployeesByCustomerId(customerId)
-            _employees.emit(result)
-            Log.i("CusomerVM", "$result")
+            //val result = repository.ge(customerId)
+            //_employees.emit(result)
+            //Log.i("CusomerVM", "$result")
         }
     }
 }

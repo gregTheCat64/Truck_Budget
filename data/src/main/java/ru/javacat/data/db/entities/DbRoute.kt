@@ -8,12 +8,12 @@ import ru.javacat.domain.models.Vehicle
 
 @Entity(tableName = "routes_table")
 data class DbRoute (
-    @PrimaryKey
-    val id: String,
-    val startDate: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long?,
+    val startDate: String?,
     val endDate: String?,
-    val driverId: Int,
-    val truckId: Int,
+    val driverId: Int?,
+    val truckId: Int?,
     val trailerId: Int?,
     //val orderList: List<Order>,
     val prepayment: Int?,

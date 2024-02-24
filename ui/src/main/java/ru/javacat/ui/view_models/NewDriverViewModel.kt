@@ -4,28 +4,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Staff
 import ru.javacat.domain.repo.StaffRepository
-import java.time.LocalDate
+import ru.javacat.ui.LoadState
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class NewDriverViewModel @Inject constructor(
     private val repository: StaffRepository
 ):ViewModel() {
 
-     fun addDriver(driver: Staff){
+    private val _loadState = MutableSharedFlow<LoadState>()
+    val loadState = _loadState.asSharedFlow()
 
-        //val id = passportSerial.toString() + passportNumber.toString()
+     suspend fun insertNewDriver(driver: Staff){
+        _loadState.emit(LoadState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.insertDriver(driver)
-            }catch (e: Error){
-                e.printStackTrace()
+                repository.insert(driver)
+                _loadState.emit(LoadState.Success)
+            }catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
             }
-
         }
 
     }

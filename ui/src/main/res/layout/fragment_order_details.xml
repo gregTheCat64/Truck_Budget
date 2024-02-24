@@ -15,10 +15,19 @@
         android:orientation="vertical"
         >
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveBtn"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сохранить"
+            />
+
     <TextView
+        android:id="@+id/orderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Рейс от 16 января"
+
         android:layout_margin="16dp"
         style="@style/TextAppearance.Material3.TitleLarge"
         />
@@ -30,6 +39,7 @@
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
             app:endIconDrawable="@drawable/baseline_remove_circle_outline_24"
+
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             >
@@ -37,28 +47,50 @@
                 android:id="@+id/customer_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="Заказчик"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/newCustomerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textStyle="bold"
+                    android:text="Новый"/>
+
+            </androidx.cardview.widget.CardView>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/customersRecView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:itemCount="5"
+                tools:itemCount="3"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/name_item" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/newCustomerBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:text="Новый клиент"
-            />
+
+
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

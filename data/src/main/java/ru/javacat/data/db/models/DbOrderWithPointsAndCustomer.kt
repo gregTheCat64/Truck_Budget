@@ -8,7 +8,8 @@ import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
-import ru.javacat.data.db.entities.DbVehicle
+import ru.javacat.data.db.entities.DbTrailer
+import ru.javacat.data.db.entities.DbTruck
 import ru.javacat.domain.models.Order
 
 data class DbOrderWithPointsAndCustomer (
@@ -44,20 +45,20 @@ data class DbOrderWithPointsAndCustomer (
         parentColumn = "truckId",
         entityColumn = "id",
     )
-    val truck: DbVehicle,
+    val truck: DbTruck,
 
     @Relation(
         parentColumn = "trailerId",
         entityColumn = "id",
     )
-    val trailer: DbVehicle,
+    val trailer: DbTrailer,
 
 
     ) {
     fun toOrderModel(): Order {
         return Order(
             id = order.id,
-            routeId = route.id,
+            routeId = route.id?:0L,
             points = points.map { it.toPointModel() },
             driverId = driver.id,
             truckId = truck.id,

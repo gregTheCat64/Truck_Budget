@@ -7,9 +7,10 @@ import ru.javacat.domain.models.Employee
 
 @Entity(tableName = "customers_table")
 data class DbCustomer(
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long?,
     val companyName: String,
+    val positionId: Long,
     val atiNumber: Int?,
     val companyPhone: String?,
     val formalAddress: String?,
@@ -17,6 +18,6 @@ data class DbCustomer(
     val shortName: String?
 ) {
     fun toCustomerModel() = Customer(
-        id, companyName, atiNumber, companyPhone,formalAddress, postAddress, shortName
+        id, companyName, atiNumber, companyPhone,formalAddress, postAddress, shortName, positionId
     )
 }

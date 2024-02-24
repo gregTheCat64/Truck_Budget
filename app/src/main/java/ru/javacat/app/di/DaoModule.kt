@@ -10,7 +10,8 @@ import ru.javacat.data.db.dao.CustomersDao
 import ru.javacat.data.db.dao.LocationsDao
 import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.dao.StaffDao
-import ru.javacat.data.db.dao.VehiclesDao
+import ru.javacat.data.db.dao.TrailersDao
+import ru.javacat.data.db.dao.TrucksDao
 import javax.inject.Singleton
 
 @Module
@@ -30,7 +31,11 @@ object DaoModule {
 
     @Provides
     @Singleton
-    fun providesVehiclesDao(db: AppDb): VehiclesDao = db.vehiclesDao
+    fun providesTrucksDao(db: AppDb): TrucksDao = db.trucksDao
+
+    @Provides
+    @Singleton
+    fun providesTrailersDao(db: AppDb): TrailersDao = db.trailersDao
 
     @Provides
     @Singleton

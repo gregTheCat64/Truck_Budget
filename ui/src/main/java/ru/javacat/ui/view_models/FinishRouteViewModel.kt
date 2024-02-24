@@ -1,7 +1,6 @@
 package ru.javacat.ui.view_models
 
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.OrderCard
 import ru.javacat.domain.repo.RouteRepository
 import java.time.LocalDate
 import javax.inject.Inject
@@ -14,7 +13,7 @@ class FinishRouteViewModel @Inject constructor(
     private val route = repository.editedRoute
 
     suspend fun updateRoute(
-        id: String,
+        id: Long,
         startDate: LocalDate,
         endDate: LocalDate,
         orderList: List<Order>,
@@ -34,7 +33,7 @@ class FinishRouteViewModel @Inject constructor(
             orderList = orderList,
             fuelUsedUp = fuelUsedUp,
             fuelPrice = fuelPrice,
-            routeExpenses = routeExpenses,
+            routeSpending = routeExpenses,
             routeDuration = routeDuration,
             driverSalary = driverSalary,
             moneyToPay = moneyToPay,

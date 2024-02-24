@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class Order(
     val id: String,
-    val routeId: String,
+    val routeId: Long,
     val points: List<Point>,
     val price: Int,
     val customer: Customer?,
@@ -23,5 +23,5 @@ data class Order(
 )
 
 enum class OrderStatus(){
-    IN_PROGRESS, DOCS_SHIPPED, DOCS_RECEIVED, WAITING_FOR_PAYMENT, PAID
+    IN_PROGRESS, WAITING_FOR_PAYMENT, PAID
 }

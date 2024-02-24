@@ -22,6 +22,10 @@ interface TrucksDao {
         dbVehicle: DbTruck
     )
 
+    @Query("SELECT * FROM trucks_table " +
+            "WHERE regNumber LIKE '%' || :search || '%'")
+    suspend fun searchTrucks(search: String): List<DbTruck>
+
     @Update()
     suspend fun update(
         dbVehicle: DbTruck

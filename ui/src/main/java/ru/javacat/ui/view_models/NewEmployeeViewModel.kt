@@ -16,7 +16,7 @@ class NewEmployeeViewModel @Inject constructor(
 
     fun saveNewEmployee(employee: Employee){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertEmployee(employee)
+            //repository.in(employee)
         }
     }
 }

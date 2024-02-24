@@ -16,6 +16,7 @@ import ru.javacat.common.utils.toBase64
 import ru.javacat.domain.models.Customer
 import ru.javacat.ui.adapters.EmployeesAdapter
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
+import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.view_models.NewCustomerViewModel
 
 @AndroidEntryPoint
@@ -25,16 +26,16 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
     private val viewModel: NewCustomerViewModel by viewModels()
     private lateinit var adapter: EmployeesAdapter
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewCustomerBinding
-        get() = {inflater, container->
-            FragmentNewCustomerBinding.inflate(inflater, container,false)
+        get() = { inflater, container ->
+            FragmentNewCustomerBinding.inflate(inflater, container, false)
         }
 
-    private var id: String = ""
+    private var id: Long = 0L
     private var companyName: String = ""
     private var atiNumber: Int? = null
-    private var telNumber: String? =  null
-    private var formalAddress:String? = null
-    private var postAddress:String? = null
+    private var telNumber: String? = null
+    private var formalAddress: String? = null
+    private var postAddress: String? = null
     private var shortName: String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,13 +56,13 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             findNavController().navigateUp()
         }
 
-        binding.companyName.addTextChangedListener(object : TextWatcher{
+        binding.companyName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (!p0.isNullOrBlank()){
+                if (!p0.isNullOrBlank()) {
                     binding.companyNameLayout.error = null
                 }
             }
@@ -76,33 +77,33 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             saveCustomer()
 
             val bundle = Bundle()
-            if (id.isNotEmpty()){
-                bundle.putString("id", id)
-                findNavController().navigate(R.id.newEmployeeFragment, bundle)
-            }
+//            if (id.isNotEmpty()){
+//                bundle.putString("id", id)
+//                findNavController().navigate(R.id.newEmployeeFragment, bundle)
+//            }
         }
     }
 
 
-    private fun getFieldsData(){
+    private fun getFieldsData() {
         val requestField = "Обязательное поле"
 
         atiNumber = binding.atiNumber.text?.let {
             if (it.isBlank()) null else it.toString().toInt()
         }
 
-        if (binding.companyName.text.isNullOrEmpty()){
+        if (binding.companyName.text.isNullOrEmpty()) {
             binding.companyNameLayout.error = requestField
             binding.companyName.requestFocus()
             return
         } else {
             companyName = formatName(binding.companyName.text.toString())
 
-            id = if (atiNumber != null) {
-                atiNumber.toString()
-            } else {
-                companyName.toBase64()
-            }
+//            id = if (atiNumber != null) {
+//                atiNumber.toString()
+//            } else {
+//                companyName.toBase64()
+//            }
         }
 
         telNumber = binding.phoneNumber.text?.let {
@@ -118,17 +119,17 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         }
 
 
-        if (binding.shortName.text.isNullOrEmpty()){
+        if (binding.shortName.text.isNullOrEmpty()) {
             shortName = toShortName(companyName)
         } else shortName = binding.shortName.text.toString()
     }
 
-    private fun saveCustomer(){
-        if (id.isNotEmpty()){
+    private fun saveCustomer() {
+        if (atiNumber != 0) {
             val newCustomer = Customer(
                 id, companyName, atiNumber, telNumber, formalAddress, postAddress, shortName
             )
-            //AndroidUtils.hideKeyboard(requireView())
+            AndroidUtils.hideKeyboard(requireView())
             viewModel.saveNewCustomer(newCustomer)
         }
     }
@@ -137,7 +138,9 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         return str
             .replace("Ооо", "ООО")
             .replace("Ип", "ИП")
+            .trim()
     }
+
     private fun toShortName(str: String): String {
         return str
             .replace("ООО", "")
@@ -146,9 +149,9 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             .replace("Ип", "")
             .replace("\"", "")
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (id.isNotEmpty()) viewModel.getEmployeeListByCustomerId(id)
-    }
 }
+
+//    override fun onResume() {
+//        super.onResume()
+//        //if (id.isNotEmpty()) viewModel.getEmployeeListByCustomerId(id)
+//    }

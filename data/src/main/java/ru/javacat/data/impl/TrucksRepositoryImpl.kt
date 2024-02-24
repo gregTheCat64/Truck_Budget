@@ -1,10 +1,15 @@
 package ru.javacat.data.impl
 
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.Truck
-import ru.javacat.domain.models.Vehicle
 import ru.javacat.domain.repo.TrucksRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,13 +17,25 @@ import javax.inject.Singleton
 @Singleton
 class TrucksRepositoryImpl @Inject constructor(
     val dao: TrucksDao
-): TrucksRepository {
+) : TrucksRepository {
 
-    override suspend fun getAllTrucks(): List<Truck> {
-        return dbQuery {dao.getAll().map { it.toTruck() }  }
+    private val _chosenTruck = MutableStateFlow<Truck?>(null)
+    override val chosenTruck: StateFlow<Truck?>
+        get() = _chosenTruck.asStateFlow()
+
+    override suspend fun getAll(): List<Truck> {
+        return dbQuery { dao.getAll().map { it.toTruck() } }
     }
 
-    override suspend fun insertTransport(truck: Truck) {
-         dbQuery { dao.insert(truck.toDb()) }
+    override suspend fun search(s: String): List<Truck> {
+        return dbQuery { dao.searchTrucks(s).map { it.toTruck() } }
+    }
+
+    override suspend fun insert(t: Truck) {
+        dbQuery { dao.insert(t.toDb()) }
+    }
+
+    override suspend fun setItem(t: Truck) {
+        _chosenTruck.emit(t)
     }
 }

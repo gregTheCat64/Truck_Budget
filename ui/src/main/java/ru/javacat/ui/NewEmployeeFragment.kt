@@ -109,10 +109,10 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
     
     private fun saveEmployee(){
         if (name.isNotEmpty() && phoneNumber.isNotEmpty() && customerId.isNotEmpty()){
-            val newEmployee = Employee(
-                0 , customerId, name, phoneNumber, secondPhoneNumber, email, comment
-            )
-            viewModel.saveNewEmployee(newEmployee)
+//            val newEmployee = Employee(
+//                0 , customerId, name, phoneNumber, secondPhoneNumber, email, comment
+//            )
+//            viewModel.saveNewEmployee(newEmployee)
             findNavController().navigateUp()
         } else {
             Toast.makeText(requireContext(), "Заполните необходимые поля", Toast.LENGTH_SHORT).show()

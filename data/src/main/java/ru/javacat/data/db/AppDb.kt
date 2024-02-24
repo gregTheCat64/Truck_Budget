@@ -8,7 +8,8 @@ import ru.javacat.data.db.dao.DbCargo
 import ru.javacat.data.db.dao.LocationsDao
 import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.dao.StaffDao
-import ru.javacat.data.db.dao.VehiclesDao
+import ru.javacat.data.db.dao.TrailersDao
+import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.data.db.entities.DbLocation
@@ -16,7 +17,8 @@ import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
-import ru.javacat.data.db.entities.DbVehicle
+import ru.javacat.data.db.entities.DbTrailer
+import ru.javacat.data.db.entities.DbTruck
 
 
 @Database(
@@ -26,7 +28,8 @@ import ru.javacat.data.db.entities.DbVehicle
         DbEmployee::class,
         DbOrder::class,
         DbStaff::class,
-        DbVehicle::class,
+        DbTruck::class,
+        DbTrailer::class,
         DbPoint::class,
         DbLocation::class,
         DbCargo::class
@@ -37,7 +40,8 @@ abstract class AppDb : RoomDatabase() {
     abstract val routesDao: RoutesDao
     abstract val customersDao: CustomersDao
     abstract val staffDao: StaffDao
-    abstract val vehiclesDao: VehiclesDao
+    abstract val trucksDao: TrucksDao
+    abstract val trailersDao: TrailersDao
     abstract val locationsDao: LocationsDao
     abstract val cargoDao: CargoDao
 }

@@ -30,7 +30,7 @@ data class DbOrder(
     @PrimaryKey
     val id: String,
     @ColumnInfo(index = true)
-    val routeId: String,
+    val routeId: Long,
     //val points: List<Point>,
     val driverId: Int,
     val truckId: Int,

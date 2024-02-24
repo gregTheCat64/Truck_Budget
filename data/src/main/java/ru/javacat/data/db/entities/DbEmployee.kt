@@ -17,7 +17,7 @@ import ru.javacat.domain.models.Employee
     )
 data class DbEmployee(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     @ColumnInfo(index = true)
     val customerId: String,
     val name: String,
@@ -27,6 +27,5 @@ data class DbEmployee(
     val comment: String?
 ) {
     fun toEmployeeModel() = Employee(
-        id, customerId,name,phoneNumber,secondNumber,email,comment)
-
+        id,  customerId,name,phoneNumber,secondNumber,email,comment)
 }

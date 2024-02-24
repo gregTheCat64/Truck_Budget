@@ -9,11 +9,11 @@ import ru.javacat.domain.models.Cargo
 )
 data class DbCargo(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val positionId: Int,
-    val name: String
+    val id: Long?,
+    val name: String,
+    val positionId: Long,
 ) {
     fun toCargoModel() = Cargo(
-        id, positionId, name
+        id, name, positionId
     )
 }

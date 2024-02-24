@@ -15,7 +15,7 @@ import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val draftOrder = Order("","", emptyList(), 0, null,
+val draftOrder = Order("",0L, emptyList(), 0, null,
     0,0,0,0,0,
     null,null,null, null, null,
     null, OrderStatus.IN_PROGRESS)

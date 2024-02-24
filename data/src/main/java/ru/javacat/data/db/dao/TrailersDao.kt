@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import ru.javacat.data.db.entities.DbTrailer
+import ru.javacat.data.db.entities.DbTruck
 
 @Dao
 interface TrailersDao {
@@ -20,6 +21,10 @@ interface TrailersDao {
     suspend fun insert(
         dbVehicle: DbTrailer
     )
+
+    @Query("SELECT * FROM trailers_table " +
+            "WHERE regNumber LIKE '%' || :search || '%'")
+    suspend fun searchTrailers(search: String): List<DbTrailer>
 
     @Update()
     suspend fun update(
