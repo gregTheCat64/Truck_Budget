@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,21 +17,42 @@ class RouteViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
 
 ):ViewModel() {
+
+    private val _loadState = MutableSharedFlow<LoadState>()
+    val loadState = _loadState.asSharedFlow()
+
     val editedRoute = routeRepository.editedRoute
 
-    private var prepay: Int? = null
-    private var routeSpending: Int? = null
-    private var routeDuration: Int? = null
-    private var fuelUsedUp: Int? = null
-    private var fuelPrice: Int? = null
+    val allRoutes = routeRepository.allRoutes
+
+    private var _prepay: Int? = null
+    private var _routeSpending: Int? = null
+    private var _routeDuration: Int? = null
+    private var _fuelUsedUp: Int? = null
+    private var _fuelPrice: Int? = null
 
 
-    fun saveRoute(){
+
+    fun saveRoute(isFinished: Boolean){
         viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
            updateEditedRoute()
-            routeRepository.insertRoute(route = this@RouteViewModel.editedRoute.value)
+            try {
+                routeRepository.insertRoute(route = this@RouteViewModel.editedRoute.value)
+                if (isFinished){
+                    _loadState.emit(LoadState.Success.GoBack)
+                } else {
+                    _loadState.emit(LoadState.Success.GoForward)
+                }
+
+
+            }catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+
         }
     }
+
 
     fun updateRoute() {
         viewModelScope.launch(Dispatchers.IO){
@@ -38,19 +62,19 @@ class RouteViewModel @Inject constructor(
 
     private suspend fun updateEditedRoute(){
         routeRepository.updateRoute(editedRoute.value.copy(
-            prepayment = prepay,
-            routeSpending = routeSpending,
-            routeDuration = routeDuration,
-            fuelUsedUp = fuelUsedUp,
-            fuelPrice = fuelPrice
+            prepayment = _prepay,
+            routeSpending = _routeSpending,
+            routeDuration = _routeDuration,
+            fuelUsedUp = _fuelUsedUp,
+            fuelPrice = _fuelPrice
         ))
     }
 
     fun setFieldsData(prepayIn: Int?, routeSpendingIn: Int?, routeDurationIn: Int?, fuelUsedUpIn: Int?, fuelPriceIn: Int?){
-        prepay = prepayIn
-        routeSpending = routeSpendingIn
-        routeDuration = routeDurationIn
-        fuelUsedUp = fuelUsedUpIn
-        fuelPrice = fuelPriceIn
+        _prepay = prepayIn
+        _routeSpending = routeSpendingIn
+        _routeDuration = routeDurationIn
+        _fuelUsedUp = fuelUsedUpIn
+        _fuelPrice = fuelPriceIn
     }
 }

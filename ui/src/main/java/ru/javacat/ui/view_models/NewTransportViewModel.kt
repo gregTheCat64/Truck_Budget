@@ -28,7 +28,7 @@ class NewTransportViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 trucksRepository.insert(truck)
-                _loadState.emit(LoadState.Success)
+                _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
@@ -41,7 +41,7 @@ class NewTransportViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 trailersRepository.insert(trailer)
-                _loadState.emit(LoadState.Success)
+                _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

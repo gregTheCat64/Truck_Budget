@@ -30,7 +30,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             FragmentNewCustomerBinding.inflate(inflater, container, false)
         }
 
-    private var id: Long = 0L
+    private var id: Int = 0
     private var companyName: String = ""
     private var atiNumber: Int? = null
     private var telNumber: String? = null

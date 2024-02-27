@@ -35,16 +35,12 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
-            Log.i("MyTag", "clicked")
             viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    //viewModel.clearEditedRoute()
-                    viewModel.insertNewRoute(Route())
-                }
+                viewModel.getRouteAndUpdateEditedRoute(0L)
             }
+            //findNavController().navigate(R.id.routeFragment)
         }
 
         //Adapter
@@ -74,7 +70,8 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.loadState.collectLatest {
-                        if (it == LoadState.Success) {
+                        Log.i("routeListFrag", "state: ${it.toString()}")
+                        if (it == LoadState.Success.GoForward) {
                             findNavController().navigate(R.id.routeFragment)
                         }
                     }

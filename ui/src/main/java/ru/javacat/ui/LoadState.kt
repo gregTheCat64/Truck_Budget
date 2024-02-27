@@ -3,7 +3,11 @@ package ru.javacat.ui
 sealed interface LoadState {
     object Loading: LoadState
 
-    object Success: LoadState
+    sealed interface Success: LoadState{
+        object GoForward: Success
+
+        object GoBack: Success
+    }
 
     object Idle: LoadState
 

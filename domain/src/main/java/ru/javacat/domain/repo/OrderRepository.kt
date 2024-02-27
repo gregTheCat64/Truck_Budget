@@ -17,6 +17,8 @@ interface OrderRepository {
 
     suspend fun insertOrder(order: Order)
 
+    suspend fun clearCurrentOrder()
+
     suspend fun getOrderById(orderId: String): Order
 
     suspend fun deleteOrder(order: Order)

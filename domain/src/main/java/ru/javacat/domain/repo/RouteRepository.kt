@@ -7,10 +7,11 @@ import ru.javacat.domain.models.Route
 interface RouteRepository {
     val allRoutes: Flow<List<Route?>>
 
+    val lastRouteId: Long?
+
     val editedRoute: StateFlow<Route>
 
-
-    suspend fun getRoute(id: Long): Route
+    suspend fun getRoute(id: Long): Route?
     suspend fun updateRoute(newRoute: Route)
     suspend fun removeRoute(id: Long)
 

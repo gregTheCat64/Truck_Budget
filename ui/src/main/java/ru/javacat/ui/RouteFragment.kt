@@ -11,7 +11,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
+import ru.javacat.ui.adapters.OrdersAdapter
 import ru.javacat.ui.databinding.FragmentRouteBinding
 import ru.javacat.ui.view_models.RouteViewModel
 
@@ -33,6 +35,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
     private val itemParam = "item"
     private val routeIdParam = "route_id"
     private val bundle = Bundle()
+    private var currentId = 0L
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,11 +44,9 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
-                    binding.titleRoute.text = if (it.id != null) {
+                    binding.titleRoute.text =
                         "Рейс № ${it.id}"
-                    } else {
-                        "Новый рейс"
-                    }
+
                     binding.addDriverEditText.setText(it.driver?.fullName)
                     binding.addTruckEditText.setText(it.truck?.regNumber)
                     binding.addTrailerEditText.setText(it.trailer?.regNumber)
@@ -58,13 +59,25 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
             }
         }
 
+        //Адаптер заказов:
+        val adapter = OrdersAdapter()
+        binding.ordersList.adapter = adapter
+        viewLifecycleOwner.lifecycleScope.launch {
+           viewModel.editedRoute.collectLatest {
+               it.orderList.let {orders->
+                    adapter.submitList(orders)
+               }
+           }
+        }
+
 
         //Новый заказ
         binding.addOrderBtn.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putLong(routeIdParam, viewModel.editedRoute.value.id?:0)
-
-            findNavController().navigate(R.id.action_routeFragment_to_newOrderFragment, bundle)
+            getFieldsData()
+            viewModel.saveRoute(false)
+            //val bundle = Bundle()
+            //bundle.putLong(routeIdParam, viewModel.editedRoute.value.id?:0)
+            //findNavController().navigate(R.id.action_routeFragment_to_newOrderFragment)
         }
 
         //Добавляем водителя
@@ -85,9 +98,22 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
         //Сохраняем рейс
         binding.saveBtn.setOnClickListener {
                 getFieldsData()
-                viewModel.saveRoute()
-                findNavController().navigateUp()
+                viewModel.saveRoute(true)
+                //findNavController().navigateUp()
             }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadState.collectLatest {
+                when (it) {
+                    LoadState.Success.GoForward -> findNavController().navigate(R.id.orderDetailsFragment)
+                    LoadState.Success.GoBack -> findNavController().navigateUp()
+                    else -> {}
+                }
+
+
+            }
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -98,6 +124,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
         bundle.putString(itemParam, item)
         findNavController().navigate(R.id.chooseItemFragment, bundle)
     }
+
 
     private fun updateEditedRoute() {
         viewModel.updateRoute()

@@ -16,9 +16,81 @@
             style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:text="Рейс " />
+
+        <TextView
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Подвижной состав" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/addTruckEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Тягач" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/addTrailerEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Прицеп" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addDriverEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="Водитель" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include layout="@layout/horizon_line" />
 
         <TextView
             style="@style/TextAppearance.Material3.TitleLarge"
@@ -29,10 +101,12 @@
             android:text="Заявки" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ordersList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:itemCount="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
             tools:listitem="@layout/order_item" />
 
         <com.google.android.material.button.MaterialButton
@@ -40,72 +114,15 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="8dp"
-            android:text="Добавить"
+            android:layout_gravity="center"
+            android:text="Добавить заявку"
             android:visibility="visible"
 
             />
 
         <include layout="@layout/horizon_line" />
 
-        <TextView
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:text="Подвижной состав" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTruckEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="Добавьте тягач" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTrailerEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="Добавьте прицеп" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addDriverEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="Добавьте водителя" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <include layout="@layout/horizon_line" />
 
         <TextView
             style="@style/TextAppearance.Material3.TitleLarge"
@@ -232,19 +249,27 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fuelCostBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_gravity="end"
+                android:text="Далее"/>
+
             <TextView
+                android:id="@+id/fuelCost"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginStart="16dp"
+                android:visibility="gone"
                 android:text="40000 руб." />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
                 android:text="Суточные" />
 
@@ -259,13 +284,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp">
-
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/routeDaysCount"
+                        android:id="@+id/oneDayCost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:hint="В рейсе, дней" />
+                        android:hint="Цена за день, руб." />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -273,25 +298,34 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp">
-
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/oneDayCost"
+                        android:id="@+id/routeDaysCount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:hint="Цена за день, руб." />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:hint="В рейсе, дней" />
 
+                </com.google.android.material.textfield.TextInputLayout>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/calculateBtn"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Рассчитать"
+                />
             <TextView
+                android:id="@+id/daysMoney"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="end"
+                android:visibility="gone"
                 android:text="5000 руб." />
 
             <androidx.appcompat.widget.LinearLayoutCompat

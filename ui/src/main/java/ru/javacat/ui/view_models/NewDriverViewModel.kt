@@ -25,7 +25,7 @@ class NewDriverViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.insert(driver)
-                _loadState.emit(LoadState.Success)
+                _loadState.emit(LoadState.Success.GoBack)
             }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

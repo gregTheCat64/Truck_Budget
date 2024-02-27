@@ -5,30 +5,49 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
+import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Point
+import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.LocationRepository
+import ru.javacat.domain.repo.OrderRepository
+import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.ui.LoadState
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
+    private val routeRepository: RouteRepository,
     private val customerRepository: CustomerRepository,
     private val locationRepository: LocationRepository,
     private val cargoRepostiory: CargoRepository,
+    private val orderRepository: OrderRepository
 ):ViewModel() {
-    private val _points = MutableStateFlow<List<Point>?>(null)
-    val points = _points.asStateFlow()
 
-    private val pointList = mutableListOf<Point>()
+    val editedOrder = orderRepository.editedOrder
+
+    val editedRoute = routeRepository.editedRoute
+
+    private val _loadState = MutableSharedFlow<LoadState>()
+    val loadState = _loadState.asSharedFlow()
+
+//    private val _points = MutableStateFlow<List<Point>?>(null)
+//    val points = _points.asStateFlow()
+
+    val pointList = mutableListOf<Point>()
+
+   var orderList = mutableListOf<Order>()
 
     private val _customers = MutableStateFlow<List<Customer>?>(null)
     val customers = _customers.asStateFlow()
@@ -41,6 +60,21 @@ class OrderViewModel @Inject constructor(
 
     private val _pointDate = MutableStateFlow<LocalDate>(LocalDate.now())
     val pointDate: StateFlow<LocalDate> = _pointDate
+
+    fun updateEditedRoute(order: Order){
+        orderList.add(order)
+        viewModelScope.launch(){
+            routeRepository.updateRoute(editedRoute.value.copy(
+                orderList = orderList.toList()
+            ))
+
+            Log.i("OrderVM", "orderList size: ${editedRoute.value.orderList.size}")
+        }
+    }
+
+    fun setOrderList(){
+        orderList = editedRoute.value.orderList.toMutableList()
+    }
 
     fun setPointDate(localDate: LocalDate){
         viewModelScope.launch {
@@ -72,19 +106,25 @@ class OrderViewModel @Inject constructor(
             _customers.emit(result)
         }
     }
+    fun setCustomer(t: Customer){
+        viewModelScope.launch {
+            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
+        }
+    }
 
     fun addPoint(point: Point) {
         pointList.add(point)
         viewModelScope.launch {
-            _points.emit(pointList.toList())
+            Log.i("OrderVM", "points: $pointList")
+            orderRepository.updateOrder( editedOrder.value.copy(points = pointList.toList()))
         }
-        Log.i("MYTAG", "points: ${points.value}")
     }
 
     fun removePoint(point: Point) {
         pointList.remove(point)
         viewModelScope.launch {
-            _points.emit(pointList.toList())
+            orderRepository.updateOrder(editedOrder.value.copy(points = pointList.toList()))
+            //_points.emit(pointList.toList())
         }
     }
 
@@ -129,5 +169,21 @@ class OrderViewModel @Inject constructor(
             cargoRepostiory.insert(cargo)
         }
     }
+
+    fun saveOrder(order: Order){
+        viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
+            try {
+                val result = orderRepository.insertOrder(order)
+                updateEditedRoute(order)
+                orderRepository.clearCurrentOrder()
+                //routeRepository.insertRoute(editedRoute.value)
+                _loadState.emit(LoadState.Success.GoBack)
+            } catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
 
 }

@@ -1,7 +1,7 @@
 package ru.javacat.domain.models
 
 data class Customer (
-    val id: Long? = null,
+    val id: Int? = null,
     val name: String,
     val atiNumber: Int? = null,
     val companyPhone: String? = null,

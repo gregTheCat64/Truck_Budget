@@ -1,5 +1,6 @@
 package ru.javacat.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,9 +35,11 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun updateOrder(newOrder: Order) {
         _editedOrder.emit(newOrder)
+        Log.i("orderRepo", "editedOrder = $editedOrder")
     }
 
     override suspend fun insertOrder(order: Order) {
+        Log.i("orderRepo", "order: $order")
         dbQuery { routesDao.insertOrder(order.toDb(), order.points.map { it.toDb(order) }) }
     }
 
@@ -47,5 +50,9 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun deleteOrder(order: Order) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun clearCurrentOrder() {
+        _editedOrder.emit(draftOrder)
     }
 }

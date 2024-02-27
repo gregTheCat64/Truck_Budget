@@ -8,7 +8,7 @@ import ru.javacat.domain.models.Employee
 @Entity(tableName = "customers_table")
 data class DbCustomer(
     @PrimaryKey(autoGenerate = true)
-    val id: Long?,
+    val id: Int?,
     val companyName: String,
     val positionId: Long,
     val atiNumber: Int?,

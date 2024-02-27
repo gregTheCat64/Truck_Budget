@@ -24,7 +24,7 @@ data class DbOrderWithPointsAndCustomer (
 
     @Relation(
         parentColumn = "customerId",
-        entityColumn = "atiNumber",
+        entityColumn = "id",
         entity = DbCustomer::class
     )
     val customer: DbCustomer,
@@ -51,7 +51,7 @@ data class DbOrderWithPointsAndCustomer (
         parentColumn = "trailerId",
         entityColumn = "id",
     )
-    val trailer: DbTrailer,
+    val trailer: DbTrailer?,
 
 
     ) {
@@ -62,7 +62,7 @@ data class DbOrderWithPointsAndCustomer (
             points = points.map { it.toPointModel() },
             driverId = driver.id,
             truckId = truck.id,
-            trailerId = trailer.id,
+            trailerId = trailer?.id?:0,
             price = order.price,
             customer = customer.toCustomerModel(),
             cargoWeight = order.cargoWeight?:0,

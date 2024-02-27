@@ -60,7 +60,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it == LoadState.Success){
+                    if (it == LoadState.Success.GoBack){
                         findNavController().navigateUp()
                     }
                 }

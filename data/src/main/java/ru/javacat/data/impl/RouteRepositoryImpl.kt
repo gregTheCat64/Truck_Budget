@@ -32,11 +32,14 @@ class RouteRepositoryImpl @Inject constructor(
     override val allRoutes: Flow<List<Route?>>
         get() = routesDao.getAllRoutes().map { list -> list.map { it.toRouteModel() } }
 
+    override val lastRouteId: Long?
+        get() = routesDao.getLastRoute()?.route?.id
+
     private val _editedRoute = MutableStateFlow<Route>(draftRoute)
     override val editedRoute: StateFlow<Route>
         get() = _editedRoute.asStateFlow()
 
-    override suspend fun getRoute(id: Long): Route = routesDao.getByRouteId(id).toRouteModel()
+    override suspend fun getRoute(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
     override suspend fun updateRoute(newRoute: Route) {
         Log.i("RouteRepo", "new Route: ${newRoute}")
@@ -52,7 +55,7 @@ class RouteRepositoryImpl @Inject constructor(
     override suspend fun insertRoute(route: Route): Long {
         println("inserting in repo $route")
         val result = dbQuery { routesDao.insertRoute(route.toDb()) }
-        _editedRoute.emit(Route(id = result))
+        //_editedRoute.emit(route)
         return result
 
     }

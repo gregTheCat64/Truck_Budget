@@ -54,9 +54,9 @@ fun Order.toDb() = DbOrder(
     cargoName,
     extraConditions,
     daysToPay,
-    paymentDeadline.toString(),
+    paymentDeadline?.toString(),
     sentDocsNumber,
-    docsReceived.toString(),
+    docsReceived?.toString(),
     status?:OrderStatus.IN_PROGRESS
 )
 
