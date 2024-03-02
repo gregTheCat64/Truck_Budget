@@ -42,7 +42,6 @@ class RouteRepositoryImpl @Inject constructor(
     override suspend fun getRoute(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
     override suspend fun updateRoute(newRoute: Route) {
-        Log.i("RouteRepo", "new Route: ${newRoute}")
         _editedRoute.emit(newRoute)
         Log.i("RouteRepo", "edited Route: ${editedRoute.value}")
     }
@@ -51,14 +50,10 @@ class RouteRepositoryImpl @Inject constructor(
         dbQuery { routesDao.removeRoute(id) }
     }
 
-
     override suspend fun insertRoute(route: Route): Long {
         println("inserting in repo $route")
         val result = dbQuery { routesDao.insertRoute(route.toDb()) }
         //_editedRoute.emit(route)
         return result
-
     }
-
-
 }

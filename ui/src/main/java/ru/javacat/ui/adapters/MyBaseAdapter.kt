@@ -61,5 +61,4 @@ abstract class MyBaseAdapter<M : Any, VB: ViewBinding>(
         holder.bind(getItem(position))
     }
 
-
 }

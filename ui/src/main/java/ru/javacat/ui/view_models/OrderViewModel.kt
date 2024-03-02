@@ -16,7 +16,6 @@ import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Point
-import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.LocationRepository
@@ -31,7 +30,7 @@ class OrderViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
     private val customerRepository: CustomerRepository,
     private val locationRepository: LocationRepository,
-    private val cargoRepostiory: CargoRepository,
+    private val cargoRepository: CargoRepository,
     private val orderRepository: OrderRepository
 ):ViewModel() {
 
@@ -47,7 +46,8 @@ class OrderViewModel @Inject constructor(
 
     val pointList = mutableListOf<Point>()
 
-   var orderList = mutableListOf<Order>()
+   //var orderList = mutableListOf<Order>()
+    val orderList = editedRoute.value.orderList.toMutableList()
 
     private val _customers = MutableStateFlow<List<Customer>?>(null)
     val customers = _customers.asStateFlow()
@@ -64,33 +64,13 @@ class OrderViewModel @Inject constructor(
     fun updateEditedRoute(order: Order){
         orderList.add(order)
         viewModelScope.launch(){
-            routeRepository.updateRoute(editedRoute.value.copy(
-                orderList = orderList.toList()
-            ))
+            val upsertedRoute = editedRoute.value.copy(
+                orderList = orderList.toList(), startDate = order.points.get(0).arrivalDate
+            )
+            routeRepository.updateRoute(upsertedRoute)
+            routeRepository.insertRoute(upsertedRoute)
 
             Log.i("OrderVM", "orderList size: ${editedRoute.value.orderList.size}")
-        }
-    }
-
-    fun setOrderList(){
-        orderList = editedRoute.value.orderList.toMutableList()
-    }
-
-    fun setPointDate(localDate: LocalDate){
-        viewModelScope.launch {
-            _pointDate.emit(localDate)
-        }
-    }
-
-    fun increaseDay(){
-        viewModelScope.launch{
-            _pointDate.emit(_pointDate.value.plusDays(1))
-        }
-    }
-
-    fun decreaseDay(){
-        viewModelScope.launch{
-            _pointDate.emit(_pointDate.value.minusDays(1))
         }
     }
 
@@ -104,33 +84,6 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val result = customerRepository.search(search)
             _customers.emit(result)
-        }
-    }
-    fun setCustomer(t: Customer){
-        viewModelScope.launch {
-            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
-        }
-    }
-
-    fun addPoint(point: Point) {
-        pointList.add(point)
-        viewModelScope.launch {
-            Log.i("OrderVM", "points: $pointList")
-            orderRepository.updateOrder( editedOrder.value.copy(points = pointList.toList()))
-        }
-    }
-
-    fun removePoint(point: Point) {
-        pointList.remove(point)
-        viewModelScope.launch {
-            orderRepository.updateOrder(editedOrder.value.copy(points = pointList.toList()))
-            //_points.emit(pointList.toList())
-        }
-    }
-
-    fun insertNewLocation(location: Location){
-        viewModelScope.launch(Dispatchers.IO){
-            locationRepository.insertLocation(location)
         }
     }
 
@@ -152,21 +105,77 @@ class OrderViewModel @Inject constructor(
 
     fun getCargos(){
         viewModelScope.launch(Dispatchers.IO){
-            val result = cargoRepostiory.getAll()
+            val result = cargoRepository.getAll()
             _cargo.emit(result)
         }
     }
 
     fun searchCargos(search: String) {
         viewModelScope.launch(Dispatchers.IO){
-            val result = cargoRepostiory.search(search)
+            val result = cargoRepository.search(search)
+            println("cargos: $result")
             _cargo.emit(result)
         }
     }
 
+
+    fun setPointDate(localDate: LocalDate){
+        viewModelScope.launch {
+            _pointDate.emit(localDate)
+        }
+    }
+
+    fun increaseDay(){
+        viewModelScope.launch{
+            _pointDate.emit(_pointDate.value.plusDays(1))
+        }
+    }
+
+    fun decreaseDay(){
+        viewModelScope.launch{
+            _pointDate.emit(_pointDate.value.minusDays(1))
+        }
+    }
+
+
+    fun addCustomer(t: Customer){
+        viewModelScope.launch {
+            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
+        }
+    }
+
+    fun addPoint(point: Point) {
+        pointList.add(point)
+        viewModelScope.launch {
+            Log.i("OrderVM", "points: $pointList")
+            orderRepository.updateOrder( editedOrder.value.copy(points = pointList.toList()))
+        }
+    }
+
+    fun addCargo(cargo: Cargo) {
+        viewModelScope.launch {
+            orderRepository.updateOrder(editedOrder.value.copy(cargoName = cargo.name))
+        }
+    }
+
+    fun removePoint(point: Point) {
+        pointList.remove(point)
+        viewModelScope.launch {
+            orderRepository.updateOrder(editedOrder.value.copy(points = pointList.toList()))
+            //_points.emit(pointList.toList())
+        }
+    }
+
+    fun insertNewLocation(location: Location){
+        viewModelScope.launch(Dispatchers.IO){
+            locationRepository.insertLocation(location)
+        }
+    }
+
+
     fun insertNewCargo(cargo: Cargo){
         viewModelScope.launch(Dispatchers.IO){
-            cargoRepostiory.insert(cargo)
+            cargoRepository.insert(cargo)
         }
     }
 
@@ -174,8 +183,17 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                val result = orderRepository.insertOrder(order)
-                updateEditedRoute(order)
+                //TODO добавить добавление груза в отдельное окно
+                //TODO добавление в таблицу только по кнопке - новый груз
+                orderRepository.insertOrder(order)
+                //cargoRepository.insert(Cargo(null, order.cargoName.toString(), 0L))
+                //updateEditedRoute(order)
+                orderList.add(order)
+                val upsertedRoute = editedRoute.value.copy(
+                    orderList = orderList.toList(), startDate = order.points.get(0).arrivalDate
+                )
+                routeRepository.insertRoute(upsertedRoute)
+                routeRepository.updateRoute(upsertedRoute)
                 orderRepository.clearCurrentOrder()
                 //routeRepository.insertRoute(editedRoute.value)
                 _loadState.emit(LoadState.Success.GoBack)
@@ -184,6 +202,4 @@ class OrderViewModel @Inject constructor(
             }
         }
     }
-
-
 }

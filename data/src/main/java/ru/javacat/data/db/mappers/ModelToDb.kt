@@ -48,7 +48,7 @@ fun Order.toDb() = DbOrder(
     truckId,
     trailerId,
     price,
-    customer?.atiNumber?:0,
+    customer?.id?:0,
     cargoWeight,
     cargoVolume,
     cargoName,

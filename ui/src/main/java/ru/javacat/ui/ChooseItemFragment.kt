@@ -181,6 +181,10 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
         binding.itemList.adapter = customersAdapter
         binding.itemNameTextView.text = "Клиенты"
 
+        binding.newItemBtn.setOnClickListener {
+            findNavController().navigate(R.id.newCustomerFragment)
+        }
+
         viewLifecycleOwner.lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.customers.collectLatest {

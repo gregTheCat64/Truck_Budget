@@ -125,13 +125,13 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
     }
 
     private fun saveCustomer() {
-        if (atiNumber != 0) {
+
             val newCustomer = Customer(
-                id, companyName, atiNumber, telNumber, formalAddress, postAddress, shortName
+                null, companyName, atiNumber, telNumber, formalAddress, postAddress, shortName
             )
             AndroidUtils.hideKeyboard(requireView())
             viewModel.saveNewCustomer(newCustomer)
-        }
+
     }
 
     private fun formatName(str: String): String {

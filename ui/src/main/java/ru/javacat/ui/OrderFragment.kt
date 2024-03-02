@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -18,14 +18,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
-import ru.javacat.common.utils.toBase64
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.CargoAdapter
+import ru.javacat.ui.adapters.CargosAdapter
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.LocationAdapter
+import ru.javacat.ui.adapters.OnCargoListener
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.adapters.OnLocationListener
 import ru.javacat.ui.adapters.OnPointListener
@@ -46,13 +48,15 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     private lateinit var pointsAdapter: PointsAdapter
     private lateinit var customersAdapter: CustomersAdapter
     private lateinit var locationAdapter: LocationAdapter
-    private lateinit var cargoAdapter: CargoAdapter
+    private lateinit var cargoAdapter: CargosAdapter
 
     private var currentRoute = Route()
 
     private val itemParam = "item"
     private val bundle = Bundle()
     private var routeId = 0L
+    private var locationsFound: Boolean = false
+    private var cargosFound: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,6 +70,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 binding.orderTitle.text = "Рейс №${it.id}"
                 currentRoute = it
                 routeId = it.id?:0L
+                //TODO Исправить появление подсказок при обновлении рейса!
             }
         }
 
@@ -77,7 +82,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         viewModel.getLocations()
         viewModel.getCustomers()
         viewModel.getCargos()
-        viewModel.setOrderList()
+        //viewModel.setOrderList()
 
 
         //инициализация UI
@@ -109,6 +114,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 viewModel.insertNewLocation(newLocation)
                 addPoint(newLocation)
                 binding.locationEditText.text?.clear()
+                binding.addPointBtn.isGone = true
                 viewModel.increaseDay()
             }
         }
@@ -131,20 +137,30 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             viewModel.decreaseDay()
         }
 
-
-        //Новый клиент
-        binding.newCustomerBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_orderFragment_to_newCustomerFragment)
+        //Новый груз
+        binding.addNewCargoBtn.setOnClickListener {
+            val cargoName = binding.cargoEditText.text.toString()
+            viewModel.insertNewCargo(Cargo(null, cargoName))
+            binding.addNewCargoBtn.isGone = true
+            binding.cargoEditText.clearFocus()
+            binding.cargoRecView.isGone = true
         }
 
+
+        //Сохранение заявки
         binding.saveBtn.setOnClickListener {
-            //TODO подумать над айдишниками!
             val id = "Rt$routeId"+"Ord"+(currentRoute.orderList.size+1).toString()
+            val cargoName = binding.cargoEditText.let { if (it.text.isNullOrEmpty()) null else it }
+            val price = binding.price.text?.toString()?.toInt()?:0
             val newOrder = viewModel.editedOrder.value.copy(
                 id,
                 routeId= routeId,
                 driverId = currentRoute.driver?.id?:0,
-                truckId = currentRoute.truck?.id?:0)
+                truckId = currentRoute.truck?.id?:0,
+                cargoName = cargoName?.text.toString(),
+                price = price
+            )
+
             viewModel.saveOrder(newOrder)
             //viewModel.updateEditedRoute(newOrder)
         }
@@ -162,8 +178,8 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         customersAdapter = CustomersAdapter(object : OnCustomerListener {
             override fun onCustomer(item: Customer) {
                 binding.customerInputEditText.setText(item.shortName)
-                //binding.customersRecView.isGone = true
-                viewModel.setCustomer(item)
+                binding.customersRecView.isGone = true
+                viewModel.addCustomer(item)
                 AndroidUtils.hideKeyboard(requireView())
             }
         })
@@ -171,7 +187,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
         lifecycleScope.launch {
             viewModel.customers.collectLatest {
-                Log.i("OrderFragment", "it: %$it")
+                Log.i("OrderFragment", "customers: %$it")
                 customersAdapter.submitList(it)
             }
         }
@@ -184,7 +200,6 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             }
         })
         binding.recyclerView.adapter = pointsAdapter
-
     }
 
     private fun initLocationAdapter() {
@@ -202,21 +217,31 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             viewModel.locations.collectLatest {
                 println("OrderFragment: $it")
                 locationAdapter.submitList(it)
+                locationsFound = it?.size != 0
+
             }
         }
     }
 
     private fun initCargoAdapter() {
-        cargoAdapter = CargoAdapter {
-            AndroidUtils.hideKeyboard(requireView())
-        }
+        cargoAdapter = CargosAdapter(object : OnCargoListener{
+            override fun onCargo(item: Cargo) {
+                viewModel.addCargo(item)
+                binding.cargoEditText.setText(item.name)
+                binding.cargoRecView.isGone = true
+                binding.cargoEditText.clearFocus()
+                AndroidUtils.hideKeyboard(requireView())
+            }
+        })
 
         binding.cargoRecView.adapter = cargoAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.cargo.collectLatest {
+                    Log.i("OrderFrag", "cargos: $it")
                     cargoAdapter.submitList(it)
+                    cargosFound = it?.size != 0
                 }
             }
         }
@@ -240,13 +265,17 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     private fun addEditTextListeners() {
 
         binding.customerInputEditText.setOnClickListener {
+            binding.customersRecView.isGone = true
             addItemToRoute("CUSTOMER")
         }
 
         binding.locationEditText.setOnClickListener {
             //binding.locationsRecView.isGone = false
-            binding.scroll.scrollToDescendant(binding.addPointBtn)
+            binding.scroll.scrollToDescendant(binding.paymentTextView)
+        }
 
+        binding.cargoEditText.setOnClickListener {
+            binding.scroll.scrollToDescendant(binding.tvVolume)
         }
 
         binding.customerInputEditText.addTextChangedListener(object : TextWatcher {
@@ -255,7 +284,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //binding.customersRecView.isGone = false
+                binding.customersRecView.isGone = false
                 viewModel.searchCustomers(p0.toString())
             }
 
@@ -271,12 +300,36 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //binding.locationsRecView.isGone = false
                 viewModel.searchLocations(p0.toString())
+                if (!locationsFound){
+                    binding.addPointBtn.isVisible = true
+                    binding.addPointBtn.text = "Сохранить $p0"
+                } else  binding.addPointBtn.isVisible = false
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                if (!locationsFound){
+                    binding.addPointBtn.isVisible = true
+                    binding.addPointBtn.text = "Сохранить $p0"
+                } else  binding.addPointBtn.isVisible = false
+            }
+        })
 
+        binding.cargoEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.searchCargos(p0.toString())
+               binding.cargoRecView.isVisible = true
+                if (!cargosFound){
+                    binding.addNewCargoBtn.isVisible = true
+                    binding.addNewCargoBtn.text = "Сохранить $p0"
+                } else binding.addNewCargoBtn.isGone = true
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
             }
         })
     }
@@ -287,7 +340,6 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     }
 
     private fun addPoint(location: Location) {
-
         val pointDate = viewModel.pointDate.value
         val pointSize = viewModel.pointList.size
         val ordersSize = viewModel.orderList.size

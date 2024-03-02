@@ -59,37 +59,16 @@
 
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/newCustomerBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:textStyle="bold"
-                    android:text="Новый"/>
-
-            </androidx.cardview.widget.CardView>
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/customersRecView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:itemCount="3"
+                tools:itemCount="4"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/name_item" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
-
-
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -99,11 +78,23 @@
             android:layout_marginEnd="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cargoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Груз"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addNewCargoBtn"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:text="Добавить"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cargoRecView"
@@ -128,6 +119,7 @@
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="82"
@@ -273,9 +265,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Добавить город"
+                    android:inputType="textCapSentences"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addPointBtn"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Сохранить город"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/locationsRecView"
@@ -287,18 +299,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     />
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addPointBtn"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Добавить в маршрут"
-                android:layout_gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -308,6 +309,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
                 tools:listitem="@layout/point_item" />
+
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -319,6 +321,7 @@
 
 
         <TextView
+            android:id="@+id/paymentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -339,6 +342,7 @@
                 android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Ставка, руб"
