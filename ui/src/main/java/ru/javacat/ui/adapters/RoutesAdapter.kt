@@ -3,6 +3,7 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.javacat.domain.models.Route
+import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.RouteItemBinding
 
     interface OnRouteListener {
@@ -11,7 +12,7 @@ import ru.javacat.ui.databinding.RouteItemBinding
     }
 class RoutesAdapter(
     private val onRouteListener: OnRouteListener
-): MyBaseAdapter<Route, RouteItemBinding>({old, new -> old.id == new.id  }) {
+): MyBaseAdapter<Route, RouteItemBinding>({ old, new -> old.id == new.id  }, { old, new -> old == new  }) {
 
     override val inflater: (LayoutInflater, ViewGroup) -> RouteItemBinding = {li,vg ->
         RouteItemBinding.inflate(li, vg, false)

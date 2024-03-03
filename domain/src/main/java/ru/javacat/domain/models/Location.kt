@@ -1,7 +1,7 @@
 package ru.javacat.domain.models
 
 data class Location(
-    val id: Long? = null,
-    val name: String,
-    val positionId: Long = 0L,
-)
+    override val id: Long? = null,
+    override val name: String,
+    override val positionId: Long = 0L,
+): BaseNameModel<Long>()

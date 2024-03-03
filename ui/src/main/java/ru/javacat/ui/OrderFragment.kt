@@ -23,15 +23,13 @@ import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
-import ru.javacat.ui.adapters.CargoAdapter
-import ru.javacat.ui.adapters.CargosAdapter
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.LocationAdapter
-import ru.javacat.ui.adapters.OnCargoListener
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.adapters.OnLocationListener
 import ru.javacat.ui.adapters.OnPointListener
 import ru.javacat.ui.adapters.PointsAdapter
+import ru.javacat.ui.adapters.CargoBaseNameAdapter
 import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.showCalendar
@@ -48,7 +46,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     private lateinit var pointsAdapter: PointsAdapter
     private lateinit var customersAdapter: CustomersAdapter
     private lateinit var locationAdapter: LocationAdapter
-    private lateinit var cargoAdapter: CargosAdapter
+    private lateinit var cargoAdapter: CargoBaseNameAdapter
 
     private var currentRoute = Route()
 
@@ -224,15 +222,13 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     }
 
     private fun initCargoAdapter() {
-        cargoAdapter = CargosAdapter(object : OnCargoListener{
-            override fun onCargo(item: Cargo) {
-                viewModel.addCargo(item)
-                binding.cargoEditText.setText(item.name)
-                binding.cargoRecView.isGone = true
-                binding.cargoEditText.clearFocus()
-                AndroidUtils.hideKeyboard(requireView())
-            }
-        })
+        cargoAdapter = CargoBaseNameAdapter{
+            viewModel.addCargo(it)
+            binding.cargoEditText.setText(it.name)
+            binding.cargoRecView.isGone = true
+            binding.cargoEditText.clearFocus()
+            AndroidUtils.hideKeyboard(requireView())
+        }
 
         binding.cargoRecView.adapter = cargoAdapter
 

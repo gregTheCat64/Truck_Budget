@@ -3,11 +3,12 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.javacat.domain.models.Trailer
+import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.NameItemOnelineBinding
 
 class ChooseTrailerAdapter(
     val onItem: (Trailer) -> Unit
-): MyBaseAdapter<Trailer, NameItemOnelineBinding>({old, new -> old.id == new.id  }) {
+): MyBaseAdapter<Trailer, NameItemOnelineBinding>({ old, new -> old.id == new.id  },{ old, new -> old == new  }) {
 
     override val inflater: (LayoutInflater, ViewGroup) -> NameItemOnelineBinding = {li, vg->
         NameItemOnelineBinding.inflate(li,vg,false)

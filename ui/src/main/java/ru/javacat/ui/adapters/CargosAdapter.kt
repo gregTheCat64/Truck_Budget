@@ -14,16 +14,16 @@ interface OnCargoListener{
     fun onCargo(item: Cargo)
 }
 class CargosAdapter(
-    private val onCargoListener: OnCargoListener
+    val onItem: (Cargo) -> Unit
 ):ListAdapter<Cargo, CargosAdapter.Holder>(Comparator()) {
 
-    class Holder(view: View, private val onCargoListener: OnCargoListener): ViewHolder(view){
+    class Holder(view: View, private val onItem: (Cargo) -> Unit): ViewHolder(view){
         private val binding = NameItemBinding.bind(view)
 
         fun bind(item: Cargo){
             binding.name.text = item.name
             binding.root.setOnClickListener {
-                onCargoListener.onCargo(item)
+                onItem(item)
             }
         }
     }
@@ -40,7 +40,7 @@ class CargosAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item, parent, false)
-        return  Holder(view, onCargoListener)
+        return  Holder(view, onItem)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

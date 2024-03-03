@@ -3,9 +3,10 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.javacat.domain.models.Order
+import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.OrderItemBinding
 
-class OrdersAdapter(): MyBaseAdapter<Order, OrderItemBinding>({old, new -> old.id == new.id  }) {
+class OrdersAdapter(): MyBaseAdapter<Order, OrderItemBinding>({ old, new -> old.id == new.id  }, { old, new -> old == new  }) {
     override val inflater: (LayoutInflater, ViewGroup) -> OrderItemBinding
         get() = { layoutInflater, viewGroup ->
             OrderItemBinding.inflate(layoutInflater, viewGroup, false)

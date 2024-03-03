@@ -1,8 +1,6 @@
-package ru.javacat.ui.adapters
+package ru.javacat.ui.adapters.my_adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,15 +11,17 @@ interface OnItemListener<M> {
     fun onItem(item: M)
 }
 
+//Плохо работающий Динаровский Адаптер. Однако, универсальный
 class MyComparator<M : Any>(
-    val itemsTheSame: (old: M, new: M) -> Boolean
+    val itemsTheSame: (old: M, new: M) -> Boolean,
+    val contentsTheSame: (old: M, new: M) -> Boolean
 ) : DiffUtil.ItemCallback<M>() {
     override fun areItemsTheSame(oldItem: M, newItem: M): Boolean {
         return itemsTheSame(oldItem, newItem)
     }
-    @SuppressLint("DiffUtilEquals")
+
     override fun areContentsTheSame(oldItem: M, newItem: M): Boolean {
-        return oldItem == newItem
+        return contentsTheSame(oldItem, newItem)
     }
 }
 
@@ -32,8 +32,9 @@ abstract class VH<M : Any, VB : ViewBinding>(
 }
 
 abstract class MyBaseAdapter<M : Any, VB: ViewBinding>(
-    areItemsTheSame:(old:M, new:M)->Boolean
-) : ListAdapter<M, VH<M, VB>>(MyComparator<M>(areItemsTheSame)) {
+    areItemsTheSame:(old:M, new:M)->Boolean,
+    areContentsTheSame:(old:M, new:M)->Boolean
+) : ListAdapter<M, VH<M, VB>>(MyComparator<M>(areItemsTheSame,areContentsTheSame)) {
 
     private var _binding: VB? = null
 
