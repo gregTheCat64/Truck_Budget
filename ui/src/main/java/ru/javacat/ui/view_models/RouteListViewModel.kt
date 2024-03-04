@@ -47,8 +47,14 @@ class RouteListViewModel @Inject constructor(
                 val editedRoute = if (id!= 0L){
                     repo.getRoute(id)?:Route()
                 } else {
-                    val lastRouteId = repo.lastRouteId?:0L
-                    Route(id = lastRouteId + 1)
+                    val lastRoute = repo.lastRoute
+                    val lastRouteId = lastRoute?.id?:0
+
+                    val lastRouteDriver = lastRoute?.driver
+                    val lastRouteTruck = lastRoute?.truck
+                    val lastRouteTrailer = lastRoute?.trailer
+
+                    Route(id = lastRouteId + 1, driver = lastRouteDriver, truck = lastRouteTruck, trailer = lastRouteTrailer)
                 }
                 repo.updateRoute(editedRoute)
                 _loadState.emit(LoadState.Success.GoForward)

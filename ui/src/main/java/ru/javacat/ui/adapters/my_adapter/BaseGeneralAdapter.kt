@@ -8,7 +8,15 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseGeneralAdapter<M : Any, VB: ViewBinding>(
     val onItem: (M) -> Unit
-) : ListAdapter<M, BaseGeneralAdapter.Holder<M, VB>>(Comparator<M>()) {
+) : ListAdapter<M, BaseGeneralAdapter.Holder<M, VB>>(object : Comparator<M>(){
+    override fun areItemsTheSame(oldItem: M, newItem: M): Boolean {
+        return false
+    }
+
+    override fun areContentsTheSame(oldItem: M, newItem: M): Boolean {
+        return false
+    }
+}) {
 
     abstract class Holder<M : Any, VB : ViewBinding>(
         val onItem: (M) -> Unit,
@@ -17,14 +25,6 @@ abstract class BaseGeneralAdapter<M : Any, VB: ViewBinding>(
         abstract fun bind(item: M)
     }
 
-    class Comparator<M: Any>: DiffUtil.ItemCallback<M>(){
-        override fun areItemsTheSame(oldItem: M, newItem: M): Boolean {
-            return false
-        }
-
-        override fun areContentsTheSame(oldItem: M, newItem: M): Boolean{
-            return false
-        }
-    }
+    abstract class Comparator<M: Any>: DiffUtil.ItemCallback<M>()
 
 }

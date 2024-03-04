@@ -89,7 +89,7 @@ fun Location.toDb() = DbLocation(
 )
 
 fun Customer.toDb() = DbCustomer(
-    id, name,positionId, atiNumber, companyPhone, formalAddress, postAddress, shortName
+    id, name, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
 )
 
 fun Employee.toDb() = DbEmployee(

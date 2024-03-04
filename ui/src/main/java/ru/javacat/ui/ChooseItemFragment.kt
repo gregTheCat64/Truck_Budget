@@ -53,6 +53,10 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             "CUSTOMER" -> {
                 initCustomerAdapter()
             }
+            "CARGO" -> {
+                initCargoAdapter()
+            }
+
             else -> {
                 println("Unknown item")
             }
@@ -192,5 +196,9 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
                 }
             }
         }
+    }
+
+    private fun initCargoAdapter(){
+
     }
 }

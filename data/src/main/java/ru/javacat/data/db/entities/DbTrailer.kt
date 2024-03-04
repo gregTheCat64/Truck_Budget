@@ -8,7 +8,7 @@ import ru.javacat.domain.models.Truck
 @Entity(tableName = "trailers_table")
 data class DbTrailer  (
 @PrimaryKey(autoGenerate = true)
-val id: Int,
+val id: Long,
 val regNumber: String,
 val vin: String?,
 val model: String?,

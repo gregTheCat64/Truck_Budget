@@ -7,7 +7,7 @@ import ru.javacat.domain.models.Staff
 @Entity(tableName = "staff_table")
 data class DbStaff (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val fullName: String,
     val passportSerial: String,
     val passportNumber: String,
@@ -18,6 +18,6 @@ data class DbStaff (
     val phoneNumber: String?
 ){
     fun toStaff() = Staff(
-        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber
+        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber, 0
     )
 }

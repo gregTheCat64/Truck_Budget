@@ -6,7 +6,9 @@ import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.OrderItemBinding
 
-class OrdersAdapter(): MyBaseAdapter<Order, OrderItemBinding>({ old, new -> old.id == new.id  }, { old, new -> old == new  }) {
+class OrdersAdapter(
+    val onItem: (Order) -> Unit
+): MyBaseAdapter<Order, OrderItemBinding>({ old, new -> old.id == new.id  }, { old, new -> old == new  }) {
     override val inflater: (LayoutInflater, ViewGroup) -> OrderItemBinding
         get() = { layoutInflater, viewGroup ->
             OrderItemBinding.inflate(layoutInflater, viewGroup, false)
@@ -22,6 +24,9 @@ class OrdersAdapter(): MyBaseAdapter<Order, OrderItemBinding>({ old, new -> old.
         binding.income.text = item.price.toString()
         if (points.isNotEmpty()){
             binding.startDate.text = item.points[0].arrivalDate.toString()
+        }
+        binding.root.setOnClickListener {
+            onItem(item)
         }
 
     }

@@ -7,7 +7,7 @@ import ru.javacat.domain.models.Route
 interface RouteRepository {
     val allRoutes: Flow<List<Route?>>
 
-    val lastRouteId: Long?
+    val lastRoute: Route?
 
     val editedRoute: StateFlow<Route>
 

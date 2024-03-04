@@ -3,22 +3,11 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.javacat.domain.models.Staff
+import ru.javacat.ui.adapters.my_adapter.BaseNameLongIdAdapter
 import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.NameItemOnelineBinding
 
 
 class ChooseDriverAdapter(
-    val onItem: (Staff) -> Unit
-): MyBaseAdapter<Staff, NameItemOnelineBinding>({ old, new -> old.id == new.id  },{ old, new -> old == new  }) {
-
-    override val inflater: (LayoutInflater, ViewGroup) -> NameItemOnelineBinding = {li, vg ->
-        NameItemOnelineBinding.inflate(li, vg, false)
-    }
-
-    override fun bind(item: Staff) {
-        binding.itemName.text = item.fullName
-        binding.root.setOnClickListener {
-            onItem(item)
-        }
-    }
-        }
+    override val onItem: (Staff) -> Unit
+): BaseNameLongIdAdapter<Staff>(onItem)

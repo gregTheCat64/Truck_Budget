@@ -8,5 +8,4 @@ data class Employee(
     val secondNumber: String?,
     val email: String?,
     val comment: String?,
-
 )

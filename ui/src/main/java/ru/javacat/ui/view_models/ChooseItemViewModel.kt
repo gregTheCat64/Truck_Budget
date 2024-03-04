@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Trailer
@@ -47,6 +48,9 @@ class ChooseItemViewModel @Inject constructor(
 
     private val _drivers = MutableStateFlow<List<Staff>?>(null)
     val drivers = _drivers.asStateFlow()
+
+    private val _cargo = MutableStateFlow<List<Cargo>?>(null)
+    val cargo = _cargo.asStateFlow()
 
 //    val chosenTruck = trucksRepository.chosenTruck
 //

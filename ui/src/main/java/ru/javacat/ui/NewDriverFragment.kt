@@ -49,7 +49,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
             val newDriver = Staff(
                 0, fullName, passSerial, passNumber, passWhen,
-                passWhere, driveLicenseNumber, address, phoneNumber
+                passWhere, driveLicenseNumber, address, phoneNumber, 0
             )
 
             viewLifecycleOwner.lifecycleScope.launch {

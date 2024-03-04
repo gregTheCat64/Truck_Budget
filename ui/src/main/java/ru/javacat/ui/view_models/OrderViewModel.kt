@@ -144,6 +144,12 @@ class OrderViewModel @Inject constructor(
         }
     }
 
+    fun addCargo(cargo: Cargo) {
+        viewModelScope.launch {
+            orderRepository.updateOrder(editedOrder.value.copy(cargoName = cargo.name))
+        }
+    }
+
     fun addPoint(point: Point) {
         pointList.add(point)
         viewModelScope.launch {
@@ -152,11 +158,6 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun addCargo(cargo: Cargo) {
-        viewModelScope.launch {
-            orderRepository.updateOrder(editedOrder.value.copy(cargoName = cargo.name))
-        }
-    }
 
     fun removePoint(point: Point) {
         pointList.remove(point)
@@ -184,18 +185,16 @@ class OrderViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 //TODO добавить добавление груза в отдельное окно
-                //TODO добавление в таблицу только по кнопке - новый груз
                 orderRepository.insertOrder(order)
-                //cargoRepository.insert(Cargo(null, order.cargoName.toString(), 0L))
                 //updateEditedRoute(order)
                 orderList.add(order)
-                val upsertedRoute = editedRoute.value.copy(
+                val routeToUpdate = editedRoute.value.copy(
                     orderList = orderList.toList(), startDate = order.points.get(0).arrivalDate
                 )
-                routeRepository.insertRoute(upsertedRoute)
-                routeRepository.updateRoute(upsertedRoute)
+                routeRepository.insertRoute(routeToUpdate)
+                routeRepository.updateRoute(routeToUpdate)
                 orderRepository.clearCurrentOrder()
-                //routeRepository.insertRoute(editedRoute.value)
+
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

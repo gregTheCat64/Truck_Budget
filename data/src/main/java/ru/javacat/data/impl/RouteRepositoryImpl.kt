@@ -32,8 +32,8 @@ class RouteRepositoryImpl @Inject constructor(
     override val allRoutes: Flow<List<Route?>>
         get() = routesDao.getAllRoutes().map { list -> list.map { it.toRouteModel() } }
 
-    override val lastRouteId: Long?
-        get() = routesDao.getLastRoute()?.route?.id
+    override val lastRoute: Route?
+        get() = routesDao.getLastRoute()?.toRouteModel()
 
     private val _editedRoute = MutableStateFlow<Route>(draftRoute)
     override val editedRoute: StateFlow<Route>

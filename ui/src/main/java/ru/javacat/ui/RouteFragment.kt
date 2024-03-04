@@ -40,6 +40,14 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val adapter = OrdersAdapter{
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getOrderAndUpdateEditedOrder(it.id)
+            }
+
+        }
+        binding.ordersList.adapter = adapter
+
         //инициализация UI
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -55,21 +63,13 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                     binding.routeSpending.setText(it.routeSpending?.toString())
                     binding.fuelPrice.setText(it.fuelPrice?.toString())
                     binding.fuelUsedUp.setText(it.fuelUsedUp?.toString())
+
+                    it.orderList.let {orders->
+                        adapter.submitList(orders)
+                    }
                 }
             }
         }
-
-        //Адаптер заказов:
-        val adapter = OrdersAdapter()
-        binding.ordersList.adapter = adapter
-        viewLifecycleOwner.lifecycleScope.launch {
-           viewModel.editedRoute.collectLatest {
-               it.orderList.let {orders->
-                    adapter.submitList(orders)
-               }
-           }
-        }
-
 
         //Новый заказ
         binding.addOrderBtn.setOnClickListener {
@@ -109,8 +109,6 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                     LoadState.Success.GoBack -> findNavController().navigateUp()
                     else -> {}
                 }
-
-
             }
         }
 

@@ -13,7 +13,7 @@ import ru.javacat.ui.databinding.NameItemBinding
 
 //Универсальный адаптер для одного слова-карточки с одним действием - кликом на нём. ID - Long
 abstract class BaseNameLongIdAdapter<M: BaseNameModel<Long>>(
-    val onItem: (M) -> Unit
+    open val onItem: (M) -> Unit
 ) : ListAdapter<M, BaseNameLongIdAdapter.Holder<M>>(BaseNameComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder<M> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item, parent, false)
