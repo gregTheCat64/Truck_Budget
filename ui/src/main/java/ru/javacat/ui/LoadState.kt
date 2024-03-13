@@ -4,6 +4,7 @@ sealed interface LoadState {
     object Loading: LoadState
 
     sealed interface Success: LoadState{
+        object OK: Success
         object GoForward: Success
 
         object GoBack: Success

@@ -1,480 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scroll"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveBtn"
-            android:layout_gravity="end"
+
+        <TextView
+            android:id="@+id/orderTitle"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:text="Заявка ORD1R2 к рейсу №1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Сохранить"
-            />
+            android:layout_margin="16dp" />
 
-    <TextView
-        android:id="@+id/orderTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <include layout="@layout/horizon_line" />
 
-        android:layout_margin="16dp"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/customerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            app:endIconDrawable="@drawable/baseline_remove_circle_outline_24"
-
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/customer_input_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="Заказчик"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/customersRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:itemCount="4"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/name_item" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cargoEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Груз"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/addNewCargoBtn"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+        <TextView
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="Добавить"
-            />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Информация о заявке:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cargoRecView"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/name_item"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="Заказчик" />
+        <TextView
+            android:id="@+id/customerTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:orientation="horizontal">
+            android:layout_marginStart="16dp"
+            android:text="Миронов В.И."
+             />
 
-            <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="Груз" />
+
+        <TextView
+            android:id="@+id/cargoTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+           android:text="Стройматериалы" />
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="Объем, м3"
+             />
+
+            <TextView
+                android:id="@+id/tvVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvVolume"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="82"
-                    android:hint="Объем, м3"/>
+                android:layout_marginStart="16dp"
+                android:text="82" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="Вес, т"
+            />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="20"
-                    android:hint="Вес, т"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:layout_marginStart="16dp"
+                android:hint="Вес, т"
+                android:text="20" />
 
 
         <TextView
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             style="@style/TextAppearance.Material3.BodySmall"
-            android:text="Тип погрузки:"
-            android:layout_marginStart="16dp"
-             />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            >
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Задняя"
-                android:checked="true"
-                android:layout_marginEnd="8dp"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Боковая"
-                android:layout_marginEnd="8dp"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Верхняя"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Тип погрузки:" />
 
-
-        <include
-            layout="@layout/horizon_line"/>
-
-    <TextView
-        android:id="@+id/routeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:text="Маршрут:"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="8dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Выберите дату и город, чтобы добавить в маршрут"
-                style="@style/TextAppearance.Material3.BodySmall"
-                />
+            android:layout_height="wrap_content"
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    >
-                    <EditText
-                        android:id="@+id/arrivalDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:hint="Дата прибытия"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/minusDayBtn"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/baseline_remove_circle_outline_24" />
-
-                <Button
-                    android:id="@+id/plusDayBtn"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/baseline_add_circle_outline_24" />
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/locationLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/locationEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Добавить город"
-                    android:inputType="textCapSentences"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:text="Задняя" />
 
 
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addPointBtn"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Сохранить город"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        <include layout="@layout/horizon_line" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/locationsRecView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:itemCount="5"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/name_item"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    />
+        <TextView
+            android:id="@+id/routeTextView"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Маршрут:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
-                tools:listitem="@layout/point_item" />
+                tools:listitem="@layout/point_item_oneline" />
 
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <include
-            layout="@layout/horizon_line"/>
-
-
-
-
-
-        <TextView
-            android:id="@+id/paymentTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:text="Оплата:"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizonLine2" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ставка, руб"
-                    android:inputType="number"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Дней до оплаты"
-                    android:inputType="number"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <include
-            layout="@layout/horizon_line"/>
+        <include layout="@layout/horizon_line" />
 
         <RadioGroup
             android:id="@+id/statusRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="8dp">
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/pending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="на исполнении"/>
+                android:text="на исполнении" />
+
             <RadioButton
                 android:id="@+id/finished"
-                android:layout_marginStart="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="завершен"/>
+                android:layout_marginStart="8dp"
+                android:text="завершен" />
+
             <RadioButton
                 android:id="@+id/paid"
-                android:layout_marginStart="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="оплачен"/>
+                android:layout_marginStart="8dp"
+                android:text="оплачен" />
         </RadioGroup>
+
+        <TextView
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Оплата:" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Ставка"
+            />
+
+        <TextView
+            android:id="@+id/priceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="35000 руб. без НДС"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Срок оплаты"
+            />
+
+        <TextView
+            android:id="@+id/daysToPayTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="5 дней"
+            />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/documentsGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:text="Документы:"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sendingNumberLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sendingNumber"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editDocsBtn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Номер отправления"
+                android:layout_gravity="center"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:text="Документы"
+                app:icon="@drawable/baseline_edit_24"
                 />
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Номер отправления"
+                    />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/payDatesLayout"
-            android:layout_width="match_parent"
+
+            <TextView
+                android:id="@+id/docsNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Добавить номер вручения"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Дата вручения"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Добавить дату вручения"
+                />
+
+            <TextView
+                android:id="@+id/payDayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Дата оплаты"
+                />
+
+            <TextView
+                android:id="@+id/payDayValueTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Добавить дату оплаты"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/receivedDocsDateLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/receivedDocsDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Дата получения док-тов"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/payDayLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/payDayDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Дата оплаты"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            android:layout_gravity="end"
+            android:layout_margin="16dp"
+            android:text="Сохранить" />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </ScrollView>
 

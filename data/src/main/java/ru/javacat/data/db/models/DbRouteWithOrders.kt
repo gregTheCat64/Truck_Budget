@@ -56,6 +56,7 @@ data class DbRouteWithOrders (
             fuelUsedUp = route.fuelUsedUp,
             fuelPrice = route.fuelPrice,
             routeSpending = route.routeExpenses,
+            payPerDiem = route.payPerDiem,
             routeDuration = route.routeDuration,
             driverSalary = route.driverSalary,
             moneyToPay = route.moneyToPay,

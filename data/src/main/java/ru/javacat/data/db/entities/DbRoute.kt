@@ -18,13 +18,14 @@ data class DbRoute (
     //val orderList: List<Order>,
     val prepayment: Int?,
     val fuelUsedUp: Int?,
-    val fuelPrice: Int?,
+    val fuelPrice: Float?,
     val routeExpenses: Int?,
+    val payPerDiem: Int?,
     val routeDuration: Int?,
     val driverSalary: Int?,
     val moneyToPay: Int?,
     val income: Int?,
-    val netIncome: Int?,
+    val netIncome: Float?,
     val isFinished: Boolean
 )
 

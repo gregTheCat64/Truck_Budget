@@ -12,10 +12,15 @@
         android:label="RouteListFragment" >
         <action
             android:id="@+id/action_routeListFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
+            app:destination="@id/routeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_routeListFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
+        <action
+            android:id="@+id/action_routeListFragment_to_createRouteFragment"
+            app:destination="@id/createRouteFragment" />
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
@@ -25,33 +30,26 @@
         <action
             android:id="@+id/action_routeFragment_to_newOrderFragment"
             app:destination="@id/orderDetailsFragment" />
+
         <action
             android:id="@+id/action_routeFragment_to_finishRouteFragment"
             app:destination="@id/finishRouteFragment" />
         <action
-            android:id="@+id/action_routeFragment_to_transportFragment"
-            app:destination="@id/newTransportFragment" />
-        <action
-            android:id="@+id/action_routeFragment_to_newDriverFragment"
-            app:destination="@id/newDriverFragment" />
-        <action
-            android:id="@+id/action_routeFragment_to_chooseItemFragment"
-            app:destination="@id/chooseItemFragment" />
+            android:id="@+id/action_routeFragment_to_addCustomerFragment"
+            app:destination="@id/addCustomerFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="ru.javacat.ui.OrderFragment"
         tools:layout="@layout/fragment_order_details"
         android:label="orderDetailsFragment" >
-        <action
-            android:id="@+id/action_newOrderFragment_to_addPointsFragment"
-            app:destination="@id/addPointsFragment" />
-        <action
-            android:id="@+id/action_newOrderFragment_to_addPaymentDetailsFragment"
-            app:destination="@id/addPaymentDetailsFragment" />
+
         <action
             android:id="@+id/action_orderFragment_to_newCustomerFragment"
             app:destination="@id/newCustomerFragment" />
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_addDocumentsFragment"
+            app:destination="@id/addDocumentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newDriverFragment"
@@ -81,16 +79,12 @@
         android:id="@+id/addPointsFragment"
         android:name="ru.javacat.ui.AddPointsFragment"
         tools:layout="@layout/fragment_add_points"
-        android:label="AddPointsFragment" />
-    <fragment
-        android:id="@+id/addPaymentDetailsFragment"
-        android:name="ru.javacat.ui.AddPaymentDetailsFragment"
-        tools:layout="@layout/fragment_add_payment_details"
-        android:label="AddPaymentDetailsFragment" >
+        android:label="AddPointsFragment" >
         <action
-            android:id="@+id/action_addPaymentDetailsFragment_to_routeFragment"
-            app:destination="@id/routeFragment" />
+            android:id="@+id/action_addPointsFragment_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/newCustomerFragment"
         android:name="ru.javacat.ui.NewCustomerFragment"
@@ -105,13 +99,58 @@
             android:defaultValue="0" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/chooseItemFragment"
+        android:name="ru.javacat.ui.ChooseItemFragment"
+        tools:layout="@layout/fragment_choose_item"
+        android:label="ChooseItemFragment" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="ru.javacat.ui.TestFragment"
+        android:label="TestFragment" />
+    <fragment
+        android:id="@+id/createRouteFragment"
+        android:name="ru.javacat.ui.CreateRouteFragment"
+        tools:layout="@layout/fragment_create_route"
+        android:label="CreateRouteFragment" >
+        <action
+            android:id="@+id/action_createRouteFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
+        <action
+            android:id="@+id/action_createRouteFragment_to_chooseItemFragment"
+            app:destination="@id/chooseItemFragment" />
+    </fragment>
     <fragment
         android:id="@+id/finishRouteFragment"
         android:name="ru.javacat.ui.FinishRouteFragment"
         tools:layout="@layout/fragment_finish_route"
         android:label="FinishRouteFragment" />
     <fragment
-        android:id="@+id/chooseItemFragment"
-        android:name="ru.javacat.ui.ChooseItemFragment"
-        android:label="ChooseItemFragment" />
+        android:id="@+id/addCustomerFragment"
+        android:name="ru.javacat.ui.AddCustomerFragment"
+        tools:layout="@layout/fragment_add_customer"
+        android:label="AddCustomerFragment" >
+        <action
+            android:id="@+id/action_addCustomerFragment_to_addCargoFragment"
+            app:destination="@id/addCargoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCargoFragment"
+        android:name="ru.javacat.ui.AddCargoFragment"
+        tools:layout="@layout/fragment_add_cargo"
+        android:label="AddCargoFragment" >
+        <action
+            android:id="@+id/action_addCargoFragment_to_addPointsFragment"
+            app:destination="@id/addPointsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPaymentFragment"
+        android:name="ru.javacat.ui.AddPaymentFragment"
+        tools:layout="@layout/fragment_add_payment"
+        android:label="AddPaymentFragment" />
+    <fragment
+        android:id="@+id/addDocumentsFragment"
+        android:name="ru.javacat.ui.AddDocumentsFragment"
+        android:label="AddDocumentsFragment" />
 </navigation>

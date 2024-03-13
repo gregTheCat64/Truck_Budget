@@ -33,6 +33,7 @@ fun Route.toDb() = DbRoute(
     fuelUsedUp,
     fuelPrice,
     routeSpending,
+    payPerDiem,
     routeDuration,
     driverSalary,
     moneyToPay,

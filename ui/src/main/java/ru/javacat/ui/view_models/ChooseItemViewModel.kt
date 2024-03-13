@@ -30,7 +30,7 @@ class ChooseItemViewModel @Inject constructor(
     private val trailersRepository: TrailersRepository,
     private val staffRepository: StaffRepository,
     private val routeRepository: RouteRepository,
-    private val customerRepository: CustomerRepository,
+    //private val customerRepository: CustomerRepository,
     private val orderRepository: OrderRepository
 ): ViewModel() {
 
@@ -43,8 +43,8 @@ class ChooseItemViewModel @Inject constructor(
     private val _trailers = MutableStateFlow<List<Trailer>?>(null)
     val trailers = _trailers.asStateFlow()
 
-    private val _customers = MutableStateFlow<List<Customer>?>(null)
-    val customers = _customers.asStateFlow()
+//    private val _customers = MutableStateFlow<List<Customer>?>(null)
+//    val customers = _customers.asStateFlow()
 
     private val _drivers = MutableStateFlow<List<Staff>?>(null)
     val drivers = _drivers.asStateFlow()
@@ -60,7 +60,7 @@ class ChooseItemViewModel @Inject constructor(
 
     val editedRoute = routeRepository.editedRoute
 
-    val editedOrder = orderRepository.editedOrder
+ //   val editedOrder = orderRepository.editedOrder
 
 
     fun getTrucks(){
@@ -84,12 +84,12 @@ class ChooseItemViewModel @Inject constructor(
         }
     }
 
-    fun getCustomer(){
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = customerRepository.getAll()
-            _customers.emit(result)
-        }
-    }
+//    fun getCustomer(){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val result = customerRepository.getAll()
+//            _customers.emit(result)
+//        }
+//    }
 
     fun searchTrucks(s: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -120,25 +120,25 @@ class ChooseItemViewModel @Inject constructor(
         viewModelScope.launch {
             val newRoute = editedRoute.value.copy(truck = t)
             Log.i("ChooseItemVM", "newRoute: $newRoute")
-            routeRepository.updateRoute(newRoute)
+            routeRepository.updateEditedRoute(newRoute)
         }
     }
 
     fun setTrailer(t: Trailer){
         viewModelScope.launch {
-            routeRepository.updateRoute(editedRoute.value.copy(trailer = t))
+            routeRepository.updateEditedRoute(editedRoute.value.copy(trailer = t))
         }
     }
 
     fun setDriver(t: Staff){
         viewModelScope.launch {
-            routeRepository.updateRoute(editedRoute.value.copy(driver = t))
+            routeRepository.updateEditedRoute(editedRoute.value.copy(driver = t))
         }
     }
 
-    fun setCustomer(t: Customer){
-        viewModelScope.launch{
-            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
-        }
-    }
+//    fun setCustomer(t: Customer){
+//        viewModelScope.launch{
+//            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
+//        }
+//    }
 }

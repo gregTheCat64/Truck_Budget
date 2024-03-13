@@ -23,19 +23,13 @@ class RouteViewModel @Inject constructor(
     val loadState = _loadState.asSharedFlow()
 
     val editedRoute = routeRepository.editedRoute
-    val editedOrder = orderRepository.editedOrder
-
-    private var _prepay: Int? = null
-    private var _routeSpending: Int? = null
-    private var _routeDuration: Int? = null
-    private var _fuelUsedUp: Int? = null
-    private var _fuelPrice: Int? = null
+    //val editedOrder = orderRepository.editedOrder
 
 
     fun saveRoute(isFinished: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
-            updateEditedRoute()
+            //updateEditedRoute()
             try {
                 saveRoute()
                 if (isFinished) {
@@ -50,47 +44,41 @@ class RouteViewModel @Inject constructor(
         }
     }
 
-    fun updateRoute() {
-        viewModelScope.launch(Dispatchers.IO) {
-            updateEditedRoute()
+    suspend fun getRouteAndUpdateEditedRoute(id: Long) {
+        _loadState.emit(LoadState.Loading)
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val editedRoute = routeRepository.getRoute(id)?:Route()
+                routeRepository.updateEditedRoute(editedRoute)
+                _loadState.emit(LoadState.Success.OK)
+            } catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
         }
     }
+
 
     private suspend fun saveRoute() {
         routeRepository.insertRoute(editedRoute.value)
     }
 
-    private suspend fun updateEditedRoute() {
-        routeRepository.updateRoute(
-            editedRoute.value.copy(
-                prepayment = _prepay,
-                routeSpending = _routeSpending,
-                routeDuration = _routeDuration,
-                fuelUsedUp = _fuelUsedUp,
-                fuelPrice = _fuelPrice
-            )
-        )
+    fun setRouteFinished(){
+        viewModelScope.launch (Dispatchers.IO){
+            try {
+                routeRepository.updateEditedRoute(editedRoute.value.copy(isFinished = true))
+                saveRoute()
+                _loadState.emit(LoadState.Success.GoForward)
+            } catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
     }
 
-    fun setFieldsData(
-        prepayIn: Int?,
-        routeSpendingIn: Int?,
-        routeDurationIn: Int?,
-        fuelUsedUpIn: Int?,
-        fuelPriceIn: Int?
-    ) {
-        _prepay = prepayIn
-        _routeSpending = routeSpendingIn
-        _routeDuration = routeDurationIn
-        _fuelUsedUp = fuelUsedUpIn
-        _fuelPrice = fuelPriceIn
-    }
 
     suspend fun getOrderAndUpdateEditedOrder(id: String) {
         _loadState.emit(LoadState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                updateEditedRoute()
                 saveRoute()
                 val editedOrder = orderRepository.getOrderById(id)
                 orderRepository.updateOrder(editedOrder)
@@ -99,6 +87,13 @@ class RouteViewModel @Inject constructor(
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }
+    }
+
+    fun clearEditedOrder(){
+        viewModelScope.launch(Dispatchers.IO){
+            orderRepository.clearCurrentOrder()
+        }
+
     }
 
 

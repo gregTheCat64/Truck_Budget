@@ -37,12 +37,12 @@ interface RoutesDao {
     @Query("SELECT * FROM orders_table WHERE id =:id")
     suspend fun getByOrderId(id: String): DbOrderWithPointsAndCustomer
 
-    @Upsert()
+    @Upsert
     suspend fun insertRoute(
         route: DbRoute
     ): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertOrder(
         order: DbOrder,
         points: List<DbPoint>

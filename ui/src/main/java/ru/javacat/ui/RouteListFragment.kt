@@ -26,7 +26,6 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     private val viewModel: RouteListViewModel by viewModels()
     private lateinit var routesAdapter: RoutesAdapter
 
-
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
             FragmentRouteListBinding.inflate(inflater, container, false)
@@ -35,20 +34,22 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val bundle = Bundle()
+
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.getRouteAndUpdateEditedRoute(0L)
-            }
-            //findNavController().navigate(R.id.routeFragment)
+            findNavController().navigate(R.id.createRouteFragment)
+
         }
 
         //Adapter
         routesAdapter = RoutesAdapter (object : OnRouteListener{
             override fun onItem(item: Route) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.getRouteAndUpdateEditedRoute(item.id?:0L)
-                }
+                    //viewModel.getRouteAndUpdateEditedRoute(item.id?:0L)
+                    bundle.putLong("route_id", item.id?:0L)
+                //val action = R.id.action_routeListFragment_to_routeFragment
+                findNavController().navigate(R.id.routeFragment, bundle)
+
             }
 
             override fun onRemove(item: Route) {
@@ -66,17 +67,17 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         }
 
         //navigation
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.loadState.collectLatest {
-                        Log.i("routeListFrag", "state: ${it.toString()}")
-                        if (it == LoadState.Success.GoForward) {
-                            findNavController().navigate(R.id.routeFragment)
-                        }
-                    }
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                    viewModel.loadState.collectLatest {
+//                        Log.i("routeListFrag", "state: ${it.toString()}")
+//                        if (it == LoadState.Success.GoForward) {
+//                            findNavController().navigate(R.id.routeFragment)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }

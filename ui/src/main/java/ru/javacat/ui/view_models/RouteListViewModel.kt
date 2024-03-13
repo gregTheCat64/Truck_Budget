@@ -6,8 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
@@ -56,7 +54,7 @@ class RouteListViewModel @Inject constructor(
 
                     Route(id = lastRouteId + 1, driver = lastRouteDriver, truck = lastRouteTruck, trailer = lastRouteTrailer)
                 }
-                repo.updateRoute(editedRoute)
+                repo.updateEditedRoute(editedRoute)
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))

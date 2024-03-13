@@ -12,12 +12,13 @@ data class Route(
     val orderList: List<Order> = emptyList(),
     val prepayment: Int? = null,
     val fuelUsedUp: Int? = null,
-    val fuelPrice: Int? = null,
+    val fuelPrice: Float? = null,
     val routeSpending: Int? = null,
+    val payPerDiem: Int? = null,
     val routeDuration: Int? = null,
     val driverSalary: Int? = null,
     val moneyToPay: Int? = null,
     val income: Int? = null,
-    val netIncome: Int? = null,
+    val netIncome: Float? = null,
     val isFinished: Boolean = false
     )

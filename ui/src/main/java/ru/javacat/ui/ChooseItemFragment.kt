@@ -50,9 +50,9 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             "TRAILER" -> {
                 initTrailersAdapter(requestedItem)
             }
-            "CUSTOMER" -> {
-                initCustomerAdapter()
-            }
+//            "CUSTOMER" -> {
+//                initCustomerAdapter()
+//            }
             "CARGO" -> {
                 initCargoAdapter()
             }
@@ -176,27 +176,27 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
         }
     }
 
-    private fun initCustomerAdapter(){
-        viewModel.getCustomer()
-        customersAdapter = ChooseCustomerAdapter {
-            viewModel.setCustomer(it)
-            findNavController().navigateUp()
-        }
-        binding.itemList.adapter = customersAdapter
-        binding.itemNameTextView.text = "Клиенты"
-
-        binding.newItemBtn.setOnClickListener {
-            findNavController().navigate(R.id.newCustomerFragment)
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch{
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.customers.collectLatest {
-                    customersAdapter.submitList(it)
-                }
-            }
-        }
-    }
+//    private fun initCustomerAdapter(){
+//        viewModel.getCustomer()
+//        customersAdapter = ChooseCustomerAdapter {
+//            viewModel.setCustomer(it)
+//            findNavController().navigateUp()
+//        }
+//        binding.itemList.adapter = customersAdapter
+//        binding.itemNameTextView.text = "Клиенты"
+//
+//        binding.newItemBtn.setOnClickListener {
+//            findNavController().navigate(R.id.newCustomerFragment)
+//        }
+//
+//        viewLifecycleOwner.lifecycleScope.launch{
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//                viewModel.customers.collectLatest {
+//                    customersAdapter.submitList(it)
+//                }
+//            }
+//        }
+//    }
 
     private fun initCargoAdapter(){
 

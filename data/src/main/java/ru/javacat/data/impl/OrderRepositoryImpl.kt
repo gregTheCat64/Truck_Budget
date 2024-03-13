@@ -10,13 +10,12 @@ import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.OrderCard
 import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.repo.OrderRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val draftOrder = Order("",0L, emptyList(), 0, null,
+val nullOrder = Order("",0L, emptyList(), 0, null,
     0,0,0,0,0,
     null,null,null, null, null,
     null, OrderStatus.IN_PROGRESS)
@@ -29,7 +28,7 @@ class OrderRepositoryImpl @Inject constructor(
     override val allOrders: Flow<List<Order?>>
         get() = routesDao.getAllOrders().map {list-> list.map { it.toOrderModel() } }
 
-    private val _editedOrder = MutableStateFlow(draftOrder)
+    private val _editedOrder = MutableStateFlow(nullOrder)
     override val editedOrder: StateFlow<Order>
         get() = _editedOrder.asStateFlow()
 
@@ -53,6 +52,6 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearCurrentOrder() {
-        _editedOrder.emit(draftOrder)
+        _editedOrder.emit(nullOrder)
     }
 }
