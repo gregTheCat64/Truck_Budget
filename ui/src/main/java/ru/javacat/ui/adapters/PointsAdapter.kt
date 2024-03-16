@@ -23,7 +23,7 @@ class PointsAdapter(
 
         fun bind(item: Point){
             binding.apply {
-                location.text = item.location.name
+                location.text = item.location
                 date.text = item.arrivalDate.asDayAndMonthShortly()
                 removeBtn.setOnClickListener {
                 onPointListener.removePoint(item)

@@ -37,7 +37,7 @@ class AddPointsViewModel @Inject constructor(
     private val _locations = MutableStateFlow<List<Location>?>(null)
     val locations = _locations.asStateFlow()
 
-    val pointList = mutableListOf<Point>()
+    var pointList = mutableListOf<Point>()
 
     private var _pointDate = MutableStateFlow<LocalDate>(LocalDate.now())
     val pointDate: StateFlow<LocalDate> = _pointDate
@@ -47,6 +47,10 @@ class AddPointsViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
+
+    fun initPointList(points: List<Point>){
+        pointList = points.toMutableList()
+    }
 
     fun getLocations(){
         viewModelScope.launch(Dispatchers.IO){
@@ -88,7 +92,7 @@ class AddPointsViewModel @Inject constructor(
             Log.i("OrderVM", "points: $pointList")
             _loadState.emit(LoadState.Loading)
             try {
-                orderRepository.updateOrder( editedOrder.value.copy(points = pointList.toList()))
+                orderRepository.updateOrder(editedOrder.value.copy(points = pointList.toList()))
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

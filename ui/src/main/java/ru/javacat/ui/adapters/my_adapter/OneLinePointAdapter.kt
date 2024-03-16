@@ -27,7 +27,7 @@ class OneLinePointAdapter: ListAdapter<Point, OneLinePointAdapter.Holder>(Compar
 
         fun bind(item: Point){
             binding.pointDateTv.text = item.arrivalDate.asDayAndMonthShortly()
-            binding.pointNameTv.text = item.location.name
+            binding.pointNameTv.text = item.location
         }
     }
 

@@ -34,29 +34,61 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     private lateinit var cargoAdapter: CargoAdapter
     private var cargosFound: Boolean = false
 
+    private var weight: Int = 20
+    private var volume: Int = 82
+
+    private var isNewOrder = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        isNewOrder = args?.getBoolean(IS_NEW_ORDER) ?: true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getCargos()
-        initAdapter()
         addEditTextListener()
-            //Навигация
-        loadStateListener()
+        initAdapter()
+        initUi()
 
+
+        //Навигация
+        loadStateListener()
 
         binding.addNewCargoBtn.setOnClickListener {
             val cargoName = binding.cargoEditText.text.toString()
             viewModel.insertNewCargo(Cargo(null, cargoName))
             binding.addNewCargoBtn.isGone = true
         }
+    }
 
-
+    private fun initUi() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editedOrder.collectLatest { order ->
+                    order.cargoName.let {
+                        if (!it.isNullOrEmpty()) binding.cargoEditText.setText(it)
+                    }
+                    order.cargoVolume.let {
+                        if (it != 0) binding.tvVolume.setText(it.toString())
+                    }
+                    order.cargoWeight.let {
+                        if (it != 0) binding.weightTv.setText(it.toString())
+                    }
+                }
+            }
+        }
     }
 
     private fun initAdapter() {
+        viewModel.getCargos()
+
         cargoAdapter = CargoAdapter {
-            viewModel.addCargoToOrder(it.name)
-            binding.cargoEditText.setText(it.name)
+            getFields()
+            viewModel.addCargoToOrder(it.name, volume, weight)
+            //binding.cargoEditText.setText(it.name)
             //binding.cargoRecView.isGone = true
             //binding.cargoEditText.clearFocus()
             //AndroidUtils.hideKeyboard(requireView())
@@ -70,8 +102,18 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
                     // Log.i("OrderFrag", "cargos: $it")
                     cargoAdapter.submitList(it)
                     cargosFound = it?.size != 0
+                    binding.addNewCargoBtn.isGone = cargosFound
                 }
             }
+        }
+    }
+
+    private fun getFields() {
+        binding.tvVolume.text.let {
+            volume = if (it?.isNotEmpty() == true) it.toString().toInt() else 0
+        }
+        binding.weightTv.text.let {
+            weight = if (it?.isNotEmpty() == true) it.toString().toInt() else 0
         }
     }
 
@@ -82,14 +124,15 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.searchCargos(p0.toString())
-                binding.cargoRecView.isVisible = true
-                if (!cargosFound) {
-                    binding.addNewCargoBtn.isVisible = true
-                    binding.addNewCargoBtn.text = "Сохранить $p0"
-                } else binding.addNewCargoBtn.isGone = true
-            }
 
+                //binding.cargoRecView.isVisible = true
+                viewModel.searchCargos(p0.toString())
+
+//                if (!cargosFound && p0?.length != 0) {
+//                    binding.addNewCargoBtn.isVisible = true
+//                    binding.addNewCargoBtn.text = "Сохранить $p0"
+//                } else binding.addNewCargoBtn.isGone = true
+            }
             override fun afterTextChanged(p0: Editable?) {
             }
         })
@@ -100,7 +143,10 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loadState.collectLatest {
                     if (it is LoadState.Success.GoForward) {
-                        findNavController().navigate(R.id.addPointsFragment)
+                        if (isNewOrder) {
+                            findNavController().navigate(R.id.addPointsFragment)
+                        } else findNavController().navigateUp()
+
                     }
                 }
             }

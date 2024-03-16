@@ -13,6 +13,7 @@ data class DbCustomerWithEmployees(
     val formalAddress: String,
     val postAddress: String,
     val shortName: String,
+    val positionId: Int,
 
     @Relation(
         parentColumn = "id",

@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,25 +21,53 @@ import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
 import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint
-class AddCustomerFragment: BaseFragment<FragmentAddCustomerBinding>() {
+class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddCustomerBinding
-        get() = {inflater, container->
-            FragmentAddCustomerBinding.inflate(inflater, container,false)
+        get() = { inflater, container ->
+            FragmentAddCustomerBinding.inflate(inflater, container, false)
         }
 
     private val viewModel: AddCustomerViewModel by viewModels()
     private lateinit var adapter: ChooseCustomerAdapter
 
+    private var isNewOrder = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        isNewOrder = args?.getBoolean(IS_NEW_ORDER) ?: true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initUi()
         initAdapter()
         addEditTextListener()
         loadStateListener()
 
+        binding.cancelBtn.setOnClickListener {
+            if (isNewOrder){
+                findNavController().navigate(R.id.routeFragment)
+            } else findNavController().navigate(R.id.orderDetailsFragment)
+        }
+
     }
 
-    private fun initAdapter(){
+    private fun initUi() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editedOrder.collectLatest { order ->
+                    order.customer?.let {
+                        binding.customerInputEditText.setText(it.name)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initAdapter() {
         viewModel.getCustomers()
         adapter = ChooseCustomerAdapter {
             viewModel.addCustomerToOrder(it)
@@ -51,7 +80,7 @@ class AddCustomerFragment: BaseFragment<FragmentAddCustomerBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.customers.collectLatest {
                     adapter.submitList(it)
                 }
@@ -74,12 +103,14 @@ class AddCustomerFragment: BaseFragment<FragmentAddCustomerBinding>() {
         })
     }
 
-    private fun loadStateListener(){
-        viewLifecycleOwner.lifecycleScope.launch{
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+    private fun loadStateListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.GoForward){
-                        findNavController().navigate(R.id.addCargoFragment)
+                    if (it is LoadState.Success.GoForward) {
+                        if (isNewOrder) {
+                            findNavController().navigate(R.id.addCargoFragment)
+                        } else findNavController().navigateUp()
                     }
                 }
             }

@@ -2,6 +2,7 @@ package ru.javacat.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CustomersDao
 import ru.javacat.data.db.dao.DbCargo
@@ -14,11 +15,12 @@ import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
-import ru.javacat.data.db.entities.DbPoint
+
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
+import ru.javacat.data.db.entities.PointConverter
 
 
 @Database(
@@ -30,12 +32,12 @@ import ru.javacat.data.db.entities.DbTruck
         DbStaff::class,
         DbTruck::class,
         DbTrailer::class,
-        DbPoint::class,
         DbLocation::class,
         DbCargo::class
     ],
     version = 1, exportSchema = false
 )
+@TypeConverters(PointConverter::class)
 abstract class AppDb : RoomDatabase() {
     abstract val routesDao: RoutesDao
     abstract val customersDao: CustomersDao

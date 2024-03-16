@@ -49,11 +49,14 @@ class AddCargoViewModel @Inject constructor(
         }
     }
 
-    fun addCargoToOrder(cargoName: String) {
+    fun addCargoToOrder(cargoName: String, volume: Int, weight: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                orderRepository.updateOrder(editedOrder.value.copy(cargoName = cargoName))
+                orderRepository.updateOrder(editedOrder.value.copy(
+                    cargoName = cargoName,
+                    cargoVolume = volume,
+                    cargoWeight = weight))
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))

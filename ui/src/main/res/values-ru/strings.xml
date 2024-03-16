@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Truck Budget</string>
+    <string name="push_to_add">Нажмите чтобы добавить</string>
+    <string name="add">Добавить</string>
+</resources>

@@ -3,7 +3,6 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
-import ru.javacat.common.utils.toBase64
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
@@ -26,10 +24,8 @@ import ru.javacat.ui.adapters.LocationAdapter
 import ru.javacat.ui.adapters.OnPointListener
 import ru.javacat.ui.adapters.PointsAdapter
 import ru.javacat.ui.databinding.FragmentAddPointsBinding
-import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.AddPointsViewModel
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
@@ -46,6 +42,15 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     private var locationsFound: Boolean = false
     private var currentRoute = Route()
 
+    private var isNewOrder = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        isNewOrder = args?.getBoolean(IS_NEW_ORDER)?: true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,6 +66,13 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.editedOrder.collectLatest {
+                pointsAdapter.submitList(it.points)
+                viewModel.initPointList(it.points)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             if (currentRoute.orderList.isNotEmpty()){
                 val lastDate = currentRoute.orderList.last().points.last().arrivalDate
                 viewModel.setPointDate(lastDate.plusDays(1))
@@ -68,20 +80,18 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         }
 
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.editedOrder.collectLatest {
-                pointsAdapter.submitList(it.points)
-            }
-        }
+
 
         binding.saveBtn.setOnClickListener {
-            findNavController().navigate(R.id.addPaymentFragment)
+            if (isNewOrder){
+                findNavController().navigate(R.id.addPaymentFragment)
+            } else findNavController().navigateUp()
+
         }
 
     }
 
     private fun initPointAdapter() {
-        viewModel.getLocations()
         pointsAdapter = PointsAdapter(object : OnPointListener {
             override fun removePoint(item: Point) {
                 viewModel.removePoint(item)
@@ -99,11 +109,11 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
 
         //Добавляем Поинт
         binding.addPointBtn.setOnClickListener {
-            val place = binding.locationEditText.text.toString()
-            if (place.isNotEmpty()) {
-                val newLocation = Location(null, place)
+            val locationName = binding.locationEditText.text.toString()
+            if (locationName.isNotEmpty()) {
+                val newLocation = Location(null, locationName)
                 viewModel.insertNewLocation(newLocation)
-                addPoint(newLocation)
+                addPoint(locationName)
                 binding.locationEditText.text?.clear()
                 binding.addPointBtn.isGone = true
                 viewModel.increaseDay()
@@ -132,7 +142,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     private fun initLocationAdapter() {
         viewModel.getLocations()
         locationAdapter = LocationAdapter {
-            addPoint(it)
+            addPoint(it.name)
             viewModel.increaseDay()
             //binding.locationsRecView.isGone = true
             //AndroidUtils.hideKeyboard(requireView())
@@ -150,13 +160,13 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         }
     }
 
-    private fun addPoint(location: Location) {
+    private fun addPoint(locationName: String) {
         val pointDate = viewModel.pointDate.value
         val pointSize = viewModel.pointList.size
         val ordersSize = viewModel.orderList.size
 
-        val id = ("Rt"+currentRoute.id.toString()+"Ord"+(ordersSize+1).toString()+"pt"+(pointSize+1).toString() )
-        val newPoint = Point(id, location, pointDate)
+        //val id = ("Rt"+currentRoute.id.toString()+"Ord"+(ordersSize+1).toString()+"pt"+(pointSize+1).toString())
+        val newPoint = Point("", locationName, pointDate)
         viewModel.addPoint(newPoint)
     }
 

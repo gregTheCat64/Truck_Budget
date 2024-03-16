@@ -7,6 +7,8 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.models.Point
@@ -31,10 +33,8 @@ data class DbOrder(
     val id: String,
     @ColumnInfo(index = true)
     val routeId: Long,
-    //val points: List<Point>,
-    val driverId: Long,
-    val truckId: Long,
-    val trailerId: Long?,
+    @TypeConverters(PointConverter::class)
+    val points: List<DbPoint>,
     val price: Int,
     val customerId: Long,
     val cargoWeight: Int?,
@@ -54,4 +54,16 @@ class StatusConverter {
     fun toStatus(value: String) = enumValueOf<OrderStatus>(value)
     @TypeConverter
     fun fromStatus(value: OrderStatus) = value.name
+}
+
+class PointConverter {
+    @TypeConverter
+    fun fromPoints(list: List<DbPoint>): String {
+        return Gson().toJson(list)
+    }
+    @TypeConverter
+    fun toPoints(json: String): List<DbPoint> {
+        val type = object: TypeToken<List<DbPoint>>() {}.type
+        return Gson().fromJson(json, type)
+    }
 }

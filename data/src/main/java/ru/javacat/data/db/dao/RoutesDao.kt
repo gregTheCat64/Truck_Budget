@@ -9,7 +9,7 @@ import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbOrder
-import ru.javacat.data.db.entities.DbPoint
+
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.models.DbOrderWithPointsAndCustomer
 import ru.javacat.data.db.models.DbRouteWithOrders
@@ -22,6 +22,7 @@ interface RoutesDao {
     @Query("SELECT * FROM routes_table")
     fun getAllRoutes(): Flow<List<DbRouteWithOrders>>
 
+    @Transaction
     @Query("SELECT * FROM routes_table ORDER BY id DESC LIMIT 1")
     fun getLastRoute(): DbRouteWithOrders?
 
@@ -45,7 +46,7 @@ interface RoutesDao {
     @Upsert
     suspend fun insertOrder(
         order: DbOrder,
-        points: List<DbPoint>
+        //points: List<DbPoint>
     )
 
 

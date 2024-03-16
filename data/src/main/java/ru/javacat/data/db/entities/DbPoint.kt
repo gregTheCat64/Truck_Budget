@@ -8,28 +8,25 @@ import androidx.room.PrimaryKey
 import ru.javacat.common.utils.toLocalDate
 import ru.javacat.domain.models.Point
 
-@Entity(
-    tableName = "points_table",
-    foreignKeys = [
-        ForeignKey(
-            entity = DbOrder::class,
-            parentColumns = ["id"],
-            childColumns = ["orderId"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ]
-)
+//@Entity(
+//    tableName = "points_table",
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = DbOrder::class,
+//            parentColumns = ["id"],
+//            childColumns = ["orderId"],
+//            onDelete = ForeignKey.CASCADE,
+//            onUpdate = ForeignKey.CASCADE
+//        )
+//    ]
+//)
 data class DbPoint(
-    @PrimaryKey
     val id: String,
-    @ColumnInfo(index = true)
-    val orderId: String,
-    @Embedded(prefix = "loc")
-    val location: DbLocation,
+    //val orderId: String,
+    val location: String,
     val arrivalDate: String
 ) {
     fun toPointModel() = Point(
-        id, location.toLocationModel(), arrivalDate.toLocalDate()
+        id, location, arrivalDate.toLocalDate()
     )
 }

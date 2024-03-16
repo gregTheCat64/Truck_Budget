@@ -17,7 +17,7 @@ class OrdersAdapter(
     override fun bind(item: Order) {
         val points = mutableListOf<String>()
             for (i in item.points){
-            points.add(i.location.name)
+            points.add(i.location)
         }
         binding.customerName.text = item.customer?.name
         binding.points.text = points.toString()

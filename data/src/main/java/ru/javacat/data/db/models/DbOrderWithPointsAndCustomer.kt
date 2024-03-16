@@ -5,22 +5,24 @@ import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbOrder
-import ru.javacat.data.db.entities.DbPoint
+
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.Point
 
-data class DbOrderWithPointsAndCustomer (
+data class DbOrderWithPointsAndCustomer(
     @Embedded
     val order: DbOrder,
 
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "orderId"
-    )
-    val points: List<DbPoint>,
+//    @Relation(
+//        parentColumn = "id",
+//        entityColumn = "orderId"
+//    )
+//    @Embedded
+//    val points: List<Point>,
 
     @Relation(
         parentColumn = "customerId",
@@ -35,38 +37,35 @@ data class DbOrderWithPointsAndCustomer (
     )
     val route: DbRoute,
 
-    @Relation(
-        parentColumn = "driverId",
-        entityColumn = "id",
-    )
-    val driver: DbStaff,
+//    @Relation(
+//        parentColumn = "driverId",
+//        entityColumn = "id",
+//    )
+//    val driver: DbStaff,
+//
+//    @Relation(
+//        parentColumn = "truckId",
+//        entityColumn = "id",
+//    )
+//    val truck: DbTruck,
+//
+//    @Relation(
+//        parentColumn = "trailerId",
+//        entityColumn = "id",
+//    )
+//    val trailer: DbTrailer?,
 
-    @Relation(
-        parentColumn = "truckId",
-        entityColumn = "id",
-    )
-    val truck: DbTruck,
 
-    @Relation(
-        parentColumn = "trailerId",
-        entityColumn = "id",
-    )
-    val trailer: DbTrailer?,
-
-
-    ) {
+) {
     fun toOrderModel(): Order {
         return Order(
             id = order.id,
-            routeId = route.id?:0L,
-            points = points.map { it.toPointModel() },
-            driverId = driver.id,
-            truckId = truck.id,
-            trailerId = trailer?.id?:0,
+            routeId = route.id ?: 0L,
+            points = order.points.map { it.toPointModel() },
             price = order.price,
             customer = customer.toCustomerModel(),
-            cargoWeight = order.cargoWeight?:0,
-            cargoVolume  = order.cargoVolume?:0,
+            cargoWeight = order.cargoWeight ?: 0,
+            cargoVolume = order.cargoVolume ?: 0,
             cargoName = order.cargoName,
             extraConditions = order.extraConditions,
             daysToPay = order.daysToPay,

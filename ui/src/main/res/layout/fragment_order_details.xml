@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -40,13 +44,14 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:hint="Заказчик" />
+
         <TextView
             android:id="@+id/customerTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_marginStart="16dp"
-            android:text="Миронов В.И."
+
              />
 
         <TextView
@@ -61,7 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-           android:text="Стройматериалы" />
+            style="@style/TextAppearance.Material3.BodyLarge"
+            />
 
         <TextView
 
@@ -76,9 +82,9 @@
                 android:id="@+id/tvVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_marginStart="16dp"
-                android:text="82" />
+                />
 
         <TextView
             android:layout_width="match_parent"
@@ -89,12 +95,12 @@
             />
 
             <TextView
+                android:id="@+id/weightTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_marginStart="16dp"
-                android:hint="Вес, т"
-                android:text="20" />
+                 />
 
 
         <TextView
@@ -109,9 +115,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_marginStart="16dp"
-            android:text="Задняя" />
+             />
 
 
 
@@ -132,7 +138,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/pointsRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -195,7 +201,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="35000 руб. без НДС"
+
+            style="@style/TextAppearance.Material3.BodyLarge"
             />
 
         <TextView
@@ -211,7 +218,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="5 дней"
+            style="@style/TextAppearance.Material3.BodyLarge"
             />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -222,16 +229,6 @@
             android:visibility="gone">
 
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/editDocsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:text="Документы"
-                app:icon="@drawable/baseline_edit_24"
-                />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -247,7 +244,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Добавить номер вручения"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="@string/push_to_add"
                 />
 
 
@@ -260,10 +258,12 @@
                 />
 
             <TextView
+                android:id="@+id/docsReceivedDateTvValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Добавить дату вручения"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="@string/push_to_add"
                 />
 
             <TextView
@@ -280,19 +280,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Добавить дату оплаты"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="@string/push_to_add"
                 />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="16dp"
-            android:text="Сохранить" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</ScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelBtn"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:text="Cancel" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Сохранить" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 

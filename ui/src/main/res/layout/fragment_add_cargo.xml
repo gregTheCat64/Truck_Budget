@@ -23,6 +23,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1">
@@ -31,7 +32,8 @@
                 android:id="@+id/tvVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="82"
+                app:endIconMode="clear_text"
+                android:inputType="number"
                 android:hint="Объем, м3"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -39,13 +41,16 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
             android:layout_marginEnd="8dp"
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weightTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="20"
+                app:endIconMode="clear_text"
+                android:inputType="number"
                 android:hint="Вес, т"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,6 +75,7 @@
         android:layout_gravity="center"
         >
         <CheckBox
+            android:id="@+id/backCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Задняя"
@@ -77,12 +83,14 @@
             android:layout_marginEnd="8dp"
             />
         <CheckBox
+            android:id="@+id/sideCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Боковая"
             android:layout_marginEnd="8dp"
             />
         <CheckBox
+            android:id="@+id/upCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Верхняя"
@@ -92,6 +100,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
 
@@ -99,6 +108,8 @@
             android:id="@+id/cargoEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+
             android:hint="Груз"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -111,7 +122,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         style="@style/Widget.Material3.Button.OutlinedButton"
-        android:text="Добавить"
+        android:text="@string/add"
         />
 
     <androidx.recyclerview.widget.RecyclerView

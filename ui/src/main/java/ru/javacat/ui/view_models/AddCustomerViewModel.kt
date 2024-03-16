@@ -20,7 +20,8 @@ class AddCustomerViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
     private val customerRepository: CustomerRepository
 ): ViewModel() {
-    private val editedOrder = orderRepository.editedOrder
+
+    val editedOrder = orderRepository.editedOrder
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()

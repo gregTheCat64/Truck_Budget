@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 val nullOrder = Order("",0L, emptyList(), 0, null,
-    0,0,0,0,0,
+    0,0,
     null,null,null, null, null,
     null, OrderStatus.IN_PROGRESS)
 
@@ -34,12 +34,14 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun updateOrder(newOrder: Order) {
         _editedOrder.emit(newOrder)
-        Log.i("orderRepo", "editedOrder = $editedOrder")
+        Log.i("orderRepo", "editedOrder = ${editedOrder.value}")
     }
 
     override suspend fun insertOrder(order: Order) {
         Log.i("orderRepo", "order: $order")
-        dbQuery { routesDao.insertOrder(order.toDb(), order.points.map { it.toDb(order) }) }
+        dbQuery { routesDao.insertOrder(order.toDb())
+            //order.points.map { it.toDb(order) })
+        }
     }
 
     override suspend fun getOrderById(orderId: String): Order {

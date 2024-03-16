@@ -45,9 +45,7 @@ fun Route.toDb() = DbRoute(
 fun Order.toDb() = DbOrder(
     id,
     routeId,
-    driverId,
-    truckId,
-    trailerId,
+    points.map { it.toDb() },
     price,
     customer?.id?:0,
     cargoWeight,
@@ -61,8 +59,8 @@ fun Order.toDb() = DbOrder(
     status?:OrderStatus.IN_PROGRESS
 )
 
-fun Point.toDb(order: Order) = DbPoint(
-    id, order.id, location.toDb(), arrivalDate.toString()
+fun Point.toDb() = DbPoint(
+    id,  location, arrivalDate.toString()
 )
 
 fun Truck.toDb() = DbTruck(

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Truck Budget</string>
+    <string name="push_to_add">Push to add</string>
+    <string name="add">Add</string>
 </resources>
