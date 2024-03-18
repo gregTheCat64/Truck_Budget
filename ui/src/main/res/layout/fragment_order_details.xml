@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,286 +9,297 @@
 
     <ScrollView
         android:id="@+id/scroll"
+        android:layout_marginBottom="72dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/orderTitle"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:text="Заявка ORD1R2 к рейсу №1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp" />
-
-        <include layout="@layout/horizon_line" />
-
-        <TextView
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Информация о заявке:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
-
-        <TextView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:hint="Заказчик" />
+            app:cardCornerRadius="8dp"
+            >
 
-        <TextView
-            android:id="@+id/customerTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_marginStart="16dp"
-
-             />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:hint="Груз" />
-
-        <TextView
-            android:id="@+id/cargoTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            />
-
-        <TextView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:hint="Объем, м3"
-             />
-
-            <TextView
-                android:id="@+id/tvVolume"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_marginStart="16dp"
-                />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:hint="Вес, т"
-            />
+                <TextView
+                    android:id="@+id/orderTitle"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                   
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp" />
 
-            <TextView
-                android:id="@+id/weightTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_marginStart="16dp"
-                 />
+                <include layout="@layout/horizon_line" />
 
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Информация о заявке:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
 
-        <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:hint="Заказчик" />
 
-            style="@style/TextAppearance.Material3.BodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Тип погрузки:" />
+                <TextView
+                    android:id="@+id/customerTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="16dp"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_marginStart="16dp"
-             />
+                    />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:hint="Груз" />
 
+                <TextView
+                    android:id="@+id/cargoTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    />
 
+                <TextView
 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:hint="Объем, м3"
+                    />
 
-        <include layout="@layout/horizon_line" />
+                <TextView
+                    android:id="@+id/tvVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="16dp"
+                    />
 
-        <TextView
-            android:id="@+id/routeTextView"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Маршрут:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:hint="Вес, т"
+                    />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pointsRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                tools:listitem="@layout/point_item_oneline" />
-
-
-        <include layout="@layout/horizon_line" />
-
-        <RadioGroup
-            android:id="@+id/statusRadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/pending"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="на исполнении" />
-
-            <RadioButton
-                android:id="@+id/finished"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="завершен" />
-
-            <RadioButton
-                android:id="@+id/paid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="оплачен" />
-        </RadioGroup>
-
-        <TextView
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Оплата:" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Ставка"
-            />
-
-        <TextView
-            android:id="@+id/priceTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-
-            style="@style/TextAppearance.Material3.BodyLarge"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:hint="Срок оплаты"
-            />
-
-        <TextView
-            android:id="@+id/daysToPayTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/documentsGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+                <TextView
+                    android:id="@+id/weightTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="16dp"
+                    />
 
 
+                <TextView
+
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Тип погрузки:" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="16dp"
+                    />
+
+
+
+
+
+                <include layout="@layout/horizon_line" />
+
+                <TextView
+                    android:id="@+id/routeTextView"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Маршрут:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pointsRecView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    tools:listitem="@layout/point_item_oneline" />
+
+
+                <include layout="@layout/horizon_line" />
+
+                <RadioGroup
+                    android:id="@+id/statusRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="на исполнении" />
+
+                    <RadioButton
+                        android:id="@+id/finished"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="завершен" />
+
+                    <RadioButton
+                        android:id="@+id/paid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="оплачен" />
+                </RadioGroup>
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Оплата:" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:hint="Номер отправления"
+                    android:hint="Ставка"
                     />
 
+                <TextView
+                    android:id="@+id/priceTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
 
-            <TextView
-                android:id="@+id/docsNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:text="@string/push_to_add"
-                />
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="Срок оплаты"
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="Дата вручения"
-                />
+                <TextView
+                    android:id="@+id/daysToPayTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    />
 
-            <TextView
-                android:id="@+id/docsReceivedDateTvValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:text="@string/push_to_add"
-                />
-
-            <TextView
-                android:id="@+id/payDayTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="Дата оплаты"
-                />
-
-            <TextView
-                android:id="@+id/payDayValueTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:text="@string/push_to_add"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/documentsGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:hint="Номер отправления"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/docsNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:text="@string/push_to_add"
+                        />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:hint="Дата вручения"
+                        />
+
+                    <TextView
+                        android:id="@+id/docsReceivedDateTvValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:text="@string/push_to_add"
+                        />
+
+                    <TextView
+                        android:id="@+id/payDayTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:hint="Дата оплаты"
+                        />
+
+                    <TextView
+                        android:id="@+id/payDayValueTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:text="@string/push_to_add"
+                        />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
