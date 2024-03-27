@@ -1,8 +1,8 @@
 package ru.javacat.domain.repo
 
-import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.CargoName
 
-interface CargoRepository: BaseCrud<Cargo, String> {
+interface CargoRepository: BaseCrud<CargoName, String> {
 
 //    suspend fun searchCargos(search: String): List<Cargo>
 //    suspend fun getCargos(): List<Cargo>

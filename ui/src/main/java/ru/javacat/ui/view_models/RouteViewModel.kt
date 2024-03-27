@@ -40,7 +40,6 @@ class RouteViewModel @Inject constructor(
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
-
         }
     }
 
@@ -79,9 +78,9 @@ class RouteViewModel @Inject constructor(
         _loadState.emit(LoadState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                saveRoute()
+                //saveRoute()
                 val editedOrder = orderRepository.getOrderById(id)
-                orderRepository.updateOrder(editedOrder)
+                orderRepository.restoringOrder(editedOrder)
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
@@ -93,7 +92,6 @@ class RouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             orderRepository.clearCurrentOrder()
         }
-
     }
 
 

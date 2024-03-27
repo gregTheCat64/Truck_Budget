@@ -30,10 +30,15 @@ class RouteRepositoryImpl @Inject constructor(
     override val editedRoute: StateFlow<Route>
         get() = _editedRoute.asStateFlow()
 
+    private val _isEdited = MutableStateFlow(false)
+    override val isEdited: StateFlow<Boolean>
+        get() = _isEdited.asStateFlow()
+
     override suspend fun getRoute(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
     override suspend fun updateEditedRoute(newRoute: Route) {
         _editedRoute.emit(newRoute)
+        _isEdited.emit(true)
         Log.i("RouteRepo", "edited Route: ${editedRoute.value}")
     }
 
@@ -43,6 +48,7 @@ class RouteRepositoryImpl @Inject constructor(
 
     override suspend fun insertRoute(route: Route): Long {
         println("inserting in repo $route")
+        _isEdited.emit(false)
         val result = dbQuery { routesDao.insertRoute(route.toDb()) }
         //_editedRoute.emit(route)
         return result

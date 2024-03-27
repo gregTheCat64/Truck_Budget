@@ -19,9 +19,11 @@ class RoutesAdapter(
     }
 
     override fun bind(item: Route) {
-        val customersList = item.orderList.map { it.customer?.name }
+        val customersList = item.orderList.map {
+            it.customer.shortName + " "+ it.price + "р."
+        }
 
-        binding.routeTitleTextView.text = "Поездка №${item.id} от ${item.startDate}"
+        binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate}"
         binding.earnedMoneyTextView.text = item.income?.toString()
         binding.customersListTextView.text = customersList.toString()
         binding.removeBtn.setOnClickListener {

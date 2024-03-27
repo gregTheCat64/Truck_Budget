@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Truck Budget</string>
-    <string name="push_to_add">Нажмите чтобы добавить</string>
+    <string name="push_to_add">Добавить</string>
     <string name="add">Добавить</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="order_info">Информация о заявке:</string>
+    <string name="customer">Заказчик</string>
+    <string name="cargo">Груз</string>
+    <string name="volume_m3">Объем, м3</string>
+    <string name="weight_ton">Вес, тонн</string>
+    <string name="loading_type">Тип погрузки:</string>
+    <string name="route">Маршрут:</string>
+    <string name="payment_date">Дата оплаты</string>
+    <string name="receiving_date">Дата получения документов</string>
+    <string name="sending_documents_track_number">Номер отправки документов</string>
+    <string name="cost">Ставка, руб.</string>
+    <string name="payment">Оплата:</string>
+    <string name="paid">оплачен</string>
+    <string name="finished">завершен</string>
+    <string name="pending">в процессе</string>
+    <string name="back">Назад</string>
+    <string name="days_to_pay">Срок оплаты, дней</string>
+    <string name="advance">Аванс:</string>
+    <string name="documents">Документы</string>
+    <string name="cargo_name">Наименование</string>
+    <string name="payment_status">Статус оплаты</string>
 </resources>

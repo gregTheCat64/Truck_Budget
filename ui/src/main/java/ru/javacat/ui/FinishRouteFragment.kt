@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Route
 import ru.javacat.ui.databinding.FragmentFinishRouteBinding
 import ru.javacat.ui.view_models.FinishRouteViewModel
 import java.time.Period
@@ -39,37 +40,16 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                binding.prepayEditText.setText(it.prepayment.toString())
-                val firstDate = it.orderList.firstOrNull()?.points?.first()?.arrivalDate
-                val lastDate = it.orderList.lastOrNull()?.points?.last()?.arrivalDate
-
-                val period = Period.between(firstDate, lastDate)
-                val routeDuration = period.days
-                binding.routeDaysCount.setText(routeDuration.toString())
-
-                it.driverSalary.let { driverSalary ->
-                    if (driverSalary != null) binding.salaryEditText.setText(driverSalary.toString())
-                }
-                it.income.let { income->
-                    if (income != null) binding.incomeTv.text = income.toString()
-                }
-                it.netIncome.let { netIncome->
-                    if (netIncome != null) binding.netIncomeTv.setText(netIncome.toString())
-                }
-
-
-                //binding.fuelCost.setText(it.fuelPrice.toString())
-                //currentRoute = it
+                initUI(it)
             }
         }
 
+        //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
                 if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.routeListFragment)
             }
         }
-
-
 
         binding.calculateBtn.setOnClickListener {
             getFieldsData()
@@ -80,11 +60,54 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             getFieldsData()
             viewModel.calculateNetIncome()
         }
+
         binding.saveBtn.setOnClickListener {
             viewModel.saveRoute()
         }
 
 
+    }
+
+    private fun initUI(route: Route){
+
+        val firstDate = route.orderList.firstOrNull()?.points?.first()?.arrivalDate
+        val lastDate = route.orderList.lastOrNull()?.points?.last()?.arrivalDate
+
+        val period = Period.between(firstDate, lastDate)
+        val routeDuration = period.days
+        binding.routeDaysCount.setText(routeDuration.toString())
+
+        route.prepayment?.let {
+            binding.prepayEditText.setText(it.toString())
+        }
+
+        route.driverSalary?.let { driverSalary ->
+            binding.salaryEditText.setText(driverSalary.toString())
+        }
+        route.income?.let { income->
+            binding.incomeTv.text = income.toString()
+        }
+        route.netIncome?.let { netIncome->
+            binding.netIncomeTv.setText(netIncome.toString())
+        }
+        route.routeSpending?.let {
+            binding.routeSpending.setText(it.toString())
+        }
+
+        route.fuelPrice?.let {
+            binding.fuelPrice.setText(it.toString())
+        }
+
+        route.fuelUsedUp?.let {
+            binding.fuelUsedUp.setText(it.toString())
+        }
+        route.payPerDiem?.let {
+            binding.payPerDiem.setText(it.toString())
+        }
+
+        route.moneyToPay?.let {
+            binding.moneyToPayValue.setText(it.toString())
+        }
     }
 
     private fun getFieldsData() {

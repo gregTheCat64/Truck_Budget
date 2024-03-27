@@ -4,7 +4,9 @@ import java.time.LocalDate
 
 data class Staff (
     override val id: Long,
-    val fullName: String,
+    val firstName: String?,
+    val middleName: String?,
+    val surname: String,
     val passportSerial: String,
     val passportNumber: String,
     val passportReceivedDate: String?,
@@ -13,5 +15,5 @@ data class Staff (
     val placeOfRegistration: String?,
     val phoneNumber: String?,
     override val positionId: Long,
-    override val name: String = fullName
+    override val name: String = surname
 ): BaseNameModel<Long>()

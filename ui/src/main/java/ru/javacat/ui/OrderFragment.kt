@@ -17,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
+import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.models.Route
@@ -41,74 +43,78 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
     private var currentRoute = Route()
     private var currentOrder = Order(
-        "", 0L, emptyList(), 0, null, 0, 0, null, null, null,
-        null, null, null, null
+        "", 0L, emptyList(), 0, Customer(null,""), Cargo(0,0,"",true, false,false),  null, null,
+        null, null, null, false
     )
 
     private val bundle = Bundle()
     private var routeId = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(FragConstants.NEW_VALUE) {requestKey, bundle ->
+
+        setFragmentResultListener(FragConstants.NEW_VALUE) {_, bundle ->
             val price = bundle.getString(FragConstants.PRICE)
             val daysToPay = bundle.getString(FragConstants.DAYS_TO_PAY)
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
 
-            //Toast.makeText(requireContext(), "new price is $price", Toast.LENGTH_SHORT).show()
-
             if (price != null) viewModel.editOrder(price = price.toInt())
             if (daysToPay != null) viewModel.editOrder(daysToPay = daysToPay.toInt())
             if (docsNumber != null) viewModel.editOrder(sentDocsNumber = docsNumber)
-
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i("OrderFrag", "editedRoute: ${viewModel.editedRoute.value}")
-
         //Подписка на редактируемый Рейс
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                Log.i("OrderFrag", "editedRoute: ${it}")
+                Log.i("OrderFrag", "editedRoute: $it")
                 currentRoute = it
                 routeId = it.id ?: 0L
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    viewModel.isOrderEdited.collectLatest {
+                        Log.i("orderFrag", " $it")
+                        binding.saveBtn.isGone = !it
+                    }
+                }
+        }
+
         initPointAdapter()
         initUi()
-        documentsCheckBoxListener()
+        paidCheck()
+        //documentsCheckBoxListener()
+
+        //viewModel.setOrderFlag(false)
 
         binding.customerTv.setOnClickListener {
             changingCustomer()
         }
 
-        binding.cargoTv.setOnClickListener {
+        binding.editCargoBtn.setOnClickListener {
             changingCargo()
         }
 
-        binding.tvVolume.setOnClickListener {
-            changingCargo()
-        }
 
-        binding.weightTv.setOnClickListener {
-            changingCargo()
-        }
-
-        binding.routeTextView.setOnClickListener {
+        binding.editRouteBtn.setOnClickListener {
             changingPoints()
         }
 
-        binding.priceTv.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(currentOrder.price.toString(), FragConstants.PRICE)
+        binding.editPaymentBtn.setOnClickListener {
+            changingPayment()
         }
 
-        binding.daysToPayTv.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(currentOrder.daysToPay.toString(), FragConstants.DAYS_TO_PAY)
-        }
+//        binding.priceTv.setOnClickListener {
+//            parentFragmentManager.showOneInputDialog(currentOrder.price.toString(), FragConstants.PRICE)
+//        }
+//
+//        binding.daysToPayTv.setOnClickListener {
+//            parentFragmentManager.showOneInputDialog(currentOrder.daysToPay.toString(), FragConstants.DAYS_TO_PAY)
+//        }
 
         binding.docsNumber.setOnClickListener {
             parentFragmentManager.showOneInputDialog(currentOrder.sentDocsNumber.toString(), FragConstants.DOCS_NUMBER)
@@ -130,6 +136,12 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         //Сохранение заявки
         binding.saveBtn.setOnClickListener {
             saveOrder()
+        }
+
+        //Отмена изменений
+        binding.cancelBtn.setOnClickListener {
+            viewModel.clearOrder()
+            findNavController().navigate(R.id.routeFragment)
         }
 
         //Навигация
@@ -164,12 +176,12 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                         binding.priceTv.text = value
                     }
 
-                    order.cargoVolume.let {
+                    order.cargo.cargoVolume.let {
                         val value = "$it м3"
                         binding.tvVolume.text = value
                     }
 
-                    order.cargoWeight.let {
+                    order.cargo.cargoWeight.let {
                         val value = "$it т"
                         binding.weightTv.text = value
                     }
@@ -181,7 +193,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                         binding.customerTv.text = it.name
                     }
 
-                    order.cargoName?.let {
+                    order.cargo.cargoName?.let {
                         binding.cargoTv.text = it
                     }
                     order.docsReceived?.let {
@@ -191,18 +203,33 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                         binding.payDayValueTv.text = it.asDayAndMonthFully()
                     }
 
+                    val loadList = StringBuilder()
+
+                    if (order.cargo.isBackLoad) loadList.append("Зад")
+                    if (order.cargo.isSideLoad) loadList.append("/Бок")
+                    if (order.cargo.isTopLoad) loadList.append("/Верх")
+
+
+                    binding.loadTypeTv.setText(loadList.toString())
+
                     pointsAdapter.submitList(order.points)
 
-                    when (order.status) {
-                        OrderStatus.IN_PROGRESS -> binding.pending.isChecked = true
-                        OrderStatus.WAITING_FOR_PAYMENT -> binding.finished.isChecked = true
-                        OrderStatus.PAID -> {
-                            binding.paid.isChecked = true
-                            binding.payDayTv.isGone = true
-                            binding.payDayValueTv.isGone = true
-                        }
-                        else -> {}
-                    }
+                    binding.payStatusCheck.isChecked = order.isPaid
+
+//                    when (order.status) {
+//                        OrderStatus.IN_PROGRESS -> binding.pending.isChecked = true
+//                        OrderStatus.WAITING_FOR_PAYMENT -> {
+//                            binding.finished.isChecked = true
+//                            binding.payDayTv.isGone = false
+//                            binding.payDayValueTv.isGone = false
+//                        }
+//                        OrderStatus.PAID -> {
+//                            binding.paid.isChecked = true
+//                            binding.payDayTv.isGone = true
+//                            binding.payDayValueTv.isGone = true
+//                        }
+//                        else -> {}
+//                    }
                 }
             }
         }
@@ -240,27 +267,38 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         findNavController().navigate(R.id.addPointsFragment, bundle)
     }
 
+    private fun changingPayment() {
+        bundle.putBoolean(IS_NEW_ORDER, false)
+        findNavController().navigate(R.id.addPaymentFragment, bundle)
+    }
 
-    private fun documentsCheckBoxListener() {
-        binding.statusRadioGroup.setOnCheckedChangeListener { _, i ->
-            when (i) {
-                R.id.pending -> {
-                    binding.documentsGroup.isGone = true
-                    viewModel.editOrder(status = OrderStatus.IN_PROGRESS)
-                }
-
-                R.id.finished -> {
-                    binding.documentsGroup.isGone = false
-                    viewModel.editOrder(status = OrderStatus.WAITING_FOR_PAYMENT)
-                    binding.scroll.scrollToDescendant(binding.documentsGroup)
-                }
-
-                R.id.paid -> {
-                    binding.documentsGroup.isGone = false
-                    viewModel.editOrder(status = OrderStatus.PAID)
-                    binding.scroll.scrollToDescendant(binding.documentsGroup)
-                }
-            }
+    private fun paidCheck() {
+        binding.payStatusCheck.setOnCheckedChangeListener { button, isChecked ->
+            viewModel.editOrder(isPaid = isChecked)
         }
     }
+
+
+//    private fun documentsCheckBoxListener() {
+//        binding.statusRadioGroup.setOnCheckedChangeListener { _, i ->
+//            when (i) {
+//                R.id.pending -> {
+//                    binding.documentsGroup.isGone = true
+//                    viewModel.editOrder(status = OrderStatus.IN_PROGRESS)
+//                }
+//
+//                R.id.finished -> {
+//                    binding.documentsGroup.isGone = false
+//                    viewModel.editOrder(status = OrderStatus.WAITING_FOR_PAYMENT)
+//                    //binding.scroll.scrollToDescendant(binding.documentsGroup)
+//                }
+//
+//                R.id.paid -> {
+//                    binding.documentsGroup.isGone = false
+//                    viewModel.editOrder(status = OrderStatus.PAID)
+//                    //binding.scroll.scrollToDescendant(binding.documentsGroup)
+//                }
+//            }
+//        }
+//    }
 }

@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Cargo
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
-import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.StaffRepository
@@ -49,7 +47,7 @@ class ChooseItemViewModel @Inject constructor(
     private val _drivers = MutableStateFlow<List<Staff>?>(null)
     val drivers = _drivers.asStateFlow()
 
-    private val _cargo = MutableStateFlow<List<Cargo>?>(null)
+    private val _cargo = MutableStateFlow<List<CargoName>?>(null)
     val cargo = _cargo.asStateFlow()
 
 //    val chosenTruck = trucksRepository.chosenTruck
@@ -113,10 +111,6 @@ class ChooseItemViewModel @Inject constructor(
     }
 
     fun setTruck(t: Truck){
-//        viewModelScope.launch{
-//            trucksRepository.setItem(t)
-//        }
-
         viewModelScope.launch {
             val newRoute = editedRoute.value.copy(truck = t)
             Log.i("ChooseItemVM", "newRoute: $newRoute")

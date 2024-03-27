@@ -64,15 +64,13 @@ data class DbOrderWithPointsAndCustomer(
             points = order.points.map { it.toPointModel() },
             price = order.price,
             customer = customer.toCustomerModel(),
-            cargoWeight = order.cargoWeight ?: 0,
-            cargoVolume = order.cargoVolume ?: 0,
-            cargoName = order.cargoName,
+            cargo = order.cargo,
             extraConditions = order.extraConditions,
             daysToPay = order.daysToPay,
             paymentDeadline = order.paymentDeadline?.toLocalDate(),
             sentDocsNumber = order.sentDocsNumber,
             docsReceived = order.docsReceived?.toLocalDate(),
-            status = order.status
+            isPaid = order.isPaid
         )
     }
 }

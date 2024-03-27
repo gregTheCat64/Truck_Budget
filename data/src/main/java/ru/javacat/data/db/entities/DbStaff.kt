@@ -8,7 +8,9 @@ import ru.javacat.domain.models.Staff
 data class DbStaff (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val fullName: String,
+    val firstName: String?,
+    val middleName: String?,
+    val surName: String,
     val passportSerial: String,
     val passportNumber: String,
     val passportReceivedDate: String?,
@@ -18,6 +20,6 @@ data class DbStaff (
     val phoneNumber: String?
 ){
     fun toStaff() = Staff(
-        id,fullName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber, 0
+        id,firstName,middleName, surName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber, 0
     )
 }

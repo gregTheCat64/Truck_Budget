@@ -82,10 +82,10 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                     binding.titleRoute.text =
                         "Рейс № ${it.id}"
 
-                    binding.driverTv.setText(it.driver?.fullName)
-                    binding.truckTv.setText(it.truck?.regNumber)
-                    binding.trailerTv.setText(it.trailer?.regNumber)
-                    binding.prepayTv.setText(it.prepayment?.toString())
+                    binding.driverTv.text = it.driver?.surname
+                    binding.truckTv.text = it.truck?.regNumber
+                    binding.trailerTv.text = it.trailer?.regNumber
+                    binding.prepayTv.text = it.prepayment?.toString()
                     binding.docsImg.isGone = it.orderList.isNotEmpty()
                     val subsistenceExp = it.routeDuration?.let { it1 -> it.payPerDiem?.times(it1).toString() + " руб" }
                     val fuelSpending = it.fuelUsedUp?.let { it1 -> it.fuelPrice?.times(it1).toString() + " руб" }
@@ -95,7 +95,9 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                     val netIncome = it.netIncome?.toString() + " руб"
 
                     if (it.isFinished){
+                        binding.addOrderBtn.isGone = true
                         binding.finishRouteBtn.isGone = true
+                        binding.editCountBtn.isGone = false
                         binding.finalCountFrame.isGone = false
 
                         binding.subsistenceExpensesTv.setText("${it.payPerDiem} руб. * ${it.routeDuration} = $subsistenceExp")
@@ -108,6 +110,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                     } else  {
                         binding.finishRouteBtn.isGone = false
                         binding.finalCountFrame.isGone = true
+                        binding.addOrderBtn.isGone = false
                     }
 
 
@@ -120,34 +123,38 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
         //Новый заказ
         binding.addOrderBtn.setOnClickListener {
-            //getFieldsData()
-            //viewModel.saveRoute(false)
-            //val bundle = Bundle()
-            //bundle.putLong(routeIdParam, viewModel.editedRoute.value.id?:0)
             viewModel.clearEditedOrder()
             findNavController().navigate(R.id.addCustomerFragment)
         }
 
-        //Сохраняем рейс
-        binding.saveBtn.setOnClickListener {
+        //Возврат
+        binding.closeBtn.setOnClickListener {
                 //getFieldsData()
-                viewModel.saveRoute(true)
-                //findNavController().navigateUp()
+                //viewModel.saveRoute(true)
+                findNavController().navigate(R.id.routeListFragment)
             }
 
         //Завершаем рейс
         binding.finishRouteBtn.setOnClickListener {
-            if (currentRoute.orderList.isNotEmpty()){
-                viewModel.setRouteFinished()
-                findNavController().navigate(R.id.finishRouteFragment)
-            } else {
-                Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
-            }
+            calculate()
         }
+
+        binding.editCountBtn.setOnClickListener{
+            calculate()
+        }
+
 
         super.onViewCreated(view, savedInstanceState)
     }
 
 
+    private fun calculate(){
+        if (currentRoute.orderList.isNotEmpty()){
+            viewModel.setRouteFinished()
+            findNavController().navigate(R.id.finishRouteFragment)
+        } else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

@@ -3,12 +3,10 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +16,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.CargoName
+import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.CargoAdapter
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
-import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.view_models.AddCargoViewModel
 
 @AndroidEntryPoint
@@ -36,6 +35,10 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
     private var weight: Int = 20
     private var volume: Int = 82
+    private var name: String = ""
+    private var isBackLoad = true
+    private var isSideLoad = false
+    private var isTopLoad = false
 
     private var isNewOrder = true
 
@@ -51,7 +54,15 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
         addEditTextListener()
         initAdapter()
-        initUi()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editedOrder.collectLatest { order ->
+                    initUi(order)
+                }
+            }
+        }
+
 
 
         //Навигация
@@ -59,26 +70,32 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
         binding.addNewCargoBtn.setOnClickListener {
             val cargoName = binding.cargoEditText.text.toString()
-            viewModel.insertNewCargo(Cargo(null, cargoName))
+            viewModel.insertNewCargo(CargoName(null, cargoName))
             binding.addNewCargoBtn.isGone = true
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            if (isNewOrder){
+                findNavController().navigate(R.id.routeFragment)
+            } else findNavController().navigate(R.id.orderDetailsFragment)
+        }
+
+        binding.okBtn.setOnClickListener {
+            getFields()
+            val cargo = Cargo(weight,volume,name, isBackLoad, isSideLoad, isTopLoad)
+            viewModel.addCargoToOrder(cargo)
         }
     }
 
-    private fun initUi() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editedOrder.collectLatest { order ->
-                    order.cargoName.let {
-                        if (!it.isNullOrEmpty()) binding.cargoEditText.setText(it)
-                    }
-                    order.cargoVolume.let {
-                        if (it != 0) binding.tvVolume.setText(it.toString())
-                    }
-                    order.cargoWeight.let {
-                        if (it != 0) binding.weightTv.setText(it.toString())
-                    }
-                }
-            }
+    private fun initUi(order: Order) {
+        order.cargo.cargoName.let {
+            if (!it.isNullOrEmpty()) binding.cargoEditText.setText(it)
+        }
+        order.cargo.cargoVolume.let {
+            if (it != 0) binding.tvVolume.setText(it.toString())
+        }
+        order.cargo.cargoWeight.let {
+            if (it != 0) binding.weightTv.setText(it.toString())
         }
     }
 
@@ -86,12 +103,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         viewModel.getCargos()
 
         cargoAdapter = CargoAdapter {
-            getFields()
-            viewModel.addCargoToOrder(it.name, volume, weight)
-            //binding.cargoEditText.setText(it.name)
-            //binding.cargoRecView.isGone = true
-            //binding.cargoEditText.clearFocus()
-            //AndroidUtils.hideKeyboard(requireView())
+            binding.cargoEditText.setText(it.name)
         }
 
         binding.cargoRecView.adapter = cargoAdapter
@@ -110,11 +122,19 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
     private fun getFields() {
         binding.tvVolume.text.let {
-            volume = if (it?.isNotEmpty() == true) it.toString().toInt() else 0
+            volume = if (it?.isNotEmpty() == true) it.toString().toInt() else 82
         }
         binding.weightTv.text.let {
-            weight = if (it?.isNotEmpty() == true) it.toString().toInt() else 0
+            weight = if (it?.isNotEmpty() == true) it.toString().toInt() else 20
         }
+        binding.cargoEditText.text.let {
+            name = if (it?.isNotEmpty() == true) it.toString() else ""
+        }
+        isBackLoad = binding.backCheck.isChecked
+
+        isSideLoad = binding.sideCheck.isChecked
+
+        isTopLoad = binding.upCheck.isChecked
     }
 
     private fun addEditTextListener() {

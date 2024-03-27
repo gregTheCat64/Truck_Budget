@@ -20,19 +20,36 @@ import ru.javacat.ui.databinding.FragmentAddPaymentBinding
 import ru.javacat.ui.view_models.AddPaymentViewModel
 
 @AndroidEntryPoint
-class AddPaymentFragment: BaseFragment<FragmentAddPaymentBinding>() {
+class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddPaymentBinding
-        get() = {inflater, container->
+        get() = { inflater, container ->
             FragmentAddPaymentBinding.inflate(inflater, container, false)
         }
 
     private val viewModel: AddPaymentViewModel by viewModels()
 
+    private var isNewOrder = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        isNewOrder = args?.getBoolean(IS_NEW_ORDER) ?: true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editedOrder.collectLatest { order ->
+                    initUi(order)
+                }
+            }
+        }
 
-        binding.saveBtn.setOnClickListener {
+
+        binding.okBtn.setOnClickListener {
             val daysToPay = binding.daysToPayEditText.text?.let {
                 if (it.isNullOrEmpty()) null else {
                     it.toString().toInt()
@@ -51,12 +68,29 @@ class AddPaymentFragment: BaseFragment<FragmentAddPaymentBinding>() {
 
         }
 
+        binding.cancelBtn.setOnClickListener {
+            if (isNewOrder){
+                findNavController().navigate(R.id.routeFragment)
+            } else findNavController().navigate(R.id.orderDetailsFragment)
+
+
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                if (it == LoadState.Success.GoForward){
+                if (it == LoadState.Success.GoForward) {
                     findNavController().navigate(R.id.orderDetailsFragment)
                 }
             }
+        }
+    }
+
+    private fun initUi(order: Order){
+        order.price.let {
+            binding.price.setText(it.toString())
+        }
+        order.daysToPay?.let {
+            binding.daysToPayEditText.setText(it.toString())
         }
     }
 }

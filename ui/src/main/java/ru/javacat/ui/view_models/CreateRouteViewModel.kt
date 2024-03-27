@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,8 @@ class CreateRouteViewModel @Inject constructor(
     val editedRoute = repo.editedRoute
 
     private var _prepay: Int? = null
+
+    private val date = LocalDate.now()
 
     fun saveNewRoute() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,24 +42,24 @@ class CreateRouteViewModel @Inject constructor(
     }
 
     fun setLastRouteToEditedRoute() {
-
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
-            val lastRouteId = lastRoute?.id ?: 0
-            val lastRouteDriver = lastRoute?.driver
-            val lastRouteTruck = lastRoute?.truck
-            val lastRouteTrailer = lastRoute?.trailer
-            val lastPrepayment = lastRoute?.prepayment
+//            val lastRouteId = lastRoute?.id ?: 0
+//            val lastRouteDriver = lastRoute?.driver
+//            val lastRouteTruck = lastRoute?.truck
+//            val lastRouteTrailer = lastRoute?.trailer
+//            val lastPrepayment = lastRoute?.prepayment
 
             repo.updateEditedRoute(
                 Route(
-                    id = lastRouteId + 1,
-                    driver = lastRouteDriver,
-                    truck = lastRouteTruck,
-                    trailer = lastRouteTrailer,
-                    prepayment = lastPrepayment,
+                    id = lastRoute?.id?.plus(1)?:1,
+                    driver = lastRoute?.driver,
+                    truck = lastRoute?.truck,
+                    trailer = lastRoute?.trailer,
+                    prepayment = lastRoute?.prepayment,
                     fuelPrice = lastRoute?.fuelPrice,
-                    driverSalary = lastRoute?.driverSalary
+                    payPerDiem = lastRoute?.payPerDiem,
+                    startDate = date
                 )
             )
         }
@@ -65,7 +68,5 @@ class CreateRouteViewModel @Inject constructor(
     fun setRouteParameters(prepay: Int) {
         _prepay = prepay
     }
-
-
 
 }

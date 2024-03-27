@@ -80,9 +80,13 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         }
 
 
+        binding.cancelBtn.setOnClickListener {
+            if (isNewOrder){
+                findNavController().navigate(R.id.routeFragment)
+            } else findNavController().navigate(R.id.orderDetailsFragment)
+        }
 
-
-        binding.saveBtn.setOnClickListener {
+        binding.okBtn.setOnClickListener {
             if (isNewOrder){
                 findNavController().navigate(R.id.addPaymentFragment)
             } else findNavController().navigateUp()

@@ -23,7 +23,7 @@ interface StaffDao {
     )
 
     @Query("SELECT * FROM staff_table " +
-            "WHERE fullName LIKE '%' || :search || '%'")
+            "WHERE surName LIKE '%' || :search || '%'")
     suspend fun searchStaff(search: String): List<DbStaff>
 
     @Update()

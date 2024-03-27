@@ -4,6 +4,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_margin="16dp"
-        android:text="Добавить Заказчика"
+        android:text="Заказчик"
         />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -59,7 +60,9 @@
             android:id="@+id/customersRecView"
             android:padding="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:spanCount="1"
             tools:itemCount="20"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             tools:listitem="@layout/name_item" />
@@ -70,18 +73,11 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:layout_margin="16dp"
         android:layout_gravity="start|bottom"
         />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/okBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        android:layout_margin="16dp"
-        android:layout_gravity="end|bottom"
-        />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

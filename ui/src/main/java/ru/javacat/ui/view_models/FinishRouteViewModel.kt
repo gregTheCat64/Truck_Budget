@@ -27,6 +27,7 @@ class FinishRouteViewModel @Inject constructor(
     private var _fuelUsedUp: Int = 0
     private var _fuelPrice: Float = 0f
     private var _payPerDiem: Int = 0
+    private var _moneyToPay: Int = 0
 
     private var _income = 0
     private var _salary: Int? = 0
@@ -62,7 +63,8 @@ class FinishRouteViewModel @Inject constructor(
                 income = _income,
                 driverSalary = _salary,
                 netIncome = _netIncome,
-                payPerDiem = _payPerDiem
+                payPerDiem = _payPerDiem,
+                moneyToPay = _moneyToPay
             )
         )
     }
@@ -75,7 +77,13 @@ class FinishRouteViewModel @Inject constructor(
             for (i in orders) {
                 _income += i.price
             }
-            _salary = ((_income - (_fuelPrice * _fuelUsedUp) - (_payPerDiem * _routeDuration) - _routeSpending) / 5).roundToInt()
+            val fuelSpending = _fuelPrice * _fuelUsedUp
+            val subsistence = _payPerDiem * _routeDuration
+
+            _salary = ((_income - fuelSpending - subsistence - _routeSpending) / 5).roundToInt()
+
+            _moneyToPay = (_income - _prepay - fuelSpending - _routeSpending - _salary!! - subsistence).toInt()
+
             updateEditedRoute()
         }
     }
@@ -84,9 +92,7 @@ class FinishRouteViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO){
             _netIncome = _income - _salary!! - (_fuelPrice * _fuelUsedUp) - (_payPerDiem * _routeDuration) - _routeSpending
             updateEditedRoute()
-
         }
-
     }
 
     fun saveRoute(){
@@ -98,7 +104,6 @@ class FinishRouteViewModel @Inject constructor(
             }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
-
         }
     }
 }

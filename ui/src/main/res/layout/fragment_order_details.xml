@@ -7,23 +7,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="48dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         >
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            >
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -32,26 +26,17 @@
                    
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp" />
 
                 <include layout="@layout/horizon_line" />
 
                 <TextView
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Информация о заявке:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="Заказчик" />
+                    android:hint="@string/customer" />
 
                 <TextView
                     android:id="@+id/customerTv"
@@ -62,12 +47,40 @@
 
                     />
 
+                <include layout="@layout/horizon_line" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/cargo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
+
+                    <ImageView
+                        android:id="@+id/editCargoBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_edit_24"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="16dp"
+                        />
+
+                </FrameLayout>
+
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="Груз" />
+                    android:hint="@string/cargo_name" />
 
                 <TextView
                     android:id="@+id/cargoTv"
@@ -81,9 +94,9 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="Объем, м3"
+                    android:hint="@string/volume_m3"
                     />
 
                 <TextView
@@ -97,9 +110,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="Вес, т"
+                    android:hint="@string/weight_ton"
                     />
 
                 <TextView
@@ -117,10 +130,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:hint="Тип погрузки:" />
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/loading_type" />
 
                 <TextView
+                    android:id="@+id/loadTypeTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextAppearance.Material3.BodyLarge"
@@ -133,16 +147,32 @@
 
                 <include layout="@layout/horizon_line" />
 
-                <TextView
-                    android:id="@+id/routeTextView"
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Маршрут:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
+                    >
+                    <TextView
+                        android:id="@+id/routeTextView"
+                        style="@style/TextAppearance.Material3.TitleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/route"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
+
+                    <ImageView
+                        android:id="@+id/editRouteBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_edit_24"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="16dp"
+                        />
+
+                </FrameLayout>
+
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -150,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/textView5"
@@ -159,49 +189,35 @@
 
                 <include layout="@layout/horizon_line" />
 
-                <RadioGroup
-                    android:id="@+id/statusRadioGroup"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/pending"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="на исполнении" />
-
-                    <RadioButton
-                        android:id="@+id/finished"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/payment" />
+                    <ImageView
+                        android:id="@+id/editPaymentBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="завершен" />
+                        android:src="@drawable/baseline_edit_24"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginEnd="16dp"
+                        />
 
-                    <RadioButton
-                        android:id="@+id/paid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="оплачен" />
-                </RadioGroup>
+                </FrameLayout>
+
+
 
                 <TextView
-                    style="@style/TextAppearance.Material3.TitleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Оплата:" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:hint="Ставка"
+                    android:hint="@string/cost"
                     />
 
                 <TextView
@@ -217,8 +233,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:hint="Срок оплаты"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/days_to_pay"
                     />
 
                 <TextView
@@ -229,21 +245,39 @@
                     style="@style/TextAppearance.Material3.BodyLarge"
                     />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/documentsGroup"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/payStatus"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/payment_status"
+                    />
 
+                <CheckBox
+                    android:id="@+id/payStatusCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/paid"
+                    />
 
+                <include layout="@layout/horizon_line" />
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/documents" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="Номер отправления"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/sending_documents_track_number"
                         />
 
 
@@ -261,8 +295,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="Дата вручения"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/receiving_date"
                         />
 
                     <TextView
@@ -279,8 +313,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="Дата оплаты"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/payment_date"
                         />
 
                     <TextView
@@ -292,31 +326,32 @@
                         android:text="@string/push_to_add"
                         />
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.cardview.widget.CardView>
 
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelBtn"
-        style="@style/Widget.Material3.Button.OutlinedButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
-        android:text="Cancel" />
+        android:layout_marginStart="16dp"
+        android:text="@string/cancel" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveBtn"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="Сохранить" />
+        android:layout_marginEnd="16dp"
+        android:text="@string/save" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

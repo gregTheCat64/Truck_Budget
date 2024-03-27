@@ -7,16 +7,14 @@ data class Order(
     val routeId: Long,
     val points: List<Point>,
     val price: Int,
-    val customer: Customer?,
-    val cargoWeight: Int,
-    val cargoVolume: Int,
-    val cargoName: String?,
+    val customer: Customer,
+    val cargo: Cargo,
     val extraConditions: String?,
     val daysToPay: Int?,
     val paymentDeadline: LocalDate?,
     val sentDocsNumber: String?,
     val docsReceived: LocalDate?,
-    val status: OrderStatus?
+    val isPaid: Boolean = false
 )
 
 enum class OrderStatus(){

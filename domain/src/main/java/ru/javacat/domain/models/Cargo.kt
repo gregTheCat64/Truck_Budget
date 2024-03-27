@@ -1,7 +1,11 @@
 package ru.javacat.domain.models
 
-data class Cargo(
-    override val id: Long? = null,
-    override val name: String,
-    override val positionId: Long = 0L
-): BaseNameModel<Long>()
+data class Cargo (
+    val cargoWeight: Int,
+    val cargoVolume: Int,
+    val cargoName: String,
+
+    val isBackLoad: Boolean = true,
+    val isSideLoad: Boolean,
+    val isTopLoad: Boolean
+)

@@ -2,7 +2,7 @@ package ru.javacat.data.db.dao
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.CargoName
 
 @Entity(
     tableName = "cargo_table"
@@ -13,7 +13,7 @@ data class DbCargo(
     val name: String,
     val positionId: Long,
 ) {
-    fun toCargoModel() = Cargo(
+    fun toCargoModel() = CargoName(
         id, name, positionId
     )
 }

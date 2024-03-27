@@ -36,7 +36,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-            val fullName = binding.staffName.text.toString()
+            val firstName = binding.firstName.text.toString()
+            val middleName = binding.middleName.text.toString()
+            val surname = binding.surName.text.toString()
             val passSerial = binding.passSerial.text.toString()
             val passNumber = binding.passNumber.text.toString()
             val passWhen = binding.passWhen.text.toString()
@@ -48,7 +50,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
             //val id = passSerial.toString()+passNumber.toString()
 
             val newDriver = Staff(
-                0, fullName, passSerial, passNumber, passWhen,
+                0,firstName, middleName, surname, passSerial, passNumber, passWhen,
                 passWhere, driveLicenseNumber, address, phoneNumber, 0
             )
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -94,7 +94,7 @@
             android:id="@+id/locationsRecView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:spanCount="3"
+            app:spanCount="4"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/locationLayout"
             tools:listitem="@layout/name_item" />
@@ -118,15 +118,29 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             tools:listitem="@layout/point_item" />
 
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Далее"
-            android:layout_gravity="end|bottom"
-            />
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelBtn"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_margin="16dp"
+        android:layout_gravity="start|bottom"
+        />
 
-</FrameLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/okBtn"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:layout_margin="16dp"
+        android:layout_gravity="end|bottom"
+        />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

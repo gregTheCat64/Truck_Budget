@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.ui.LoadState
@@ -25,7 +26,7 @@ class AddCargoViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    private val _cargo = MutableStateFlow<List<Cargo>?>(null)
+    private val _cargo = MutableStateFlow<List<CargoName>?>(null)
     val cargo = _cargo.asStateFlow()
 
     fun getCargos(){
@@ -43,20 +44,20 @@ class AddCargoViewModel @Inject constructor(
         }
     }
 
-    fun insertNewCargo(cargo: Cargo){
+    fun insertNewCargo(cargo: CargoName){
         viewModelScope.launch(Dispatchers.IO){
             cargoRepository.insert(cargo)
         }
     }
 
-    fun addCargoToOrder(cargoName: String, volume: Int, weight: Int) {
+    fun addCargoToOrder(cargo: Cargo) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
                 orderRepository.updateOrder(editedOrder.value.copy(
-                    cargoName = cargoName,
-                    cargoVolume = volume,
-                    cargoWeight = weight))
+                    cargo = cargo
+                )
+                )
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))

@@ -11,6 +11,8 @@ interface RouteRepository {
 
     val editedRoute: StateFlow<Route>
 
+    val isEdited: StateFlow<Boolean>
+
     suspend fun getRoute(id: Long): Route?
     suspend fun updateEditedRoute(newRoute: Route)
     suspend fun removeRoute(id: Long)

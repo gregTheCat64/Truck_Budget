@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import ru.javacat.ui.databinding.FragmentCreateRouteBinding
 import ru.javacat.ui.view_models.CreateRouteViewModel
 
-
     const val itemParam = "item"
 @AndroidEntryPoint
 class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
@@ -60,10 +59,11 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
             saveRoute()
         }
 
+        //Инициализация ui
         viewLifecycleOwner.lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedRoute.collectLatest {
-                    binding.addDriverEditText.setText(it.driver?.fullName)
+                    binding.addDriverEditText.setText(it.driver?.surname)
                     binding.addTruckEditText.setText(it.truck?.regNumber)
                     binding.addTrailerEditText.setText(it.trailer?.regNumber)
                     binding.prepayEditText.setText(it.prepayment?.toString())
@@ -81,8 +81,6 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
                 }
             }
         }
-
-
     }
 
     private fun setLastRouteToCurrent(){
@@ -105,7 +103,6 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
                 viewModel.saveNewRoute()
             }
         }
-
     }
 
 }

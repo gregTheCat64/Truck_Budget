@@ -13,11 +13,9 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.adapters.ChooseDriverAdapter
 import ru.javacat.ui.adapters.ChooseTrailerAdapter
 import ru.javacat.ui.adapters.ChooseTruckAdapter
-import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.databinding.FragmentChooseItemBinding
 import ru.javacat.ui.view_models.ChooseItemViewModel
 
@@ -33,7 +31,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
     private lateinit var trailersAdapter: ChooseTrailerAdapter
     private lateinit var trucksAdapter: ChooseTruckAdapter
     private lateinit var driversAdapter: ChooseDriverAdapter
-    private lateinit var customersAdapter: ChooseCustomerAdapter
+    //private lateinit var customersAdapter: ChooseCustomerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,19 +40,13 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
         when (val requestedItem = args?.getString("item","none")?:"unknown") {
             "DRIVER" -> {
-                initDriversAdapter()
+                initDriversCase()
             }
             "TRUCK" -> {
-                initTrucksAdapter(requestedItem)
+                initTrucksCase(requestedItem)
             }
             "TRAILER" -> {
-                initTrailersAdapter(requestedItem)
-            }
-//            "CUSTOMER" -> {
-//                initCustomerAdapter()
-//            }
-            "CARGO" -> {
-                initCargoAdapter()
+                initTrailersCase(requestedItem)
             }
 
             else -> {
@@ -65,7 +57,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
     }
 
-    private fun initTrucksAdapter(requestedItem: String){
+    private fun initTrucksCase(requestedItem: String){
         val bundle = Bundle()
         bundle.putString("item", requestedItem)
         binding.newItemBtn.setOnClickListener {
@@ -92,12 +84,13 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trucks.collectLatest {
                     trucksAdapter.submitList(it)
+                    if (it.isNullOrEmpty())   findNavController().navigate(R.id.newTransportFragment, bundle)
                 }
             }
         }
     }
 
-    private fun initTrailersAdapter(requestedItem: String){
+    private fun initTrailersCase(requestedItem: String){
         val bundle = Bundle()
         bundle.putString("item", requestedItem)
 
@@ -105,6 +98,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             findNavController().navigate(R.id.newTransportFragment, bundle)
         }
         viewModel.getTrailers()
+
         trailersAdapter = ChooseTrailerAdapter {
            viewModel.setTrailer(it)
             findNavController().navigateUp()
@@ -134,12 +128,15 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trailers.collectLatest {
                     trailersAdapter.submitList(it)
+                    if (it.isNullOrEmpty()){
+                        findNavController().navigate(R.id.newTransportFragment, bundle)
+                    }
                 }
             }
         }
     }
 
-    private fun initDriversAdapter(){
+    private fun initDriversCase(){
         binding.newItemBtn.setOnClickListener {
             findNavController().navigate(R.id.newDriverFragment)
         }
@@ -163,7 +160,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch{
             viewModel.editedRoute.collectLatest {
-                binding.searchView.setText(it.driver?.fullName)
+                binding.searchView.setText(it.driver?.surname)
             }
         }
 
@@ -171,34 +168,10 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.drivers.collectLatest {
                     driversAdapter.submitList(it)
+                    if (it.isNullOrEmpty())  findNavController().navigate(R.id.newDriverFragment)
                 }
             }
         }
     }
 
-//    private fun initCustomerAdapter(){
-//        viewModel.getCustomer()
-//        customersAdapter = ChooseCustomerAdapter {
-//            viewModel.setCustomer(it)
-//            findNavController().navigateUp()
-//        }
-//        binding.itemList.adapter = customersAdapter
-//        binding.itemNameTextView.text = "Клиенты"
-//
-//        binding.newItemBtn.setOnClickListener {
-//            findNavController().navigate(R.id.newCustomerFragment)
-//        }
-//
-//        viewLifecycleOwner.lifecycleScope.launch{
-//            repeatOnLifecycle(Lifecycle.State.STARTED){
-//                viewModel.customers.collectLatest {
-//                    customersAdapter.submitList(it)
-//                }
-//            }
-//        }
-//    }
-
-    private fun initCargoAdapter(){
-
-    }
 }

@@ -10,7 +10,7 @@ import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
-import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Location
@@ -48,15 +48,13 @@ fun Order.toDb() = DbOrder(
     points.map { it.toDb() },
     price,
     customer?.id?:0,
-    cargoWeight,
-    cargoVolume,
-    cargoName,
+    cargo,
     extraConditions,
     daysToPay,
     paymentDeadline?.toString(),
     sentDocsNumber,
     docsReceived?.toString(),
-    status?:OrderStatus.IN_PROGRESS
+    isPaid
 )
 
 fun Point.toDb() = DbPoint(
@@ -73,7 +71,9 @@ fun Trailer.toDb() = DbTrailer(
 
 fun Staff.toDb() = DbStaff(
     id,
-    fullName,
+    firstName,
+    middleName,
+    surname,
     passportSerial,
     passportNumber,
     passportReceivedDate,
@@ -95,4 +95,4 @@ fun Employee.toDb() = DbEmployee(
     id, customerId, name, phoneNumber, secondNumber, email, comment
 )
 
-fun Cargo.toDb() = DbCargo(id, name, positionId)
+fun CargoName.toDb() = DbCargo(id, name, positionId)
