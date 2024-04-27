@@ -3,16 +3,15 @@ package ru.javacat.data.db.models
 import androidx.room.Relation
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.CustomerWithEmployees
 
 data class DbCustomerWithEmployees(
-    val id: String,
+    val id: Long,
     val companyName: String,
     val atiNumber: Int?,
-    val companyPhone: Long?,
-    val formalAddress: String,
-    val postAddress: String,
-    val shortName: String,
+    val companyPhone: String?,
+    val formalAddress: String?,
+    val postAddress: String?,
+    val shortName: String?,
     val positionId: Int,
 
     @Relation(
@@ -21,7 +20,7 @@ data class DbCustomerWithEmployees(
     )
     val employees: List<DbEmployee>
 ) {
-    fun toCustomerModel() = CustomerWithEmployees(
+    fun toCustomerModel() = Customer(
         id,
         companyName,
         atiNumber,

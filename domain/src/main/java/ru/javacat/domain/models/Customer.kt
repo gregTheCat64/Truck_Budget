@@ -1,10 +1,11 @@
 package ru.javacat.domain.models
 
 data class Customer (
-    override val id: Long? = null,
+    override val id: Long = 0L,
     override val name: String,
 
     val atiNumber: Int? = null,
+    val employees: List<Employee>? = null,
     val companyPhone: String? = null,
     val formalAddress: String? = null,
     val postAddress: String? = null,

@@ -1,6 +1,6 @@
 package ru.javacat.data.db.mappers
 
-import ru.javacat.data.db.dao.DbCargo
+import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.entities.DbCustomer
 import ru.javacat.data.db.entities.DbEmployee
 import ru.javacat.data.db.entities.DbLocation
@@ -10,15 +10,14 @@ import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
-import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
 
@@ -29,12 +28,12 @@ fun Route.toDb() = DbRoute(
     driver?.id?:0,
     truck?.id?:0,
     trailer?.id?:0,
-    prepayment,
+    prepayment?:0,
     fuelUsedUp,
     fuelPrice,
-    routeSpending,
+    routeSpending?:0,
     payPerDiem,
-    routeDuration,
+    routeDuration?:0,
     driverSalary,
     moneyToPay,
     income,
@@ -44,11 +43,15 @@ fun Route.toDb() = DbRoute(
 
 fun Order.toDb() = DbOrder(
     id,
-    routeId,
+    routeId?:0L,
     points.map { it.toDb() },
-    price,
+    price?:0,
     customer?.id?:0,
-    cargo,
+    employee?.id,
+    driver?.id?: 0,
+    truck?.id?: 0,
+    trailer?.id,
+    cargo?: Cargo(20, 82, "ТНП", true, false,false),
     extraConditions,
     daysToPay,
     paymentDeadline?.toString(),
@@ -69,7 +72,7 @@ fun Trailer.toDb() = DbTrailer(
     id, regNumber, vin, model, type, yearOfManufacturing
 )
 
-fun Staff.toDb() = DbStaff(
+fun TruckDriver.toDb() = DbStaff(
     id,
     firstName,
     middleName,

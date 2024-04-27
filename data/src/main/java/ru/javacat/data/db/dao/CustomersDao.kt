@@ -17,34 +17,22 @@ interface CustomersDao {
 
     @Transaction
     @Query("SELECT * FROM customers_table")
-    fun getAll(): Flow<List<DbCustomerWithEmployees>>
-
+    fun getAll(): List<DbCustomerWithEmployees>
 
     @Transaction
-    @Query("SELECT * FROM customers_table WHERE atiNumber =:id")
-    suspend fun getById(id: String): DbCustomerWithEmployees
-
+    @Query("SELECT * FROM customers_table WHERE id =:id")
+    suspend fun getById(id: Long): DbCustomerWithEmployees?
 
     @Query("SELECT * FROM customers_table")
-    suspend fun getCustomers(): List<DbCustomer>
+    suspend fun getCustomers(): List<DbCustomerWithEmployees>
 
     @Query("SELECT * FROM customers_table WHERE companyName LIKE '%' || :search || '%'")
-    suspend fun searchCustomers(search: String): List<DbCustomer>
+    suspend fun searchCustomers(search: String): List<DbCustomerWithEmployees>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(
         customer: DbCustomer
     )
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEmployee(
-        employee: DbEmployee
-    )
-
-    @Query("SELECT * FROM employees_table WHERE customerId =:customerId")
-    fun getEmployeesByCustomerId(
-        customerId: String
-    ): List<DbEmployee>
 
     @Update()
     suspend fun updateCustomer(
@@ -52,16 +40,12 @@ interface CustomersDao {
         employee: List<DbEmployee>
     )
 
-    @Update()
-    suspend fun updateEmployee(
-        employee: DbEmployee
-    )
+
 
     @Query("DELETE FROM customers_table WHERE atiNumber =:id")
     suspend fun removeCustomer(id: Int)
 
-    @Query("DELETE FROM employees_table WHERE id =:id")
-    suspend fun removeEmployee(id: Int)
+
 
 
 

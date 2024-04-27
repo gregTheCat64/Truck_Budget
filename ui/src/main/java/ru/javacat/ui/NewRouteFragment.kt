@@ -2,9 +2,14 @@ package ru.javacat.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +23,9 @@ import ru.javacat.ui.view_models.CreateRouteViewModel
 
     const val itemParam = "item"
 @AndroidEntryPoint
-class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
+class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: CreateRouteViewModel by viewModels()
     private val bundle = Bundle()
@@ -27,6 +34,36 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         get() = {inflater, container ->
             FragmentCreateRouteBinding.inflate(inflater, container, false)
         }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val newRouteTitle = getString(R.string.new_route)
+
+        (activity as AppCompatActivity).supportActionBar?.title = newRouteTitle
+
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_empty, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+        }, viewLifecycleOwner)
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,9 +100,9 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedRoute.collectLatest {
-                    binding.addDriverEditText.setText(it.driver?.surname)
-                    binding.addTruckEditText.setText(it.truck?.regNumber)
-                    binding.addTrailerEditText.setText(it.trailer?.regNumber)
+                    binding.addDriverEditText.setText(it?.driver?.surname)
+                    binding.addTruckEditText.setText(it?.truck?.regNumber)
+                    binding.addTrailerEditText.setText(it?.trailer?.regNumber)
                     binding.prepayEditText.setText(it.prepayment?.toString())
                 }
             }
@@ -76,7 +113,7 @@ class CreateRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
                     if (it is LoadState.Success.OK) {
-                        findNavController().navigate(R.id.routeFragment)
+                        findNavController().navigate(R.id.viewPagerFragment)
                     }
                 }
             }

@@ -12,13 +12,14 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Staff
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.NewDriverViewModel
 
 @AndroidEntryPoint
 class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: NewDriverViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
@@ -49,7 +50,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
             //val id = passSerial.toString()+passNumber.toString()
 
-            val newDriver = Staff(
+            val newDriver = TruckDriver(
                 0,firstName, middleName, surname, passSerial, passNumber, passWhen,
                 passWhere, driveLicenseNumber, address, phoneNumber, 0
             )

@@ -4,66 +4,126 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.toBase64
 import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Employee
 import ru.javacat.ui.adapters.EmployeesAdapter
+import ru.javacat.ui.adapters.OnEmployeeListener
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
+import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.NewCustomerViewModel
 
 @AndroidEntryPoint
 class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
 
+    override var bottomNavViewVisibility: Int = View.GONE
+    private var customerId: Long? = null
 
     private val viewModel: NewCustomerViewModel by viewModels()
-    private lateinit var adapter: EmployeesAdapter
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewCustomerBinding
         get() = { inflater, container ->
             FragmentNewCustomerBinding.inflate(inflater, container, false)
         }
 
-    private var id: Int = 0
+    private var id: Long = 0L
     private var companyName: String = ""
     private var atiNumber: Int? = null
     private var telNumber: String? = null
     private var formalAddress: String? = null
     private var postAddress: String? = null
     private var shortName: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity). supportActionBar?.title = "Новый клиент"
+
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_edit, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R.id.save -> {
+                        getFieldsData()
+                        saveCustomer(customerId?:0L)
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+        }, viewLifecycleOwner)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = EmployeesAdapter()
-        binding.employeesRecView.adapter = adapter
+        customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                if (customerId != null) {
+                    viewModel.getCustomerById(customerId!!)
+                }
+            }
+        }
 
-        lifecycleScope.launch {
-            viewModel.employees.collectLatest {
-                adapter.submitList(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.editedCustomer.collectLatest {
+                    it?.let { updateUi(it) }
+                }
             }
         }
 
         binding.saveBtn.setOnClickListener {
             getFieldsData()
-            saveCustomer()
+            saveCustomer(customerId?:0L)
             findNavController().navigateUp()
         }
 
-        binding.companyName.addTextChangedListener(object : TextWatcher {
+        binding.name.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (!p0.isNullOrBlank()) {
-                    binding.companyNameLayout.error = null
+                    binding.nameLayout.error = null
                 }
             }
 
@@ -72,15 +132,18 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             }
         })
 
-        binding.addEmployeeBtn.setOnClickListener {
-            getFieldsData()
-            saveCustomer()
 
-            val bundle = Bundle()
-//            if (id.isNotEmpty()){
-//                bundle.putString("id", id)
-//                findNavController().navigate(R.id.newEmployeeFragment, bundle)
-//            }
+    }
+
+    private fun updateUi(customer: Customer){
+        binding.apply {
+            (activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
+            name.setText(customer.name)
+            atiNumber.setText(customer.atiNumber.toString())
+            phoneNumber.setText(customer.companyPhone)
+            legalAddress.setText(customer.formalAddress)
+            postAddress.setText(customer.postAddress)
+            shortName.setText(customer.shortName)
         }
     }
 
@@ -92,25 +155,20 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             if (it.isBlank()) null else it.toString().toInt()
         }
 
-        if (binding.companyName.text.isNullOrEmpty()) {
-            binding.companyNameLayout.error = requestField
-            binding.companyName.requestFocus()
+        if (binding.name.text.isNullOrEmpty()) {
+            binding.nameLayout.error = requestField
+            binding.name.requestFocus()
             return
         } else {
-            companyName = formatName(binding.companyName.text.toString())
+            companyName = formatName(binding.name.text.toString())
 
-//            id = if (atiNumber != null) {
-//                atiNumber.toString()
-//            } else {
-//                companyName.toBase64()
-//            }
         }
 
         telNumber = binding.phoneNumber.text?.let {
             if (it.isBlank()) null else it.toString()
         }
 
-        formalAddress = binding.formalAddress.text?.let {
+        formalAddress = binding.legalAddress.text?.let {
             if (it.isBlank()) null else it.toString()
         }
 
@@ -124,10 +182,9 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         } else shortName = binding.shortName.text.toString()
     }
 
-    private fun saveCustomer() {
-
+    private fun saveCustomer(id: Long) {
             val newCustomer = Customer(
-                null, companyName, atiNumber, telNumber, formalAddress, postAddress, shortName
+                id, companyName, atiNumber, emptyList(), telNumber, formalAddress, postAddress, shortName
             )
             AndroidUtils.hideKeyboard(requireView())
             viewModel.saveNewCustomer(newCustomer)

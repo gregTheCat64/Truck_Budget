@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -29,6 +30,8 @@ import ru.javacat.ui.view_models.AddPointsViewModel
 
 @AndroidEntryPoint
 class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddPointsBinding
         get() = { inflater, container ->
             FragmentAddPointsBinding.inflate(inflater, container, false)
@@ -40,7 +43,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     private lateinit var locationAdapter: LocationAdapter
 
     private var locationsFound: Boolean = false
-    private var currentRoute = Route()
+    private var currentRoute:Route? = null
 
     private var isNewOrder = true
 
@@ -53,6 +56,8 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity). supportActionBar?.title = "Маршрут"
 
         initLocationAdapter()
         initPointAdapter()
@@ -67,29 +72,31 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedOrder.collectLatest {
-                pointsAdapter.submitList(it.points)
-                viewModel.initPointList(it.points)
+                pointsAdapter.submitList(it?.points)
+                it?.let {
+                    viewModel.initPointList(it.points)
+                }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            if (currentRoute.orderList.isNotEmpty()){
-                val lastDate = currentRoute.orderList.last().points.last().arrivalDate
-                viewModel.setPointDate(lastDate.plusDays(1))
+            if (currentRoute?.orderList?.isNotEmpty() == true){
+                val lastDate = currentRoute?.orderList?.last()?.points?.last()?.arrivalDate
+                lastDate?.plusDays(1)?.let { viewModel.setPointDate(it) }
             }
         }
 
 
         binding.cancelBtn.setOnClickListener {
             if (isNewOrder){
-                findNavController().navigate(R.id.routeFragment)
-            } else findNavController().navigate(R.id.orderDetailsFragment)
+                findNavController().popBackStack(R.id.viewPagerFragment, false)
+            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
         }
 
         binding.okBtn.setOnClickListener {
             if (isNewOrder){
                 findNavController().navigate(R.id.addPaymentFragment)
-            } else findNavController().navigateUp()
+            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
 
         }
 
@@ -167,7 +174,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     private fun addPoint(locationName: String) {
         val pointDate = viewModel.pointDate.value
         val pointSize = viewModel.pointList.size
-        val ordersSize = viewModel.orderList.size
+        //val ordersSize = viewModel.orderList.size
 
         //val id = ("Rt"+currentRoute.id.toString()+"Ord"+(ordersSize+1).toString()+"pt"+(pointSize+1).toString())
         val newPoint = Point("", locationName, pointDate)

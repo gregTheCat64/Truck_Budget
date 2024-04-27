@@ -53,29 +53,33 @@ class FinishRouteViewModel @Inject constructor(
 
 
     private suspend fun updateEditedRoute() {
-        routeRepository.updateEditedRoute(
-            editedRoute.value.copy(
-                prepayment = _prepay,
-                routeSpending = _routeSpending,
-                routeDuration = _routeDuration,
-                fuelUsedUp = _fuelUsedUp,
-                fuelPrice = _fuelPrice,
-                income = _income,
-                driverSalary = _salary,
-                netIncome = _netIncome,
-                payPerDiem = _payPerDiem,
-                moneyToPay = _moneyToPay
+        editedRoute.value?.copy(
+            prepayment = _prepay,
+            routeSpending = _routeSpending,
+            routeDuration = _routeDuration,
+            fuelUsedUp = _fuelUsedUp,
+            fuelPrice = _fuelPrice,
+            income = _income,
+            driverSalary = _salary,
+            netIncome = _netIncome,
+            payPerDiem = _payPerDiem,
+            moneyToPay = _moneyToPay
+        )?.let {
+            routeRepository.updateEditedRoute(
+                it
             )
-        )
+        }
     }
 
     fun calculateSalary() {
 
         viewModelScope.launch(Dispatchers.IO){
             _income = 0
-            val orders = editedRoute.value.orderList
-            for (i in orders) {
-                _income += i.price
+            val orders = editedRoute.value?.orderList
+            if (orders != null) {
+                for (i in orders) {
+                    _income += i.price
+                }
             }
             val fuelSpending = _fuelPrice * _fuelUsedUp
             val subsistence = _payPerDiem * _routeDuration
@@ -99,7 +103,11 @@ class FinishRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                routeRepository.insertRoute(editedRoute.value)
+                if (editedRoute.value != null){
+                    routeRepository.updateEditedRoute(editedRoute.value!!.copy(isFinished = true))
+                    routeRepository.insertRoute(editedRoute?.value!!)
+                }
+
                 _loadState.emit(LoadState.Success.GoBack)
             }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))

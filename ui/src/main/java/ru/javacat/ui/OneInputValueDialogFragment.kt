@@ -19,7 +19,7 @@ class OneInputValueDialogFragment : DialogFragment(R.layout.fragment_one_input_v
         val oldValue = arguments?.getString(FragConstants.OLD_VALUE)
         val typeOfValue = arguments?.getString(FragConstants.TYPE_OF_VALUE)
 
-        typeOfValue.let { Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show() }
+        //typeOfValue.let { Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show() }
         val hint = when (typeOfValue) {
             FragConstants.DAYS_TO_PAY -> "Срок оплаты, дней"
             FragConstants.PRICE -> "Цена, руб."

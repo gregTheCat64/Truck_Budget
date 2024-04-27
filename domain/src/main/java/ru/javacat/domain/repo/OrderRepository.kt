@@ -5,15 +5,20 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 import ru.javacat.domain.models.Order
+import java.time.Month
 
 interface OrderRepository {
 
-    val allOrders: Flow<List<Order?>>
+    val orders: Flow<List<Order>>
 
-    val editedOrder: StateFlow<Order>
+    val editedOrder: StateFlow<Order?>
 
     val isOrderEdited: SharedFlow<Boolean>
 
+    suspend fun getAllOrders()
+    suspend fun getUnpaidOrders()
+
+    suspend fun getOrdersByMonth(month: Month)
     suspend fun setOrderFlag(isEdited: Boolean)
 
     suspend fun updateOrder(newOrder: Order)
@@ -24,7 +29,9 @@ interface OrderRepository {
 
     suspend fun clearCurrentOrder()
 
-    suspend fun getOrderById(orderId: String): Order
+    suspend fun getOrderById(orderId: Long): Order
+
+
 
     suspend fun deleteOrder(order: Order)
 }

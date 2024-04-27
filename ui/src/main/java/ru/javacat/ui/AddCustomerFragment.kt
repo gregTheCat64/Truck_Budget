@@ -6,7 +6,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,21 +17,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
+import ru.javacat.ui.adapters.ChooseEmployeeAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
-import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
+import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint
 class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddCustomerBinding
         get() = { inflater, container ->
             FragmentAddCustomerBinding.inflate(inflater, container, false)
         }
 
     private val viewModel: AddCustomerViewModel by viewModels()
-    private lateinit var adapter: ChooseCustomerAdapter
+    private lateinit var customerAdapter: ChooseCustomerAdapter
+    private lateinit var employeeAdapter: ChooseEmployeeAdapter
 
     private var isNewOrder = true
+
+    var customerId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +49,37 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as AppCompatActivity). supportActionBar?.title = "Клиент"
+
         initUi()
-        initAdapter()
-        addEditTextListener()
+        initCustomerAdapter()
+        initEmployeeAdapter()
+        addCustomerEditTextListener()
+        addManagerEditTextListener()
         loadStateListener()
 
         binding.cancelBtn.setOnClickListener {
             if (isNewOrder){
-                findNavController().navigate(R.id.routeFragment)
-            } else findNavController().navigate(R.id.orderDetailsFragment)
+                findNavController().popBackStack(R.id.viewPagerFragment, false)
+            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+        }
+
+        binding.newCustomerBtn.setOnClickListener {
+            findNavController().navigate(R.id.newCustomerFragment)
+        }
+
+        binding.newManagerBtn.setOnClickListener {
+            val bundle = Bundle()
+            if (customerId != 0L){
+                bundle.putLong(FragConstants.CUSTOMER_ID, customerId)
+                findNavController().navigate(R.id.newEmployeeFragment, bundle)
+            }
+            //findNavController().navigate(R.id.newEmployeeFragment)
+        }
+
+        binding.okBtn.setOnClickListener {
+            viewModel.addCustomerToOrder()
+            //findNavController().navigate(R.id.addCargoFragment)
         }
 
     }
@@ -59,42 +88,78 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    order.customer?.let {
-                        binding.customerInputEditText.setText(it.name)
+                    order?.customer.let {
+                        binding.customerInputEditText.setText(it?.name)
+                    }
+                    order?.employee?.let {
+                        binding.managerInputEditText.setText(it.name)
                     }
                 }
             }
         }
     }
 
-    private fun initAdapter() {
+    private fun initCustomerAdapter() {
         viewModel.getCustomers()
-        adapter = ChooseCustomerAdapter {
-            viewModel.addCustomerToOrder(it)
+        customerAdapter = ChooseCustomerAdapter {
+            viewModel.setCustomer(it)
+            binding.customerInputEditText.setText(it.name)
+            customerId = it.id
             //findNavController().navigate()
+            viewModel.getEmployee(it.id)
+            binding.managerLayout.isGone = false
         }
-        binding.customersRecView.adapter = adapter
-
-        binding.newCustomerBtn.setOnClickListener {
-            findNavController().navigate(R.id.newCustomerFragment)
-        }
+        binding.customersRecView.adapter = customerAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.customers.collectLatest {
-                    adapter.submitList(it)
+                    customerAdapter.submitList(it)
                 }
             }
         }
     }
 
-    private fun addEditTextListener() {
+    private fun initEmployeeAdapter() {
+        employeeAdapter = ChooseEmployeeAdapter {
+            viewModel.setEmployee(it)
+            binding.managerInputEditText.setText(it.name)
+        }
+        binding.employeesRecView.adapter = employeeAdapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.employees.collectLatest {
+                    employeeAdapter.submitList(it)
+                }
+            }
+        }
+    }
+
+    private fun addCustomerEditTextListener() {
         binding.customerInputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchCustomers(p0.toString())
+                binding.managerLayout.isGone = p0.isNullOrEmpty()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+    }
+
+    private fun addManagerEditTextListener() {
+        binding.managerInputEditText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.searchEmployee(p0.toString())
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -107,10 +172,10 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.GoForward) {
+                    if (it is LoadState.Success.OK) {
                         if (isNewOrder) {
                             findNavController().navigate(R.id.addCargoFragment)
-                        } else findNavController().navigateUp()
+                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
                     }
                 }
             }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,8 @@ import ru.javacat.ui.view_models.ChooseItemViewModel
 
 @AndroidEntryPoint
 class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentChooseItemBinding
         get() = { inflater, container ->
@@ -75,8 +78,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch{
             viewModel.editedRoute.collectLatest {
-                    binding.searchView.setText(it.truck?.regNumber)
-
+                    binding.searchView.setText(it?.truck?.regNumber)
             }
         }
 
@@ -84,7 +86,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trucks.collectLatest {
                     trucksAdapter.submitList(it)
-                    if (it.isNullOrEmpty())   findNavController().navigate(R.id.newTransportFragment, bundle)
+                    binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }
@@ -119,7 +121,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch{
             viewModel.editedRoute.collectLatest {
-                binding.searchView.setText(it.trailer?.regNumber)
+                binding.searchView.setText(it?.trailer?.regNumber)
 
             }
         }
@@ -128,9 +130,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trailers.collectLatest {
                     trailersAdapter.submitList(it)
-                    if (it.isNullOrEmpty()){
-                        findNavController().navigate(R.id.newTransportFragment, bundle)
-                    }
+                    binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }
@@ -160,7 +160,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch{
             viewModel.editedRoute.collectLatest {
-                binding.searchView.setText(it.driver?.surname)
+                binding.searchView.setText(it?.driver?.surname)
             }
         }
 
@@ -168,7 +168,7 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.drivers.collectLatest {
                     driversAdapter.submitList(it)
-                    if (it.isNullOrEmpty())  findNavController().navigate(R.id.newDriverFragment)
+                    binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }

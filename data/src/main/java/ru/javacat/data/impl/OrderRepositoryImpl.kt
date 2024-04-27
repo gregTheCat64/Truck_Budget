@@ -2,43 +2,50 @@ package ru.javacat.data.impl
 
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import ru.javacat.data.db.dao.RoutesDao
+import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
-import ru.javacat.domain.models.Cargo
-import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.OrderStatus
 import ru.javacat.domain.repo.OrderRepository
+import java.time.Month
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val nullOrder = Order("",0L, emptyList(), 0, Customer(null, ""),
-    Cargo(0,0,"",true,false,false),"",0,
-    null,null,null,
-    false)
+val nullOrder: Order? = null
 
 @Singleton
 class OrderRepositoryImpl @Inject constructor(
-    private val routesDao: RoutesDao
+    private val ordersDao: OrdersDao
 ): OrderRepository {
 
     private val _isOrderEdited = MutableStateFlow(false)
     override val isOrderEdited: StateFlow<Boolean>
         get() = _isOrderEdited.asStateFlow()
-    override val allOrders: Flow<List<Order?>>
-        get() = routesDao.getAllOrders().map {list-> list.map { it.toOrderModel() } }
 
-    private val _editedOrder = MutableStateFlow(nullOrder)
+    private var _orders = MutableStateFlow(emptyList<Order>())
+    override val orders: Flow<List<Order>>
+        get() = _orders
+
+    private val _editedOrder = MutableStateFlow(Order())
     override val editedOrder: StateFlow<Order>
         get() = _editedOrder.asStateFlow()
+
+    override suspend fun getAllOrders() {
+        //_allOrders = ordersDao.getAllOrders().map {it.toOrderModel() }
+        _orders.emit(ordersDao.getAllOrders().map {it.toOrderModel() })
+    }
+
+    override suspend fun getUnpaidOrders() {
+        _orders.emit(ordersDao.getUnpaidOrder().map { it.toOrderModel()})
+    }
+
+    override suspend fun getOrdersByMonth(month: Month) {
+        val filteredByMonth = (ordersDao.getAllOrders().map { it.toOrderModel() }).filter { it.points[0].arrivalDate.month == month }
+        _orders.emit(filteredByMonth)
+    }
 
     override suspend fun setOrderFlag(isEdited: Boolean) {
         _isOrderEdited.emit(isEdited)
@@ -54,21 +61,23 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun insertOrder(order: Order) {
         Log.i("orderRepo", "inserting order: $order")
-        dbQuery { routesDao.insertOrder(order.toDb())
+        dbQuery { ordersDao.insertOrder(order.toDb())
         }
         _isOrderEdited.emit(false)
     }
 
-    override suspend fun getOrderById(orderId: String): Order {
-        val order = dbQuery { routesDao.getByOrderId(orderId) }
+    override suspend fun getOrderById(orderId: Long): Order {
+        val order = dbQuery { ordersDao.getByOrderId(orderId) }
         return order.toOrderModel()
     }
+
 
     override suspend fun deleteOrder(order: Order) {
         TODO("Not yet implemented")
     }
 
     override suspend fun clearCurrentOrder() {
-        _editedOrder.emit(nullOrder)
+        _editedOrder.emit(Order())
+        _isOrderEdited.emit(false)
     }
 }

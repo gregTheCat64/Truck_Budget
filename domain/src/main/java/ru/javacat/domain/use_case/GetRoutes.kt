@@ -7,7 +7,7 @@ import ru.javacat.domain.repo.RouteRepository
 class GetRoutes(
     private val repository: RouteRepository
 ) {
-    operator fun invoke(): Flow<List<Route?>>{
-        return repository.allRoutes
-    }
+//    operator fun invoke(): Flow<List<Route?>>{
+//        return repository.allRoutes
+//    }
 }

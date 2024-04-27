@@ -20,47 +20,15 @@ class RouteListViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val allRoutes = repo.allRoutes
+    val allRoutes = repo.routes
 
-    suspend fun insertNewRoute(route: Route){
-        _loadState.emit(LoadState.Loading)
-        println("inserting $route")
+    fun getAllRoutes(){
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val result = repo.insertRoute(route)
-                println("result - $result")
-                //_newRouteId.emit(result)
-                _loadState.emit(LoadState.Success.GoForward)
-
-            } catch (e: Exception){
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
+            repo.getAllRoutes()
         }
     }
 
-    suspend fun getRouteAndUpdateEditedRoute(id: Long) {
-        _loadState.emit(LoadState.Loading)
-        viewModelScope.launch(Dispatchers.IO){
-            try {
-                val editedRoute = if (id!= 0L){
-                    repo.getRoute(id)?:Route()
-                } else {
-                    val lastRoute = repo.lastRoute
-                    val lastRouteId = lastRoute?.id?:0
 
-                    val lastRouteDriver = lastRoute?.driver
-                    val lastRouteTruck = lastRoute?.truck
-                    val lastRouteTrailer = lastRoute?.trailer
-
-                    Route(id = lastRouteId + 1, driver = lastRouteDriver, truck = lastRouteTruck, trailer = lastRouteTrailer)
-                }
-                repo.updateEditedRoute(editedRoute)
-                _loadState.emit(LoadState.Success.GoForward)
-            } catch (e: Exception){
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
 
 
     suspend fun removeRoute(id: Long){

@@ -3,10 +3,10 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 data class Route(
-    val id: Long? = null,
+    val id: Long = 0L,
     val startDate: LocalDate? = null,
     val endDate: LocalDate? = null,
-    val driver: Staff? = null,
+    val driver: TruckDriver? = null,
     val truck: Truck? = null,
     val trailer: Trailer? = null,
     val orderList: List<Order> = emptyList(),

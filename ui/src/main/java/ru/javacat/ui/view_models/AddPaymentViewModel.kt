@@ -32,7 +32,8 @@ class AddPaymentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                orderRepository.updateOrder(editedOrder.value.copy(price = price, daysToPay = daysToPay))
+                editedOrder.value?.copy(price = price, daysToPay = daysToPay)
+                    ?.let { orderRepository.updateOrder(it) }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

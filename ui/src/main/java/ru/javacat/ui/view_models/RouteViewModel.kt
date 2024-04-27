@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RouteViewModel @Inject constructor(
-    private val routeRepository: RouteRepository,
+    routeRepository: RouteRepository,
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
@@ -23,68 +23,11 @@ class RouteViewModel @Inject constructor(
     val loadState = _loadState.asSharedFlow()
 
     val editedRoute = routeRepository.editedRoute
-    //val editedOrder = orderRepository.editedOrder
+    val editedOrder = orderRepository.editedOrder
 
-
-    fun saveRoute(isFinished: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _loadState.emit(LoadState.Loading)
-            //updateEditedRoute()
-            try {
-                saveRoute()
-                if (isFinished) {
-                    _loadState.emit(LoadState.Success.GoBack)
-                } else {
-                    _loadState.emit(LoadState.Success.GoForward)
-                }
-            } catch (e: Exception) {
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
-
-    suspend fun getRouteAndUpdateEditedRoute(id: Long) {
-        _loadState.emit(LoadState.Loading)
+    fun addRouteIdToOrder(routeId: Long){
         viewModelScope.launch(Dispatchers.IO){
-            try {
-                val editedRoute = routeRepository.getRoute(id)?:Route()
-                routeRepository.updateEditedRoute(editedRoute)
-                _loadState.emit(LoadState.Success.OK)
-            } catch (e: Exception){
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
-
-
-    private suspend fun saveRoute() {
-        routeRepository.insertRoute(editedRoute.value)
-    }
-
-    fun setRouteFinished(){
-        viewModelScope.launch (Dispatchers.IO){
-            try {
-                routeRepository.updateEditedRoute(editedRoute.value.copy(isFinished = true))
-                saveRoute()
-                _loadState.emit(LoadState.Success.GoForward)
-            } catch (e: Exception) {
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
-
-
-    suspend fun getOrderAndUpdateEditedOrder(id: String) {
-        _loadState.emit(LoadState.Loading)
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                //saveRoute()
-                val editedOrder = orderRepository.getOrderById(id)
-                orderRepository.restoringOrder(editedOrder)
-                _loadState.emit(LoadState.Success.GoForward)
-            } catch (e: Exception) {
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
+            editedOrder.value?.copy(routeId = routeId)?.let { orderRepository.updateOrder(it) }
         }
     }
 
@@ -93,6 +36,4 @@ class RouteViewModel @Inject constructor(
             orderRepository.clearCurrentOrder()
         }
     }
-
-
 }

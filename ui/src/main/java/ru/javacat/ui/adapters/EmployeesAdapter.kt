@@ -10,18 +10,23 @@ import ru.javacat.domain.models.Employee
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.EmployeeItemBinding
 
-class EmployeesAdapter: ListAdapter<Employee, EmployeesAdapter.Holder>(Comparator()) {
+interface OnEmployeeListener {
+    fun onEmployee(item: Employee)
+}
+class EmployeesAdapter(
+    private val onEmployeeListener: OnEmployeeListener
+): ListAdapter<Employee, EmployeesAdapter.Holder>(Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.employee_item, parent, false)
-        return Holder(view)
+        return Holder(view, onEmployeeListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class Holder(view: View): RecyclerView.ViewHolder(view){
+    class Holder(view: View, private val onEmployeeListener: OnEmployeeListener): RecyclerView.ViewHolder(view){
         private val binding = EmployeeItemBinding.bind(view)
 
         fun bind(item: Employee){
@@ -29,6 +34,9 @@ class EmployeesAdapter: ListAdapter<Employee, EmployeesAdapter.Holder>(Comparato
                 name.text = item.name
                 phoneNumber.text = item.phoneNumber
                 email.text = item.email
+                root.setOnClickListener {
+                    onEmployeeListener.onEmployee(item)
+                }
             }
         }
     }

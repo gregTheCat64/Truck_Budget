@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -24,6 +25,8 @@ import ru.javacat.ui.view_models.AddCargoViewModel
 
 @AndroidEntryPoint
 class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddCargoBinding
         get() = { inflater, container ->
             FragmentAddCargoBinding.inflate(inflater, container, false)
@@ -49,6 +52,16 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         isNewOrder = args?.getBoolean(IS_NEW_ORDER) ?: true
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as AppCompatActivity). supportActionBar?.title = "Груз"
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,7 +71,9 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    initUi(order)
+                    if (order != null) {
+                        initUi(order)
+                    }
                 }
             }
         }
@@ -76,8 +91,8 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
         binding.cancelBtn.setOnClickListener {
             if (isNewOrder){
-                findNavController().navigate(R.id.routeFragment)
-            } else findNavController().navigate(R.id.orderDetailsFragment)
+                findNavController().popBackStack(R.id.viewPagerFragment, false)
+            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
         }
 
         binding.okBtn.setOnClickListener {
@@ -88,14 +103,14 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     }
 
     private fun initUi(order: Order) {
-        order.cargo.cargoName.let {
+        order.cargo?.cargoName.let {
             if (!it.isNullOrEmpty()) binding.cargoEditText.setText(it)
         }
-        order.cargo.cargoVolume.let {
-            if (it != 0) binding.tvVolume.setText(it.toString())
+        order.cargo?.cargoVolume.let {
+            if (it != null) binding.tvVolume.setText(it.toString())
         }
-        order.cargo.cargoWeight.let {
-            if (it != 0) binding.weightTv.setText(it.toString())
+        order.cargo?.cargoWeight.let {
+            if (it != null) binding.weightTv.setText(it.toString())
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,8 @@ import ru.javacat.ui.view_models.AddDocumentsViewModel
 
 @AndroidEntryPoint
 class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
+
+    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddDocumentsBinding
         get() = {inflater, container->
             FragmentAddDocumentsBinding.inflate(inflater, container, false)
@@ -26,6 +29,8 @@ class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity). supportActionBar?.title = "Документы"
 
         binding.saveBtn.setOnClickListener {
             val sendNumber = binding.sendingNumber.text.let {
@@ -39,7 +44,7 @@ class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
         viewLifecycleOwner.lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.OK) findNavController().navigate(R.id.orderDetailsFragment)
+                    if (it is LoadState.Success.OK) findNavController().popBackStack(R.id.orderDetailsFragment, false)
                 }
             }
         }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/routes"
+        android:icon="@drawable/baseline_route_24"
+        android:title="routes"
+        android:orderInCategory="1"
+        />
+    <item android:id="@+id/orders"
+        android:icon="@drawable/icon_docs"
+        android:title="orders"
+        android:orderInCategory="2"
+        />
+    <item android:id="@+id/partners"
+    android:icon="@drawable/baseline_apartment_24"
+    android:title="partners"
+    android:orderInCategory="3"
+    />
+    <item android:id="@+id/home"
+    android:icon="@drawable/baseline_cottage_24"
+    android:title="home"
+    android:orderInCategory="4"
+    />
+</menu>

@@ -18,6 +18,8 @@ import java.time.Period
 @AndroidEntryPoint
 class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
+    override var bottomNavViewVisibility: Int = View.GONE
+
     private val viewModel: FinishRouteViewModel by viewModels()
 
     private var prepay: Int = 0
@@ -40,14 +42,16 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                initUI(it)
+                if (it != null) {
+                    initUI(it)
+                }
             }
         }
 
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.routeListFragment)
+                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.viewPagerFragment)
             }
         }
 
@@ -65,7 +69,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             viewModel.saveRoute()
         }
 
-
+        binding.cancelButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun initUI(route: Route){

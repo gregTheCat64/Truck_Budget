@@ -5,8 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CustomersDao
-import ru.javacat.data.db.dao.DbCargo
+import ru.javacat.data.db.dao.EmployeesDao
+import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.dao.LocationsDao
+import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.dao.RoutesDao
 import ru.javacat.data.db.dao.StaffDao
 import ru.javacat.data.db.dao.TrailersDao
@@ -41,9 +43,11 @@ import ru.javacat.data.db.entities.PointConverter
 abstract class AppDb : RoomDatabase() {
     abstract val routesDao: RoutesDao
     abstract val customersDao: CustomersDao
+    abstract val employeesDao: EmployeesDao
     abstract val staffDao: StaffDao
     abstract val trucksDao: TrucksDao
     abstract val trailersDao: TrailersDao
     abstract val locationsDao: LocationsDao
     abstract val cargoDao: CargoDao
+    abstract val ordersDao: OrdersDao
 }

@@ -2,7 +2,6 @@ package ru.javacat.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.javacat.domain.models.Staff
 
 @Entity(tableName = "staff_table")
 data class DbStaff (
@@ -11,15 +10,15 @@ data class DbStaff (
     val firstName: String?,
     val middleName: String?,
     val surName: String,
-    val passportSerial: String,
-    val passportNumber: String,
+    val passportSerial: String?,
+    val passportNumber: String?,
     val passportReceivedDate: String?,
     val passportReceivedPlace: String?,
     val driveLicenseNumber: String?,
     val placeOfRegistration: String?,
     val phoneNumber: String?
 ){
-    fun toStaff() = Staff(
+    fun toStaff() = TruckDriver(
         id,firstName,middleName, surName, passportSerial, passportNumber, passportReceivedDate, passportReceivedPlace, driveLicenseNumber, placeOfRegistration, phoneNumber, 0
     )
 }

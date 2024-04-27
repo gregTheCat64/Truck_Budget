@@ -15,6 +15,6 @@ data class DbTruck(
     val yearOfManufacturing: String?,
 ){
     fun toTruck() = Truck(
-        id, regNumber, vin, model, type, yearOfManufacturing
+        id, regNumber, vin, model,  yearOfManufacturing
     )
 }

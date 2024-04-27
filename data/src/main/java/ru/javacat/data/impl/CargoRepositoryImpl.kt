@@ -20,13 +20,17 @@ class CargoRepositoryImpl @Inject constructor(
         return dbQuery { dao.getCargos().map { it.toCargoModel() } }
     }
 
-    override suspend fun search(string: String): List<CargoName> {
+    override suspend fun search(s: String): List<CargoName> {
         return dbQuery {
-            dao.searchCargos(string).map { it.toCargoModel() }
+            dao.searchCargos(s).map { it.toCargoModel() }
         }
     }
 
     override suspend fun insert(t: CargoName) {
         dbQuery { dao.insertCargo(t.toDb()) }
+    }
+
+    override suspend fun getById(id: Long): CargoName {
+        return dbQuery { dao.getCargoById(id).toCargoModel() }
     }
 }

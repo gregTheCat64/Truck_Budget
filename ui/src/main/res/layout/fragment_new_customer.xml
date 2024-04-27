@@ -8,51 +8,74 @@
     android:padding="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/companyNameLayout"
+        android:id="@+id/nameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/companyName"
+            android:id="@+id/name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Название"
-            android:inputType="textCapWords" />
+            android:layout_height="match_parent"
+            android:hint="@string/company_name"
+            android:inputType="textPersonName"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/inn"
+            android:inputType="number"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/atiNumberLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true"
-        >
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ogrn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/ogrn"
+            android:inputType="number"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/atiNumber"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="@string/ati_number"
             android:inputType="number"
-            android:hint="Код в Ати"
             />
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneNumber"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Телефон"
-            android:inputType="phone"
+            android:layout_height="match_parent"
+            android:hint="@string/phone_number"
+            android:inputType="textCapSentences"
             />
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -61,10 +84,10 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/formalAddress"
+            android:id="@+id/legalAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Юридический адрес"
+            android:hint="@string/legal_address"
             android:inputType="textCapSentences"
             />
 
@@ -73,13 +96,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/postAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Почтовый адрес"
+            android:hint="@string/post_address"
             android:inputType="textCapSentences"
             />
 
@@ -94,45 +118,19 @@
             android:id="@+id/shortName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Короткое название"
+            android:hint="@string/short_name"
+            android:inputType="textCapSentences"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сотрудники:"
-        android:inputType="textCapSentences"
-        android:layout_margin="8dp"
-        android:layout_gravity="center_horizontal"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/employeesRecView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/employee_item"
-        tools:itemCount="2"
-        />
-
-    <Button
-        android:id="@+id/addEmployeeBtn"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Добавить сотрудника"
-        android:layout_gravity="center_horizontal"
-        />
 
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Сохранить"
+        android:text="@string/save"
         android:layout_gravity="center_horizontal"
         />
 

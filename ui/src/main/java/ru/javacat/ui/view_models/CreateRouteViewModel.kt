@@ -30,10 +30,11 @@ class CreateRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                repo.updateEditedRoute(
-                    editedRoute.value.copy(prepayment = _prepay)
-                )
-                repo.insertRoute(editedRoute.value)
+                    repo.updateEditedRoute(
+                        editedRoute.value.copy(prepayment = _prepay)
+                    )
+
+                editedRoute.value.let { repo.insertRoute(it) }
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
@@ -44,24 +45,19 @@ class CreateRouteViewModel @Inject constructor(
     fun setLastRouteToEditedRoute() {
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
-//            val lastRouteId = lastRoute?.id ?: 0
-//            val lastRouteDriver = lastRoute?.driver
-//            val lastRouteTruck = lastRoute?.truck
-//            val lastRouteTrailer = lastRoute?.trailer
-//            val lastPrepayment = lastRoute?.prepayment
 
             repo.updateEditedRoute(
-                Route(
-                    id = lastRoute?.id?.plus(1)?:1,
-                    driver = lastRoute?.driver,
-                    truck = lastRoute?.truck,
-                    trailer = lastRoute?.trailer,
-                    prepayment = lastRoute?.prepayment,
-                    fuelPrice = lastRoute?.fuelPrice,
-                    payPerDiem = lastRoute?.payPerDiem,
-                    startDate = date
+                    Route(
+                        id = lastRoute?.id?.plus(1)?:1,
+                        driver = lastRoute?.driver,
+                        truck = lastRoute?.truck,
+                        trailer = lastRoute?.trailer,
+                        prepayment = lastRoute?.prepayment,
+                        fuelPrice = lastRoute?.fuelPrice,
+                        payPerDiem = lastRoute?.payPerDiem,
+                        startDate = date
+                    )
                 )
-            )
         }
     }
 

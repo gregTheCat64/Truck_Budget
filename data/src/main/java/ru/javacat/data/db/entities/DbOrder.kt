@@ -10,12 +10,7 @@ import androidx.room.TypeConverters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.javacat.domain.models.Cargo
-import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.OrderStatus
-import ru.javacat.domain.models.Point
-import ru.javacat.domain.models.Staff
-import ru.javacat.domain.models.Vehicle
-import java.time.LocalDate
 
 @Entity(
     tableName = "orders_table",
@@ -31,13 +26,18 @@ import java.time.LocalDate
     )
 data class DbOrder(
     @PrimaryKey
-    val id: String,
+        (autoGenerate = true)
+    val id: Long,
     @ColumnInfo(index = true)
     val routeId: Long,
     @TypeConverters(PointConverter::class)
     val points: List<DbPoint>,
     val price: Int,
     val customerId: Long,
+    val employeeId: Long?,
+    val driverId: Long,
+    val truckId: Long,
+    val trailerId: Long?,
     @Embedded
     val cargo: Cargo,
     val extraConditions: String?,

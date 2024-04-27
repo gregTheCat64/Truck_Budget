@@ -11,12 +11,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.CargoName
-import ru.javacat.domain.models.Staff
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
-import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
-import ru.javacat.domain.repo.StaffRepository
+import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TrucksRepository
 import ru.javacat.ui.LoadState
@@ -26,10 +24,8 @@ import javax.inject.Inject
 class ChooseItemViewModel @Inject constructor(
     private val trucksRepository: TrucksRepository,
     private val trailersRepository: TrailersRepository,
-    private val staffRepository: StaffRepository,
+    private val staffRepository: TruckDriversRepository,
     private val routeRepository: RouteRepository,
-    //private val customerRepository: CustomerRepository,
-    private val orderRepository: OrderRepository
 ): ViewModel() {
 
     private val _loadState = MutableSharedFlow<LoadState>()
@@ -44,7 +40,7 @@ class ChooseItemViewModel @Inject constructor(
 //    private val _customers = MutableStateFlow<List<Customer>?>(null)
 //    val customers = _customers.asStateFlow()
 
-    private val _drivers = MutableStateFlow<List<Staff>?>(null)
+    private val _drivers = MutableStateFlow<List<TruckDriver>?>(null)
     val drivers = _drivers.asStateFlow()
 
     private val _cargo = MutableStateFlow<List<CargoName>?>(null)
@@ -120,13 +116,13 @@ class ChooseItemViewModel @Inject constructor(
 
     fun setTrailer(t: Trailer){
         viewModelScope.launch {
-            routeRepository.updateEditedRoute(editedRoute.value.copy(trailer = t))
+            editedRoute.value?.copy(trailer = t)?.let { routeRepository.updateEditedRoute(it) }
         }
     }
 
-    fun setDriver(t: Staff){
+    fun setDriver(t: TruckDriver){
         viewModelScope.launch {
-            routeRepository.updateEditedRoute(editedRoute.value.copy(driver = t))
+            editedRoute.value?.copy(driver = t)?.let { routeRepository.updateEditedRoute(it) }
         }
     }
 

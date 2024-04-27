@@ -1,5 +1,6 @@
 package ru.javacat.data.impl
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,17 @@ class CustomerRepositoryImpl @Inject constructor(
     override val chosenCustomer: StateFlow<Customer?>
         get() = _chosenCustomer.asStateFlow()
 
+    private var _customers = MutableStateFlow(emptyList<Customer>())
+    override val customers: Flow<List<Customer>>
+        get() = _customers
+
     override suspend fun getAll(): List<Customer> {
+        _customers.emit(dao.getAll().map { it.toCustomerModel() })
         return dbQuery { dao.getCustomers().map { it.toCustomerModel() } }
+    }
+
+    override suspend fun getById(id: Long): Customer? {
+        return dbQuery { dao.getById(id)?.toCustomerModel()}
     }
 
     override suspend fun search(s: String): List<Customer> {
@@ -38,27 +48,4 @@ class CustomerRepositoryImpl @Inject constructor(
         _chosenCustomer.emit(t)
     }
 
-    //    override suspend fun getCustomers(): List<Customer> {
-//        return dbQuery { customersDao.getCustomers().map { it.toCustomerModel() } }
-//    }
-//
-//    override suspend fun searchCustomers(search: String): List<Customer> {
-//        return dbQuery { customersDao.searchCustomers(search).map { it.toCustomerModel() } }
-//    }
-//
-//    override suspend fun getEmployeesByCustomerId(customerId: String): List<Employee> {
-//        val result = dbQuery {
-//              customersDao.getEmployeesByCustomerId(customerId).map {
-//                  it.toEmployeeModel()
-//              } }
-//        return result
-//    }
-//
-//    override suspend fun insertCustomer(customer: Customer) {
-//        dbQuery { customersDao.insertCustomer(customer.toDb()) }
-//    }
-//
-//    override suspend fun insertEmployee(employee: Employee) {
-//        dbQuery { customersDao.insertEmployee(employee.toDb()) }
-//    }
 }

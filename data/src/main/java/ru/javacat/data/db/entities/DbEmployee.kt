@@ -2,7 +2,6 @@ package ru.javacat.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import ru.javacat.domain.models.Employee
 
@@ -19,13 +18,13 @@ data class DbEmployee(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo(index = true)
-    val customerId: String,
+    val customerId: Long,
     val name: String,
-    val phoneNumber: String,
+    val phoneNumber: String?,
     val secondNumber: String?,
     val email: String?,
     val comment: String?
 ) {
     fun toEmployeeModel() = Employee(
-        id,  customerId,name,phoneNumber,secondNumber,email,comment)
+        id,  name, customerId, phoneNumber,secondNumber,email,comment)
 }

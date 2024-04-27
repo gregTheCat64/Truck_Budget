@@ -260,9 +260,21 @@
             android:layout_height="wrap_content"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_marginStart="8dp"
-            android:text="0 руб."
              />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel_button"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_margin="16dp"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveBtn"
@@ -272,5 +284,5 @@
         android:layout_gravity="end"
         android:layout_margin="16dp"
         />
-
+</FrameLayout>
 </LinearLayout>

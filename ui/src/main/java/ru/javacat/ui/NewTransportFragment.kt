@@ -20,6 +20,8 @@ import ru.javacat.ui.view_models.NewTransportViewModel
 @AndroidEntryPoint
 class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
 
+    override var bottomNavViewVisibility: Int = View.GONE
+
     private val viewModel: NewTransportViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewTransportBinding
         get() = {inflater, container->
@@ -44,9 +46,6 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                     viewModel.loadState.collectLatest {
                         if (it== LoadState.Success.GoBack){
                             findNavController().navigateUp()
-                        } else
-                        {
-                            println("Ошибка сохранения")
                         }
                     }
                 }
@@ -55,7 +54,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             when (item){
                 "TRUCK" -> {
                     val newVehicle = Truck(
-                        0, regNumber,vin,model,type,year
+                        0, regNumber,vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTruck(newVehicle)
@@ -64,7 +63,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                 }
                 "TRAILER" ->{
                     val newVehicle = Trailer(
-                        0, regNumber,vin,model,type,year
+                        0, regNumber,vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTrailer(newVehicle)

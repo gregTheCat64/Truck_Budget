@@ -9,7 +9,7 @@ import ru.javacat.domain.repo.RouteRepository
 class GetOrders(
     private val repository: OrderRepository
 ) {
-    operator fun invoke(): Flow<List<Order?>>{
-        return repository.allOrders
-    }
+//    operator fun invoke(): Flow<List<Order?>>{
+//        return repository.allOrders
+//    }
 }

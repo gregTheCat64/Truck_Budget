@@ -1,4 +1,4 @@
-package ru.javacat.ui.adapters.my_adapter
+package ru.javacat.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View

@@ -10,13 +10,13 @@
     <string name="volume_m3">Volume, m3</string>
     <string name="weight_ton">Weight, ton</string>
     <string name="loading_type">Loading type:</string>
-    <string name="route">Route:</string>
+    <string name="route">Route</string>
     <string name="payment_date">Payment date</string>
     <string name="receiving_date">Receiving date</string>
     <string name="sending_documents_track_number">Sending documents track number</string>
     <string name="days_to_pay">Days to pay:</string>
     <string name="cost">Cost</string>
-    <string name="payment">Payment:</string>
+    <string name="payment">Payment</string>
     <string name="paid">paid</string>
     <string name="finished">finished</string>
     <string name="pending">pending</string>
@@ -29,6 +29,7 @@
     <string name="count">Count</string>
     <string name="income">Income:</string>
     <string name="orders">Orders</string>
+    <string name="order">Order</string>
     <string name="subsistence">Subsistence:</string>
     <string name="other_expenses">Other expenses</string>
     <string name="driver_salary">Driver salary:</string>
@@ -38,4 +39,21 @@
     <string name="documents">Documents</string>
     <string name="cargo_name">Cargo name</string>
     <string name="payment_status">Payment status</string>
+    <string name="manager">Manager:</string>
+    <string name="company_name">Company name</string>
+    <string name="ati_number">ATI number</string>
+    <string name="phone_number">Phone number</string>
+    <string name="edit">Edit</string>
+    <string name="add_employee">Add Employee</string>
+    <string name="from">from</string>
+    <string name="sign_in">sign in</string>
+    <string name="sign_up">sign up</string>
+    <string name="sign_out">sign out</string>
+    <string name="remove">remove</string>
+    <string name="new_route">New Route</string>
+    <string name="inn">INN</string>
+    <string name="ogrn">OGRN</string>
+    <string name="legal_address">Legal address</string>
+    <string name="post_address">Post address</string>
+    <string name="short_name">Short name</string>
 </resources>

@@ -12,9 +12,28 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
 
     private var _binding: VB? = null
 
+    protected open var bottomNavViewVisibility = View.VISIBLE
+
     protected val binding
         get() = _binding
             ?: throw NullPointerException("${this::class.simpleName} view binding failed")
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (activity is MainActivity) {
+            val mainActivity = activity as MainActivity
+            mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity is MainActivity) {
+            val mainActivity = activity as MainActivity
+            mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

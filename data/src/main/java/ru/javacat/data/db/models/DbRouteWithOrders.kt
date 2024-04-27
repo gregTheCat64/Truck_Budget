@@ -19,21 +19,21 @@ data class DbRouteWithOrders (
         entityColumn = "routeId",
         entity = DbOrder::class
     )
-    val orders: List<DbOrderWithPointsAndCustomer>,
+    val orders: List<DbOrderWithCustomer>,
 
     @Relation(
         parentColumn = "driverId",
         entityColumn = "id",
         entity = DbStaff::class
     )
-    val driver: DbStaff?,
+    val driver: DbStaff,
 
     @Relation(
         parentColumn = "truckId",
         entityColumn = "id",
         entity = DbTruck::class
     )
-    val truck: DbTruck?,
+    val truck: DbTruck,
 
     @Relation(
         parentColumn = "trailerId",
@@ -48,8 +48,8 @@ data class DbRouteWithOrders (
             id = route.id,
             startDate = route.startDate?.toLocalDate(),
             endDate = route.endDate?.toLocalDate(),
-            driver = driver?.toStaff(),
-            truck = truck?.toTruck(),
+            driver = driver.toStaff(),
+            truck = truck.toTruck(),
             trailer = trailer?.toTrailer(),
             orderList = orders.map { it.toOrderModel() },
             prepayment = route.prepayment,

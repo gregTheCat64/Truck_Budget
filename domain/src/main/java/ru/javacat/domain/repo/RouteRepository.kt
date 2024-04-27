@@ -5,13 +5,18 @@ import kotlinx.coroutines.flow.StateFlow
 import ru.javacat.domain.models.Route
 
 interface RouteRepository {
-    val allRoutes: Flow<List<Route?>>
+    //val allRoutes: Flow<List<Route?>>
+
+    val routes: Flow<List<Route>>
 
     val lastRoute: Route?
 
     val editedRoute: StateFlow<Route>
 
     val isEdited: StateFlow<Boolean>
+
+
+    suspend fun getAllRoutes()
 
     suspend fun getRoute(id: Long): Route?
     suspend fun updateEditedRoute(newRoute: Route)

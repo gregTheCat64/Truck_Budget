@@ -16,6 +16,6 @@ val type: String?,
 val yearOfManufacturing: String?,
 ){
     fun toTrailer() = Trailer(
-        id, regNumber, vin, model, type, yearOfManufacturing
+        id, regNumber, vin, model,  yearOfManufacturing
     )
 }

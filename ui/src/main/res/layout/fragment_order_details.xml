@@ -20,23 +20,25 @@
                 android:layout_marginBottom="32dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/orderTitle"
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                   
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp" />
 
-                <include layout="@layout/horizon_line" />
+                    <TextView
+                        android:id="@+id/editCustomerTv"
+                        style="@style/TextAppearance.Material3.TitleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/customer"
+                        android:layout_gravity="start"
+                        app:drawableRightCompat = "@drawable/baseline_edit_24" />
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="@string/customer" />
+                    android:hint="@string/company_name" />
 
                 <TextView
                     android:id="@+id/customerTv"
@@ -47,31 +49,35 @@
 
                     />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:hint="@string/manager" />
+
+                <TextView
+                    android:id="@+id/managerTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="16dp"
+
+                    />
+
                 <include layout="@layout/horizon_line" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/editCargoTv"
                         style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/cargo"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
-
-                    <ImageView
-                        android:id="@+id/editCargoBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_edit_24"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginEnd="16dp"
-                        />
-
-                </FrameLayout>
+                        android:layout_gravity="start"
+                        app:drawableEndCompat="@drawable/baseline_edit_24" />
 
 
 
@@ -147,32 +153,18 @@
 
                 <include layout="@layout/horizon_line" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+
                     <TextView
-                        android:id="@+id/routeTextView"
+                        android:id="@+id/editPointsTv"
                         style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/route"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/horizonLine" />
-
-                    <ImageView
-                        android:id="@+id/editRouteBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_edit_24"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginEnd="16dp"
-                        />
-
-                </FrameLayout>
-
+                        android:layout_gravity="start"
+                        app:drawableEndCompat="@drawable/baseline_edit_24"
+                         />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -189,27 +181,16 @@
 
                 <include layout="@layout/horizon_line" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/editPaymentTv"
                         style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_gravity="start"
                         android:text="@string/payment" />
-                    <ImageView
-                        android:id="@+id/editPaymentBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_edit_24"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginEnd="16dp"
-                        />
-
-                </FrameLayout>
-
 
 
                 <TextView
@@ -242,6 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:text="@string/add"
                     style="@style/TextAppearance.Material3.BodyLarge"
                     />
 
@@ -270,6 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_gravity="start"
                     android:text="@string/documents" />
 
                     <TextView

@@ -24,7 +24,8 @@ class AddDocumentsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                orderRepository.updateOrder(editedOrder.value.copy(sentDocsNumber = docNumber))
+                editedOrder.value?.copy(sentDocsNumber = docNumber)
+                    ?.let { orderRepository.updateOrder(it) }
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
