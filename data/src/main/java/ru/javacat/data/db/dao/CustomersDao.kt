@@ -6,28 +6,26 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbCustomer
-import ru.javacat.data.db.entities.DbEmployee
-import ru.javacat.data.db.models.DbCustomerWithEmployees
-import ru.javacat.domain.models.Employee
+import ru.javacat.data.db.entities.DbManager
+import ru.javacat.data.db.models.DbCustomerWithManagers
 
 @Dao
 interface CustomersDao {
 
     @Transaction
     @Query("SELECT * FROM customers_table")
-    fun getAll(): List<DbCustomerWithEmployees>
+    fun getAll(): List<DbCustomerWithManagers>
 
     @Transaction
     @Query("SELECT * FROM customers_table WHERE id =:id")
-    suspend fun getById(id: Long): DbCustomerWithEmployees?
+    suspend fun getById(id: Long): DbCustomerWithManagers?
 
     @Query("SELECT * FROM customers_table")
-    suspend fun getCustomers(): List<DbCustomerWithEmployees>
+    suspend fun getCustomers(): List<DbCustomerWithManagers>
 
     @Query("SELECT * FROM customers_table WHERE companyName LIKE '%' || :search || '%'")
-    suspend fun searchCustomers(search: String): List<DbCustomerWithEmployees>
+    suspend fun searchCustomers(search: String): List<DbCustomerWithManagers>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(
@@ -37,7 +35,7 @@ interface CustomersDao {
     @Update()
     suspend fun updateCustomer(
         customer: DbCustomer,
-        employee: List<DbEmployee>
+        employee: List<DbManager>
     )
 
 

@@ -35,8 +35,8 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
         val item = args?.getString("item")?:"unknown"
 
         binding.saveBtn.setOnClickListener {
-            val type = binding.typeOfVehicle.text.toString()
             val regNumber = binding.regNumber.text.toString()
+            val regionCode = binding.regCode.text?.toString()?.toInt()?:0
             val vin = binding.vin.text.toString()
             val model = binding.modelOfVehicle.text.toString()
             val year = binding.yearOfManufacturing.text.toString()
@@ -54,7 +54,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             when (item){
                 "TRUCK" -> {
                     val newVehicle = Truck(
-                        0, regNumber,vin,model, year
+                        0, regNumber,regionCode, vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTruck(newVehicle)
@@ -63,7 +63,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                 }
                 "TRAILER" ->{
                     val newVehicle = Trailer(
-                        0, regNumber,vin,model, year
+                        0, regNumber,regionCode, vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTrailer(newVehicle)

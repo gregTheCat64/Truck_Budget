@@ -4,12 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import ru.javacat.data.db.dao.CustomersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
 import ru.javacat.domain.repo.CustomerRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,9 +17,11 @@ class CustomerRepositoryImpl @Inject constructor(
     private val dao: CustomersDao
 ): CustomerRepository {
 
-    private val _chosenCustomer = MutableStateFlow<Customer?>(null)
-    override val chosenCustomer: StateFlow<Customer?>
+    override val chosenItem: StateFlow<Customer?>
         get() = _chosenCustomer.asStateFlow()
+    private val _chosenCustomer = MutableStateFlow<Customer?>(null)
+//    override val chosenCustomer: StateFlow<Customer?>
+//        get() = _chosenCustomer.asStateFlow()
 
     private var _customers = MutableStateFlow(emptyList<Customer>())
     override val customers: Flow<List<Customer>>

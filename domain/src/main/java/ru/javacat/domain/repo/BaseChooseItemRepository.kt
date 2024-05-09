@@ -1,6 +1,10 @@
 package ru.javacat.domain.repo
 
-interface BaseCrud<T: Any,S : Any, Id: Any> {
+import kotlinx.coroutines.flow.StateFlow
+
+interface BaseChooseItemRepository<T: Any,S : Any, Id: Any> {
+
+    val chosenItem: StateFlow<T?>
 
     suspend fun getAll(): List<T>
 

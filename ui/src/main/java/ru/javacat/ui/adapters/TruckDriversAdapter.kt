@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.EmployeeItemBinding
 
@@ -30,7 +31,6 @@ class TruckDriversAdapter(
             binding.apply {
                 name.text = item.name + " " + item.firstName
                 phoneNumber.text = item.phoneNumber
-                email.text = item.placeOfRegistration
                 root.setOnClickListener {
                     onItem(item)
                 }

@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.ui.databinding.FragmentCreateRouteBinding
-import ru.javacat.ui.view_models.CreateRouteViewModel
+import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.view_models.NewRouteViewModel
 
     const val itemParam = "item"
 @AndroidEntryPoint
@@ -27,7 +29,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
     override var bottomNavViewVisibility: Int = View.GONE
 
-    private val viewModel: CreateRouteViewModel by viewModels()
+    private val viewModel: NewRouteViewModel by viewModels()
     private val bundle = Bundle()
     private var isLastRouteLoaded = false
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCreateRouteBinding
@@ -111,13 +113,27 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.OK) {
-                        findNavController().navigate(R.id.viewPagerFragment)
+                viewModel.routeId.collectLatest {
+                    Log.i("NewRouteFrag", "routeID: $it")
+                    val bundle = Bundle()
+                    if (it != null) {
+                        bundle.putLong(FragConstants.ROUTE_ID, it)
+                        findNavController().navigate(R.id.viewPagerFragment, bundle)
                     }
+
                 }
             }
         }
+
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//                viewModel.loadState.collectLatest {
+//                    if (it is LoadState.Success.OK) {
+//                        findNavController().navigate(R.id.viewPagerFragment)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun setLastRouteToCurrent(){

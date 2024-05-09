@@ -4,14 +4,13 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
 import ru.javacat.data.db.entities.DbCustomer
-import ru.javacat.data.db.entities.DbEmployee
+import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbOrder
 
 import ru.javacat.data.db.entities.DbRoute
-import ru.javacat.data.db.entities.DbStaff
+import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
-import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Order
 
 data class DbOrderWithCustomer(
@@ -30,13 +29,13 @@ data class DbOrderWithCustomer(
         entityColumn = "id",
         entity = DbCustomer::class
     )
-    val customer: DbCustomerWithEmployees,
+    val customer: DbCustomerWithManagers,
 
     @Relation(
         parentColumn = "employeeId",
         entityColumn = "id",
     )
-    val employee: DbEmployee,
+    val manager: DbManager?,
 
     @Relation(
         parentColumn = "routeId",
@@ -48,7 +47,7 @@ data class DbOrderWithCustomer(
         parentColumn = "driverId",
         entityColumn = "id",
     )
-    val driver: DbStaff?,
+    val driver: DbTruckDriver?,
 
     @Relation(
         parentColumn = "truckId",
@@ -69,10 +68,11 @@ data class DbOrderWithCustomer(
             id = order.id,
             routeId = route.id,
             points = order.points.map { it.toPointModel() },
+            date = order.date.toLocalDate(),
             price = order.price,
             customer = customer.toCustomerModel(),
-            employee = employee.toEmployeeModel(),
-            driver = driver?.toStaff(),
+            manager = manager?.toManagerModel(),
+            driver = driver?.toTruckDriverModel(),
             truck = truck?.toTruck(),
             trailer = trailer?.toTrailer(),
             cargo = order.cargo,

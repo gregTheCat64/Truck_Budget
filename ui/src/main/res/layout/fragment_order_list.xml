@@ -7,23 +7,81 @@
     android:padding="8dp"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filtered_by"
+            android:layout_marginStart="12dp"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/companiesFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:layout_marginStart="16dp"
+            android:text="@string/customer"
+
+            />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/monthsFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:checkable="true"
+            android:text="@string/month"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:checkable="true"
+            android:checked="true"
+
+            android:text="2024"
+            />
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/unpaidBtn"
+        android:checkable="true"
+        android:layout_marginStart="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/unpaid"
+
+        />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Неоплаченные"
+            android:layout_marginStart="12dp"
+            android:text="@string/debt"
             />
 
-        <CheckBox
-            android:id="@+id/monthCheck"
+        <TextView
+            android:id="@+id/debtValue"
+            android:layout_marginStart="16dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aprilCheck"
             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

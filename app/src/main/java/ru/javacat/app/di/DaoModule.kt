@@ -7,11 +7,11 @@ import dagger.hilt.components.SingletonComponent
 import ru.javacat.data.db.AppDb
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CustomersDao
-import ru.javacat.data.db.dao.EmployeesDao
+import ru.javacat.data.db.dao.ManagersDao
 import ru.javacat.data.db.dao.LocationsDao
 import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.dao.RoutesDao
-import ru.javacat.data.db.dao.StaffDao
+import ru.javacat.data.db.dao.TruckDriversDao
 import ru.javacat.data.db.dao.TrailersDao
 import ru.javacat.data.db.dao.TrucksDao
 import javax.inject.Singleton
@@ -33,11 +33,11 @@ object DaoModule {
 
     @Provides
     @Singleton
-    fun providesEmployeesDao(db: AppDb): EmployeesDao = db.employeesDao
+    fun providesManagersDao(db: AppDb): ManagersDao = db.managersDao
 
     @Provides
     @Singleton
-    fun providesStaffDao(db: AppDb): StaffDao = db.staffDao
+    fun providesStaffDao(db: AppDb): TruckDriversDao = db.truckDriversDao
 
     @Provides
     @Singleton

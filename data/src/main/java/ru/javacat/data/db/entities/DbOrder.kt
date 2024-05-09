@@ -10,7 +10,7 @@ import androidx.room.TypeConverters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.javacat.domain.models.Cargo
-import ru.javacat.domain.models.OrderStatus
+
 
 @Entity(
     tableName = "orders_table",
@@ -32,6 +32,7 @@ data class DbOrder(
     val routeId: Long,
     @TypeConverters(PointConverter::class)
     val points: List<DbPoint>,
+    val date: String,
     val price: Int,
     val customerId: Long,
     val employeeId: Long?,
@@ -49,12 +50,12 @@ data class DbOrder(
     val isPaid: Boolean
 )
 
-class StatusConverter {
-    @TypeConverter
-    fun toStatus(value: String) = enumValueOf<OrderStatus>(value)
-    @TypeConverter
-    fun fromStatus(value: OrderStatus) = value.name
-}
+//class StatusConverter {
+//    @TypeConverter
+//    fun toStatus(value: String) = enumValueOf<OrderStatus>(value)
+//    @TypeConverter
+//    fun fromStatus(value: OrderStatus) = value.name
+//}
 
 class PointConverter {
     @TypeConverter

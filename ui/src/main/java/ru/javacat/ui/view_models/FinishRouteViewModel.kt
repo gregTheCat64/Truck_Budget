@@ -19,7 +19,7 @@ class FinishRouteViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val editedRoute = routeRepository.editedRoute
+    val editedRoute = routeRepository.editedItem
 
     private var _prepay: Int = 0
     private var _routeSpending: Int = 0
@@ -65,7 +65,7 @@ class FinishRouteViewModel @Inject constructor(
             payPerDiem = _payPerDiem,
             moneyToPay = _moneyToPay
         )?.let {
-            routeRepository.updateEditedRoute(
+            routeRepository.updateEditedItem(
                 it
             )
         }
@@ -86,7 +86,7 @@ class FinishRouteViewModel @Inject constructor(
 
             _salary = ((_income - fuelSpending - subsistence - _routeSpending) / 5).roundToInt()
 
-            _moneyToPay = (_income - _prepay - fuelSpending - _routeSpending - _salary!! - subsistence).toInt()
+            _moneyToPay = ((_prepay - fuelSpending - _routeSpending - _salary!! - subsistence).toInt())*-1
 
             updateEditedRoute()
         }
@@ -104,8 +104,8 @@ class FinishRouteViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 if (editedRoute.value != null){
-                    routeRepository.updateEditedRoute(editedRoute.value!!.copy(isFinished = true))
-                    routeRepository.insertRoute(editedRoute?.value!!)
+                    routeRepository.updateEditedItem(editedRoute.value!!.copy(isFinished = true))
+                    routeRepository.insert(editedRoute?.value!!)
                 }
 
                 _loadState.emit(LoadState.Success.GoBack)

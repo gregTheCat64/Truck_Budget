@@ -20,11 +20,11 @@ class RouteListViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val allRoutes = repo.routes
+    val allRoutes = repo.items
 
     fun getAllRoutes(){
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllRoutes()
+            repo.getAll()
         }
     }
 
@@ -33,7 +33,7 @@ class RouteListViewModel @Inject constructor(
 
     suspend fun removeRoute(id: Long){
         viewModelScope.launch(Dispatchers.IO){
-            repo.removeRoute(id)
+            repo.removeById(id)
         }
     }
 

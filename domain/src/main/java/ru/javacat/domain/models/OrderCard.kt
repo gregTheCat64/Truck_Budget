@@ -19,5 +19,5 @@ data class OrderCard(
     val paymentDeadline: LocalDate?,
     val sentDocsNumber: String?,
     val docsReceived: LocalDate?,
-    val status: OrderStatus?
+    //val status: OrderStatus?
 )

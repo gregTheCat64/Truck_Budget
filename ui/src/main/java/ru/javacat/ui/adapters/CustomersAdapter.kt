@@ -34,8 +34,12 @@ class CustomersAdapter(
         fun bind(item: Customer){
             binding.apply {
                 companyName.text = item.name
-                phoneNumber.text = item.companyPhone
-                atiNumber.text = item.atiNumber.toString()
+                item.companyPhone?.let {
+                    phoneNumber.text = it
+                }
+                item.atiNumber?.let {
+                    atiNumber.text = it.toString()
+                }
                 root.setOnClickListener {
                     onCustomerListener.onCustomer(item)
                 }

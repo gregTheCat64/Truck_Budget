@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
+import ru.javacat.domain.models.TruckDriver
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrailersRepository
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class ChooseItemViewModel @Inject constructor(
     private val trucksRepository: TrucksRepository,
     private val trailersRepository: TrailersRepository,
-    private val staffRepository: TruckDriversRepository,
+    private val truckDriversRepository: TruckDriversRepository,
     private val routeRepository: RouteRepository,
 ): ViewModel() {
 
@@ -37,8 +38,6 @@ class ChooseItemViewModel @Inject constructor(
     private val _trailers = MutableStateFlow<List<Trailer>?>(null)
     val trailers = _trailers.asStateFlow()
 
-//    private val _customers = MutableStateFlow<List<Customer>?>(null)
-//    val customers = _customers.asStateFlow()
 
     private val _drivers = MutableStateFlow<List<TruckDriver>?>(null)
     val drivers = _drivers.asStateFlow()
@@ -52,7 +51,7 @@ class ChooseItemViewModel @Inject constructor(
 //
 //    val chosenDriver = staffRepository.chosenDriver
 
-    val editedRoute = routeRepository.editedRoute
+    val editedRoute = routeRepository.editedItem
 
  //   val editedOrder = orderRepository.editedOrder
 
@@ -73,17 +72,11 @@ class ChooseItemViewModel @Inject constructor(
 
     fun getDriver(){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = staffRepository.getAll()
+            val result = truckDriversRepository.getAll()
             _drivers.emit(result)
         }
     }
 
-//    fun getCustomer(){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val result = customerRepository.getAll()
-//            _customers.emit(result)
-//        }
-//    }
 
     fun searchTrucks(s: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -101,7 +94,7 @@ class ChooseItemViewModel @Inject constructor(
 
     fun searchStaff(s: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = staffRepository.search(s)
+            val result = truckDriversRepository.search(s)
             _drivers.emit(result)
         }
     }
@@ -110,19 +103,19 @@ class ChooseItemViewModel @Inject constructor(
         viewModelScope.launch {
             val newRoute = editedRoute.value.copy(truck = t)
             Log.i("ChooseItemVM", "newRoute: $newRoute")
-            routeRepository.updateEditedRoute(newRoute)
+            routeRepository.updateEditedItem(newRoute)
         }
     }
 
     fun setTrailer(t: Trailer){
         viewModelScope.launch {
-            editedRoute.value?.copy(trailer = t)?.let { routeRepository.updateEditedRoute(it) }
+            editedRoute.value?.copy(trailer = t)?.let { routeRepository.updateEditedItem(it) }
         }
     }
 
     fun setDriver(t: TruckDriver){
         viewModelScope.launch {
-            editedRoute.value?.copy(driver = t)?.let { routeRepository.updateEditedRoute(it) }
+            editedRoute.value?.copy(driver = t)?.let { routeRepository.updateEditedItem(it) }
         }
     }
 

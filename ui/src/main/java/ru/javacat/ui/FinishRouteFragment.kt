@@ -23,7 +23,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private val viewModel: FinishRouteViewModel by viewModels()
 
     private var prepay: Int = 0
-    private var routeSpending: Int = 0
+    private var routeSpending: Int? = null
 
     private var routeDuration: Int = 0
     private var payPerDiem: Int = 0
@@ -42,9 +42,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                if (it != null) {
-                    initUI(it)
-                }
+                initUI(it)
             }
         }
 
@@ -117,13 +115,13 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     }
 
     private fun getFieldsData() {
-        prepay = binding.prepayEditText.text?.let {
-            if (it.isBlank()) null else it.toString().toInt()
-        } ?: 0
+        prepay = binding.prepayEditText.text.let {
+            if (it?.isBlank() == true) 0 else it.toString().toInt()
+        }
 
         routeSpending = binding.routeSpending.text?.let {
-            if (it.isBlank()) null else it.toString().toInt()
-        } ?: 0
+            if (it.isBlank()) 0 else it.toString().toInt()
+        }
 
         routeDuration = binding.routeDaysCount.text?.let {
             if (it.isBlank()) null else it.toString().toInt()
@@ -145,7 +143,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             if (it.isBlank()) null else it.toString().toInt()
         }
 
-        viewModel.setFieldsData(prepay, routeSpending, routeDuration, fuelUsedUp, fuelPrice, payPerDiem, salary)
+        viewModel.setFieldsData(prepay, routeSpending!!, routeDuration, fuelUsedUp, fuelPrice, payPerDiem, salary)
     }
 
 

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AddDocumentsViewModel @Inject constructor(
     private val orderRepository: OrderRepository
 ): ViewModel() {
-    val editedOrder = orderRepository.editedOrder
+    val editedOrder = orderRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -25,7 +25,7 @@ class AddDocumentsViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.value?.copy(sentDocsNumber = docNumber)
-                    ?.let { orderRepository.updateOrder(it) }
+                    ?.let { orderRepository.updateEditedItem(it) }
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

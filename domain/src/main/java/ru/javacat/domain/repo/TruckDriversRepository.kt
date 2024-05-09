@@ -1,7 +1,7 @@
 package ru.javacat.domain.repo
 
-import kotlinx.coroutines.flow.StateFlow
+import ru.javacat.domain.models.TruckDriver
 
-interface TruckDriversRepository: BaseCrud<TruckDriver, String, String>{
-    val chosenDriver: StateFlow<TruckDriver?>
+interface TruckDriversRepository: BaseChooseItemRepository<TruckDriver, String, String>{
+    //val chosenDriver: StateFlow<TruckDriver?>
 }

@@ -1,5 +1,7 @@
 package ru.javacat.data.impl
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
@@ -12,6 +14,10 @@ import javax.inject.Singleton
 class CargoRepositoryImpl @Inject constructor(
     private val dao: CargoDao
 ): CargoRepository {
+
+    override val chosenItem: StateFlow<CargoName?>
+        get() = MutableStateFlow<CargoName?>(null)
+
     override suspend fun setItem(t: CargoName) {
 
     }

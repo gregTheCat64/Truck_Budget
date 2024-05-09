@@ -100,7 +100,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
     private fun updateUi(customer: Customer){
         binding.apply {
             customerNameTv.setText(customer.name)
-            innTv.setText(customer.id.toString())
+            //innTv.setText(customer.id.toString())
             atiNumberTv.setText(customer.atiNumber.toString())
             phoneNumberTv.setText(customer.companyPhone.toString())
         }

@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:hint="@string/company_name" />
+                    android:hint="@string/company_name_with_asterisk" />
 
                 <TextView
                     android:id="@+id/customerTv"

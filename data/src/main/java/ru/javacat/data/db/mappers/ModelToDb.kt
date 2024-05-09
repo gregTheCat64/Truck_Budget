@@ -2,24 +2,25 @@ package ru.javacat.data.db.mappers
 
 import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.entities.DbCustomer
-import ru.javacat.data.db.entities.DbEmployee
+import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbPoint
 import ru.javacat.data.db.entities.DbRoute
-import ru.javacat.data.db.entities.DbStaff
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
+import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
 import ru.javacat.domain.models.Location
+import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
+import ru.javacat.domain.models.TruckDriver
 
 fun Route.toDb() = DbRoute(
     id,
@@ -31,7 +32,7 @@ fun Route.toDb() = DbRoute(
     prepayment?:0,
     fuelUsedUp,
     fuelPrice,
-    routeSpending?:0,
+    routeSpending,
     payPerDiem,
     routeDuration?:0,
     driverSalary,
@@ -45,9 +46,10 @@ fun Order.toDb() = DbOrder(
     id,
     routeId?:0L,
     points.map { it.toDb() },
+    points[0].arrivalDate.toString(),
     price?:0,
     customer?.id?:0,
-    employee?.id,
+    manager?.id,
     driver?.id?: 0,
     truck?.id?: 0,
     trailer?.id,
@@ -65,25 +67,28 @@ fun Point.toDb() = DbPoint(
 )
 
 fun Truck.toDb() = DbTruck(
-    id, regNumber, vin, model, type, yearOfManufacturing
+    id, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
 fun Trailer.toDb() = DbTrailer(
-    id, regNumber, vin, model, type, yearOfManufacturing
+    id, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
-fun TruckDriver.toDb() = DbStaff(
+fun TruckDriver.toDb() = DbTruckDriver(
     id,
+    positionId,
+    customerId,
     firstName,
     middleName,
     surname,
-    passportSerial,
     passportNumber,
     passportReceivedDate,
     passportReceivedPlace,
     driveLicenseNumber,
     placeOfRegistration,
-    phoneNumber
+    phoneNumber,
+    secondNumber,
+    comment
 )
 
 fun Location.toDb() = DbLocation(
@@ -94,8 +99,21 @@ fun Customer.toDb() = DbCustomer(
     id, name, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
 )
 
-fun Employee.toDb() = DbEmployee(
-    id, customerId, name, phoneNumber, secondNumber, email, comment
+fun Manager.toDb() = DbManager(
+    id,
+    positionId,
+    customerId,
+    firstName,
+    middleName,
+    surname,
+    passportNumber,
+    passportReceivedDate,
+    passportReceivedPlace,
+    placeOfRegistration,
+    phoneNumber,
+    secondNumber,
+    email,
+    comment
 )
 
 fun CargoName.toDb() = DbCargo(id, name, positionId)

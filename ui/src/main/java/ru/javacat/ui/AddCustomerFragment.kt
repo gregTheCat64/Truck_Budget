@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -17,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
-import ru.javacat.ui.adapters.ChooseEmployeeAdapter
+import ru.javacat.ui.adapters.ChooseManagerAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.AddCustomerViewModel
@@ -33,7 +34,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
 
     private val viewModel: AddCustomerViewModel by viewModels()
     private lateinit var customerAdapter: ChooseCustomerAdapter
-    private lateinit var employeeAdapter: ChooseEmployeeAdapter
+    private lateinit var employeeAdapter: ChooseManagerAdapter
 
     private var isNewOrder = true
 
@@ -78,6 +79,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         }
 
         binding.okBtn.setOnClickListener {
+
             viewModel.addCustomerToOrder()
             //findNavController().navigate(R.id.addCargoFragment)
         }
@@ -88,10 +90,10 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    order?.customer.let {
-                        binding.customerInputEditText.setText(it?.name)
+                    order.customer?.let {
+                        binding.customerInputEditText.setText(it.name)
                     }
-                    order?.employee?.let {
+                    order.manager?.let {
                         binding.managerInputEditText.setText(it.name)
                     }
                 }
@@ -121,7 +123,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     }
 
     private fun initEmployeeAdapter() {
-        employeeAdapter = ChooseEmployeeAdapter {
+        employeeAdapter = ChooseManagerAdapter {
             viewModel.setEmployee(it)
             binding.managerInputEditText.setText(it.name)
         }
@@ -129,7 +131,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.employees.collectLatest {
+                viewModel.managers.collectLatest {
                     employeeAdapter.submitList(it)
                 }
             }
@@ -176,6 +178,13 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
                         if (isNewOrder) {
                             findNavController().navigate(R.id.addCargoFragment)
                         } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                    }
+                    if (it is LoadState.Error) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.fill_requested_fields),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

@@ -7,11 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Order
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
-import java.lang.Error
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +18,8 @@ class AddPaymentViewModel @Inject constructor(
     private val orderRepository: OrderRepository
 ): ViewModel() {
 
-    val editedOrder = orderRepository.editedOrder
-    val editedRoute = routeRepository.editedRoute
+    val editedOrder = orderRepository.editedItem
+    val editedRoute = routeRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -33,7 +31,7 @@ class AddPaymentViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.value?.copy(price = price, daysToPay = daysToPay)
-                    ?.let { orderRepository.updateOrder(it) }
+                    ?.let { orderRepository.updateEditedItem(it) }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

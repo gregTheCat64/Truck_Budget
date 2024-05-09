@@ -21,7 +21,7 @@ class AddCargoViewModel @Inject constructor(
     private val cargoRepository: CargoRepository,
     private val orderRepository: OrderRepository
 ): ViewModel() {
-    val editedOrder = orderRepository.editedOrder
+    val editedOrder = orderRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -55,7 +55,7 @@ class AddCargoViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.value?.let {
-                    orderRepository.updateOrder(
+                    orderRepository.updateEditedItem(
                         it.copy(
                             cargo = cargo
                         )

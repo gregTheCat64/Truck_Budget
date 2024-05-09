@@ -18,15 +18,15 @@ class RouteViewPagerViewModel @Inject constructor(
 ): ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
-    val editedRoute = routeRepository.editedRoute
+    val editedRoute = routeRepository.editedItem
 
     suspend fun getRouteAndUpdateEditedRoute(id: Long) {
         _loadState.emit(LoadState.Loading)
         viewModelScope.launch(Dispatchers.IO){
             try {
-                val editedRoute = routeRepository.getRoute(id)
+                val editedRoute = routeRepository.getById(id)
                 if (editedRoute != null) {
-                    routeRepository.updateEditedRoute(editedRoute)
+                    routeRepository.updateEditedItem(editedRoute)
                 }
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception){
@@ -39,12 +39,11 @@ class RouteViewPagerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             try {
                 _loadState.emit(LoadState.Loading)
-                routeRepository.removeRoute(id)
+                routeRepository.removeById(id)
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
-
         }
     }
 }

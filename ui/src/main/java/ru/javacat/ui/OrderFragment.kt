@@ -59,8 +59,6 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         isEditingOrderArg = arguments?.getBoolean(FragConstants.EDITING_ORDER, false)
         orderIdArg = arguments?.getLong(FragConstants.ORDER_ID)
         //routeId = arguments?.getLong(FragConstants.ROUTE_ID)
@@ -228,6 +226,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
+                Log.i("OrderFrag", "state: $it")
                 if (it == LoadState.Success.GoBack) {
                     //сохранились, идем назад:
                     if (isEditingOrderArg == true){
@@ -275,7 +274,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 binding.customerTv.text = it?.name
             }
 
-            order.employee.let {
+            order.manager.let {
                 binding.managerTv.text = it?.name
             }
 

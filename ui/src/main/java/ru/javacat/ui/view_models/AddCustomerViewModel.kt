@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
+import ru.javacat.domain.models.Manager
 import ru.javacat.domain.repo.CustomerRepository
-import ru.javacat.domain.repo.EmployeesRepository
+import ru.javacat.domain.repo.ManagersRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -21,10 +21,10 @@ import javax.inject.Inject
 class AddCustomerViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
     private val customerRepository: CustomerRepository,
-    private val employeesRepository: EmployeesRepository
+    private val employeesRepository: ManagersRepository
 ): ViewModel() {
 
-    val editedOrder = orderRepository.editedOrder
+    val editedOrder = orderRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -32,12 +32,12 @@ class AddCustomerViewModel @Inject constructor(
     private val _customers = MutableStateFlow<List<Customer>?>(null)
     val customers = _customers.asStateFlow()
 
-    private val _employees = MutableStateFlow<List<Employee>?>(null)
-    val employees = _employees.asStateFlow()
+    private val _managers = MutableStateFlow<List<Manager>?>(null)
+    val managers = _managers.asStateFlow()
 
     private var _customer: Customer? = null
 
-    private var _employee: Employee? = null
+    private var _manager: Manager? = null
 
 
     fun getCustomers(){
@@ -58,17 +58,17 @@ class AddCustomerViewModel @Inject constructor(
         _customer = customer
     }
 
-    fun setEmployee(employee: Employee){
-        _employee = employee
+    fun setEmployee(manager: Manager){
+        _manager = manager
     }
 
     fun addCustomerToOrder(){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                if (_customer != null && _employee != null) {
-                    editedOrder.value?.copy(customer = _customer!!, employee = _employee!!)
-                        ?.let { orderRepository.updateOrder(it) }
+                if (_customer != null) {
+                    editedOrder.value?.copy(customer = _customer!!, manager = _manager)
+                        ?.let { orderRepository.updateEditedItem(it) }
                     _loadState.emit(LoadState.Success.OK)
                 }
             }catch (e: Exception){
@@ -79,15 +79,15 @@ class AddCustomerViewModel @Inject constructor(
 
     fun getEmployee(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = employeesRepository.getEmployeesByCustomerId(id)
-            _employees.emit(result)
+            val result = employeesRepository.getManagersByCustomerId(id)
+            _managers.emit(result)
         }
     }
 
     fun searchEmployee(search: String) {
         viewModelScope.launch(Dispatchers.IO){
             val result = employeesRepository.search(search)
-            _employees.emit(result)
+            _managers.emit(result)
         }
     }
 

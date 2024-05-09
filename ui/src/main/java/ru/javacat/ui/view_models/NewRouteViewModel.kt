@@ -1,10 +1,12 @@
 package ru.javacat.ui.view_models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
@@ -14,13 +16,15 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateRouteViewModel @Inject constructor(
+class NewRouteViewModel @Inject constructor(
     private val repo: RouteRepository
 ) : ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val editedRoute = repo.editedRoute
+    var routeId = MutableStateFlow<Long?>(null)
+
+    val editedRoute = repo.editedItem
 
     private var _prepay: Int? = null
 
@@ -30,11 +34,14 @@ class CreateRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                    repo.updateEditedRoute(
-                        editedRoute.value.copy(prepayment = _prepay)
-                    )
+//                    repo.updateEditedItem(
+//                        editedRoute.value.copy(prepayment = _prepay)
+//                    )
 
-                editedRoute.value.let { repo.insertRoute(it) }
+                val result = repo.insert(editedRoute.value.copy(prepayment = _prepay))
+                Log.i("NewRouteVM", "routeID: ${result}")
+                routeId.emit(result)
+
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
@@ -46,7 +53,7 @@ class CreateRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
 
-            repo.updateEditedRoute(
+            repo.updateEditedItem(
                     Route(
                         id = lastRoute?.id?.plus(1)?:1,
                         driver = lastRoute?.driver,

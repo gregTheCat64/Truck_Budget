@@ -1,132 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="8dp"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:orientation="vertical">
 
-    <TextView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:src="@drawable/baseline_assignment_ind_24"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/company_name"
+                />
+            <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+            <TextView
+                android:id="@+id/customerNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="My Company"
+                />
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:src="@drawable/baseline_featured_play_list_24"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/short_name"
+                />
+
+            <TextView
+                android:id="@+id/shortNameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                style="@style/TextAppearance.Material3.BodyLarge"
+                />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/company_name" />
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:src="@drawable/ati_icon"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="40dp">
 
-    <TextView
-        android:id="@+id/customerNameTv"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="@string/ati_number" />
+
+            <TextView
+                android:id="@+id/atiNumberTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.BodyLarge"
+
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+    <FrameLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        android:text="My Company Name"
-        />
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:src="@drawable/baseline_local_phone_24"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_number" />
 
-    <TextView
+            <TextView
+                android:id="@+id/phoneNumberTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                style="@style/TextAppearance.Material3.BodyLarge"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+    <FrameLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="INN" />
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:src="@drawable/baseline_apartment_24"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/innTv"
+                android:hint="@string/legal_address" />
+
+            <TextView
+                android:id="@+id/formalAddressTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.BodyLarge"
+
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+    <FrameLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        >
 
-        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:src="@drawable/baseline_home_work_24"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="OGRN" />
+                android:hint="@string/post_address" />
 
-    <TextView
-        android:id="@+id/ogrnTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
+            <TextView
+                android:id="@+id/postAddressTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.BodyLarge"
 
-        />
+                />
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/ati_number" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/atiNumberTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
 
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/phone_number" />
-
-    <TextView
-        android:id="@+id/phoneNumberTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Formal address" />
-
-    <TextView
-        android:id="@+id/formalAddressTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Post address" />
-
-    <TextView
-        android:id="@+id/postAddressTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
 
     <include layout="@layout/horizon_line" />
 
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/toTruckDriversBtn"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Truck Drivers" />
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="Водители"
+        android:layout_gravity="center"
+        />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/toTrucksBtn"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="match_parent"
+        android:id="@+id/toTruckVehiclesBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Trucks" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/toTrailersBtn"
         style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Trailers" />
+        android:text="Транспорт"
+        android:layout_gravity="center"
+        />
 
 
 </LinearLayout>

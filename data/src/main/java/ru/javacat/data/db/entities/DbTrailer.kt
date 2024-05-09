@@ -10,12 +10,13 @@ data class DbTrailer  (
 @PrimaryKey(autoGenerate = true)
 val id: Long,
 val regNumber: String,
+val regionCode: Int,
 val vin: String?,
 val model: String?,
 val type: String?,
 val yearOfManufacturing: String?,
 ){
     fun toTrailer() = Trailer(
-        id, regNumber, vin, model,  yearOfManufacturing
+        id, regNumber,regionCode, vin, model,  yearOfManufacturing
     )
 }

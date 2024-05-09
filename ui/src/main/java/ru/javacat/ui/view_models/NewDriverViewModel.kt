@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.TruckDriver
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject

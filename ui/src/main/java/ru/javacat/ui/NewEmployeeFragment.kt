@@ -21,7 +21,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Employee
+import ru.javacat.domain.models.Manager
 import ru.javacat.ui.databinding.FragmentNewEmployeeBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.NewEmployeeViewModel
@@ -38,13 +38,14 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
             FragmentNewEmployeeBinding.inflate(inflater, container, false)
         }
 
-    private var name: String = ""
+    private var firstName: String = ""
+    private var surName: String = ""
     private var phoneNumber: String = ""
     private var secondPhoneNumber: String? = null
     private var email:String? = null
     private var comment:String? = null
     private var customerId: Long = 0L
-    private var employeeId: Long? = null
+    private var managerId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,7 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
         //employeeId = null
 
-        employeeId = args?.getLong(FragConstants.EMPLOYEE_ID)
+       managerId = args?.getLong(FragConstants.MANAGER_ID)
 
     }
 
@@ -82,7 +83,7 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
                     R.id.save -> {
                         getFieldsData()
-                        saveEmployee(employeeId?:0L)
+                        saveManager(managerId?:0L)
                         return true
                     }
 
@@ -98,9 +99,9 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                Log.i("NewEmployeeFrag", "emplID: ${employeeId.toString()}")
-                if (employeeId!= null){
-                    viewModel.getEmployeeById(employeeId!!)
+                Log.i("NewEmployeeFrag", "emplID: ${managerId.toString()}")
+                if (managerId!= null){
+                    viewModel.getManagerById(managerId!!)
                 }
 
             }
@@ -108,8 +109,8 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.editedEmployee.collectLatest {
-                    if (it != null && employeeId != null) {
+                viewModel.editedManager.collectLatest {
+                    if (it != null && managerId != null) {
                         customerId = it.customerId
                         updateUi(it)
                     }
@@ -118,14 +119,14 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         }
 
 
-        binding.name.addTextChangedListener(object : TextWatcher{
+        binding.firstName.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (!p0.isNullOrBlank()){
-                    binding.nameLayout.error = null
+                    binding.firstName.error = null
                 }
             }
 
@@ -134,40 +135,31 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
             }
         })
 
-        binding.phoneNumber.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (!p0.isNullOrBlank()){
-                    binding.phoneLayout.error = null
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-        })
     }
 
     private fun getFieldsData(){
         val requestField = "Обязательное поле"
-        if (binding.name.text.isNullOrEmpty()){
-            binding.nameLayout.error = requestField
-            binding.name.requestFocus()
+        if (binding.firstName.text.isNullOrEmpty()){
+            binding.firstNameLayout.error = requestField
+            binding.firstName.requestFocus()
             return
         } else {
-            name = binding.name.text.toString()
+            firstName = binding.firstName.text.toString()
         }
 
-        if (binding.phoneNumber.text.isNullOrEmpty()){
-            binding.phoneLayout.error = requestField
-            binding.phoneNumber.requestFocus()
-            return
-        } else {
-            phoneNumber = binding.phoneNumber.text.toString()
+//        if (binding.phoneNumber.text.isNullOrEmpty()){
+//            binding.phoneLayout.error = requestField
+//            binding.phoneNumber.requestFocus()
+//            return
+//        } else {
+//            phoneNumber = binding.phoneNumber.text.toString()
+//        }
+        binding.surName.text?.let {
+            surName = it.toString()
         }
+
+        phoneNumber = binding.phoneNumber.text.toString()
 
         secondPhoneNumber = binding.phoneNumber2.text?.let {
             if (it.isBlank()) null else it.toString()
@@ -182,23 +174,26 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         }
     }
 
-    private fun updateUi(employee: Employee){
+    private fun updateUi(manager: Manager){
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = employee.name
-            name.setText(employee.name)
-            phoneNumber.setText(employee.phoneNumber)
-            phoneNumber2.setText(employee.secondNumber)
-            email.setText(employee.email)
-            comment.setText(employee.comment)
+            (activity as AppCompatActivity).supportActionBar?.title = manager.name
+            firstName.setText(manager.firstName)
+            surName.setText(manager.surname)
+            phoneNumber.setText(manager.phoneNumber)
+            phoneNumber2.setText(manager.secondNumber)
+            email.setText(manager.email)
+            comment.setText(manager.comment)
         }
     }
     
-    private fun saveEmployee(id: Long){
-        if (name.isNotEmpty() && phoneNumber.isNotEmpty() && customerId != 0L){
-            val newEmployee = Employee(
-                id , name, customerId,  phoneNumber, secondPhoneNumber, email, comment
+    private fun saveManager(id: Long){
+        if (firstName.isNotEmpty() &&  customerId != 0L){
+            val newEmployee = Manager(
+                id , 0,customerId, firstName,null,
+                surName, null,null, null, null,
+                phoneNumber, secondPhoneNumber, email, comment
             )
-            viewModel.saveNewEmployee(newEmployee)
+            viewModel.saveNewManager(newEmployee)
             findNavController().navigateUp()
         } else {
             Toast.makeText(requireContext(), "Заполните необходимые поля", Toast.LENGTH_SHORT).show()

@@ -12,7 +12,14 @@ object FragConstants{
     const val ROUTE_ID = "ROUTE_ID"
     const val ORDER_ID = "ORDER_ID"
     const val CUSTOMER_ID = "CUSTOMER_ID"
-    const val EMPLOYEE_ID = "EMPLOYEE_ID"
+    const val CUSTOMER_NAME = "CUSTOMER_NAME"
+    const val MANAGER_ID = "MANAGER_ID"
+
+    const val MY_COMPANY_ID = -1L
 
     const val EDITING_ORDER = "EDITING_ORDER"
+
+    const val FILTER_ORDER = "FILTER_ORDER"
+    const val FILTER_MONTH = "FILTER_MONTH"
+    const val FILTER_CUSTOMER = "FILTER_CUSTOMER"
 }

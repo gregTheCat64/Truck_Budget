@@ -1,8 +1,6 @@
 package ru.javacat.ui.view_models
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +26,8 @@ class AddPointsViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val orderRepository: OrderRepository
 ):ViewModel() {
-    val editedOrder = orderRepository.editedOrder
-    val editedRoute = routeRepository.editedRoute
+    val editedOrder = orderRepository.editedItem
+    val editedRoute = routeRepository.editedItem
 
     private var _points= MutableStateFlow<List<Point>?>(null)
     var points = _points.asStateFlow()
@@ -93,7 +91,7 @@ class AddPointsViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.value?.copy(points = pointList.toList())
-                    ?.let { orderRepository.updateOrder(it) }
+                    ?.let { orderRepository.updateEditedItem(it) }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
@@ -107,7 +105,7 @@ class AddPointsViewModel @Inject constructor(
         pointList.remove(point)
         viewModelScope.launch {
             editedOrder.value?.copy(points = pointList.toList())
-                ?.let { orderRepository.updateOrder(it) }
+                ?.let { orderRepository.updateEditedItem(it) }
             //_points.emit(pointList.toList())
         }
     }

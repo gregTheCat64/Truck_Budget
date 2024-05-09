@@ -1,10 +1,7 @@
 package ru.javacat.data.impl
 
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.mappers.toDb
@@ -20,7 +17,7 @@ class TrucksRepositoryImpl @Inject constructor(
 ) : TrucksRepository {
 
     private val _chosenTruck = MutableStateFlow<Truck?>(null)
-    override val chosenTruck: StateFlow<Truck?>
+    override val chosenItem: StateFlow<Truck?>
         get() = _chosenTruck.asStateFlow()
 
     override suspend fun getAll(): List<Truck> {

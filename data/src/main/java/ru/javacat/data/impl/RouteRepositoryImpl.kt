@@ -28,37 +28,38 @@ class RouteRepositoryImpl @Inject constructor(
         get() = routesDao.getLastRoute()?.toRouteModel()
 
     private var _routes = MutableStateFlow(emptyList<Route>())
-    override val routes: Flow<List<Route>>
+    override val items: Flow<List<Route>>
         get() = _routes
 
     private val _editedRoute = MutableStateFlow(Route())
-    override val editedRoute: StateFlow<Route>
+    override val editedItem: StateFlow<Route>
         get() = _editedRoute.asStateFlow()
 
     private val _isEdited = MutableStateFlow(false)
     override val isEdited: StateFlow<Boolean>
         get() = _isEdited.asStateFlow()
 
-    override suspend fun getAllRoutes() {
+    override suspend fun getAll() {
         _routes.emit(routesDao.getAllRoutes().map {it.toRouteModel() })
     }
 
-    override suspend fun getRoute(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
+    override suspend fun getById(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
-    override suspend fun updateEditedRoute(newRoute: Route) {
+    override suspend fun updateEditedItem(newRoute: Route) {
         _editedRoute.emit(newRoute)
         _isEdited.emit(true)
-        Log.i("RouteRepo", "edited Route: ${editedRoute.value}")
+        Log.i("RouteRepo", "edited Route: ${editedItem.value}")
     }
 
-    override suspend fun removeRoute(id: Long) {
+    override suspend fun removeById(id: Long) {
         dbQuery { routesDao.removeRoute(id) }
     }
 
-    override suspend fun insertRoute(route: Route): Long {
+    override suspend fun insert(route: Route): Long {
         println("inserting in repo $route")
         _isEdited.emit(false)
         val result = dbQuery { routesDao.insertRoute(route.toDb()) }
+        Log.i("RouteRepo", "routeId : $result")
         //_editedRoute.emit(route)
         return result
     }

@@ -1,18 +1,14 @@
 package ru.javacat.ui.view_models
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -40,7 +36,14 @@ class NewCustomerViewModel @Inject constructor(
 
     fun saveNewCustomer(customer: Customer){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insert(customer)
+            _loadState.emit(LoadState.Loading)
+            try {
+                repository.insert(customer)
+                _loadState.emit(LoadState.Success.GoBack)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+
         }
     }
 

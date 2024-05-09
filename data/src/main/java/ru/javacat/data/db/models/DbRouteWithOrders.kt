@@ -5,7 +5,7 @@ import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
 import ru.javacat.data.db.entities.DbOrder
 import ru.javacat.data.db.entities.DbRoute
-import ru.javacat.data.db.entities.DbStaff
+import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
 import ru.javacat.domain.models.Route
@@ -24,9 +24,9 @@ data class DbRouteWithOrders (
     @Relation(
         parentColumn = "driverId",
         entityColumn = "id",
-        entity = DbStaff::class
+        entity = DbTruckDriver::class
     )
-    val driver: DbStaff,
+    val driver: DbTruckDriver,
 
     @Relation(
         parentColumn = "truckId",
@@ -48,14 +48,14 @@ data class DbRouteWithOrders (
             id = route.id,
             startDate = route.startDate?.toLocalDate(),
             endDate = route.endDate?.toLocalDate(),
-            driver = driver.toStaff(),
+            driver = driver.toTruckDriverModel(),
             truck = truck.toTruck(),
             trailer = trailer?.toTrailer(),
             orderList = orders.map { it.toOrderModel() },
             prepayment = route.prepayment,
             fuelUsedUp = route.fuelUsedUp,
             fuelPrice = route.fuelPrice,
-            routeSpending = route.routeExpenses,
+            routeSpending = route.routeSpending,
             payPerDiem = route.payPerDiem,
             routeDuration = route.routeDuration,
             driverSalary = route.driverSalary,

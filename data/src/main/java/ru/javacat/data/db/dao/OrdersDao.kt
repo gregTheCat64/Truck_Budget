@@ -22,7 +22,7 @@ interface OrdersDao {
     suspend fun insertOrder(
         order: DbOrder,
         //points: List<DbPoint>
-    )
+    ): Long
 
     @Transaction
     @Query("SELECT * FROM orders_table WHERE id =:id")
@@ -34,5 +34,5 @@ interface OrdersDao {
     )
 
     @Query("DELETE FROM orders_table WHERE id =:id")
-    suspend fun removeOrder(id: String)
+    suspend fun removeOrder(id: Long)
 }

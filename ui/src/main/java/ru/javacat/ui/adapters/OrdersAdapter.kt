@@ -39,21 +39,19 @@ class OrdersAdapter(
                 points.add(i.location)
             }
 
-            var startDate: String = ""
-
             if (item.isPaid){
                 binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.grey))
             } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
 
-            if (points.isNotEmpty()){
-                startDate = item.points[0].arrivalDate.asDayAndMonthFully()
+            val startDate = item.date.asDayAndMonthFully()
 
-            }
             val orderId = item.id
-            //val orderWord = Resources.getSystem().getString(R.string.order)
-            //val fromWord = Resources.getSystem().getString(R.string.from)
 
-            val orderIdString = "Заявка № $orderId / рейс № ${item.routeId} от $startDate"
+//            val orderWord = Resources.getSystem().getString(R.string.order)
+//            val fromWord = Resources.getSystem().getString(R.string.from)
+//            val routeWord = Resources.getSystem().getString(R.string.route)
+
+            val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
 
             binding.orderId.text = orderIdString
             binding.customerName.text = item.customer?.name

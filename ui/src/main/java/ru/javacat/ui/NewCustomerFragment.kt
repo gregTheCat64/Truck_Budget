@@ -20,11 +20,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.common.utils.toBase64
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
-import ru.javacat.ui.adapters.EmployeesAdapter
-import ru.javacat.ui.adapters.OnEmployeeListener
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.FragConstants
@@ -78,8 +74,10 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
                     }
                     R.id.save -> {
                         getFieldsData()
-                        saveCustomer(customerId?:0L)
-                        findNavController().navigateUp()
+                        if (getFieldsData()){
+                            saveCustomer(customerId?:0L)
+                            //findNavController().navigateUp()
+                        }
                         return true
                     }
                     else -> return false
@@ -101,6 +99,22 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
                 }
             }
         }
+        
+        //nav
+        viewLifecycleOwner.lifecycleScope.launch { 
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loadState.collectLatest { 
+                    if (it is LoadState.Success.GoBack){
+                        Toast.makeText(requireContext(),
+                            getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    }
+                    if (it is LoadState.Error) {
+                        Toast.makeText(requireContext(), "Some Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -112,8 +126,10 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
 
         binding.saveBtn.setOnClickListener {
             getFieldsData()
-            saveCustomer(customerId?:0L)
-            findNavController().navigateUp()
+            if (getFieldsData()){
+                saveCustomer(customerId?:0L)
+                //findNavController().navigateUp()
+            }
         }
 
         binding.name.addTextChangedListener(object : TextWatcher {
@@ -139,16 +155,26 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         binding.apply {
             (activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
             name.setText(customer.name)
-            atiNumber.setText(customer.atiNumber.toString())
-            phoneNumber.setText(customer.companyPhone)
-            legalAddress.setText(customer.formalAddress)
-            postAddress.setText(customer.postAddress)
-            shortName.setText(customer.shortName)
+            customer.atiNumber?.let {
+                atiNumber.setText(it.toString())
+            }
+            customer.companyPhone?.let {
+                phoneNumber.setText(it)
+            }
+            customer.formalAddress?.let {
+                legalAddress.setText(it)
+            }
+            customer.postAddress?.let {
+                postAddress.setText(it.toString())
+            }
+            customer.shortName?.let {
+                shortName.setText(it.toString())
+            }
         }
     }
 
 
-    private fun getFieldsData() {
+    private fun getFieldsData(): Boolean {
         val requestField = "Обязательное поле"
 
         atiNumber = binding.atiNumber.text?.let {
@@ -158,7 +184,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         if (binding.name.text.isNullOrEmpty()) {
             binding.nameLayout.error = requestField
             binding.name.requestFocus()
-            return
+            return false
         } else {
             companyName = formatName(binding.name.text.toString())
 
@@ -180,6 +206,8 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
         if (binding.shortName.text.isNullOrEmpty()) {
             shortName = toShortName(companyName)
         } else shortName = binding.shortName.text.toString()
+
+        return true
     }
 
     private fun saveCustomer(id: Long) {
@@ -204,7 +232,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
             .replace("Ооо", "")
             .replace("ИП", "")
             .replace("Ип", "")
-            .replace("\"", "")
+            .replace("\"", "").trim()
     }
 }
 

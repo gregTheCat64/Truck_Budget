@@ -12,9 +12,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Employee
-import ru.javacat.ui.adapters.EmployeesAdapter
-import ru.javacat.ui.adapters.OnEmployeeListener
 import ru.javacat.ui.adapters.TruckDriversAdapter
 import ru.javacat.ui.databinding.FragmentTruckDriversListBinding
 import ru.javacat.ui.view_models.TruckDriversVewModel

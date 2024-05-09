@@ -17,7 +17,7 @@ class TrailersRepositoryImpl @Inject constructor(
 ): TrailersRepository {
 
     private val _chosenTrailer = MutableStateFlow<Trailer?>(null)
-    override val chosenTrailer: StateFlow<Trailer?>
+    override val chosenItem: StateFlow<Trailer?>
         get() = _chosenTrailer.asStateFlow()
 
     override suspend fun getAll(): List<Trailer> {

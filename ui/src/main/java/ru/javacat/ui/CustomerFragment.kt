@@ -18,9 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Customer
-import ru.javacat.domain.models.Employee
-import ru.javacat.ui.adapters.EmployeesAdapter
-import ru.javacat.ui.adapters.OnEmployeeListener
+import ru.javacat.domain.models.Manager
+import ru.javacat.ui.adapters.ManagerAdapter
+import ru.javacat.ui.adapters.OnManagerListener
 import ru.javacat.ui.databinding.FragmentCustomerBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.CustomerViewModel
@@ -30,7 +30,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
 
     override var bottomNavViewVisibility: Int = View.GONE
     private var customerId: Long? = null
-    private lateinit var emplAdapter: EmployeesAdapter
+    private lateinit var emplAdapter: ManagerAdapter
     private val viewModel: CustomerViewModel by viewModels()
     //val bundle = Bundle()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCustomerBinding
@@ -95,10 +95,10 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
         }
 
 
-        emplAdapter = EmployeesAdapter(object : OnEmployeeListener{
-            override fun onEmployee(item: Employee) {
+        emplAdapter = ManagerAdapter(object : OnManagerListener{
+            override fun onManager(item: Manager) {
                 val bundle = Bundle()
-                bundle.putLong(FragConstants.EMPLOYEE_ID, item.id)
+                bundle.putLong(FragConstants.MANAGER_ID, item.id)
                 findNavController().navigate(R.id.newEmployeeFragment, bundle)
             }
         })
@@ -127,13 +127,15 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
             (activity as AppCompatActivity).supportActionBar?.title = customer.shortName
             customerNameTv.text = customer.name
             shortNameTv.text = customer.shortName
-            atiNumberTv.text = customer.atiNumber.toString()
+            customer.atiNumber?.let {
+                atiNumberTv.text = it.toString()
+            }
             phoneNumberTv.text = customer.companyPhone
             formalAddressTv.text = customer.formalAddress
             postAddressTv.text = customer.postAddress
         }
 
-        customer.employees.let {
+        customer.managers.let {
             emplAdapter.submitList(it)
         }
 

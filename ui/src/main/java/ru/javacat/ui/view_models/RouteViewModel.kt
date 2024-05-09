@@ -22,12 +22,12 @@ class RouteViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val editedRoute = routeRepository.editedRoute
-    val editedOrder = orderRepository.editedOrder
+    val editedRoute = routeRepository.editedItem
+    val editedOrder = orderRepository.editedItem
 
     fun addRouteIdToOrder(routeId: Long){
         viewModelScope.launch(Dispatchers.IO){
-            editedOrder.value?.copy(routeId = routeId)?.let { orderRepository.updateOrder(it) }
+            editedOrder.value?.copy(routeId = routeId)?.let { orderRepository.updateEditedItem(it) }
         }
     }
 

@@ -16,7 +16,7 @@ data class DbRoute (
     val prepayment: Int,
     val fuelUsedUp: Int?,
     val fuelPrice: Float?,
-    val routeExpenses: Int,
+    val routeSpending: Int?,
     val payPerDiem: Int?,
     val routeDuration: Int,
     val driverSalary: Int?,

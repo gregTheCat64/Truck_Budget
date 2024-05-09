@@ -21,21 +21,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ООО Удача"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_marginStart="8dp"
+        style="@style/TextAppearance.Material3.TitleMedium"
         />
 
     <TextView
         android:id="@+id/phoneNumber"
+        android:drawableStart="@drawable/baseline_local_phone_24"
+        android:drawablePadding="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+495-777-77-77"
+        android:text="Telephone number"
         />
 
     <TextView
         android:id="@+id/atiNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ati: 7777777"
+        android:gravity="center"
+
+        android:drawableStart="@drawable/ati_icon"
+        android:drawablePadding="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Ati number"
         />
 
     </LinearLayout>

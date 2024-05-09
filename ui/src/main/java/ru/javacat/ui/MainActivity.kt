@@ -8,6 +8,7 @@ import androidx.fragment.app.replace
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.javacat.ui.databinding.ActivityMainBinding
+import ru.javacat.ui.utils.FragConstants
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.routes -> findNavController(R.id.fragment_container).navigate(R.id.routeListFragment)
                 R.id.orders -> findNavController(R.id.fragment_container).navigate(R.id.orderListFragment)
                 R.id.partners -> findNavController(R.id.fragment_container).navigate(R.id.customerListFragment)
-                R.id.home -> findNavController(R.id.fragment_container).navigate(R.id.homeFragment)
+                R.id.home -> {
+//                    val bundle = Bundle()
+//                    bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
+                    findNavController(R.id.fragment_container).navigate(R.id.homeFragment)
+                }
                 else -> {}
             }
             true

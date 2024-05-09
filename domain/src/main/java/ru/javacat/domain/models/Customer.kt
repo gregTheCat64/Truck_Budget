@@ -5,7 +5,7 @@ data class Customer (
     override val name: String,
 
     val atiNumber: Int? = null,
-    val employees: List<Employee>? = null,
+    val managers: List<Manager>? = null,
     val companyPhone: String? = null,
     val formalAddress: String? = null,
     val postAddress: String? = null,

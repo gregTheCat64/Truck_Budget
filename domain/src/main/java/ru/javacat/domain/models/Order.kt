@@ -6,9 +6,10 @@ data class Order(
     val id: Long = 0L,
     val routeId: Long = 0L,
     val points: List<Point> = emptyList(),
+    val date: LocalDate,
     val price: Int = 0,
     val customer: Customer? = null,
-    val employee: Employee? = null,
+    val manager: Manager? = null,
     val driver: TruckDriver? = null,
     val truck: Truck? = null,
     val trailer: Trailer? = null,
@@ -21,6 +22,6 @@ data class Order(
     val isPaid: Boolean = false
 )
 
-enum class OrderStatus(){
-    IN_PROGRESS, WAITING_FOR_PAYMENT, PAID
-}
+//enum class OrderStatus(){
+//    IN_PROGRESS, WAITING_FOR_PAYMENT, PAID
+//}

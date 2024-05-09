@@ -9,5 +9,5 @@ import javax.inject.Inject
 class RouteCountViewModel @Inject constructor(
     private val routeRepository: RouteRepository
 ): ViewModel() {
-    val editedRoute = routeRepository.editedRoute
+    val editedRoute = routeRepository.editedItem
 }

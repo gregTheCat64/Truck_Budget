@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.NewDriverViewModel
@@ -32,7 +34,6 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         binding.passWhen.setOnClickListener {
             parentFragmentManager.showCalendar {
-
             }
         }
 
@@ -48,15 +49,21 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
             val address = binding.address.text.toString()
             val phoneNumber = binding.phoneNumber.text.toString()
 
+            val passportData = "$passSerial $passNumber"
+
             //val id = passSerial.toString()+passNumber.toString()
 
+            //TODO добавить поле для 2 номера тел.
             val newDriver = TruckDriver(
-                0,firstName, middleName, surname, passSerial, passNumber, passWhen,
-                passWhere, driveLicenseNumber, address, phoneNumber, 0
+                0,0,-1,firstName, middleName, surname, passportData, passWhen,
+                passWhere, driveLicenseNumber, address, phoneNumber, "",""
             )
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.insertNewDriver(newDriver)
+                if (surname.isNotEmpty()){
+                    viewModel.insertNewDriver(newDriver)
+                } else Toast.makeText(requireContext(), "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
+
             }
         }
 

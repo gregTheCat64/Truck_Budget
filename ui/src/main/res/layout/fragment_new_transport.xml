@@ -3,36 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="32dp"
     >
 
-    <com.google.android.material.textfield.TextInputLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         >
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/typeOfVehicle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Тип транспорта"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/plate_number"
+                />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/regNumber"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Номерной знак"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:hint="@string/region"
+                />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+
 
 
 
@@ -83,26 +97,21 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Ссылка на сканы"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:text="@string/required_field"/>
 
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сохранить"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
         />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
