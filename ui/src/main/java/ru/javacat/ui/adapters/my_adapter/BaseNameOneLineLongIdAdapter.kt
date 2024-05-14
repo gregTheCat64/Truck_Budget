@@ -9,14 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.domain.models.BaseNameModel
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.NameItemBinding
+import ru.javacat.ui.databinding.NameItemOnelineBinding
 
-
-//Универсальный адаптер для одного слова-карточки с одним действием - кликом на нём. ID - Long
-abstract class BaseNameLongIdAdapter<M: BaseNameModel<Long>>(
+abstract class BaseNameOneLineLongIdAdapter<M: BaseNameModel<Long>>(
     open val onItem: (M) -> Unit
-) : ListAdapter<M, BaseNameLongIdAdapter.Holder<M>>(BaseNameComparator()) {
+) : ListAdapter<M, BaseNameOneLineLongIdAdapter.Holder<M>>(BaseNameComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder<M> {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.name_item_oneline, parent, false)
         return Holder(view, onItem)
     }
 
@@ -26,7 +25,7 @@ abstract class BaseNameLongIdAdapter<M: BaseNameModel<Long>>(
 
     class Holder<M: BaseNameModel<Long>>(view: View, val onItem: (M) -> Unit):
         RecyclerView.ViewHolder(view) {
-        private val binding = NameItemBinding.bind(view)
+        private val binding = NameItemOnelineBinding.bind(view)
         fun bind(item: M) {
             binding.name.text = item.nameToShow
             binding.root.setOnClickListener {
@@ -35,8 +34,8 @@ abstract class BaseNameLongIdAdapter<M: BaseNameModel<Long>>(
         }
     }
 
-     class BaseNameComparator<M: BaseNameModel<Long>> : DiffUtil.ItemCallback<M>() {
-                override fun areItemsTheSame(oldItem: M, newItem: M): Boolean {
+    class BaseNameComparator<M: BaseNameModel<Long>> : DiffUtil.ItemCallback<M>() {
+        override fun areItemsTheSame(oldItem: M, newItem: M): Boolean {
             return oldItem == newItem
         }
 

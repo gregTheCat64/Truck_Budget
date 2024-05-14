@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.domain.models.Manager
 import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
@@ -32,7 +32,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
     private var customerId: Long? = null
     private lateinit var emplAdapter: ManagerAdapter
     private val viewModel: CustomerViewModel by viewModels()
-    //val bundle = Bundle()
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCustomerBinding
         get() = { inflater, container ->
             FragmentCustomerBinding.inflate(inflater, container, false)
@@ -84,7 +84,6 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.addEmployeeBtn.setOnClickListener {
             if (customerId != null) {
                 val bundle = Bundle()
@@ -93,7 +92,6 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
             }
 
         }
-
 
         emplAdapter = ManagerAdapter(object : OnManagerListener{
             override fun onManager(item: Manager) {
@@ -122,10 +120,10 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
         }
     }
 
-    private fun updateUi(customer: Customer){
+    private fun updateUi(customer: Partner){
         binding.apply {
             (activity as AppCompatActivity).supportActionBar?.title = customer.shortName
-            customerNameTv.text = customer.name
+            customerNameTv.text = customer.nameToShow
             shortNameTv.text = customer.shortName
             customer.atiNumber?.let {
                 atiNumberTv.text = it.toString()

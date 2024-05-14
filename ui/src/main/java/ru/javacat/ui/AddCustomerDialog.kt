@@ -84,7 +84,7 @@ class AddCustomerDialog: DialogFragment() {
 
     private fun init(order: Order){
         order.customer.let {
-            binding.customerInputEditText.setText(it?.name)
+            binding.customerInputEditText.setText(it?.nameToShow)
         }
     }
 

@@ -88,4 +88,7 @@
     <string name="name_with_asterisk">Name*</string>
     <string name="plate_number">Plate number*</string>
     <string name="region">Region*</string>
+    <string name="create_new_truck">Create new truck</string>
+    <string name="create_new_trailer">Create new trailer</string>
+    <string name="create_new_truck_driver">Create new truck driver</string>
 </resources>

@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.databinding.FragmentCustomerDialogBinding
@@ -47,7 +46,7 @@ class CustomerDialogFragment: BottomSheetDialogFragment() {
         viewModel.getAllCustomers()
 
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
-            override fun onCustomer(item: Customer) {
+            override fun onCustomer(item: Partner) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.FILTER_CUSTOMER, item.id)
                 bundle.putString(FragConstants.CUSTOMER_NAME, item.shortName)

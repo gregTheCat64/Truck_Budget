@@ -12,7 +12,7 @@ import ru.javacat.data.db.entities.DbTruck
 import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.Order
@@ -59,7 +59,7 @@ fun Order.toDb() = DbOrder(
     paymentDeadline?.toString(),
     sentDocsNumber,
     docsReceived?.toString(),
-    isPaid
+    isPaidByCustomer
 )
 
 fun Point.toDb() = DbPoint(
@@ -92,11 +92,11 @@ fun TruckDriver.toDb() = DbTruckDriver(
 )
 
 fun Location.toDb() = DbLocation(
-    id, name, positionId
+    id, nameToShow, positionId
 )
 
-fun Customer.toDb() = DbCustomer(
-    id, name, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
+fun Partner.toDb() = DbCustomer(
+    id, nameToShow, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
 )
 
 fun Manager.toDb() = DbManager(
@@ -116,4 +116,4 @@ fun Manager.toDb() = DbManager(
     comment
 )
 
-fun CargoName.toDb() = DbCargo(id, name, positionId)
+fun CargoName.toDb() = DbCargo(id, nameToShow, positionId)

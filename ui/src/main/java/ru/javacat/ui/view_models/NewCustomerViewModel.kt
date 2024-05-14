@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class NewCustomerViewModel @Inject constructor(
     private val repository: CustomerRepository
 ): ViewModel() {
 
-    var editedCustomer = MutableStateFlow<Customer?>(null)
+    var editedCustomer = MutableStateFlow<Partner?>(null)
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -34,7 +34,7 @@ class NewCustomerViewModel @Inject constructor(
         }
     }
 
-    fun saveNewCustomer(customer: Customer){
+    fun saveNewCustomer(customer: Partner){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {

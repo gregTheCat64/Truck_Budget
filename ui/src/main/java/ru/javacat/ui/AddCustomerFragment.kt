@@ -91,10 +91,10 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
                     order.customer?.let {
-                        binding.customerInputEditText.setText(it.name)
+                        binding.customerInputEditText.setText(it.nameToShow)
                     }
                     order.manager?.let {
-                        binding.managerInputEditText.setText(it.name)
+                        binding.managerInputEditText.setText(it.nameToShow)
                     }
                 }
             }
@@ -105,7 +105,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewModel.getCustomers()
         customerAdapter = ChooseCustomerAdapter {
             viewModel.setCustomer(it)
-            binding.customerInputEditText.setText(it.name)
+            binding.customerInputEditText.setText(it.nameToShow)
             customerId = it.id
             //findNavController().navigate()
             viewModel.getEmployee(it.id)
@@ -125,7 +125,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     private fun initEmployeeAdapter() {
         employeeAdapter = ChooseManagerAdapter {
             viewModel.setEmployee(it)
-            binding.managerInputEditText.setText(it.name)
+            binding.managerInputEditText.setText(it.nameToShow)
         }
         binding.employeesRecView.adapter = employeeAdapter
 

@@ -142,7 +142,10 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
     private fun addItemToRoute(item: String){
         bundle.putString(itemParam, item)
-        findNavController().navigate(R.id.chooseItemFragment, bundle)
+        val dialogFragment = ChooseItemFragment()
+        dialogFragment.arguments = bundle
+        dialogFragment.show(parentFragmentManager, "")
+        //findNavController().navigate(R.id.chooseItemFragment, bundle)
     }
 
     private fun saveRoute(){

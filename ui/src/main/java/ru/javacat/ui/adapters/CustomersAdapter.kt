@@ -6,18 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.ui.R
-import ru.javacat.ui.adapters.my_adapter.BaseNameLongIdAdapter
 import ru.javacat.ui.databinding.CustomerItemBinding
-import ru.javacat.ui.databinding.NameItemBinding
 
 interface OnCustomerListener {
-    fun onCustomer(item: Customer)
+    fun onCustomer(item: Partner)
 }
 class CustomersAdapter(
     private val onCustomerListener: OnCustomerListener
-): ListAdapter<Customer, CustomersAdapter.Holder>(Comparator()){
+): ListAdapter<Partner, CustomersAdapter.Holder>(Comparator()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_item, parent, false)
@@ -31,9 +29,9 @@ class CustomersAdapter(
     class Holder(view: View, private val onCustomerListener: OnCustomerListener): RecyclerView.ViewHolder(view){
         private val binding = CustomerItemBinding.bind(view)
 
-        fun bind(item: Customer){
+        fun bind(item: Partner){
             binding.apply {
-                companyName.text = item.name
+                companyName.text = item.nameToShow
                 item.companyPhone?.let {
                     phoneNumber.text = it
                 }
@@ -47,12 +45,12 @@ class CustomersAdapter(
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<Customer>(){
-        override fun areItemsTheSame(oldItem: Customer, newItem: Customer): Boolean {
+    class Comparator: DiffUtil.ItemCallback<Partner>(){
+        override fun areItemsTheSame(oldItem: Partner, newItem: Partner): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Customer, newItem: Customer): Boolean {
+        override fun areContentsTheSame(oldItem: Partner, newItem: Partner): Boolean {
             return oldItem == newItem
         }
     }

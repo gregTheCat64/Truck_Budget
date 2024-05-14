@@ -153,7 +153,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     private fun initLocationAdapter() {
         viewModel.getLocations()
         locationAdapter = LocationAdapter {
-            addPoint(it.name)
+            addPoint(it.nameToShow)
             viewModel.increaseDay()
             //binding.locationsRecView.isGone = true
             //AndroidUtils.hideKeyboard(requireView())

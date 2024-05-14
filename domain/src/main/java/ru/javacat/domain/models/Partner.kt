@@ -1,8 +1,8 @@
 package ru.javacat.domain.models
 
-data class Customer (
+data class Partner (
     override val id: Long = 0L,
-    override val name: String,
+    override val nameToShow: String,
 
     val atiNumber: Int? = null,
     val managers: List<Manager>? = null,

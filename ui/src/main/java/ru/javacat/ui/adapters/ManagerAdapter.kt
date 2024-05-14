@@ -31,7 +31,7 @@ class ManagerAdapter(
 
         fun bind(item: Manager){
             binding.apply {
-                name.text = item.name
+                name.text = item.nameToShow
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {
                     onManagerListener.onManager(item)

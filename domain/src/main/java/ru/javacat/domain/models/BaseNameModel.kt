@@ -8,7 +8,7 @@ abstract class BaseIdModel<T: Any?>: BaseModel() {
 
 abstract class BaseNameModel<T: Any?>: BaseIdModel<T>(){
     abstract val positionId: Long
-    abstract val name: String
+    abstract val nameToShow: String
 }
 
 abstract class BaseNameLongIdModel: BaseNameModel<Long?>()

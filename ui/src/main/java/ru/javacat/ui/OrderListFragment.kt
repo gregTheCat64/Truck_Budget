@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -178,7 +177,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
     private fun initUi(orderList: List<Order>){
         var debt = 0
         orderList.forEach {
-            if (!it.isPaid){
+            if (!it.isPaidByCustomer){
                 debt += it.price
             }
         }

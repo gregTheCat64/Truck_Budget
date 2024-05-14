@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.repo.CustomerRepository
 import ru.javacat.domain.repo.ManagersRepository
@@ -29,13 +29,13 @@ class AddCustomerViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    private val _customers = MutableStateFlow<List<Customer>?>(null)
+    private val _customers = MutableStateFlow<List<Partner>?>(null)
     val customers = _customers.asStateFlow()
 
     private val _managers = MutableStateFlow<List<Manager>?>(null)
     val managers = _managers.asStateFlow()
 
-    private var _customer: Customer? = null
+    private var _customer: Partner? = null
 
     private var _manager: Manager? = null
 
@@ -54,7 +54,7 @@ class AddCustomerViewModel @Inject constructor(
         }
     }
 
-    fun setCustomer(customer: Customer){
+    fun setCustomer(customer: Partner){
         _customer = customer
     }
 

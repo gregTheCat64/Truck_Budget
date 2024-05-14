@@ -118,7 +118,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         viewModel.getCargos()
 
         cargoAdapter = CargoAdapter {
-            binding.cargoEditText.setText(it.name)
+            binding.cargoEditText.setText(it.nameToShow)
         }
 
         binding.cargoRecView.adapter = cargoAdapter

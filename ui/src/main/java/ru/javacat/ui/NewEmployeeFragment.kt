@@ -176,7 +176,7 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
     private fun updateUi(manager: Manager){
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = manager.name
+            (activity as AppCompatActivity).supportActionBar?.title = manager.nameToShow
             firstName.setText(manager.firstName)
             surName.setText(manager.surname)
             phoneNumber.setText(manager.phoneNumber)

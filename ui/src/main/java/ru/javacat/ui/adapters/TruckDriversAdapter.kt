@@ -29,7 +29,7 @@ class TruckDriversAdapter(
 
         fun bind(item: TruckDriver){
             binding.apply {
-                name.text = item.name + " " + item.firstName
+                name.text = item.nameToShow
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {
                     onItem(item)

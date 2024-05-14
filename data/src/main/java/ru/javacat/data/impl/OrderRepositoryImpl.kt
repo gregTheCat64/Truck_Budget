@@ -1,19 +1,14 @@
 package ru.javacat.data.impl
 
 import android.util.Log
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
-import ru.javacat.domain.models.Customer
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.repo.OrderRepository
 import java.time.LocalDate
@@ -50,7 +45,7 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun getUnpaidOrders() {
         //_orders.emit(ordersDao.getUnpaidOrder().map { it.toOrderModel()})
-        val filtered = items.map { it.filter { it.isPaid == false } }
+        val filtered = items.map { it.filter { it.isPaidByCustomer == false } }
     }
 
 
@@ -76,7 +71,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
 
         if (paid != null) {
-            orders = orders.filter { it.isPaid == paid }
+            orders = orders.filter { it.isPaidByCustomer == paid }
         }
 
         _orders.emit(orders)

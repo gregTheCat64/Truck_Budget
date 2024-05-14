@@ -81,7 +81,7 @@ data class DbOrderWithCustomer(
             paymentDeadline = order.paymentDeadline?.toLocalDate(),
             sentDocsNumber = order.sentDocsNumber,
             docsReceived = order.docsReceived?.toLocalDate(),
-            isPaid = order.isPaid
+            isPaidByCustomer = order.isPaid
         )
     }
 }

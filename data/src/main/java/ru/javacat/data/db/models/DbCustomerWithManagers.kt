@@ -2,7 +2,7 @@ package ru.javacat.data.db.models
 
 import androidx.room.Relation
 import ru.javacat.data.db.entities.DbManager
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 
 data class DbCustomerWithManagers(
     val id: Long,
@@ -20,7 +20,7 @@ data class DbCustomerWithManagers(
     )
     val managers: List<DbManager>
 ) {
-    fun toCustomerModel() = Customer(
+    fun toCustomerModel() = Partner(
         id,
         companyName,
         atiNumber,

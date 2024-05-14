@@ -87,4 +87,7 @@
     <string name="name_with_asterisk">Имя*</string>
     <string name="plate_number">Номерной знак*</string>
     <string name="region">Регион*</string>
+    <string name="create_new_truck">Создать новый тягач</string>
+    <string name="create_new_trailer">Создать новый прицеп</string>
+    <string name="create_new_truck_driver">Создать нового водителя</string>
 </resources>

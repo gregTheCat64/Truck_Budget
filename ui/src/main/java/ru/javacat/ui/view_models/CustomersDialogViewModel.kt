@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Customer
+import ru.javacat.domain.models.Partner
 import ru.javacat.domain.repo.CustomerRepository
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class CustomersDialogViewModel @Inject constructor(
     private val customerRepository: CustomerRepository
 ): ViewModel() {
-    private val _customers = MutableStateFlow<List<Customer>?>(null)
+    private val _customers = MutableStateFlow<List<Partner>?>(null)
     val customers = _customers.asStateFlow()
     fun getAllCustomers(){
         viewModelScope.launch(Dispatchers.IO) {

@@ -32,7 +32,7 @@ data class Manager(
     val email: String?,
     override val comment: String?
 ): Employee(){
-    override val name: String
+    override val nameToShow: String
         get() = firstName
 }
 
@@ -52,6 +52,6 @@ data class TruckDriver(
     override val secondNumber: String?,
     override val comment: String?,
 ): Employee(){
-    override val name: String
-        get() = surname
+    override val nameToShow: String
+        get() = "$surname $firstName"
 }

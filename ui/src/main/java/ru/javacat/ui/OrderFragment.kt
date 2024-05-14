@@ -271,11 +271,11 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 binding.docsNumber.text = it
             }
             order.customer.let {
-                binding.customerTv.text = it?.name
+                binding.customerTv.text = it?.nameToShow
             }
 
             order.manager.let {
-                binding.managerTv.text = it?.name
+                binding.managerTv.text = it?.nameToShow
             }
 
             order.cargo?.cargoName.let {
@@ -298,7 +298,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
             pointsAdapter.submitList(order.points)
 
-            binding.payStatusCheck.isChecked = order.isPaid
+            binding.payStatusCheck.isChecked = order.isPaidByCustomer
 
     }
 

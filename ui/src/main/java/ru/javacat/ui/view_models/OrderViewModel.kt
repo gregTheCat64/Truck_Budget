@@ -109,7 +109,7 @@ class OrderViewModel @Inject constructor(
                 paymentDeadline = paymentDeadline?: editedOrder.value!!.paymentDeadline,
                 sentDocsNumber = sentDocsNumber?: editedOrder.value!!.sentDocsNumber,
                 docsReceived = docsReceived?: editedOrder.value!!.docsReceived,
-                isPaid = isPaid?:false
+                isPaidByCustomer = isPaid?:false
             )?.let { orderRepository.updateEditedItem(it) }
 
 

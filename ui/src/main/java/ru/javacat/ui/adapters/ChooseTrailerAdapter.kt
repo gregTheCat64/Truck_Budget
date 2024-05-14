@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.javacat.domain.models.Trailer
 import ru.javacat.ui.adapters.my_adapter.BaseNameLongIdAdapter
+import ru.javacat.ui.adapters.my_adapter.BaseNameOneLineLongIdAdapter
 import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.NameItemOnelineBinding
 
 class ChooseTrailerAdapter(
     override val onItem: (Trailer) -> Unit
-): BaseNameLongIdAdapter<Trailer>(onItem)
+): BaseNameOneLineLongIdAdapter<Trailer>(onItem)

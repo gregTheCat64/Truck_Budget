@@ -1,8 +1,5 @@
 package ru.javacat.ui.adapters
 
-import android.app.Activity
-import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Order
-import ru.javacat.ui.MainActivity
 import ru.javacat.ui.R
-import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.OrderItemBinding
 
 class OrdersAdapter(
@@ -39,7 +34,7 @@ class OrdersAdapter(
                 points.add(i.location)
             }
 
-            if (item.isPaid){
+            if (item.isPaidByCustomer){
                 binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.grey))
             } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
 
@@ -54,7 +49,7 @@ class OrdersAdapter(
             val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
 
             binding.orderId.text = orderIdString
-            binding.customerName.text = item.customer?.name
+            binding.customerName.text = item.customer?.nameToShow
             binding.points.text = points.toString()
             binding.income.text = item.price.toString()+"р."
 

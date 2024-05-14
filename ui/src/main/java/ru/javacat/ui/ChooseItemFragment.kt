@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -21,20 +22,23 @@ import ru.javacat.ui.databinding.FragmentChooseItemBinding
 import ru.javacat.ui.view_models.ChooseItemViewModel
 
 @AndroidEntryPoint
-class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
+class ChooseItemFragment : BottomSheetDialogFragment() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
-
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentChooseItemBinding
-        get() = { inflater, container ->
-            FragmentChooseItemBinding.inflate(inflater, container, false)
-        }
-
+    private lateinit var binding: FragmentChooseItemBinding
     private val viewModel: ChooseItemViewModel by viewModels()
     private lateinit var trailersAdapter: ChooseTrailerAdapter
     private lateinit var trucksAdapter: ChooseTruckAdapter
     private lateinit var driversAdapter: ChooseDriverAdapter
     //private lateinit var customersAdapter: ChooseCustomerAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentChooseItemBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,37 +60,40 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
                 println("Unknown item")
             }
         }
-
-
     }
 
     private fun initTrucksCase(requestedItem: String){
         val bundle = Bundle()
         bundle.putString("item", requestedItem)
+
+        binding.newItemBtn.setText(getString(R.string.create_new_truck))
+
         binding.newItemBtn.setOnClickListener {
+            this.dismiss()
             findNavController().navigate(R.id.newTransportFragment, bundle)
         }
         viewModel.getTrucks()
         trucksAdapter = ChooseTruckAdapter {
             Log.i("ChoseItemFrag", "changing Truck")
            viewModel.setTruck(it)
-            findNavController().navigateUp()
+            this.dismiss()
+            //findNavController().navigateUp()
         }
         binding.itemList.adapter = trucksAdapter
 
         binding.itemNameTextView.text = "Тягачи"
 
-        viewLifecycleOwner.lifecycleScope.launch{
-            viewModel.editedRoute.collectLatest {
-                    binding.searchView.setText(it?.truck?.regNumber)
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch{
+//            viewModel.editedRoute.collectLatest {
+//                    binding.searchView.setText(it?.truck?.regNumber)
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trucks.collectLatest {
                     trucksAdapter.submitList(it)
-                    binding.searchView.isGone = it.isNullOrEmpty()
+                    //binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }
@@ -96,14 +103,18 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
         val bundle = Bundle()
         bundle.putString("item", requestedItem)
 
+        binding.newItemBtn.text = getString(R.string.create_new_trailer)
+
         binding.newItemBtn.setOnClickListener {
+            this.dismiss()
             findNavController().navigate(R.id.newTransportFragment, bundle)
         }
         viewModel.getTrailers()
 
         trailersAdapter = ChooseTrailerAdapter {
            viewModel.setTrailer(it)
-            findNavController().navigateUp()
+            this.dismiss()
+            //findNavController().navigateUp()
         }
         binding.itemList.adapter = trailersAdapter
 
@@ -119,31 +130,35 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 //            }
 //        }
 
-        viewLifecycleOwner.lifecycleScope.launch{
-            viewModel.editedRoute.collectLatest {
-                binding.searchView.setText(it?.trailer?.regNumber)
-
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch{
+//            viewModel.editedRoute.collectLatest {
+//                binding.searchView.setText(it?.trailer?.regNumber)
+//
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.trailers.collectLatest {
                     trailersAdapter.submitList(it)
-                    binding.searchView.isGone = it.isNullOrEmpty()
+                    //binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }
     }
 
     private fun initDriversCase(){
+
+        binding.newItemBtn.text = getString(R.string.create_new_truck_driver)
         binding.newItemBtn.setOnClickListener {
+            this.dismiss()
             findNavController().navigate(R.id.newDriverFragment)
         }
         viewModel.getDriver()
         driversAdapter = ChooseDriverAdapter {
-           viewModel.setDriver(it)
-            findNavController().navigateUp()
+            viewModel.setDriver(it)
+            this.dismiss()
+            //findNavController().navigateUp()
         }
         binding.itemList.adapter = driversAdapter
 
@@ -158,17 +173,17 @@ class ChooseItemFragment : BaseFragment<FragmentChooseItemBinding>() {
 //            }
 //        }
 
-        viewLifecycleOwner.lifecycleScope.launch{
-            viewModel.editedRoute.collectLatest {
-                binding.searchView.setText(it?.driver?.surname)
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch{
+//            viewModel.editedRoute.collectLatest {
+//                binding.searchView.setText(it?.driver?.surname)
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.drivers.collectLatest {
                     driversAdapter.submitList(it)
-                    binding.searchView.isGone = it.isNullOrEmpty()
+                    //binding.searchView.isGone = it.isNullOrEmpty()
                 }
             }
         }
