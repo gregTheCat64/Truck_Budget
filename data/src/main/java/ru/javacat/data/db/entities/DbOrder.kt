@@ -11,7 +11,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.javacat.domain.models.Cargo
 
-
 @Entity(
     tableName = "orders_table",
     foreignKeys = [
@@ -34,8 +33,11 @@ data class DbOrder(
     val points: List<DbPoint>,
     val date: String,
     val price: Int,
+    val contractorPrice: Int?,
+    val commission: Int?,
     val customerId: Long,
-    val employeeId: Long?,
+    val managerId: Long?,
+    val contractorId: Long?,
     val driverId: Long,
     val truckId: Long,
     val trailerId: Long?,
@@ -47,7 +49,8 @@ data class DbOrder(
     val sentDocsNumber: String?,
     val docsReceived: String?,
     //@TypeConverters(StatusConverter::class)
-    val isPaid: Boolean
+    val isPaidByCustomer: Boolean,
+    val isPaidToContractor: Boolean
 )
 
 //class StatusConverter {

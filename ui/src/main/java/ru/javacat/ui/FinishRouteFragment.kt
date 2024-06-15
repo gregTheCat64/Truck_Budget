@@ -1,19 +1,25 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.databinding.FragmentFinishRouteBinding
+import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.FinishRouteViewModel
 import java.time.Period
+import kotlin.math.roundToInt
+import kotlin.time.times
 
 @AndroidEntryPoint
 class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
@@ -23,15 +29,21 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private val viewModel: FinishRouteViewModel by viewModels()
 
     private var prepay: Int = 0
-    private var routeSpending: Int? = null
+    private var otherExpenses: Int? = null
 
     private var routeDuration: Int = 0
-    private var payPerDiem: Int = 0
+    private var payPerDiem: Int? = null
 
-    private var fuelUsedUp: Int = 0
-    private var fuelPrice: Float = 0f
+    private var fuelUsedUp: Int? = null
+    private var fuelPrice: Float? = null
 
-    private var salary: Int? = 0
+    private var revenue: Int? = null
+
+    private var salary: Int? = null
+    private var profit: Float? = null
+    private var moneyToPay: Int? = null
+
+    private var currentRoute: Route? = null
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentFinishRouteBinding
         get() = { inflater, container ->
             FragmentFinishRouteBinding.inflate(inflater, container, false)
@@ -40,9 +52,28 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args = arguments
+        val routeId = args?.getLong(FragConstants.ROUTE_ID)
+        Log.i("FinishRouteFrag", "routeId: $routeId")
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (routeId != null) {
+                viewModel.getEditedRoute(routeId)
+            }
+
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                initUI(it)
+                Log.i("FinishRouteFrag", "route: $it")
+                currentRoute = it
+
+                prepay = it.countRoute?.prepayment ?: 0
+                routeDuration = countRouteDuration(it)
+
+                if (!it.isFinished) {
+                    getDataFromLastRoute()
+                } else getDataFromCurrentRoute(it)
             }
         }
 
@@ -53,18 +84,52 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             }
         }
 
-        binding.calculateBtn.setOnClickListener {
-            getFieldsData()
-            viewModel.calculateSalary()
+        binding.calculateSalaryBtn.setOnClickListener {
+            if (getFieldsData()) {
+                currentRoute?.let { route -> calculateRouteRevenue(route) }
+                val countedSalary = calculateSalary()
+                binding.salaryEditText.setText(countedSalary.toString())
+                binding.revenueTv.setText(revenue.toString())
+            } else Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_requested_fields),
+                Toast.LENGTH_SHORT
+            ).show()
+
         }
 
         binding.calculateRouteBtn.setOnClickListener {
-            getFieldsData()
-            viewModel.calculateNetIncome()
+            if (getFieldsData() && !binding.salaryEditText.text.isNullOrEmpty()) {
+                profit = calculateProfit()
+                moneyToPay = calculateMoneyToPay()
+                binding.profitTv.setText(profit.toString())
+                binding.moneyToPayValue.setText(moneyToPay.toString())
+            } else Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_requested_fields),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         binding.saveBtn.setOnClickListener {
-            viewModel.saveRoute()
+            if (getFieldsData() && revenue != null && salary != null && profit != null && fuelPrice != null) {
+                viewModel.saveRoute(
+                    prepay,
+                    otherExpenses!!,
+                    routeDuration,
+                    fuelUsedUp!!,
+                    fuelPrice!!,
+                    salary!!,
+                    payPerDiem!!,
+                    moneyToPay!!,
+                    revenue!!,
+                    profit!!
+                )
+            } else Toast.makeText(
+                requireContext(),
+                "Заполните все поля и нажмите кнопку принять",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         binding.cancelButton.setOnClickListener {
@@ -72,78 +137,123 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         }
     }
 
-    private fun initUI(route: Route){
+    private fun initUI() {
+        prepay.let {
+            binding.prepayEditText.setText(it.toString())
+        }
+        otherExpenses?.let {
+            binding.otherExpenses.setText(it.toString())
+        }
+        fuelUsedUp?.let {
+            binding.fuelUsedUp.setText(it.toString())
+        }
+        fuelPrice?.let {
+            binding.fuelPrice.setText(it.toString())
+        }
+        payPerDiem?.let {
+            binding.payPerDiem.setText(it.toString())
+        }
+        routeDuration.let {
+            binding.routeDaysCount.setText(it.toString())
+        }
+        salary?.let {
+            binding.salaryEditText.setText(it.toString())
+        }
+    }
 
+
+    private fun getFieldsData(): Boolean {
+        if (!binding.prepayEditText.text.isNullOrEmpty()) {
+            prepay = binding.prepayEditText.text.toString().toInt()
+        } else return false
+
+        if (!binding.otherExpenses.text.isNullOrEmpty()) {
+            otherExpenses = binding.otherExpenses.text.toString().toInt()
+        } else return false
+
+        if (!binding.routeDaysCount.text.isNullOrEmpty()) {
+            routeDuration = binding.routeDaysCount.text.toString().toInt()
+        } else return false
+
+        if (!binding.payPerDiem.text.isNullOrEmpty()) {
+            payPerDiem = binding.payPerDiem.text.toString().toInt()
+        } else return false
+
+        if (!binding.fuelUsedUp.text.isNullOrEmpty()) {
+            fuelUsedUp = binding.fuelUsedUp.text.toString().toInt()
+        } else return false
+
+        if (!binding.fuelPrice.text.isNullOrEmpty()) {
+            fuelPrice = binding.fuelPrice.text.toString().toFloat()
+        } else return false
+
+        if (!binding.salaryEditText.text.isNullOrEmpty()) {
+            salary = binding.salaryEditText.text.toString().toInt()
+        } else return false
+
+        return true
+    }
+
+    private fun getDataFromLastRoute() {
+        viewModel.getLastRoute()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.lastRoute.collectLatest {
+                val lastRoute = viewModel.lastRoute.value
+                fuelPrice = lastRoute.countRoute?.fuelPrice
+                payPerDiem = lastRoute.countRoute?.payPerDiem
+                Log.i("FinishRouteFrag", "fuelPrice: $fuelPrice")
+                Log.i("FinishRouteFrag", "lastRoute: $it")
+                initUI()
+            }
+        }
+    }
+
+    private fun getDataFromCurrentRoute(route: Route) {
+        otherExpenses = route.countRoute?.otherExpenses
+        payPerDiem = route.countRoute?.payPerDiem
+        fuelUsedUp = route.countRoute?.fuelUsedUp
+        fuelPrice = route.countRoute?.fuelPrice
+        revenue = route.revenue
+        salary = route.countRoute?.driverSalary
+        profit = route.profit
+        moneyToPay = route.countRoute?.moneyToPay
+
+        initUI()
+    }
+
+    private fun calculateRouteRevenue(route: Route) {
+        revenue = 0
+        val orders = route.orderList
+        for (i in orders) {
+            revenue = revenue?.plus(i.price)
+        }
+        Log.i("FinishRouteFrag", "revenue: $revenue")
+    }
+
+    private fun calculateSalary(): Int? {
+        return if (revenue != null && fuelPrice != null) {
+            ((revenue!! - ((fuelUsedUp!! * fuelPrice!!) + (routeDuration * payPerDiem!!) + otherExpenses!!)) / 5).roundToInt()
+        } else null
+    }
+
+    private fun calculateProfit(): Float? {
+        return if (revenue != null && salary != null && fuelPrice != null) {
+            (revenue!! - (salary!! + (fuelPrice!! * fuelUsedUp!!) + (payPerDiem!! * routeDuration) + otherExpenses!!))
+        } else null
+    }
+
+    private fun countRouteDuration(route: Route): Int {
         val firstDate = route.orderList.firstOrNull()?.points?.first()?.arrivalDate
         val lastDate = route.orderList.lastOrNull()?.points?.last()?.arrivalDate
 
         val period = Period.between(firstDate, lastDate)
-        val routeDuration = period.days
-        binding.routeDaysCount.setText(routeDuration.toString())
-
-        route.prepayment?.let {
-            binding.prepayEditText.setText(it.toString())
-        }
-
-        route.driverSalary?.let { driverSalary ->
-            binding.salaryEditText.setText(driverSalary.toString())
-        }
-        route.income?.let { income->
-            binding.incomeTv.text = income.toString()
-        }
-        route.netIncome?.let { netIncome->
-            binding.netIncomeTv.setText(netIncome.toString())
-        }
-        route.routeSpending?.let {
-            binding.routeSpending.setText(it.toString())
-        }
-
-        route.fuelPrice?.let {
-            binding.fuelPrice.setText(it.toString())
-        }
-
-        route.fuelUsedUp?.let {
-            binding.fuelUsedUp.setText(it.toString())
-        }
-        route.payPerDiem?.let {
-            binding.payPerDiem.setText(it.toString())
-        }
-
-        route.moneyToPay?.let {
-            binding.moneyToPayValue.setText(it.toString())
-        }
+        return period.days
     }
 
-    private fun getFieldsData() {
-        prepay = binding.prepayEditText.text.let {
-            if (it?.isBlank() == true) 0 else it.toString().toInt()
-        }
-
-        routeSpending = binding.routeSpending.text?.let {
-            if (it.isBlank()) 0 else it.toString().toInt()
-        }
-
-        routeDuration = binding.routeDaysCount.text?.let {
-            if (it.isBlank()) null else it.toString().toInt()
-        } ?: 0
-
-        payPerDiem = binding.payPerDiem.text?.let {
-            if (it.isBlank()) 0 else it.toString().toInt()
-        } ?: 0
-
-        fuelUsedUp = binding.fuelUsedUp.text?.let {
-            if (it.isBlank()) null else it.toString().toInt()
-        } ?: 0
-
-        fuelPrice = binding.fuelPrice.text?.let {
-            if (it.isBlank()) null else it.toString().toFloat()
-        } ?: 0f
-
-        salary = binding.salaryEditText.text?.let {
-            if (it.isBlank()) null else it.toString().toInt()
-        }
-
-        viewModel.setFieldsData(prepay, routeSpending!!, routeDuration, fuelUsedUp, fuelPrice, payPerDiem, salary)
+    private fun calculateMoneyToPay(): Int? {
+        if (salary != null && fuelPrice != null) {
+            return ((prepay - (fuelPrice!! * fuelUsedUp!!) - (payPerDiem!! * routeDuration!!) - otherExpenses!! - salary!!).toInt())
+        } else return null
     }
 
 

@@ -73,7 +73,7 @@ class OrderViewModel @Inject constructor(
                     startDate = order.date
                 )
 
-                routeRepository.insert(routeToUpdate)
+                routeRepository.updateRoute(routeToUpdate)
                 //routeRepository.updateEditedItem(routeToUpdate)
 
                 orderRepository.clearCurrentOrder()
@@ -111,8 +111,6 @@ class OrderViewModel @Inject constructor(
                 docsReceived = docsReceived?: editedOrder.value!!.docsReceived,
                 isPaidByCustomer = isPaid?:false
             )?.let { orderRepository.updateEditedItem(it) }
-
-
         }
     }
 

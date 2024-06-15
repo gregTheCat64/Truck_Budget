@@ -7,15 +7,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
-import ru.javacat.domain.repo.CustomerRepository
+import ru.javacat.domain.models.Company
+import ru.javacat.domain.repo.CompaniesRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class CustomersDialogViewModel @Inject constructor(
-    private val customerRepository: CustomerRepository
+    private val customerRepository: CompaniesRepository
 ): ViewModel() {
-    private val _customers = MutableStateFlow<List<Partner>?>(null)
+    private val _customers = MutableStateFlow<List<Company>?>(null)
     val customers = _customers.asStateFlow()
     fun getAllCustomers(){
         viewModelScope.launch(Dispatchers.IO) {

@@ -3,6 +3,7 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.adapters.ChooseManagerAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint
@@ -38,13 +40,16 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
 
     private var isNewOrder = true
 
-    var customerId = 0L
+    private var customerId = 0L
+    private var routeId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val args = arguments
         isNewOrder = args?.getBoolean(IS_NEW_ORDER) ?: true
+        Log.i("AddCustomFrag", "isNewOrder: $isNewOrder")
+        routeId = args?.getLong(FragConstants.ROUTE_ID)?:0L
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,15 +80,11 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
                 bundle.putLong(FragConstants.CUSTOMER_ID, customerId)
                 findNavController().navigate(R.id.newEmployeeFragment, bundle)
             }
-            //findNavController().navigate(R.id.newEmployeeFragment)
         }
 
         binding.okBtn.setOnClickListener {
-
-            viewModel.addCustomerToOrder()
-            //findNavController().navigate(R.id.addCargoFragment)
+            viewModel.addCustomerToOrder(routeId)
         }
-
     }
 
     private fun initUi() {
@@ -107,7 +108,6 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
             viewModel.setCustomer(it)
             binding.customerInputEditText.setText(it.nameToShow)
             customerId = it.id
-            //findNavController().navigate()
             viewModel.getEmployee(it.id)
             binding.managerLayout.isGone = false
         }

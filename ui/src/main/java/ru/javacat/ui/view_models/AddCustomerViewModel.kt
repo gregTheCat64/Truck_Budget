@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Manager
-import ru.javacat.domain.repo.CustomerRepository
+import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.ManagersRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.ui.LoadState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddCustomerViewModel @Inject constructor(
     private val orderRepository: OrderRepository,
-    private val customerRepository: CustomerRepository,
+    private val customerRepository: CompaniesRepository,
     private val employeesRepository: ManagersRepository
 ): ViewModel() {
 
@@ -29,13 +29,13 @@ class AddCustomerViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    private val _customers = MutableStateFlow<List<Partner>?>(null)
+    private val _customers = MutableStateFlow<List<Company>?>(null)
     val customers = _customers.asStateFlow()
 
     private val _managers = MutableStateFlow<List<Manager>?>(null)
     val managers = _managers.asStateFlow()
 
-    private var _customer: Partner? = null
+    private var _customer: Company? = null
 
     private var _manager: Manager? = null
 
@@ -54,7 +54,7 @@ class AddCustomerViewModel @Inject constructor(
         }
     }
 
-    fun setCustomer(customer: Partner){
+    fun setCustomer(customer: Company){
         _customer = customer
     }
 
@@ -62,12 +62,13 @@ class AddCustomerViewModel @Inject constructor(
         _manager = manager
     }
 
-    fun addCustomerToOrder(){
+    fun addCustomerToOrder(routeId: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
                 if (_customer != null) {
-                    editedOrder.value?.copy(customer = _customer!!, manager = _manager)
+                    editedOrder.value.copy(
+                        routeId = routeId, customer = _customer!!, manager = _manager)
                         ?.let { orderRepository.updateEditedItem(it) }
                     _loadState.emit(LoadState.Success.OK)
                 }

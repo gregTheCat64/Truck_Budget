@@ -25,7 +25,7 @@ class RoutesAdapter(
 
         binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate}"
 
-        item.income?.let {
+        item.profit?.let {
             binding.earnedMoneyTextView.text = it.toString() + " р."
         }
         binding.customersListTextView.text = customersList.toString()

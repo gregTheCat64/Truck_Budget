@@ -1,6 +1,6 @@
 package ru.javacat.domain.models
 
-data class Partner (
+data class Company (
     override val id: Long = 0L,
     override val nameToShow: String,
 

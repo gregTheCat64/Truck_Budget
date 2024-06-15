@@ -91,4 +91,13 @@
     <string name="create_new_truck">Create new truck</string>
     <string name="create_new_trailer">Create new trailer</string>
     <string name="create_new_truck_driver">Create new truck driver</string>
+    <string name="create_new_partner">Create new partner</string>
+    <string name="my_company">My Company</string>
+    <string name="contractor">Contractor:</string>
+    <string name="truck_driver">Truck driver:</string>
+    <string name="moneyToPay">Money to pay:</string>
+    <string name="qww">Заполните ставку!</string>
+    <string name="contractor_s_cost">Contractor\'s cost</string>
+    <string name="rub">"rub"</string>
+    <string name="fuel_cost">Fuel cost</string>
 </resources>

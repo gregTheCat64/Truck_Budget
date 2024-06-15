@@ -58,25 +58,22 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
             findNavController().navigate(R.id.newRouteFragment)
-
         }
 
         //Adapter
         routesAdapter = RoutesAdapter (object : OnRouteListener{
             override fun onItem(item: Route) {
-                    //viewModel.getRouteAndUpdateEditedRoute(item.id?:0L)
                     bundle.putLong(FragConstants.ROUTE_ID, item.id?:0L)
-                //val action = R.id.action_routeListFragment_to_routeFragment
                 findNavController().navigate(R.id.viewPagerFragment, bundle)
 
             }
-
             override fun onRemove(item: Route) {
                 viewLifecycleOwner.lifecycleScope.launch{
                     item.id?.let { viewModel.removeRoute(it) }
                 }
             }
         })
+
         binding.routesList.adapter = routesAdapter
 
         lifecycleScope.launch {
@@ -85,18 +82,5 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             }
         }
 
-        //navigation
-//        lifecycleScope.launch {
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                    viewModel.loadState.collectLatest {
-//                        Log.i("routeListFrag", "state: ${it.toString()}")
-//                        if (it == LoadState.Success.GoForward) {
-//                            findNavController().navigate(R.id.routeFragment)
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 }

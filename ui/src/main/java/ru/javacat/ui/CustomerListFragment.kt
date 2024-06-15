@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.databinding.FragmentCustomerListBinding
@@ -47,7 +47,7 @@ class CustomerListFragment: BaseFragment<FragmentCustomerListBinding>() {
         val bundle = Bundle()
 
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
-            override fun onCustomer(item: Partner) {
+            override fun onCustomer(item: Company) {
                 bundle.putLong(FragConstants.CUSTOMER_ID, item.id)
                 findNavController().navigate(R.id.customerFragment, bundle)
             }

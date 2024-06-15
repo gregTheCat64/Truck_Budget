@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
 import ru.javacat.ui.databinding.FragmentNewTransportBinding
+import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.NewTransportViewModel
 
 @AndroidEntryPoint
@@ -32,6 +33,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val args = arguments
+        val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
         val item = args?.getString("item")?:"unknown"
 
         binding.saveBtn.setOnClickListener {
@@ -40,6 +42,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             val vin = binding.vin.text.toString()
             val model = binding.modelOfVehicle.text.toString()
             val year = binding.yearOfManufacturing.text.toString()
+
 
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -54,7 +57,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             when (item){
                 "TRUCK" -> {
                     val newVehicle = Truck(
-                        0, regNumber,regionCode, vin,model, year
+                        0, companyId, regNumber,regionCode, vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTruck(newVehicle)
@@ -63,7 +66,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                 }
                 "TRAILER" ->{
                     val newVehicle = Trailer(
-                        0, regNumber,regionCode, vin,model, year
+                        0, companyId, regNumber,regionCode, vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTrailer(newVehicle)

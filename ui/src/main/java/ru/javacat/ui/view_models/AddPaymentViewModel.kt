@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
@@ -24,18 +25,20 @@ class AddPaymentViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    //val orderList = editedRoute.value.orderList.toMutableList()
-
-    fun addPaymentToOrder(price: Int, daysToPay: Int?) {
+    fun addPaymentToOrder(price: Int, daysToPay: Int?, contractorPrice: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                editedOrder.value?.copy(price = price, daysToPay = daysToPay)
-                    ?.let { orderRepository.updateEditedItem(it) }
+                editedOrder.value.copy(price = price, daysToPay = daysToPay, contractorPrice = contractorPrice)
+                    .let { orderRepository.updateEditedItem(it) }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }
+    }
+
+    suspend fun getRouteById(id: Long): Route?{
+        return routeRepository.getById(id)
     }
 }

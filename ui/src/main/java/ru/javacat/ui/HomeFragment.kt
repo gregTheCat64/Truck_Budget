@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.databinding.FragmentHomeBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.HomeFragmentViewModel
@@ -97,7 +97,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun updateUi(customer: Partner){
+    private fun updateUi(customer: Company){
         binding.apply {
             customerNameTv.setText(customer.nameToShow)
             //innTv.setText(customer.id.toString())

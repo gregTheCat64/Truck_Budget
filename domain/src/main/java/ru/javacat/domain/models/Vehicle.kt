@@ -3,6 +3,7 @@ package ru.javacat.domain.models
 abstract class Vehicle(
 ) : BaseNameModel<Long>(
 ) {
+    abstract val companyId: Long
     abstract val regNumber: String
     abstract val regionCode: Int
     abstract val vin: String?
@@ -13,6 +14,7 @@ abstract class Vehicle(
 
 data class Truck(
     override val id: Long,
+    override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,
     override val vin: String?,
@@ -29,6 +31,7 @@ data class Truck(
 
 data class Trailer(
     override val id: Long,
+    override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,
     override val vin: String?,

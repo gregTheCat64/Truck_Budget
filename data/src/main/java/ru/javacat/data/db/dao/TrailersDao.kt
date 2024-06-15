@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import ru.javacat.data.db.entities.DbTrailer
+import ru.javacat.data.db.entities.DbTruck
 
 @Dao
 interface TrailersDao {
@@ -15,6 +16,9 @@ interface TrailersDao {
 
     @Query("SELECT * FROM trailers_table WHERE regNumber =:id")
     suspend fun getById(id: Long): DbTrailer
+
+    @Query("SELECT * FROM trailers_table WHERE companyId =:id")
+    suspend fun getByCompanyId(id: Long): List<DbTrailer>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(

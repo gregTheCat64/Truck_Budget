@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -26,11 +27,12 @@ import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.OneLinePointAdapter
 import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import ru.javacat.ui.view_models.OrderViewModel
 
-const val IS_NEW_ORDER = "IS_NEW_ORDER"
+
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
@@ -230,6 +232,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 if (it == LoadState.Success.GoBack) {
                     //сохранились, идем назад:
                     if (isEditingOrderArg == true){
+                        Log.i("OrderFrag", "isEditing: $isEditingOrderArg")
                         findNavController().navigateUp()
                     } else findNavController().popBackStack(R.id.viewPagerFragment, false)
                 }
@@ -288,6 +291,15 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
                 binding.payDayValueTv.text = it.asDayAndMonthFully()
             }
 
+            if (order.contractorPrice!= null){
+                binding.contractorsPriceLayout.isVisible = true
+                order.contractorPrice?.let {
+                    val value = "$it руб."
+                    binding.contractorsPrice.text = value
+                }
+
+            }
+
             val loadList = StringBuilder()
 
             if (order.cargo?.isBackLoad == true) loadList.append("Зад")
@@ -308,11 +320,11 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         val id = currentOrder?.id?:0
             //currentOrder.id.ifEmpty { "R$routeId" + "/" + (currentRoute.orderList.size + 1).toString() }
 
-        val routeTruck = currentOrder?.truck?:currentRoute?.truck
+        val routeTruck = currentOrder?.truck?:currentRoute?.contractor?.truck
 
-        val routeTrailer = currentOrder?.trailer?:currentRoute?.trailer
+        val routeTrailer = currentOrder?.trailer?:currentRoute?.contractor?.trailer
 
-        val routeDriver = currentOrder?.driver?:currentRoute?.driver
+        val routeDriver = currentOrder?.driver?:currentRoute?.contractor?.driver
 
 
         val newOrder = viewModel.editedOrder.value?.copy(

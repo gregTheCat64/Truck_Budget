@@ -36,30 +36,6 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             FragmentOrderListBinding.inflate(inflater, container, false)
         }
 
-
-//    val months = arrayOf(
-//        getString(R.string.no),
-//        getString(R.string.january),
-//        getString(R.string.february),
-//        getString(R.string.march),
-//        getString(R.string.april),
-//        getString(R.string.may),
-//        getString(R.string.june),
-//        getString(R.string.july),
-//        getString(R.string.august),
-//        getString(R.string.september),
-//        getString(R.string.october),
-//        getString(R.string.november),
-//        getString(R.string.december))
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -138,12 +114,6 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             dialogFragment.show(parentFragmentManager, "")
         }
 
-//        binding.unpaidBtn.setOnCheckedChangeListener { button, isChecked ->
-//            if (isChecked){
-//                viewModel.setPaidFilter(paidParam = false)
-//            } else {viewModel.setPaidFilter(paidParam = null)}
-//                viewModel.filterOrders()
-//        }
 
         binding.unpaidBtn.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){

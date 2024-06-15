@@ -16,8 +16,10 @@ object FragConstants{
     const val MANAGER_ID = "MANAGER_ID"
 
     const val MY_COMPANY_ID = -1L
+    const val COMPANY_ID = "COMPANY_ID"
 
     const val EDITING_ORDER = "EDITING_ORDER"
+    const val IS_NEW_ORDER = "IS_NEW_ORDER"
 
     const val FILTER_ORDER = "FILTER_ORDER"
     const val FILTER_MONTH = "FILTER_MONTH"

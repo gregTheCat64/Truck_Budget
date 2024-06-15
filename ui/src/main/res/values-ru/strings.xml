@@ -15,13 +15,13 @@
     <string name="payment_date">Дата оплаты</string>
     <string name="receiving_date">Дата получения документов</string>
     <string name="sending_documents_track_number">Номер отправки документов</string>
-    <string name="cost">Ставка, руб.</string>
+    <string name="cost">Ставка</string>
     <string name="payment">Оплата</string>
     <string name="paid">оплачен</string>
     <string name="finished">завершен</string>
     <string name="pending">в процессе</string>
     <string name="back">Назад</string>
-    <string name="days_to_pay">Срок оплаты, дней</string>
+    <string name="days_to_pay">Срок оплаты</string>
     <string name="finish_route">Завершить рейс</string>
     <string name="empty_orders">нет заказов</string>
     <string name="add_order_button">добавить заказ</string>
@@ -87,7 +87,15 @@
     <string name="name_with_asterisk">Имя*</string>
     <string name="plate_number">Номерной знак*</string>
     <string name="region">Регион*</string>
-    <string name="create_new_truck">Создать новый тягач</string>
-    <string name="create_new_trailer">Создать новый прицеп</string>
-    <string name="create_new_truck_driver">Создать нового водителя</string>
+    <string name="create_new_truck">Новый тягач</string>
+    <string name="create_new_trailer">Новый прицеп</string>
+    <string name="create_new_truck_driver">Новый водитель</string>
+    <string name="create_new_partner">Новый партнер</string>
+    <string name="my_company">Моя компания</string>
+    <string name="contractor">Исполнитель:</string>
+    <string name="truck_driver">Водитель:</string>
+    <string name="moneyToPay">К оплате:</string>
+    <string name="contractor_s_cost">Перевозчику</string>
+    <string name="rub">"руб"</string>
+    <string name="fuel_cost">Стоимость топлива</string>
 </resources>

@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.FragConstants
@@ -151,7 +151,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
 
     }
 
-    private fun updateUi(customer: Partner){
+    private fun updateUi(customer: Company){
         binding.apply {
             (activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
             name.setText(customer.nameToShow)
@@ -211,7 +211,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
     }
 
     private fun saveCustomer(id: Long) {
-            val newCustomer = Partner(
+            val newCustomer = Company(
                 id, companyName, atiNumber, emptyList(), telNumber, formalAddress, postAddress, shortName
             )
             AndroidUtils.hideKeyboard(requireView())

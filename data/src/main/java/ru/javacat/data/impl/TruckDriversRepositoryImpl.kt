@@ -28,8 +28,12 @@ class TruckDriversRepositoryImpl @Inject constructor(
         return dbQuery {dao.getAll().map { it.toTruckDriverModel() }  }
     }
 
-    override suspend fun getById(id: String): TruckDriver {
-        return dbQuery { dao.getById(id).toTruckDriverModel() }
+    override suspend fun getById(id: String): TruckDriver? {
+        return dbQuery { dao.getById(id)?.toTruckDriverModel() }
+    }
+
+    override suspend fun getByCompanyId(companyId: Long): List<TruckDriver> {
+        return dbQuery { dao.getByCompanyId(companyId).map { it.toTruckDriverModel() } }
     }
 
     override suspend fun search(s: String): List<TruckDriver> {

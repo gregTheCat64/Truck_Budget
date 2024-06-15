@@ -1,6 +1,5 @@
 package ru.javacat.ui.view_models
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,26 +10,43 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.CargoName
+import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
 import ru.javacat.domain.models.TruckDriver
+import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TrucksRepository
+import ru.javacat.domain.use_case.GetCompaniesUseCase
+import ru.javacat.domain.use_case.GetTrailersByCompanyIdUseCase
+import ru.javacat.domain.use_case.GetTruckDriversByCompanyIdUseCase
+import ru.javacat.domain.use_case.GetTrucksByCompanyIdUseCase
+import ru.javacat.domain.use_case.SetCompanyUseCase
+import ru.javacat.domain.use_case.SetTrailerUseCase
+import ru.javacat.domain.use_case.SetTruckDriverUseCase
+import ru.javacat.domain.use_case.SetTruckUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
 class ChooseItemViewModel @Inject constructor(
-    private val trucksRepository: TrucksRepository,
-    private val trailersRepository: TrailersRepository,
-    private val truckDriversRepository: TruckDriversRepository,
-    private val routeRepository: RouteRepository,
+    private val getCompaniesUseCase: GetCompaniesUseCase,
+    private val getTruckDriversUseCase: GetTruckDriversByCompanyIdUseCase,
+    private val getTrucksUseCase: GetTrucksByCompanyIdUseCase,
+    private val getTrailersUseCase: GetTrailersByCompanyIdUseCase,
+    private val setCompanyUseCase: SetCompanyUseCase,
+    private val setTruckDriverUseCase: SetTruckDriverUseCase,
+    private val setTruckUseCase: SetTruckUseCase,
+    private val setTrailerUseCase: SetTrailerUseCase
 ): ViewModel() {
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
+
+    private val _contractors = MutableStateFlow<List<Company>?>(null)
+    val contractors = _contractors.asStateFlow()
 
     private val _trucks = MutableStateFlow<List<Truck>?>(null)
     val trucks = _trucks.asStateFlow()
@@ -42,86 +58,85 @@ class ChooseItemViewModel @Inject constructor(
     private val _drivers = MutableStateFlow<List<TruckDriver>?>(null)
     val drivers = _drivers.asStateFlow()
 
-    private val _cargo = MutableStateFlow<List<CargoName>?>(null)
-    val cargo = _cargo.asStateFlow()
 
-//    val chosenTruck = trucksRepository.chosenTruck
-//
-//    val chosenTrailer = trailersRepository.chosenTrailer
-//
-//    val chosenDriver = staffRepository.chosenDriver
-
-    val editedRoute = routeRepository.editedItem
-
- //   val editedOrder = orderRepository.editedOrder
-
-
-    fun getTrucks(){
+    fun getContractors(){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = trucksRepository.getAll()
+            _contractors.emit(getCompaniesUseCase.invoke())
+        }
+    }
+
+
+    fun getTrucks(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = getTrucksUseCase.invoke(id)
             _trucks.emit(result)
         }
     }
 
-    fun getTrailers(){
+    fun getTrailers(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = trailersRepository.getAll()
+            val result = getTrailersUseCase.invoke(id)
             _trailers.emit(result)
         }
     }
 
-    fun getDriver(){
+    fun getDriver(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
-            val result = truckDriversRepository.getAll()
+            val result = getTruckDriversUseCase.invoke(id)
             _drivers.emit(result)
         }
     }
 
-
-    fun searchTrucks(s: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = trucksRepository.search(s)
-            _trucks.emit(result)
-        }
-    }
-
-    fun searchTrailers(s: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = trailersRepository.search(s)
-            _trailers.emit(result)
-        }
-    }
-
-    fun searchStaff(s: String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = truckDriversRepository.search(s)
-            _drivers.emit(result)
+    fun setCompany(t: Company){
+        viewModelScope.launch {
+            setCompanyUseCase.invoke(t)
         }
     }
 
     fun setTruck(t: Truck){
         viewModelScope.launch {
-            val newRoute = editedRoute.value.copy(truck = t)
-            Log.i("ChooseItemVM", "newRoute: $newRoute")
-            routeRepository.updateEditedItem(newRoute)
+            setTruckUseCase.invoke(t)
         }
     }
 
     fun setTrailer(t: Trailer){
         viewModelScope.launch {
-            editedRoute.value?.copy(trailer = t)?.let { routeRepository.updateEditedItem(it) }
+            setTrailerUseCase.invoke(t)
         }
     }
 
     fun setDriver(t: TruckDriver){
         viewModelScope.launch {
-            editedRoute.value?.copy(driver = t)?.let { routeRepository.updateEditedItem(it) }
+            setTruckDriverUseCase.invoke(t)
         }
     }
 
-//    fun setCustomer(t: Customer){
-//        viewModelScope.launch{
-//            orderRepository.updateOrder(editedOrder.value.copy(customer = t))
+//    fun searchTrucks(s: String){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val result = trucksRepository.search(s)
+//            _trucks.emit(result)
 //        }
 //    }
+//
+//    fun searchTrailers(s: String){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val result = trailersRepository.search(s)
+//            _trailers.emit(result)
+//        }
+//    }
+//
+//    fun searchStaff(s: String){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val result = truckDriversRepository.search(s)
+//            _drivers.emit(result)
+//        }
+//    }
+
+//    fun searchContractors(search: String) {
+//        viewModelScope.launch(Dispatchers.IO){
+//            val result = companiesRepository.search(search)
+//            _contractors.emit(result)
+//        }
+//    }
+
 }

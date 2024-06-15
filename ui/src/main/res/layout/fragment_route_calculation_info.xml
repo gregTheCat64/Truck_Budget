@@ -7,55 +7,52 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/baseline_credit_card_24"
-            app:tint="@color/grey" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/advance"
-                />
-
-
-            <TextView
-                android:id="@+id/prepayTv"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/finalCountFrame"
+            android:id="@+id/myTransportLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
             >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/baseline_credit_card_24"
+                    app:tint="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/advance"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/prepayTv"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -82,10 +79,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="@string/fuel_price"
+                        android:text="@string/fuel_cost"
                         />
                     <TextView
-                        android:id="@+id/fuelPriceTv"
+                        android:id="@+id/fuelCostTv"
                         style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -219,6 +216,48 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/baseline_credit_card_24"
+                    app:tint="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moneyToPay"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/moneyToPayTv"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -247,7 +286,7 @@
                         android:text="@string/income"
                         />
                     <TextView
-                        android:id="@+id/incomeTv"
+                        android:id="@+id/revenueTv"
                         style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -287,7 +326,7 @@
                         android:text="@string/net_income"
                         />
                     <TextView
-                        android:id="@+id/netIncomeTv"
+                        android:id="@+id/profitTv"
                         style="@style/TextAppearance.Material3.BodyLarge"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
@@ -298,9 +337,6 @@
                 </LinearLayout>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <com.google.android.material.button.MaterialButton

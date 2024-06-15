@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.i("BaseFragment", "onResume")
         if (activity is MainActivity) {
             val mainActivity = activity as MainActivity
             mainActivity.setBottomNavVisibility(bottomNavViewVisibility)

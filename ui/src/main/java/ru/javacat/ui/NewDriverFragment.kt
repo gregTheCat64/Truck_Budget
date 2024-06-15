@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
+import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.NewDriverViewModel
 
@@ -31,6 +32,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val args = arguments
+        val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
 
         binding.passWhen.setOnClickListener {
             parentFragmentManager.showCalendar {
@@ -55,7 +59,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
             //TODO добавить поле для 2 номера тел.
             val newDriver = TruckDriver(
-                0,0,-1,firstName, middleName, surname, passportData, passWhen,
+                0,0,companyId,firstName, middleName, surname, passportData, passWhen,
                 passWhere, driveLicenseNumber, address, phoneNumber, "",""
             )
 

@@ -28,6 +28,10 @@ class TrailersRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id).toTrailer() }
     }
 
+    override suspend fun getByCompanyId(companyId: Long): List<Trailer>? {
+        return dbQuery { dao.getByCompanyId(companyId)?.map { it.toTrailer() } }
+    }
+
     override suspend fun search(s: String): List<Trailer> {
         return dbQuery { dao.searchTrailers(s).map { it.toTrailer() } }
     }

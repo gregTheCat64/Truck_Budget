@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Исправьте поле комиссии с учетом всех затрат, если требуется "
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Выручка"
+        />
+    <TextView
+        android:id="@+id/revenueTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 руб"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Контрагенту:"
+        />
+    <TextView
+        android:id="@+id/contractorCostTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 руб"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profitEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Комиссия, руб."
+            android:inputType="number"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/Widget.Material3.Button.TextButton.Dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_gravity="start"
+            />
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_gravity="end"
+            />
+    </FrameLayout>
+
+</LinearLayout>

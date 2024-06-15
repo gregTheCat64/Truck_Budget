@@ -6,16 +6,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
-import ru.javacat.domain.repo.CustomerRepository
+import ru.javacat.domain.models.Company
+import ru.javacat.domain.repo.CompaniesRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
-    val repository: CustomerRepository
+    val repository: CompaniesRepository
 ): ViewModel() {
 
-    val homeCustomer = MutableStateFlow<Partner?>(null)
+    val homeCustomer = MutableStateFlow<Company?>(null)
 
     fun getHomeCustomer(){
         viewModelScope.launch(Dispatchers.IO){

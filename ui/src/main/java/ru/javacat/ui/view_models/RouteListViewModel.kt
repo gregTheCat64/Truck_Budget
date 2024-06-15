@@ -29,8 +29,6 @@ class RouteListViewModel @Inject constructor(
     }
 
 
-
-
     suspend fun removeRoute(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             repo.removeById(id)

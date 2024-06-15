@@ -3,7 +3,7 @@ package ru.javacat.data.db.models
 import androidx.room.Embedded
 import androidx.room.Relation
 import ru.javacat.common.utils.toLocalDate
-import ru.javacat.data.db.entities.DbCustomer
+import ru.javacat.data.db.entities.DbCompany
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbOrder
 
@@ -27,15 +27,22 @@ data class DbOrderWithCustomer(
     @Relation(
         parentColumn = "customerId",
         entityColumn = "id",
-        entity = DbCustomer::class
+        entity = DbCompany::class
     )
-    val customer: DbCustomerWithManagers,
+    val customer: DbCompanyWithManagers,
 
     @Relation(
-        parentColumn = "employeeId",
+        parentColumn = "managerId",
         entityColumn = "id",
     )
     val manager: DbManager?,
+
+    @Relation(
+        parentColumn = "contractorId",
+        entityColumn = "id",
+        entity = DbCompany::class
+    )
+    val contractor: DbCompanyWithManagers?,
 
     @Relation(
         parentColumn = "routeId",
@@ -70,8 +77,11 @@ data class DbOrderWithCustomer(
             points = order.points.map { it.toPointModel() },
             date = order.date.toLocalDate(),
             price = order.price,
-            customer = customer.toCustomerModel(),
+            contractorPrice = order.contractorPrice,
+            commission = order.commission,
+            customer = customer.toCompanyModel(),
             manager = manager?.toManagerModel(),
+            contractor = contractor?.toCompanyModel(),
             driver = driver?.toTruckDriverModel(),
             truck = truck?.toTruck(),
             trailer = trailer?.toTrailer(),
@@ -81,7 +91,8 @@ data class DbOrderWithCustomer(
             paymentDeadline = order.paymentDeadline?.toLocalDate(),
             sentDocsNumber = order.sentDocsNumber,
             docsReceived = order.docsReceived?.toLocalDate(),
-            isPaidByCustomer = order.isPaid
+            isPaidByCustomer = order.isPaidByCustomer,
+            isPaidToContractor = order.isPaidToContractor
         )
     }
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -39,11 +38,21 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
     private lateinit var adapter: OrdersAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.i("RouteFrag", "onCreateView")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("RouteFrag", "onViewCreated")
 
-        val bundle = Bundle()
 
+        //Navigation
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
                 when (it) {
@@ -56,18 +65,12 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
             }
         }
 
-//        if (!isRouteLoaded && routeId != null) {
-//            Log.i("routeFrag", "routeID: $routeId")
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                viewModel.getRouteAndUpdateEditedRoute(routeId)
-//                isRouteLoaded = true
-//            }
-//        }
 
         //Adapter
         adapter = OrdersAdapter{
             viewLifecycleOwner.lifecycleScope.launch {
                 //viewModel.getOrderAndUpdateEditedOrder(it.id)
+                val bundle = Bundle()
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
                 bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                 //bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
@@ -87,14 +90,19 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
         //Новый заказ
         binding.addOrderBtn.setOnClickListener {
-            viewModel.clearEditedOrder()
-            viewModel.addRouteIdToOrder(routeId = currentRoute?.id?:0)
-            findNavController().navigate(R.id.addCustomerFragment)
+            //viewModel.clearEditedOrder()
+            //viewModel.addRouteIdToOrder(routeId = currentRoute?.id?:0)
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
+            findNavController().navigate(R.id.addCustomerFragment, bundle)
         }
 
         //Завершаем рейс
         binding.finishRouteBtn.setOnClickListener {
-            calculate()
+            if (currentRoute?.contractor?.company?.id == -1L){
+                toFinishRouteFragment()
+            } else toFinishPartnerRouteFragment()
         }
     }
 
@@ -110,13 +118,26 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
         }
     }
 
-    private fun calculate(){
+    private fun toFinishRouteFragment(){
         if (currentRoute?.orderList?.isNotEmpty() == true){
-            //viewModel.setRouteFinished()
-            findNavController().navigate(R.id.finishRouteFragment)
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishRouteFragment, bundle)
         } else {
             Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun toFinishPartnerRouteFragment(){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishPartnerRouteFragment, bundle)
+        }else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 
 }

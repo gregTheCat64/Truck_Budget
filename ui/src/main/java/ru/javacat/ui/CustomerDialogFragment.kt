@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.databinding.FragmentCustomerDialogBinding
@@ -46,7 +46,7 @@ class CustomerDialogFragment: BottomSheetDialogFragment() {
         viewModel.getAllCustomers()
 
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
-            override fun onCustomer(item: Partner) {
+            override fun onCustomer(item: Company) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.FILTER_CUSTOMER, item.id)
                 bundle.putString(FragConstants.CUSTOMER_NAME, item.shortName)

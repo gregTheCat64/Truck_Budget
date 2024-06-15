@@ -39,6 +39,8 @@ runtime-ktx = {module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref 
 nav-fragment-ktx = {module = "androidx.navigation:navigation-fragment-ktx", version.ref = "nav"}
 nav-ui-ktx = {module = "androidx.navigation:navigation-ui-ktx", version.ref = "nav"}
 
+dagger = {module = "com.google.dagger:dagger", version.ref = "hilt"}
+
 hilt = {module = "com.google.dagger:hilt-android", version.ref = "hilt"}
 hilt-compiler = {module = "com.google.dagger:hilt-compiler", version.ref = "hilt"}
 

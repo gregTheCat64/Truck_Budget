@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.domain.use_case.ClearEditedOrderUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
 class RouteViewPagerViewModel @Inject constructor(
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteRepository,
+    private val clearEditedOrderUseCase: ClearEditedOrderUseCase
 ): ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -32,6 +34,12 @@ class RouteViewPagerViewModel @Inject constructor(
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
+        }
+    }
+
+    fun clearEditedOrder(){
+        viewModelScope.launch(Dispatchers.IO){
+            clearEditedOrderUseCase.invoke()
         }
     }
 

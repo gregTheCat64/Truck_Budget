@@ -1,25 +1,29 @@
 package ru.javacat.data.impl
 
 import android.util.Log
+import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.javacat.data.db.AppDb
 import ru.javacat.data.db.dao.RoutesDao
+import ru.javacat.data.db.entities.DbCountRoute
+
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val draftRoute = Route(
 
-)
 
 @Singleton
 class RouteRepositoryImpl @Inject constructor(
-    private val routesDao: RoutesDao
+    private val routesDao: RoutesDao,
+    private val db: AppDb
 ):RouteRepository {
 //    override val allRoutes: Flow<List<Route?>>
 //        get() = routesDao.getAllRoutes().map { list -> list.map { it.toRouteModel() } }
@@ -45,6 +49,7 @@ class RouteRepositoryImpl @Inject constructor(
 
     override suspend fun getById(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
+
     override suspend fun updateEditedItem(newRoute: Route) {
         _editedRoute.emit(newRoute)
         _isEdited.emit(true)
@@ -58,9 +63,16 @@ class RouteRepositoryImpl @Inject constructor(
     override suspend fun insert(route: Route): Long {
         println("inserting in repo $route")
         _isEdited.emit(false)
-        val result = dbQuery { routesDao.insertRoute(route.toDb()) }
-        Log.i("RouteRepo", "routeId : $result")
-        //_editedRoute.emit(route)
-        return result
+        var routeId = 0L
+
+        db.withTransaction {
+            routeId = dbQuery { routesDao.insertRoute(route.toDb()) }
+            Log.i("RouteRepo", "routeId : $routeId")
+        }
+        return routeId
+    }
+
+    override suspend fun updateRoute(route: Route){
+        dbQuery { routesDao.updateRoute(route.toDb()) }
     }
 }

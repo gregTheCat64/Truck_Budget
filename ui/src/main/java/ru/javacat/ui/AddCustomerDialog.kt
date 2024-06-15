@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
+import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint

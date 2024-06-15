@@ -25,6 +25,7 @@ import ru.javacat.ui.adapters.LocationAdapter
 import ru.javacat.ui.adapters.OnPointListener
 import ru.javacat.ui.adapters.PointsAdapter
 import ru.javacat.ui.databinding.FragmentAddPointsBinding
+import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.AddPointsViewModel
 

@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.CustomerItemBinding
 
 interface OnCustomerListener {
-    fun onCustomer(item: Partner)
+    fun onCustomer(item: Company)
 }
 class CustomersAdapter(
     private val onCustomerListener: OnCustomerListener
-): ListAdapter<Partner, CustomersAdapter.Holder>(Comparator()){
+): ListAdapter<Company, CustomersAdapter.Holder>(Comparator()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_item, parent, false)
@@ -29,7 +29,7 @@ class CustomersAdapter(
     class Holder(view: View, private val onCustomerListener: OnCustomerListener): RecyclerView.ViewHolder(view){
         private val binding = CustomerItemBinding.bind(view)
 
-        fun bind(item: Partner){
+        fun bind(item: Company){
             binding.apply {
                 companyName.text = item.nameToShow
                 item.companyPhone?.let {
@@ -45,12 +45,12 @@ class CustomersAdapter(
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<Partner>(){
-        override fun areItemsTheSame(oldItem: Partner, newItem: Partner): Boolean {
+    class Comparator: DiffUtil.ItemCallback<Company>(){
+        override fun areItemsTheSame(oldItem: Company, newItem: Company): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Partner, newItem: Partner): Boolean {
+        override fun areContentsTheSame(oldItem: Company, newItem: Company): Boolean {
             return oldItem == newItem
         }
     }

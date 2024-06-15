@@ -13,7 +13,10 @@ interface TruckDriversDao {
     fun getAll(): List<DbTruckDriver>
 
     @Query("SELECT * FROM truck_drivers_table WHERE passportNumber =:id")
-    suspend fun getById(id: String): DbTruckDriver
+    suspend fun getById(id: String): DbTruckDriver?
+
+    @Query("SELECT * FROM truck_drivers_table WHERE companyId = :id")
+    suspend fun getByCompanyId(id: Long): List<DbTruckDriver>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(

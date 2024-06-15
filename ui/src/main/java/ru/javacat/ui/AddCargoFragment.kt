@@ -21,6 +21,7 @@ import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.CargoAdapter
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
+import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.view_models.AddCargoViewModel
 
 @AndroidEntryPoint

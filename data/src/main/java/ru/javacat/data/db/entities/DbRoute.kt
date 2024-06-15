@@ -1,7 +1,10 @@
 package ru.javacat.data.db.entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.javacat.domain.models.Contractor
+import ru.javacat.domain.models.CountRoute
 
 @Entity(tableName = "routes_table")
 data class DbRoute (
@@ -9,22 +12,25 @@ data class DbRoute (
     val id: Long,
     val startDate: String?,
     val endDate: String?,
-    val driverId: Long,
+    val companyId: Long?,
+    val driverId: Long?,
     val truckId: Long?,
     val trailerId: Long?,
-    //val orderList: List<Order>,
-    val prepayment: Int,
-    val fuelUsedUp: Int?,
-    val fuelPrice: Float?,
-    val routeSpending: Int?,
-    val payPerDiem: Int?,
-    val routeDuration: Int,
-    val driverSalary: Int?,
-    val moneyToPay: Int?,
-    val income: Int?,
-    val netIncome: Float?,
+
+    @Embedded
+    val countRoute: CountRoute?,
+
+    val contractorsCost: Int = 0,
+    val routeExpenses: Int = 0,
+
+    val revenue: Int?,
+    val profit: Float?,
+
     val isFinished: Boolean
 )
+
+
+
 
 
 

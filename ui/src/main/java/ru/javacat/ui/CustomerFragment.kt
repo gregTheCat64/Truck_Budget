@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Manager
 import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
@@ -120,7 +120,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
         }
     }
 
-    private fun updateUi(customer: Partner){
+    private fun updateUi(customer: Company){
         binding.apply {
             (activity as AppCompatActivity).supportActionBar?.title = customer.shortName
             customerNameTv.text = customer.nameToShow

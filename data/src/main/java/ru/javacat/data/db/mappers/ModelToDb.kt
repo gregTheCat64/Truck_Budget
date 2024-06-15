@@ -1,7 +1,8 @@
 package ru.javacat.data.db.mappers
 
 import ru.javacat.data.db.entities.DbCargo
-import ru.javacat.data.db.entities.DbCustomer
+import ru.javacat.data.db.entities.DbCompany
+import ru.javacat.data.db.entities.DbCountRoute
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
@@ -12,7 +13,8 @@ import ru.javacat.data.db.entities.DbTruck
 import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
-import ru.javacat.domain.models.Partner
+import ru.javacat.domain.models.Company
+import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.Order
@@ -26,19 +28,15 @@ fun Route.toDb() = DbRoute(
     id,
     startDate?.toString() ,
     endDate?.toString(),
-    driver?.id?:0,
-    truck?.id?:0,
-    trailer?.id?:0,
-    prepayment?:0,
-    fuelUsedUp,
-    fuelPrice,
-    routeSpending,
-    payPerDiem,
-    routeDuration?:0,
-    driverSalary,
-    moneyToPay,
-    income,
-    netIncome,
+    contractor?.company?.id,
+    contractor?.driver?.id,
+    contractor?.truck?.id,
+    contractor?.trailer?.id,
+    countRoute,
+    contractorsCost,
+    routeExpenses,
+    revenue,
+    profit,
     isFinished
 )
 
@@ -48,8 +46,11 @@ fun Order.toDb() = DbOrder(
     points.map { it.toDb() },
     points[0].arrivalDate.toString(),
     price?:0,
+    contractorPrice,
+    commission,
     customer?.id?:0,
     manager?.id,
+    contractor?.id,
     driver?.id?: 0,
     truck?.id?: 0,
     trailer?.id,
@@ -59,7 +60,8 @@ fun Order.toDb() = DbOrder(
     paymentDeadline?.toString(),
     sentDocsNumber,
     docsReceived?.toString(),
-    isPaidByCustomer
+    isPaidByCustomer,
+    isPaidToContractor
 )
 
 fun Point.toDb() = DbPoint(
@@ -67,11 +69,11 @@ fun Point.toDb() = DbPoint(
 )
 
 fun Truck.toDb() = DbTruck(
-    id, regNumber, regionCode, vin, model, type, yearOfManufacturing
+    id,companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
 fun Trailer.toDb() = DbTrailer(
-    id, regNumber, regionCode, vin, model, type, yearOfManufacturing
+    id, companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
 fun TruckDriver.toDb() = DbTruckDriver(
@@ -95,7 +97,7 @@ fun Location.toDb() = DbLocation(
     id, nameToShow, positionId
 )
 
-fun Partner.toDb() = DbCustomer(
+fun Company.toDb() = DbCompany(
     id, nameToShow, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
 )
 

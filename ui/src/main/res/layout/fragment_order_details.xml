@@ -210,6 +210,33 @@
                     style="@style/TextAppearance.Material3.BodyLarge"
                     />
 
+                <LinearLayout
+                    android:id="@+id/contractorsPriceLayout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/contractor_s_cost"
+                        />
+
+                    <TextView
+                        android:id="@+id/contractorsPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        />
+
+                </LinearLayout>
+
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

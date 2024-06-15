@@ -9,7 +9,7 @@ data class DbTruckDriver (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val positionId: Long,
-    val customerId: Long,
+    val companyId: Long,
     val firstName: String?,
     val middleName: String?,
     val surName: String,
@@ -25,7 +25,7 @@ data class DbTruckDriver (
     fun toTruckDriverModel() = TruckDriver(
         id,
         positionId,
-        customerId,
+        companyId,
         firstName,
         middleName,
         surName,

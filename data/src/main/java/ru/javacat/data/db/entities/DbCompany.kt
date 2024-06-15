@@ -3,12 +3,11 @@ package ru.javacat.data.db.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "customers_table")
-data class DbCustomer(
+@Entity(tableName = "companies_table")
+data class DbCompany(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val companyName: String,
-
     val atiNumber: Int?,
     val companyPhone: String?,
     val formalAddress: String?,
@@ -16,7 +15,7 @@ data class DbCustomer(
     val shortName: String?,
     val positionId: Long,
 ) {
-//    fun toCustomerModel() = Customer(
+//    fun toCustomerModel() = Partner(
 //        id, companyName, atiNumber, companyPhone,formalAddress, postAddress, shortName, positionId
 //    )
 }

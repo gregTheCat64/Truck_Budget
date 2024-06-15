@@ -10,30 +10,20 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.domain.use_case.ClearEditedOrderUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
 class RouteViewModel @Inject constructor(
     routeRepository: RouteRepository,
-    private val orderRepository: OrderRepository
+
 ) : ViewModel() {
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
     val editedRoute = routeRepository.editedItem
-    val editedOrder = orderRepository.editedItem
 
-    fun addRouteIdToOrder(routeId: Long){
-        viewModelScope.launch(Dispatchers.IO){
-            editedOrder.value?.copy(routeId = routeId)?.let { orderRepository.updateEditedItem(it) }
-        }
-    }
 
-    fun clearEditedOrder(){
-        viewModelScope.launch(Dispatchers.IO){
-            orderRepository.clearCurrentOrder()
-        }
-    }
 }
