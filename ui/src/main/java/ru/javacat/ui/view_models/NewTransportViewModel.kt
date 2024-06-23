@@ -1,10 +1,12 @@
 package ru.javacat.ui.view_models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Trailer
@@ -19,6 +21,9 @@ class NewTransportViewModel @Inject constructor(
     private val trucksRepository: TrucksRepository,
     private val trailersRepository: TrailersRepository
 ): ViewModel() {
+
+    val editedTruck = MutableStateFlow<Truck?>(null)
+    val editedTrailer = MutableStateFlow<Trailer?>(null)
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -43,6 +48,34 @@ class NewTransportViewModel @Inject constructor(
                 trailersRepository.insert(trailer)
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    suspend fun getTruckById(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val truck = trucksRepository.getById(id)
+                editedTruck.emit(truck)
+                Log.i("newTransportVm", "result: $truck")
+                _loadState.emit(LoadState.Success.OK)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    suspend fun getTrailerById(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val trailer = trailersRepository.getById(id)
+                editedTrailer.emit(trailer)
+                Log.i("newTransportVm", "result: $trailer")
+                _loadState.emit(LoadState.Success.OK)
+            }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }

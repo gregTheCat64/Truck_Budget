@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="ООО Удача"
         android:layout_marginStart="8dp"
-        style="@style/TextAppearance.Material3.TitleMedium"
+        style="@style/TextAppearance.MyTitleMedium"
         />
 
     <TextView

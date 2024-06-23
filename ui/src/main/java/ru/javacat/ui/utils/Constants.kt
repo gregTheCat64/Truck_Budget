@@ -14,9 +14,13 @@ object FragConstants{
     const val CUSTOMER_ID = "CUSTOMER_ID"
     const val CUSTOMER_NAME = "CUSTOMER_NAME"
     const val MANAGER_ID = "MANAGER_ID"
+    const val DRIVER_ID = "DRIVER_ID"
+
+    const val TRANSPORT_ID = "TRANSPORT_ID"
 
     const val MY_COMPANY_ID = -1L
     const val COMPANY_ID = "COMPANY_ID"
+    const val TYPE_OF_TRANSPORT = "TYPE_OF_TRANSPORT"
 
     const val EDITING_ORDER = "EDITING_ORDER"
     const val IS_NEW_ORDER = "IS_NEW_ORDER"

@@ -83,7 +83,10 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         }
 
         binding.okBtn.setOnClickListener {
-            viewModel.addCustomerToOrder(routeId)
+            if (!binding.customerInputEditText.text.isNullOrEmpty()){
+                viewModel.addCustomerToOrder(routeId)
+            } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -106,10 +109,13 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewModel.getCustomers()
         customerAdapter = ChooseCustomerAdapter {
             viewModel.setCustomer(it)
+            viewModel.clearEmployee()
+            binding.managerInputEditText.text?.clear()
             binding.customerInputEditText.setText(it.nameToShow)
             customerId = it.id
             viewModel.getEmployee(it.id)
             binding.managerLayout.isGone = false
+            binding.customersRecView.isGone = true
         }
         binding.customersRecView.adapter = customerAdapter
 
@@ -146,6 +152,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchCustomers(p0.toString())
                 binding.managerLayout.isGone = p0.isNullOrEmpty()
+                binding.customersRecView.isGone = false
             }
 
             override fun afterTextChanged(p0: Editable?) {

@@ -40,12 +40,13 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.title = "Моя компания"
 
         viewModel.getHomeCustomer()
 
-        customerId = -1
+        customerId = FragConstants.MY_COMPANY_ID
 
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
@@ -99,10 +100,24 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
 
     private fun updateUi(customer: Company){
         binding.apply {
-            customerNameTv.setText(customer.nameToShow)
-            //innTv.setText(customer.id.toString())
-            atiNumberTv.setText(customer.atiNumber.toString())
-            phoneNumberTv.setText(customer.companyPhone.toString())
+            customer.nameToShow.let {
+                customerNameTv.text = it
+            }
+            customer.shortName?.let {
+                shortNameTv.text = it
+            }
+            customer.atiNumber?.let {
+                atiNumberTv.text = it.toString()
+            }
+            customer.companyPhone?.let {
+                phoneNumberTv.text = it
+            }
+            customer.formalAddress?.let {
+                formalAddressTv.text = it
+            }
+            customer.postAddress?.let {
+                postAddressTv.text = it
+            }
         }
     }
 }

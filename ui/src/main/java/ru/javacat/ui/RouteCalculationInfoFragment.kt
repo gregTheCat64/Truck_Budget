@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,15 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         }
 
     private var currentRoute: Route? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val args = arguments
+        val routeId = args?.getLong(FragConstants.ROUTE_ID)
+
+        Log.i("RouteCalcInfo", "routeId: $routeId")
+
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

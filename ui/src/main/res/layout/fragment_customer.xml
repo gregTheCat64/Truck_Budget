@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -251,4 +259,17 @@
         android:layout_gravity="start"
         />
 
-</LinearLayout>
+        <include layout="@layout/horizon_line" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/toTruckFleet"
+            app:icon="@drawable/baseline_people_alt_24"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Truck fleet"
+            />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

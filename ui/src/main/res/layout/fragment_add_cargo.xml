@@ -13,14 +13,6 @@
         android:orientation="vertical"
         >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Добавить груз"
-        android:layout_margin="16dp"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        />
-
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -41,6 +33,7 @@
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
                 android:inputType="number"
+                android:text="82"
                 android:hint="Объем, м3"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -58,6 +51,7 @@
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
                 android:inputType="number"
+                android:text="20"
                 android:hint="Вес, т"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -120,16 +114,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addNewCargoBtn"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:text="@string/add"
-        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cargoRecView"

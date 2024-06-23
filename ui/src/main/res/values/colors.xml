@@ -3,6 +3,23 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#6C6C6C</color>
-    <color name="green">#73AF76</color>
-    <color name="red">#930000</color>
+    <color name="green">#78AF9F</color>
+    <color name="red">#C13F21</color>
+    <color name="blue">#404C58</color>
+    <color name="brown">#403A33</color>
+    <color name="icon_color">#6C6C6C</color>
+
+    <color name="primary">#FFD152</color>
+    <color name="onPrimary">#34323C</color>
+
+    <color name="secondary">#FE8700</color>
+    <color name="onSecondary">#FFFFFF</color>
+
+    <color name="background">#353436</color>
+    <color name="onBackground">#efdab9</color>
+
+    <color name="text_accent">#efdab9</color>
+    <color name="text_secondary">#838383</color>
+    <color name="status_bar">#403A33</color>
+
 </resources>

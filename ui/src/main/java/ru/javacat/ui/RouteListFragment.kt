@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.OnRouteListener
 import ru.javacat.ui.adapters.RoutesAdapter
@@ -29,6 +31,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
     private val viewModel: RouteListViewModel by viewModels()
     private lateinit var routesAdapter: RoutesAdapter
+    private var myCompany: Company? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
@@ -40,8 +43,9 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.title = "Рейсы"
+        (activity as AppCompatActivity).supportActionBar?.hide()
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//        (activity as AppCompatActivity).supportActionBar?.title = "Рейсы"
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -51,24 +55,52 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
         Log.i("routeListFrag", "onViewCreated")
 
-        viewModel.getAllRoutes()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getAllRoutes()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
+        }
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.editedCustomer.collectLatest {
+                    myCompany = it
+                }
+            }
+        }
 
         val bundle = Bundle()
 
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
-            findNavController().navigate(R.id.newRouteFragment)
+            if (myCompany != null) {
+                findNavController().navigate(R.id.newRouteFragment)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Заполните карточку вашей компании",
+                    Toast.LENGTH_SHORT
+                ).show()
+                bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
+                findNavController().navigate(R.id.newCustomerFragment, bundle)
+
+            }
+
         }
 
         //Adapter
-        routesAdapter = RoutesAdapter (object : OnRouteListener{
+        routesAdapter = RoutesAdapter(object : OnRouteListener {
             override fun onItem(item: Route) {
-                    bundle.putLong(FragConstants.ROUTE_ID, item.id?:0L)
+                bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
                 findNavController().navigate(R.id.viewPagerFragment, bundle)
 
             }
+
             override fun onRemove(item: Route) {
-                viewLifecycleOwner.lifecycleScope.launch{
+                viewLifecycleOwner.lifecycleScope.launch {
                     item.id?.let { viewModel.removeRoute(it) }
                 }
             }

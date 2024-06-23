@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -36,9 +37,10 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     private val viewModel: AddCargoViewModel by viewModels()
     private lateinit var cargoAdapter: CargoAdapter
     private var cargosFound: Boolean = false
+    private var cargoList:List<CargoName> = emptyList()
 
-    private var weight: Int = 20
-    private var volume: Int = 82
+    private var weight: Int = 0
+    private var volume: Int = 0
     private var name: String = ""
     private var isBackLoad = true
     private var isSideLoad = false
@@ -79,16 +81,9 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
             }
         }
 
-
-
         //Навигация
         loadStateListener()
 
-        binding.addNewCargoBtn.setOnClickListener {
-            val cargoName = binding.cargoEditText.text.toString()
-            viewModel.insertNewCargo(CargoName(null, cargoName))
-            binding.addNewCargoBtn.isGone = true
-        }
 
         binding.cancelBtn.setOnClickListener {
             if (isNewOrder){
@@ -97,10 +92,29 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         }
 
         binding.okBtn.setOnClickListener {
+            val cargoName = binding.cargoEditText.text.toString()
+            if (cargoName.isEmpty()){
+                Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!checkCargoInStorage(cargoName)){
+                addCargoToStorage(cargoName)
+            }
             getFields()
             val cargo = Cargo(weight,volume,name, isBackLoad, isSideLoad, isTopLoad)
             viewModel.addCargoToOrder(cargo)
         }
+    }
+
+    private fun checkCargoInStorage(cargoToCheck: String): Boolean{
+        for (i in cargoList){
+            if (i.nameToShow == cargoToCheck) return true
+        }
+        return false
+    }
+
+    private fun addCargoToStorage(cargoName: String){
+        viewModel.insertNewCargo(CargoName(null, cargoName))
     }
 
     private fun initUi(order: Order) {
@@ -128,9 +142,12 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.cargo.collectLatest {
                     // Log.i("OrderFrag", "cargos: $it")
+                    if (it != null) {
+                        cargoList = it
+                    }
                     cargoAdapter.submitList(it)
                     cargosFound = it?.size != 0
-                    binding.addNewCargoBtn.isGone = cargosFound
+                    //binding.addNewCargoBtn.isGone = cargosFound
                 }
             }
         }

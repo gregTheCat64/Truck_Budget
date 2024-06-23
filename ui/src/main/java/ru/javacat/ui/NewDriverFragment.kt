@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,29 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         val args = arguments
         val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
 
+        val truckDriverId = args?.getLong(FragConstants.DRIVER_ID)
+
+        Log.i("NewDriverFrag", "companyId: $companyId")
+        Log.i("NewDriverFrag", "driverId: $truckDriverId")
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                if (truckDriverId != null) {
+                    viewModel.getTruckDriverById(truckDriverId)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.editedTruckDriver.collectLatest {
+                    if (it != null) {
+                        updateUi(it)
+                    }
+                }
+            }
+        }
+
         binding.passWhen.setOnClickListener {
             parentFragmentManager.showCalendar {
             }
@@ -59,7 +83,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
             //TODO добавить поле для 2 номера тел.
             val newDriver = TruckDriver(
-                0,0,companyId,firstName, middleName, surname, passportData, passWhen,
+                truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
                 passWhere, driveLicenseNumber, address, phoneNumber, "",""
             )
 
@@ -76,9 +100,28 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                 viewModel.loadState.collectLatest {
                     if (it == LoadState.Success.GoBack){
                         findNavController().navigateUp()
+                        //findNavController().navigate(R.id.truckDriversListFragment)
                     }
                 }
             }
+        }
+    }
+
+    private fun updateUi(truckDriver: TruckDriver){
+        binding.apply {
+            surName.setText(truckDriver.surname)
+            middleName.setText(truckDriver.middleName)
+            firstName.setText(truckDriver.firstName)
+            //TODO разделить серию и номер
+            //passSerial.setText(truckDriver.pa)
+            passNumber.setText(truckDriver.passportNumber)
+            passWhen.setText(truckDriver.passportReceivedDate.toString())
+            passWhere.setText(truckDriver.passportReceivedPlace)
+            driveLicenseNumber.setText(truckDriver.driveLicenseNumber)
+            address.setText(truckDriver.placeOfRegistration)
+            phoneNumber.setText(truckDriver.phoneNumber)
+            phoneNumber2.setText(truckDriver.secondNumber)
+
         }
     }
 }

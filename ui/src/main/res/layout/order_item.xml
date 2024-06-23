@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Заявка номер 1111 от 12 января"
+            style="@style/TextAppearance.MyTitleMedium"
             />
 
         <TextView
@@ -46,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="35000 р."
-        android:textSize="22sp"
+        style="@style/TextAppearance.MyTitleLarge"
         android:layout_margin="8dp" />
 
 </androidx.cardview.widget.CardView>

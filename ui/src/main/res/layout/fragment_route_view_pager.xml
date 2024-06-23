@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="?attr/colorAccent"
+            android:background="@color/primary"
             android:padding="4dp"
             >
 
@@ -91,6 +91,7 @@
     android:id="@+id/routeTabLayout"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:backgroundTint="@color/background"
     />
 
 <androidx.viewpager2.widget.ViewPager2

@@ -14,7 +14,7 @@ interface TrailersDao {
     @Query("SELECT * FROM trailers_table")
     fun getAll(): List<DbTrailer>
 
-    @Query("SELECT * FROM trailers_table WHERE regNumber =:id")
+    @Query("SELECT * FROM trailers_table WHERE id =:id")
     suspend fun getById(id: Long): DbTrailer
 
     @Query("SELECT * FROM trailers_table WHERE companyId =:id")

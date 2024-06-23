@@ -12,8 +12,8 @@ interface TruckDriversDao {
     @Query("SELECT * FROM truck_drivers_table")
     fun getAll(): List<DbTruckDriver>
 
-    @Query("SELECT * FROM truck_drivers_table WHERE passportNumber =:id")
-    suspend fun getById(id: String): DbTruckDriver?
+    @Query("SELECT * FROM truck_drivers_table WHERE id =:id")
+    suspend fun getById(id: Long): DbTruckDriver?
 
     @Query("SELECT * FROM truck_drivers_table WHERE companyId = :id")
     suspend fun getByCompanyId(id: Long): List<DbTruckDriver>

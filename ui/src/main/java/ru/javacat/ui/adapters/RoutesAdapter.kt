@@ -28,7 +28,15 @@ class RoutesAdapter(
         item.profit?.let {
             binding.earnedMoneyTextView.text = it.toString() + " р."
         }
-        binding.customersListTextView.text = customersList.toString()
+        item.contractor?.company?.shortName?.let {
+            binding.contractorNameTv.text = it
+        }
+        item.contractor?.driver?.nameToShow?.let {
+            binding.truckDriverName.text = it
+        }
+        if (customersList.isNotEmpty()){
+            binding.customersListTextView.text = customersList.toString()
+        }
 
         binding.root.setOnClickListener {
             onRouteListener.onItem(item)

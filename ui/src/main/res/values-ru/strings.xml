@@ -98,4 +98,6 @@
     <string name="contractor_s_cost">Перевозчику</string>
     <string name="rub">"руб"</string>
     <string name="fuel_cost">Стоимость топлива</string>
+    <string name="round">Округлить</string>
+    <string name="add_500">Добавить 500р</string>
 </resources>

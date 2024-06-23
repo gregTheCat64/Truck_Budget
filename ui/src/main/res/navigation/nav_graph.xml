@@ -53,11 +53,6 @@
             app:destination="@id/newCustomerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/newDriverFragment"
-        android:name="ru.javacat.ui.NewDriverFragment"
-        tools:layout="@layout/fragment_new_driver"
-        android:label="DriverFragment" />
-    <fragment
         android:id="@+id/newTransportFragment"
         android:name="ru.javacat.ui.NewTransportFragment"
         tools:layout="@layout/fragment_new_transport"
@@ -150,7 +145,11 @@
         android:id="@+id/customerFragment"
         tools:layout="@layout/fragment_customer"
         android:name="ru.javacat.ui.CustomerFragment"
-        android:label="CustomerFragment" />
+        android:label="CustomerFragment" >
+        <action
+            android:id="@+id/action_customerFragment_to_truckFleetViewPager"
+            app:destination="@id/truckFleetViewPager" />
+    </fragment>
 
 
         <fragment
@@ -194,13 +193,29 @@
         android:id="@+id/editHomeFragment"
         android:name="ru.javacat.ui.EditHomeFragment"
         android:label="EditHomeFragment" />
-    <fragment
-        android:id="@+id/truckDriversListFragment"
-        android:name="ru.javacat.ui.TruckDriversListFragment"
-        android:label="TruckDriversListFragment" />
     <dialog
         android:id="@+id/finishPartnerRouteFragment"
         android:name="ru.javacat.ui.FinishPartnerRouteFragment"
         android:label="FinishPartnerRouteFragment" />
+    <fragment
+        android:id="@+id/truckFleetViewPager"
+        android:name="ru.javacat.ui.TruckFleetViewPagerFragment"
+        tools:layout="@layout/fragment_truck_fleet_view_pager"
+        android:label="TruckFleetViewPager" />
+
+        <fragment
+            android:id="@+id/truckDriversListFragment"
+            android:name="ru.javacat.ui.TruckDriversListFragment"
+            android:label="TruckDriversListFragment">
+            <action
+                android:id="@+id/action_truckDriversListFragment_to_newDriverFragment"
+                app:destination="@id/newDriverFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/newDriverFragment"
+            android:name="ru.javacat.ui.NewDriverFragment"
+            android:label="DriverFragment"
+            tools:layout="@layout/fragment_new_driver" />
+
 
 </navigation>

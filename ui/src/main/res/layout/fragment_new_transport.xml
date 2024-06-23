@@ -2,9 +2,9 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="32dp"
-    >
+    android:padding="32dp">
 
 
     <LinearLayout
@@ -47,9 +47,6 @@
     </LinearLayout>
 
 
-
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,6 +78,70 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/typeOfTransportLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/typeOfTransportEt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Тент"
+            android:hint="Тип транспорта"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/typeOfTransportChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="bottom"
+        >
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tentChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:checked="true"
+            android:tag="tent"
+            android:text="Тент"
+            />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/refChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:tag="ref"
+            android:text="Реф"
+            />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/termosChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Термос"
+            android:tag="termos"
+            android:checkable="true"
+
+            />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/containerChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:tag="container"
+            android:text="Контейнер"
+            />
+
+    </com.google.android.material.chip.ChipGroup>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

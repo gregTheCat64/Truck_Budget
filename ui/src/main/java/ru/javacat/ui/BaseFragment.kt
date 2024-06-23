@@ -22,17 +22,18 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (activity is MainActivity) {
-            val mainActivity = activity as MainActivity
-            mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
-        }
+//        if (activity is MainActivity) {
+//            val mainActivity = activity as MainActivity
+//            mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
+//        }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.i("BaseFragment", "onResume")
+        //Log.i("BaseFragment", "onResume")
         if (activity is MainActivity) {
             val mainActivity = activity as MainActivity
+            //Log.i("BaseFragment", "bottomNavVis: $bottomNavViewVisibility")
             mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
         }
     }
@@ -42,6 +43,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //Log.i("BaseFragment", "onCreateView")
+        if (activity is MainActivity) {
+            val mainActivity = activity as MainActivity
+            mainActivity.setBottomNavVisibility(bottomNavViewVisibility)
+        }
+
         _binding = bindingInflater.invoke(inflater, container)
         return binding.root
     }
@@ -50,6 +57,4 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

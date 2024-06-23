@@ -122,7 +122,7 @@ class FinishRouteViewModel @Inject constructor(
                   payPerDiem: Int,
                   moneyToPay: Int,
                   revenue: Int,
-                  profit: Float
+                  profit: Int
                   ) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)

@@ -100,4 +100,6 @@
     <string name="contractor_s_cost">Contractor\'s cost</string>
     <string name="rub">"rub"</string>
     <string name="fuel_cost">Fuel cost</string>
+    <string name="round">Round</string>
+    <string name="add_500">Add 500</string>
 </resources>

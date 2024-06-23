@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:hint="@string/company_name_with_asterisk"
 
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -156,7 +156,6 @@
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -170,14 +169,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="8dp"
         android:text="@string/required_field"/>
-
 
     <Button
         android:id="@+id/saveBtn"
@@ -187,7 +184,6 @@
         android:text="@string/save"
         android:layout_gravity="center_horizontal"
         />
-
 </LinearLayout>
 
     </ScrollView>

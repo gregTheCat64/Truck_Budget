@@ -73,7 +73,7 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
     private fun initTrucksCase(requestedItem: String, companyId: Long){
         val bundle = Bundle()
         bundle.putLong(FragConstants.COMPANY_ID, companyId)
-        bundle.putString("item", requestedItem)
+        bundle.putString(FragConstants.TYPE_OF_TRANSPORT, requestedItem)
 
         binding.newItemBtn.setText(getString(R.string.create_new_truck))
 
@@ -104,7 +104,7 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
     private fun initTrailersCase(requestedItem: String, companyId: Long){
         val bundle = Bundle()
         bundle.putLong(FragConstants.COMPANY_ID, companyId)
-        bundle.putString("item", requestedItem)
+        bundle.putString(FragConstants.TYPE_OF_TRANSPORT, requestedItem)
 
         binding.newItemBtn.text = getString(R.string.create_new_trailer)
 

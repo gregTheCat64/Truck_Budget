@@ -14,7 +14,7 @@ data class Route(
     val routeExpenses: Int = 0,
 
     val revenue: Int? = null,
-    val profit: Float? = null,
+    val profit: Int? = null,
 
     val isFinished: Boolean = false
     )

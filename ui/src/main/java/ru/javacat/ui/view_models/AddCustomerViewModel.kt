@@ -62,6 +62,10 @@ class AddCustomerViewModel @Inject constructor(
         _manager = manager
     }
 
+    fun clearEmployee(){
+        _manager = null
+    }
+
     fun addCustomerToOrder(routeId: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)

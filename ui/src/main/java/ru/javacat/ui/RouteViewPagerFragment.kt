@@ -40,6 +40,7 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
     var currentFragment: Int? = 0
     private var routeId: Long? = null
+    val bundle = Bundle()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,17 +48,13 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
         Log.i("RouteVPFrag", "oncreate")
 
-
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        (activity as AppCompatActivity).supportActionBar?.title = "TruckBudget"
-
-        val args = arguments
-        routeId = args?.getLong(FragConstants.ROUTE_ID)
-
+        routeId = arguments?.getLong(FragConstants.ROUTE_ID)
 
         Log.i("RouteVPfrag", "routeId: $routeId")
-        val bundle =Bundle ()
+
         bundle.putLong(FragConstants.ROUTE_ID, routeId?:0)
+
+
     }
 
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,6 +69,9 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
     ): View? {
 
         Log.i("RouteVPFrag", "onCreateView")
+
+        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -104,9 +104,16 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
         viewModel.clearEditedOrder()
 
+        val routeFragment = RouteFragment()
+        routeFragment.arguments = bundle
+
+        val routeCalculationInfoFragment =  RouteCalculationInfoFragment()
+        routeFragment.arguments = bundle
+
+
         val fraglist = listOf(
-            RouteFragment(),
-            RouteCalculationInfoFragment()
+            routeFragment,
+            routeCalculationInfoFragment
         )
 
         val ordersWord = getString(R.string.orders)

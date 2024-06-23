@@ -24,7 +24,7 @@ data class DbRoute (
     val routeExpenses: Int = 0,
 
     val revenue: Int?,
-    val profit: Float?,
+    val profit: Int?,
 
     val isFinished: Boolean
 )

@@ -38,6 +38,16 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
     private lateinit var adapter: OrdersAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i("RouteFrag", "onCreate")
+
+        val args = arguments
+        val routeId = args?.getLong(FragConstants.ROUTE_ID)
+
+        Log.i("RouteFrag", "routeId: $routeId")
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

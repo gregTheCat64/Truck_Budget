@@ -1,10 +1,52 @@
 <?xml version="1.0"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="TruckBudget" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="TruckBudget" parent="Theme.Material3.Dark">
+
+        <item name="colorAccent">?attr/colorPrimary</item>
+        <item name="android:colorAccent">?attr/colorPrimary</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="android:textColor">@color/onBackground</item>
+        <item name="textFillColor">@color/onBackground</item>
+
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/onBackground</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="chipStyle">@style/ChipStyle.Base</item>
+
+<!--        <item name="bottomNavigationStyle">@color/primary</item>-->
+
     </style>
 
+    <style name="ChipStyle.Base" parent="@style/Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/chip_selector</item>
+    </style>
+    
+    <style name="TextAppearance.MyTitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="textFillColor">@color/onBackground</item>
+        <item name="android:textColor">@color/onBackground</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.MyTitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="textFillColor">@color/onBackground</item>
+        <item name="android:textColor">@color/onBackground</item>
+
+    </style>
+
+    <style name="TextAppearance.MyTitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="textFillColor">@color/onBackground</item>
+        <item name="android:textColor">@color/onBackground</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

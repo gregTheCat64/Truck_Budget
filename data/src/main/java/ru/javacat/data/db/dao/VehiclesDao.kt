@@ -14,7 +14,7 @@ interface TrucksDao {
     @Query("SELECT * FROM trucks_table")
     fun getAll(): List<DbTruck>
 
-    @Query("SELECT * FROM trucks_table WHERE regNumber =:id")
+    @Query("SELECT * FROM trucks_table WHERE id =:id")
     suspend fun getById(id: Long): DbTruck?
 
     @Query("SELECT * FROM trucks_table WHERE companyId =:id")

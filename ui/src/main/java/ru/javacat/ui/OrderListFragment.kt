@@ -41,8 +41,9 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.title = "Заявки"
+        (activity as AppCompatActivity).supportActionBar?.hide()
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//        (activity as AppCompatActivity).supportActionBar?.title = "Заявки"
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }

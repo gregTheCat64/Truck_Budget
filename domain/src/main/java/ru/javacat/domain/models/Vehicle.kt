@@ -37,11 +37,10 @@ data class Trailer(
     override val vin: String?,
     override val model: String?,
     override val yearOfManufacturing: String?,
+    override val type: String?
     ): Vehicle(){
     override val positionId: Long
         get() = 0L
     override val nameToShow: String
-        get() = regNumber
-    override val type: String
-        get() = "Trailer"
+        get() = "$regNumber $regionCode"
 }

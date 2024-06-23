@@ -40,7 +40,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private var revenue: Int? = null
 
     private var salary: Int? = null
-    private var profit: Float? = null
+    private var profit: Int? = null
     private var moneyToPay: Int? = null
 
     private var currentRoute: Route? = null
@@ -99,7 +99,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         }
 
         binding.calculateRouteBtn.setOnClickListener {
-            if (getFieldsData() && !binding.salaryEditText.text.isNullOrEmpty()) {
+            if (getFieldsWithSalary()) {
                 profit = calculateProfit()
                 moneyToPay = calculateMoneyToPay()
                 binding.profitTv.setText(profit.toString())
@@ -130,6 +130,27 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 "Заполните все поля и нажмите кнопку принять",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+
+        binding.roundBtn.setOnClickListener {
+            var inputSalary = if (binding.salaryEditText.text?.isNotEmpty() == true){
+                binding.salaryEditText.text?.toString()?.toInt()
+            } else null
+
+            if (inputSalary!= null){
+                inputSalary = roundToNearestMultiple(inputSalary, 500)
+                binding.salaryEditText.setText(inputSalary.toString())
+            } else Toast.makeText(requireContext(), "Salary field shouldn't be empty", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.add500btn.setOnClickListener {
+            var inputSalary = if (binding.salaryEditText.text?.isNotEmpty() == true){
+                binding.salaryEditText.text?.toString()?.toInt()
+            } else null
+            if (inputSalary != null){
+                inputSalary = add500(inputSalary!!)
+                binding.salaryEditText.setText(inputSalary.toString())
+            }
         }
 
         binding.cancelButton.setOnClickListener {
@@ -187,6 +208,13 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             fuelPrice = binding.fuelPrice.text.toString().toFloat()
         } else return false
 
+
+
+        return true
+    }
+
+    private fun getFieldsWithSalary(): Boolean{
+        if (!getFieldsData()) return false
         if (!binding.salaryEditText.text.isNullOrEmpty()) {
             salary = binding.salaryEditText.text.toString().toInt()
         } else return false
@@ -236,9 +264,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         } else null
     }
 
-    private fun calculateProfit(): Float? {
+    private fun calculateProfit(): Int? {
         return if (revenue != null && salary != null && fuelPrice != null) {
-            (revenue!! - (salary!! + (fuelPrice!! * fuelUsedUp!!) + (payPerDiem!! * routeDuration) + otherExpenses!!))
+            (revenue!! - (salary!! + (fuelPrice!! * fuelUsedUp!!) + (payPerDiem!! * routeDuration) + otherExpenses!!)).toInt()
         } else null
     }
 
@@ -254,6 +282,14 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         if (salary != null && fuelPrice != null) {
             return ((prepay - (fuelPrice!! * fuelUsedUp!!) - (payPerDiem!! * routeDuration!!) - otherExpenses!! - salary!!).toInt())
         } else return null
+    }
+
+    private fun roundToNearestMultiple(number: Int, multiple: Int): Int {
+        return (Math.round(number.toDouble() / multiple) * multiple).toInt()
+    }
+
+    private fun add500(number: Int): Int{
+        return number + 500
     }
 
 

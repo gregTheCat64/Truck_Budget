@@ -49,6 +49,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
 
@@ -84,13 +85,20 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toTruckFleet.setOnClickListener {
+            if (customerId != null) {
+                val bundle = Bundle()
+                bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
+                findNavController().navigate(R.id.truckFleetViewPager, bundle)
+            }
+        }
+
         binding.addEmployeeBtn.setOnClickListener {
             if (customerId != null) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.CUSTOMER_ID,customerId!!)
                 findNavController().navigate(R.id.newEmployeeFragment, bundle)
             }
-
         }
 
         emplAdapter = ManagerAdapter(object : OnManagerListener{
@@ -128,7 +136,10 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
             customer.atiNumber?.let {
                 atiNumberTv.text = it.toString()
             }
-            phoneNumberTv.text = customer.companyPhone
+            customer.companyPhone?.let {
+                phoneNumberTv.text = it
+            }
+
             formalAddressTv.text = customer.formalAddress
             postAddressTv.text = customer.postAddress
         }

@@ -34,8 +34,9 @@ class CustomerListFragment: BaseFragment<FragmentCustomerListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.title = "Заказчики"
+        (activity as AppCompatActivity).supportActionBar?.hide()
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//        (activity as AppCompatActivity).supportActionBar?.title = "Заказчики"
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }

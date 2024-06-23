@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.TruckDriver
@@ -17,6 +18,8 @@ class NewDriverViewModel @Inject constructor(
     private val repository: TruckDriversRepository
 ):ViewModel() {
 
+    val editedTruckDriver = MutableStateFlow<TruckDriver?>(null)
+
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
@@ -27,6 +30,18 @@ class NewDriverViewModel @Inject constructor(
                 repository.insert(driver)
                 _loadState.emit(LoadState.Success.GoBack)
             }catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    suspend fun getTruckDriverById(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                editedTruckDriver.emit(repository.getById(id))
+                _loadState.emit(LoadState.Success.OK)
+            }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }

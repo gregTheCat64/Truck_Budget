@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+        android:theme="@style/ThemeOverlay.Material3.Button"
         android:src="@drawable/baseline_add_circle_outline_24"
         />
-
 </FrameLayout>

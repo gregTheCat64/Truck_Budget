@@ -32,7 +32,7 @@ class FinishPartnerRouteViewModel @Inject constructor(
         }
     }
 
-    fun saveRoute(profit: Float, revenue: Int, moneyToPay: Int, prepayment: Int){
+    fun saveRoute(profit: Int, revenue: Int, moneyToPay: Int, prepayment: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
                 repository.updateEditedItem(editedRoute.value.copy(
