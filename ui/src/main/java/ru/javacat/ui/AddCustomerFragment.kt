@@ -5,16 +5,26 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -55,7 +65,32 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity). supportActionBar?.title = "Клиент"
+        (activity as AppCompatActivity). supportActionBar?.show()
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R. id.cancel_button_menu_item-> {
+                        if (isNewOrder){
+                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        }, viewLifecycleOwner)
+
+
 
         initUi()
         initCustomerAdapter()
@@ -63,12 +98,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         addCustomerEditTextListener()
         addManagerEditTextListener()
         loadStateListener()
-
-        binding.cancelBtn.setOnClickListener {
-            if (isNewOrder){
-                findNavController().popBackStack(R.id.viewPagerFragment, false)
-            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
-        }
+        
 
         binding.newCustomerBtn.setOnClickListener {
             findNavController().navigate(R.id.newCustomerFragment)
@@ -119,6 +149,14 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         }
         binding.customersRecView.adapter = customerAdapter
 
+        //val decoration = DividerItemDecoration(context, RecyclerView.HORIZONTAL)
+        // decoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.baseline_event_note_24)!!)
+        //binding.customersRecView.addItemDecoration(decoration)
+        val customersLayoutManager = FlexboxLayoutManager(requireContext())
+        customersLayoutManager.flexDirection = FlexDirection.ROW
+        customersLayoutManager.justifyContent = JustifyContent.FLEX_START
+        binding.customersRecView.layoutManager = customersLayoutManager
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.customers.collectLatest {
@@ -134,6 +172,11 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
             binding.managerInputEditText.setText(it.nameToShow)
         }
         binding.employeesRecView.adapter = employeeAdapter
+
+        val employeesLayoutManager = FlexboxLayoutManager(requireContext())
+        employeesLayoutManager.flexDirection = FlexDirection.ROW
+        employeesLayoutManager.justifyContent = JustifyContent.FLEX_START
+        binding.employeesRecView.layoutManager = employeesLayoutManager
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

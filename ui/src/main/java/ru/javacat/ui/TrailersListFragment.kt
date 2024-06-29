@@ -30,6 +30,7 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
             FragmentTrailersListBinding.inflate(inflater, container, false)
         }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

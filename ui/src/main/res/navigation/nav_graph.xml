@@ -3,36 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/routeListFragment">
+    app:startDestination="@id/navigation_route_list">
 
     <fragment
-        android:id="@+id/routeListFragment"
+        android:id="@+id/navigation_route_list"
         android:name="ru.javacat.ui.RouteListFragment"
         tools:layout="@layout/fragment_route_list"
-        android:label="RouteListFragment" >
-        <action
-            android:id="@+id/action_routeListFragment_to_routeFragment"
-            app:destination="@id/routeFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_routeListFragment_to_orderListFragment"
-            app:destination="@id/orderListFragment" />
+        android:label="@string/routes" >
         <action
             android:id="@+id/action_routeListFragment_to_newRouteFragment"
             app:destination="@id/newRouteFragment" />
         <action
             android:id="@+id/action_routeListFragment_to_viewPagerFragment"
             app:destination="@id/viewPagerFragment" />
-        <action
-            android:id="@+id/action_routeListFragment_to_customerListFragment"
-            app:destination="@id/customerListFragment" />
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
         android:name="ru.javacat.ui.RouteFragment"
         tools:layout="@layout/fragment_route"
-        android:label="RouteFragment" >
+        android:label="@string/route" >
         <action
             android:id="@+id/action_routeFragment_to_newOrderFragment"
             app:destination="@id/orderDetailsFragment" />
@@ -40,33 +29,35 @@
         <action
             android:id="@+id/action_routeFragment_to_finishRouteFragment"
             app:destination="@id/finishRouteFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_finishPartnerRouteFragment"
+            app:destination="@id/finishPartnerRouteFragment" />
+        <action
+            android:id="@+id/action_routeFragment_to_addCustomerFragment"
+            app:destination="@id/addCustomerFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="ru.javacat.ui.OrderFragment"
         tools:layout="@layout/fragment_order_details"
-        android:label="orderDetailsFragment" >
-
-        <action
-            android:id="@+id/action_orderFragment_to_newCustomerFragment"
-            app:destination="@id/newCustomerFragment" />
-    </fragment>
+        android:label="@string/order" />
     <fragment
         android:id="@+id/newTransportFragment"
         android:name="ru.javacat.ui.NewTransportFragment"
         tools:layout="@layout/fragment_new_transport"
-        android:label="TransportFragment" />
+        android:label="@string/vehicles" />
     <fragment
         android:id="@+id/newEmployeeFragment"
         android:name="ru.javacat.ui.NewEmployeeFragment"
         tools:layout="@layout/fragment_new_employee"
-        android:label="NewEmployeeFragment" />
+        android:label="@string/add_employee" />
+
     <fragment
-        android:id="@+id/orderListFragment"
+        android:id="@+id/navigation_order_list"
         android:name="ru.javacat.ui.OrderListFragment"
         tools:layout="@layout/fragment_order_list"
-        android:label="OrderListFragment" >
+        android:label="@string/orders" >
         <action
             android:id="@+id/action_orderListFragment_to_newOrderFragment"
             app:destination="@id/orderDetailsFragment" />
@@ -76,7 +67,7 @@
         android:id="@+id/newCustomerFragment"
         android:name="ru.javacat.ui.NewCustomerFragment"
         tools:layout="@layout/fragment_new_customer"
-        android:label="NewCustomerFragment" >
+        android:label="@string/create_new_partner" >
         <action
             android:id="@+id/action_newCustomerFragment_to_addEmployeeFragment"
             app:destination="@id/newEmployeeFragment" />
@@ -91,7 +82,7 @@
         android:id="@+id/chooseItemFragment"
         android:name="ru.javacat.ui.ChooseItemFragment"
         tools:layout="@layout/fragment_choose_item"
-        android:label="ChooseItemFragment" />
+        android:label="@string/choose_the_item" />
     <fragment
         android:id="@+id/testFragment"
         android:name="ru.javacat.ui.TestFragment"
@@ -100,29 +91,39 @@
         android:id="@+id/newRouteFragment"
         android:name="ru.javacat.ui.NewRouteFragment"
         tools:layout="@layout/fragment_create_route"
-        android:label="NewRouteFragment" >
+        android:label="@string/new_route" >
+        <action
+            android:id="@+id/action_newRouteFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/finishRouteFragment"
         android:name="ru.javacat.ui.FinishRouteFragment"
         tools:layout="@layout/fragment_finish_route"
-        android:label="FinishRouteFragment" />
+        android:label="@string/finish_route" />
     <fragment
         android:id="@+id/addDocumentsFragment"
         android:name="ru.javacat.ui.AddDocumentsFragment"
-        android:label="AddDocumentsFragment" />
+        tools:layout="@layout/fragment_add_documents"
+        android:label="@string/add_documents" />
     <fragment
         android:id="@+id/viewPagerFragment"
         android:name="ru.javacat.ui.RouteViewPagerFragment"
         tools:layout="@layout/fragment_route_view_pager"
         android:label="ViewPagerFragment" >
 
+        <action
+            android:id="@+id/action_viewPagerFragment_to_routeFragment"
+            app:destination="@id/routeFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_routeCountFragment"
+            app:destination="@id/routeCountFragment" />
     </fragment>
     <fragment
         android:id="@+id/routeCountFragment"
         android:name="ru.javacat.ui.RouteCalculationInfoFragment"
         tools:layout="@layout/fragment_route_calculation_info"
-        android:label="RouteCountFragment" />
+        android:label="@string/count" />
 
 
     <action
@@ -132,20 +133,24 @@
         <action
             android:id="@+id/action_global_viewPagerFragment"
             app:destination="@id/viewPagerFragment" />
+
     <fragment
-        android:id="@+id/customerListFragment"
+        android:id="@+id/navigation_customer_list"
         android:name="ru.javacat.ui.CustomerListFragment"
         tools:layout="@layout/fragment_customer_list"
-        android:label="CustomerListFragment" >
+        android:label="@string/companies" >
         <action
             android:id="@+id/action_customerListFragment_to_customerFragment"
             app:destination="@id/customerFragment" />
+        <action
+            android:id="@+id/action_customerListFragment_to_newCustomerFragment"
+            app:destination="@id/newCustomerFragment" />
     </fragment>
     <fragment
         android:id="@+id/customerFragment"
         tools:layout="@layout/fragment_customer"
         android:name="ru.javacat.ui.CustomerFragment"
-        android:label="CustomerFragment" >
+        android:label="@string/customer" >
         <action
             android:id="@+id/action_customerFragment_to_truckFleetViewPager"
             app:destination="@id/truckFleetViewPager" />
@@ -155,7 +160,7 @@
         <fragment
             android:id="@+id/addCargoFragment"
             android:name="ru.javacat.ui.AddCargoFragment"
-            android:label="AddCargoFragment"
+            android:label="@string/add_cargo"
             tools:layout="@layout/fragment_add_cargo">
 
             <action
@@ -165,12 +170,12 @@
         <fragment
             android:id="@+id/addPaymentFragment"
             android:name="ru.javacat.ui.AddPaymentFragment"
-            android:label="AddPaymentFragment"
+            android:label="@string/add_payment"
             tools:layout="@layout/fragment_add_payment" />
         <fragment
             android:id="@+id/addCustomerFragment"
             android:name="ru.javacat.ui.AddCustomerFragment"
-            android:label="Add_customer"
+            android:label="@string/add_company"
             tools:layout="@layout/fragment_add_customer">
             <action
                 android:id="@+id/action_addCustomerFragment_to_addCargoFragment"
@@ -179,34 +184,43 @@
         <fragment
             android:id="@+id/addPointsFragment"
             android:name="ru.javacat.ui.AddPointsFragment"
-            android:label="AddPointsFragment"
+            android:label="@string/add_points"
             tools:layout="@layout/fragment_add_points">
             <action
                 android:id="@+id/action_addPointsFragment_to_addPaymentFragment"
                 app:destination="@id/addPaymentFragment" />
         </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="ru.javacat.ui.HomeFragment"
-        android:label="HomeFragment" />
-    <fragment
-        android:id="@+id/editHomeFragment"
-        android:name="ru.javacat.ui.EditHomeFragment"
-        android:label="EditHomeFragment" />
+        android:id="@+id/navigation_home_company"
+        android:name="ru.javacat.ui.HomeCompanyFragment"
+        tools:layout="@layout/fragment_home_company"
+        android:label="@string/home" />
     <dialog
         android:id="@+id/finishPartnerRouteFragment"
+        tools:layout="@layout/fragment_finish_partner_route"
         android:name="ru.javacat.ui.FinishPartnerRouteFragment"
-        android:label="FinishPartnerRouteFragment" />
+        android:label="@string/finish_route" />
     <fragment
         android:id="@+id/truckFleetViewPager"
         android:name="ru.javacat.ui.TruckFleetViewPagerFragment"
         tools:layout="@layout/fragment_truck_fleet_view_pager"
-        android:label="TruckFleetViewPager" />
+        android:label="@string/truck_fleet" >
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_truckDriversListFragment"
+            app:destination="@id/truckDriversListFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_trucksListFragment"
+            app:destination="@id/trucksListFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_trailersListFragment"
+            app:destination="@id/trailersListFragment" />
+    </fragment>
 
         <fragment
             android:id="@+id/truckDriversListFragment"
             android:name="ru.javacat.ui.TruckDriversListFragment"
-            android:label="TruckDriversListFragment">
+            tools:layout="@layout/fragment_truck_drivers_list"
+            android:label="@string/truck_drivers">
             <action
                 android:id="@+id/action_truckDriversListFragment_to_newDriverFragment"
                 app:destination="@id/newDriverFragment" />
@@ -214,8 +228,27 @@
         <fragment
             android:id="@+id/newDriverFragment"
             android:name="ru.javacat.ui.NewDriverFragment"
-            android:label="DriverFragment"
+            android:label="@string/truck_driver"
             tools:layout="@layout/fragment_new_driver" />
+    <fragment
+        android:id="@+id/trailersListFragment"
+        android:name="ru.javacat.ui.TrailersListFragment"
+        tools:layout="@layout/fragment_trailers_list"
+        android:label="@string/trailers" >
+        <action
+            android:id="@+id/action_trailersListFragment_to_newTransportFragment"
+            app:destination="@id/newTransportFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/trucksListFragment"
+        android:name="ru.javacat.ui.TrucksListFragment"
+        tools:layout="@layout/fragment_trucks_list"
+        android:label="@string/trucks" >
+        <action
+            android:id="@+id/action_trucksListFragment_to_newTransportFragment"
+            app:destination="@id/newTransportFragment" />
+    </fragment>
 
 
 </navigation>

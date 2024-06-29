@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,9 +17,15 @@
         />
 
 
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
 
@@ -26,9 +34,9 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_margin="16dp"
+                android:layout_margin="32dp"
                 android:visibility="gone"
-                android:src="@drawable/icon_archiv"
+                android:src="@drawable/camp_pic_round"
                 android:contentDescription="@string/empty_orders" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -41,36 +49,35 @@
                 tools:itemCount="2"
                 tools:listitem="@layout/order_item" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/finishRouteBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_gravity="start"
-                    android:text="@string/finish_route"
-                    android:layout_margin="16dp"
-                    />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addOrderBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    app:icon="@drawable/baseline_add_circle_outline_24"
-                    android:src="@drawable/baseline_add_circle_outline_24"
-                    android:visibility="visible"
-                    android:text="@string/add"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="@string/add_order_button" />
 
-            </FrameLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/finishRouteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/finish_route"
+                android:layout_margin="16dp"
+                />
+
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addOrderBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        app:icon="@drawable/baseline_add_circle_outline_24"
+        android:src="@drawable/baseline_add_circle_outline_24"
+        android:text="@string/add"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/add_order_button" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

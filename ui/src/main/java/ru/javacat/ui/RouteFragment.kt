@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -24,8 +25,6 @@ import ru.javacat.ui.view_models.RouteViewModel
 
 @AndroidEntryPoint
 class RouteFragment : BaseFragment<FragmentRouteBinding>() {
-
-    override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: RouteViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteBinding

@@ -37,7 +37,6 @@ import ru.javacat.ui.view_models.OrderViewModel
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderDetailsBinding
         get() = { inflater, container ->
             FragmentOrderDetailsBinding.inflate(inflater, container, false)
@@ -87,17 +86,26 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
 
         Log.i("OrderFrag", "isCreateOrderArg: $isEditingOrderArg")
 
+        (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_edit, menu)
+                menuInflater.inflate(R.menu.menu_cancel, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
+                        return true
+                    }
+                    R.id.cancel_button_menu_item -> {
+                        viewModel.clearOrder()
+                        //findNavController().navigateUp()
+                        if (isEditingOrderArg == true){
+                            findNavController().navigateUp()
+                        } else findNavController().popBackStack(R.id.viewPagerFragment, false)
                         return true
                     }
                     else -> return false
@@ -216,14 +224,7 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
             saveOrder()
         }
 
-        //Отмена изменений
-        binding.cancelBtn.setOnClickListener {
-            viewModel.clearOrder()
-            //findNavController().navigateUp()
-            if (isEditingOrderArg == true){
-                findNavController().navigateUp()
-            } else findNavController().popBackStack(R.id.viewPagerFragment, false)
-        }
+
 
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {

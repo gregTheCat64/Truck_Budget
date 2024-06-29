@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
+    android:layout_marginTop="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -54,7 +55,7 @@
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             tools:itemCount="10"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/name_item" />
@@ -120,35 +121,15 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        >
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cancelBtn"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:layout_margin="16dp"
-            android:layout_gravity="start"
-            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/okBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok"
+            android:text="@string/next"
             android:layout_margin="16dp"
-            android:layout_gravity="end"
+            android:layout_gravity="end|bottom"
             />
-
-    </FrameLayout>
-
-
 
 
 

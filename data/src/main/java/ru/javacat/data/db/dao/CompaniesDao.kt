@@ -21,6 +21,7 @@ interface CompaniesDao {
     @Query("SELECT * FROM companies_table WHERE id =:id")
     suspend fun getById(id: Long): DbCompanyWithManagers?
 
+    @Transaction
     @Query("SELECT * FROM companies_table")
     suspend fun getCustomers(): List<DbCompanyWithManagers>
 

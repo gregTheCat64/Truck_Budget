@@ -55,7 +55,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_review, menu)
+                menuInflater.inflate(R.menu.menu_edit_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

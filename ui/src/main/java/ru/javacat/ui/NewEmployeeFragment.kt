@@ -69,11 +69,10 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
-        (activity as AppCompatActivity).supportActionBar?.title = "Новый сотрудник"
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_edit, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

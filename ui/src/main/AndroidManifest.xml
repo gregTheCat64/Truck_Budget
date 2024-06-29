@@ -5,7 +5,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/TruckBudget"
+        android:theme="@style/AppTheme"
         >
         <activity
             android:name="ru.javacat.ui.MainActivity"

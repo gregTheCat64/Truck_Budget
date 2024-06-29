@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
+    android:layout_marginTop="?attr/actionBarSize"
     android:orientation="vertical">
 
     <LinearLayout
@@ -267,7 +268,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Truck fleet"
+            android:text="@string/truck_fleet"
             />
 
     </LinearLayout>

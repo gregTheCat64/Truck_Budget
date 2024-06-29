@@ -35,8 +35,8 @@ class OrdersAdapter(
             }
 
             if (item.isPaidByCustomer){
-                binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.grey))
-            } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
+                binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_primary))
+            } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_error))
 
             val startDate = item.date.asDayAndMonthFully()
 

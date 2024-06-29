@@ -46,10 +46,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val newRouteTitle = getString(R.string.new_route)
-
-        (activity as AppCompatActivity).supportActionBar?.title = newRouteTitle
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

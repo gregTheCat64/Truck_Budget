@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +47,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.hide()
 //        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-//        (activity as AppCompatActivity).supportActionBar?.title = "Рейсы"
+        //(activity as AppCompatActivity).supportActionBar?.title = getString(R.string.routes)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -72,27 +74,21 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             }
         }
 
-        val bundle = Bundle()
 
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
-            if (myCompany != null) {
-                findNavController().navigate(R.id.newRouteFragment)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Заполните карточку вашей компании",
-                    Toast.LENGTH_SHORT
-                ).show()
-                bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
-                findNavController().navigate(R.id.newCustomerFragment, bundle)
-
-            }
-
+           toNewRoute()
         }
+
+
+        binding.newExtendedRouteBtn.setOnClickListener {
+            toNewRoute()
+        }
+
 
         //Adapter
         routesAdapter = RoutesAdapter(object : OnRouteListener {
+            val bundle = Bundle()
             override fun onItem(item: Route) {
                 bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
                 findNavController().navigate(R.id.viewPagerFragment, bundle)
@@ -110,9 +106,28 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
         lifecycleScope.launch {
             viewModel.allRoutes.collectLatest {
+                binding.noRoutesLayout.isGone = it.isNotEmpty()
+                binding.newExtendedRouteBtn.isGone = it.isNotEmpty()
+                binding.newRouteBtn.isGone = it.isEmpty()
                 routesAdapter.submitList(it)
             }
         }
 
+    }
+
+    fun toNewRoute(){
+        val bundle = Bundle()
+        if (myCompany != null) {
+            findNavController().navigate(R.id.newRouteFragment)
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Заполните карточку вашей компании",
+                Toast.LENGTH_SHORT
+            ).show()
+            bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
+            findNavController().navigate(R.id.newCustomerFragment, bundle)
+
+        }
     }
 }

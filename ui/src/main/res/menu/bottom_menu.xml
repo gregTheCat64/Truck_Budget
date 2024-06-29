@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/routes"
+    <item android:id="@+id/navigation_route_list"
         android:icon="@drawable/baseline_route_24"
-        android:title="routes"
+        android:title="@string/routes"
         android:orderInCategory="1"
         />
-    <item android:id="@+id/orders"
+    <item android:id="@+id/navigation_order_list"
         android:icon="@drawable/icon_docs"
-        android:title="orders"
+        android:title="@string/orders"
         android:orderInCategory="2"
         />
-    <item android:id="@+id/partners"
+    <item android:id="@+id/navigation_customer_list"
     android:icon="@drawable/baseline_apartment_24"
-    android:title="partners"
+    android:title="@string/companies"
     android:orderInCategory="3"
     />
-    <item android:id="@+id/home"
+    <item android:id="@+id/navigation_home_company"
     android:icon="@drawable/baseline_cottage_24"
-    android:title="home"
+    android:title="@string/home"
     android:orderInCategory="4"
     />
 </menu>

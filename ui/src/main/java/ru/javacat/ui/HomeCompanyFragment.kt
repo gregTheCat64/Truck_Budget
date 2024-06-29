@@ -19,20 +19,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
-import ru.javacat.ui.databinding.FragmentHomeBinding
+import ru.javacat.ui.databinding.FragmentHomeCompanyBinding
+
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.HomeFragmentViewModel
 
 @AndroidEntryPoint
-class HomeFragment: BaseFragment<FragmentHomeBinding>() {
+class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
     private val viewModel: HomeFragmentViewModel by viewModels()
 
     var customerId: Long? = null
 
     override var bottomNavViewVisibility: Int = View.VISIBLE
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentHomeBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentHomeCompanyBinding
         get() = {inflater, container ->
-            FragmentHomeBinding.inflate(inflater, container, false)
+            FragmentHomeCompanyBinding.inflate(inflater, container, false)
         }
 
     override fun onCreateView(
@@ -42,10 +43,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.title = "Моя компания"
 
         viewModel.getHomeCustomer()
-
         customerId = FragConstants.MY_COMPANY_ID
 
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -54,7 +53,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_review, menu)
+                menuInflater.inflate(R.menu.menu_edit_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -73,7 +72,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
                         }
                         return true
                     }
-
                     else -> return false
                 }
             }

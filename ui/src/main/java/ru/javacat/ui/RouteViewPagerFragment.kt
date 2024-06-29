@@ -30,7 +30,6 @@ import ru.javacat.ui.view_models.RouteViewPagerViewModel
 @AndroidEntryPoint
 class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteViewPagerBinding
         get() = {inflater, container->
             FragmentRouteViewPagerBinding.inflate(inflater,container,false)
@@ -75,18 +74,19 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_review, menu)
+                menuInflater.inflate(R.menu.menu_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.remove -> {
+                    R.id.remove_menu_item -> {
+                        //TODO добавить диалог!
                         routeId?.let { removeRoute(it) }
                         //findNavController().navigateUp()
                         return true
                     }
                     android.R.id.home -> {
-                        findNavController().navigateUp()
+                        findNavController().popBackStack(R.id.navigation_route_list,false)
                         return true
                     }
                     else ->  return false
@@ -157,17 +157,13 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
             }
         }
 
-        //Возврат
-        binding.closeBtn.setOnClickListener {
-            findNavController().popBackStack(R.id.routeListFragment,false)
-        }
     }
 
     private fun stateListener(){
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it == LoadState.Success.GoBack) findNavController().popBackStack(R.id.routeListFragment, false)
+                    if (it == LoadState.Success.GoBack) findNavController().popBackStack(R.id.navigation_route_list, false)
                 }
             }
         }

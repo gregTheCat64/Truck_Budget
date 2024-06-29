@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -60,7 +64,30 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity). supportActionBar?.title = "Груз"
+        (activity as AppCompatActivity).supportActionBar?.show()
+
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R. id.cancel_button_menu_item-> {
+                        if (isNewOrder){
+                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -85,11 +112,6 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         loadStateListener()
 
 
-        binding.cancelBtn.setOnClickListener {
-            if (isNewOrder){
-                findNavController().popBackStack(R.id.viewPagerFragment, false)
-            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
-        }
 
         binding.okBtn.setOnClickListener {
             val cargoName = binding.cargoEditText.text.toString()
@@ -134,6 +156,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 
         cargoAdapter = CargoAdapter {
             binding.cargoEditText.setText(it.nameToShow)
+            binding.cargoRecView.isGone = true
         }
 
         binding.cargoRecView.adapter = cargoAdapter
@@ -173,12 +196,10 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     private fun addEditTextListener() {
         binding.cargoEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                //binding.cargoRecView.isVisible = true
+                binding.cargoRecView.isGone = false
                 viewModel.searchCargos(p0.toString())
 
 //                if (!cargosFound && p0?.length != 0) {

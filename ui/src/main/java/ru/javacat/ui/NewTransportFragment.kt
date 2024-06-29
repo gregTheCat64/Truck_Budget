@@ -3,8 +3,13 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +36,40 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
         get() = {inflater, container->
             FragmentNewTransportBinding.inflate(inflater, container, false)
         }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.cancel_button_menu_item -> {
+                        //TODO добавить диалог!
+
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    android.R.id.home -> {
+
+                        return true
+                    }
+                    else ->  return false
+                }
+            }
+        }, viewLifecycleOwner)
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -126,7 +165,6 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.insertNewTrailer(newVehicle)
                     }
-
                 }
             }
 
@@ -134,6 +172,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
     }
 
     private fun updateUi(transport: Vehicle){
+        (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
         Log.i("newTransportFragm", "vehicle: $transport")
         binding.apply {
             regNumber.setText(transport.regNumber)

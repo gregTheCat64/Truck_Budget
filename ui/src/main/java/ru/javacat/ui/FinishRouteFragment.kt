@@ -3,9 +3,14 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -48,6 +53,40 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         get() = { inflater, container ->
             FragmentFinishRouteBinding.inflate(inflater, container, false)
         }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R.id.cancel_button_menu_item -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+        }, viewLifecycleOwner)
+
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -153,9 +192,6 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             }
         }
 
-        binding.cancelButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
     private fun initUI() {

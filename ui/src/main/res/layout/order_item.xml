@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:padding="8dp"
-    app:cardCornerRadius="8dp">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="12dp"
         android:orientation="vertical"
         >
 
@@ -19,6 +19,7 @@
             android:id="@+id/orderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Заявка номер 1111 от 12 января"
             style="@style/TextAppearance.MyTitleMedium"
             />
@@ -28,7 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Миронов"
-            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/baseline_apartment_24"
              />
 
         <TextView
@@ -36,8 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Саратов - Ковылкино"
-            app:layout_constraintStart_toStartOf="@+id/orderId"
-            app:layout_constraintTop_toBottomOf="@+id/customerName" />
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/baseline_route_24"
+           />
 
     </LinearLayout>
 

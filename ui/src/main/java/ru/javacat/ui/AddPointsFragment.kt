@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -58,7 +62,28 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity). supportActionBar?.title = "Маршрут"
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R. id.cancel_button_menu_item-> {
+                        if (isNewOrder){
+                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        }, viewLifecycleOwner)
 
         initLocationAdapter()
         initPointAdapter()
@@ -88,11 +113,6 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         }
 
 
-        binding.cancelBtn.setOnClickListener {
-            if (isNewOrder){
-                findNavController().popBackStack(R.id.viewPagerFragment, false)
-            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
-        }
 
         binding.okBtn.setOnClickListener {
             if (isNewOrder){

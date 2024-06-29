@@ -30,7 +30,6 @@ class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity). supportActionBar?.title = "Документы"
 
         binding.saveBtn.setOnClickListener {
             val sendNumber = binding.sendingNumber.text.let {

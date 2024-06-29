@@ -28,12 +28,13 @@ class RoutesAdapter(
         item.profit?.let {
             binding.earnedMoneyTextView.text = it.toString() + " р."
         }
-        item.contractor?.company?.shortName?.let {
-            binding.contractorNameTv.text = it
-        }
-        item.contractor?.driver?.nameToShow?.let {
-            binding.truckDriverName.text = it
-        }
+//        item.contractor?.company?.shortName?.let {
+//            binding.contractorNameTv.text = it
+//        }
+        val contractorString = "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})"
+
+        binding.truckDriverName.text = contractorString
+
         if (customersList.isNotEmpty()){
             binding.customersListTextView.text = customersList.toString()
         }

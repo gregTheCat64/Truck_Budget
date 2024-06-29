@@ -3,14 +3,19 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,11 +29,6 @@ import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
 class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBinding>() {
-
-    override var bottomNavViewVisibility: Int = View.GONE
-//        get() = super.bottomNavViewVisibility
-//        set(value) {
-//            View.GONE}
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentTruckFleetViewPagerBinding
         get() = {inflater, container->
@@ -52,7 +52,26 @@ class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBindi
         savedInstanceState: Bundle?
     ): View? {
         Log.i("TruckeFleetVPFragment", "onCreateView")
+
         (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
+
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_empty, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+        }, viewLifecycleOwner)
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

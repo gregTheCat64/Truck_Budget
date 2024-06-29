@@ -11,7 +11,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 29
+        minSdk = 28
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -53,6 +53,7 @@ dependencies {
     implementation (libs.androidx.fragment.ktx)
     implementation(libs.bundles.viewmodel)
     implementation(libs.bundles.nav)
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 
     kapt(libs.hilt.compiler)
 

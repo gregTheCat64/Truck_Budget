@@ -100,4 +100,20 @@
     <string name="fuel_cost">Стоимость топлива</string>
     <string name="round">Округлить</string>
     <string name="add_500">Добавить 500р</string>
+    <string name="next">Далее</string>
+    <string name="create">Создать</string>
+    <string name="routes">Поездки</string>
+    <string name="companies">Компании</string>
+    <string name="home">Дом</string>
+    <string name="truck_fleet">Автопарк</string>
+    <string name="add_vehicle">Добавить транспорт</string>
+    <string name="choose_the_item">Сделать выбор</string>
+    <string name="add_documents">Добавить документы</string>
+    <string name="add_cargo">Добавить груз</string>
+    <string name="add_points">Добавить маршрут</string>
+    <string name="truck_drivers">Водители</string>
+    <string name="trailers">Прицепы</string>
+    <string name="trucks">Тягачи</string>
+    <string name="add_company">Добавить компанию</string>
+    <string name="vehicles">Транспорт</string>
 </resources>

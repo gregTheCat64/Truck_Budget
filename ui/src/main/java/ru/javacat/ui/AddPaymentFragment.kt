@@ -3,10 +3,14 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -51,7 +55,29 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity). supportActionBar?.title = "Оплата"
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_cancel, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        return true
+                    }
+                    R. id.cancel_button_menu_item-> {
+                        if (isNewOrder){
+                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        return true
+                    }
+                    else -> return false
+                }
+            }
+
+        }, viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -82,13 +108,7 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
         }
 
         //navigation
-        binding.cancelBtn.setOnClickListener {
-            if (isNewOrder){
-                findNavController().popBackStack(R.id.viewPagerFragment, false)
-            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
 
-
-        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
