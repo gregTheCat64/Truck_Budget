@@ -34,6 +34,6 @@ interface TrucksDao {
         dbVehicle: DbTruck
     )
 
-    @Query("DELETE FROM trucks_table WHERE regNumber =:id")
-    suspend fun remove(id: Int)
+    @Query("DELETE FROM trucks_table WHERE id =:id")
+    suspend fun remove(id: Long)
 }

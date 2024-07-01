@@ -114,6 +114,7 @@ class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBindi
 //        viewLifecycleOwner.lifecycleScope.launch {
 //            companyId?.let { viewModel.updateCurrentCompany(it) }
 //        }
+        companyId?.let { viewModel.setCurrentCompanyId(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

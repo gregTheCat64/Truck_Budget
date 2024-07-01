@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/newCustomerFragment"
-        android:name="ru.javacat.ui.NewCustomerFragment"
+        android:name="ru.javacat.ui.NewCompanyFragment"
         tools:layout="@layout/fragment_new_customer"
         android:label="@string/create_new_partner" >
         <action

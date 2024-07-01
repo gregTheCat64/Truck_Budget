@@ -32,6 +32,6 @@ interface TruckDriversDao {
         staff: DbTruckDriver
     )
 
-    @Query("DELETE FROM truck_drivers_table WHERE passportNumber =:id")
-    suspend fun removeStaff(id: Int)
+    @Query("DELETE FROM truck_drivers_table WHERE id =:id")
+    suspend fun removeStaff(id: Long)
 }

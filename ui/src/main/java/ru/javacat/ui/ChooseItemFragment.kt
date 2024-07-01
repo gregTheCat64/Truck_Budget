@@ -74,6 +74,7 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
         val bundle = Bundle()
         bundle.putLong(FragConstants.COMPANY_ID, companyId)
         bundle.putString(FragConstants.TYPE_OF_TRANSPORT, requestedItem)
+        bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
 
         binding.newItemBtn.setText(getString(R.string.create_new_truck))
 
@@ -105,6 +106,7 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
         val bundle = Bundle()
         bundle.putLong(FragConstants.COMPANY_ID, companyId)
         bundle.putString(FragConstants.TYPE_OF_TRANSPORT, requestedItem)
+        bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
 
         binding.newItemBtn.text = getString(R.string.create_new_trailer)
 
@@ -137,10 +139,12 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
     private fun initDriversCase(companyId: Long){
         val bundle = Bundle()
         bundle.putLong(FragConstants.COMPANY_ID, companyId)
+        bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
 
         binding.newItemBtn.text = getString(R.string.create_new_truck_driver)
         binding.newItemBtn.setOnClickListener {
             this.dismiss()
+
             findNavController().navigate(R.id.newDriverFragment, bundle)
         }
         viewModel.getDriver(companyId)
@@ -169,7 +173,9 @@ class ChooseItemFragment : BottomSheetDialogFragment() {
         binding.newItemBtn.text = getString(R.string.create_new_partner)
         binding.newItemBtn.setOnClickListener {
             this.dismiss()
-            findNavController().navigate(R.id.newCustomerFragment)
+            val bundle = Bundle()
+            bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
+            findNavController().navigate(R.id.newCustomerFragment, bundle)
         }
         viewModel.getContractors()
         companiesAdapter = ChooseCompanyAdapter {

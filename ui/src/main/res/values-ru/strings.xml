@@ -116,4 +116,6 @@
     <string name="trucks">Тягачи</string>
     <string name="add_company">Добавить компанию</string>
     <string name="vehicles">Транспорт</string>
+    <string name="removed">Удалён</string>
+    <string name="created">Создан</string>
 </resources>

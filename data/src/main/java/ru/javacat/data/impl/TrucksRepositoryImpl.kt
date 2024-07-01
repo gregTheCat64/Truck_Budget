@@ -32,6 +32,10 @@ class TrucksRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id)?.toTruck() }
     }
 
+    override suspend fun removeById(id: Long) {
+        dbQuery { dao.remove(id) }
+    }
+
     override suspend fun search(s: String): List<Truck> {
         return dbQuery { dao.searchTrucks(s).map { it.toTruck() } }
     }
@@ -42,5 +46,9 @@ class TrucksRepositoryImpl @Inject constructor(
 
     override suspend fun setItem(t: Truck) {
         _chosenTruck.emit(t)
+    }
+
+    override suspend fun clearItem() {
+        _chosenTruck.emit(null)
     }
 }

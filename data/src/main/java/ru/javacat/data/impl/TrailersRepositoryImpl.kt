@@ -28,6 +28,10 @@ class TrailersRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id).toTrailer() }
     }
 
+    override suspend fun removeById(id: Long) {
+        dbQuery { dao.remove(id) }
+    }
+
     override suspend fun getByCompanyId(companyId: Long): List<Trailer>? {
         return dbQuery { dao.getByCompanyId(companyId)?.map { it.toTrailer() } }
     }
@@ -42,5 +46,9 @@ class TrailersRepositoryImpl @Inject constructor(
 
     override suspend fun setItem(t: Trailer) {
         _chosenTrailer.emit(t)
+    }
+
+    override suspend fun clearItem() {
+        _chosenTrailer.emit(null)
     }
 }

@@ -30,6 +30,10 @@ class TruckFleetViewPagerViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
+    private val _currentCompanyId = MutableStateFlow<Long?>(null)
+    var currentCompanyId: MutableStateFlow<Long?> = _currentCompanyId
+
+
     private val _drivers = MutableStateFlow<List<TruckDriver>?>(null)
     val drivers = _drivers.asStateFlow()
 
@@ -73,6 +77,13 @@ class TruckFleetViewPagerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             val result = trailersRepository.getByCompanyId(companyId)
             _trailers.emit(result)
+        }
+    }
+
+    fun setCurrentCompanyId(companyId: Long){
+        viewModelScope.launch(Dispatchers.IO){
+            Log.i("TruckFleetVpVm", "companyId: $companyId")
+            currentCompanyId.emit(companyId)
         }
     }
 }

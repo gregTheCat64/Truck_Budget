@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -139,6 +140,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         binding.calculateRouteBtn.setOnClickListener {
             if (getFieldsWithSalary()) {
+                binding.saveBtn.isGone = false
                 profit = calculateProfit()
                 moneyToPay = calculateMoneyToPay()
                 binding.profitTv.setText(profit.toString())

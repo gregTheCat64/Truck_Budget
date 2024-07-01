@@ -19,6 +19,9 @@ import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TrucksRepository
+import ru.javacat.domain.use_case.ClearTrailerUseCase
+import ru.javacat.domain.use_case.ClearTruckDriverUseCase
+import ru.javacat.domain.use_case.ClearTruckUseCase
 import ru.javacat.domain.use_case.GetCompaniesUseCase
 import ru.javacat.domain.use_case.GetTrailersByCompanyIdUseCase
 import ru.javacat.domain.use_case.GetTruckDriversByCompanyIdUseCase
@@ -39,7 +42,10 @@ class ChooseItemViewModel @Inject constructor(
     private val setCompanyUseCase: SetCompanyUseCase,
     private val setTruckDriverUseCase: SetTruckDriverUseCase,
     private val setTruckUseCase: SetTruckUseCase,
-    private val setTrailerUseCase: SetTrailerUseCase
+    private val setTrailerUseCase: SetTrailerUseCase,
+    private val clearTruckDriverUseCase: ClearTruckDriverUseCase,
+    private val clearTruckUseCase: ClearTruckUseCase,
+    private val clearTrailerUseCase: ClearTrailerUseCase
 ): ViewModel() {
 
     private val _loadState = MutableSharedFlow<LoadState>()
@@ -90,12 +96,16 @@ class ChooseItemViewModel @Inject constructor(
     fun setCompany(t: Company){
         viewModelScope.launch {
             setCompanyUseCase.invoke(t)
+            clearTruckUseCase.invoke()
+            clearTrailerUseCase.invoke()
+            clearTruckDriverUseCase.invoke()
         }
     }
 
     fun setTruck(t: Truck){
         viewModelScope.launch {
             setTruckUseCase.invoke(t)
+
         }
     }
 

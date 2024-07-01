@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:orientation="vertical">
 
 
@@ -18,15 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="Рассчет" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp">
+       >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/prepayEditText"
@@ -39,8 +38,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginTop="8dp"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/otherExpenses"
@@ -68,7 +67,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -82,7 +81,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -121,7 +120,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -136,7 +134,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -153,10 +151,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/calculateSalaryBtn"
-        style="@style/Widget.Material3.Button.TextButton"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
         android:text="Рассчитать зарплату" />
 
     <TextView
@@ -165,7 +164,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="5000 руб."
         android:visibility="gone" />
 
@@ -173,7 +172,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp">
+           >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/salaryEditText"
@@ -209,17 +208,18 @@
             android:text="@string/add_500"
             />
 
+
+
+    </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/calculateRouteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:text="Принять"
+            android:layout_gravity="center"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:text="Рассчитать доход"
             />
-
-    </LinearLayout>
-
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -228,6 +228,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal">
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -295,7 +296,8 @@
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить"
+        android:text="@string/save"
+        android:visibility="gone"
         android:layout_gravity="end"
         android:layout_margin="16dp"
         />

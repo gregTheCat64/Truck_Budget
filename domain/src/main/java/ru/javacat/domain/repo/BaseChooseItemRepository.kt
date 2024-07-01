@@ -10,10 +10,14 @@ interface BaseChooseItemRepository<T: Any,S : Any, Id: Any> {
 
     suspend fun getById(id: Id): T?
 
+    suspend fun removeById(id: Id)
+
     suspend fun search(s: S): List<T>
 
     suspend fun insert(t: T)
 
     suspend fun setItem(t: T)
+
+    suspend fun clearItem()
 
 }

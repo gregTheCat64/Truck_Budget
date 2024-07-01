@@ -8,6 +8,10 @@ sealed interface LoadState {
         object GoForward: Success
 
         object GoBack: Success
+
+        object Removed: Success
+
+        object Created: Success
     }
 
     object Idle: LoadState

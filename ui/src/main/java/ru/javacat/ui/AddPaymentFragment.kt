@@ -32,7 +32,6 @@ import ru.javacat.ui.view_models.AddPaymentViewModel
 @AndroidEntryPoint
 class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddPaymentBinding
         get() = { inflater, container ->
             FragmentAddPaymentBinding.inflate(inflater, container, false)

@@ -22,6 +22,10 @@ class CargoRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun clearItem() {
+
+    }
+
     override suspend fun getAll(): List<CargoName> {
         return dbQuery { dao.getCargos().map { it.toCargoModel() } }
     }
@@ -38,5 +42,9 @@ class CargoRepositoryImpl @Inject constructor(
 
     override suspend fun getById(id: Long): CargoName {
         return dbQuery { dao.getCargoById(id).toCargoModel() }
+    }
+
+    override suspend fun removeById(id: Long) {
+        TODO("Not yet implemented")
     }
 }

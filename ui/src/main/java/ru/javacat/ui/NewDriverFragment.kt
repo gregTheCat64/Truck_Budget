@@ -28,13 +28,25 @@ import ru.javacat.ui.view_models.NewDriverViewModel
 @AndroidEntryPoint
 class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: NewDriverViewModel by viewModels()
+
+    private var isNeedToSet: Boolean = false
+    private var truckDriverId: Long? = null
+    private var companyId: Long = -1L
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
         get() = { inflater, container ->
             FragmentNewDriverBinding.inflate(inflater, container, false)
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?:false
+        truckDriverId = args?.getLong(FragConstants.DRIVER_ID)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,24 +57,24 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_cancel, menu)
+                menuInflater.inflate(R.menu.menu_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.cancel_button_menu_item -> {
-                        //TODO добавить диалог!
-
+                    android.R.id.home -> {
                         findNavController().navigateUp()
                         return true
                     }
-                    android.R.id.home -> {
-
+                    R.id.remove_menu_item -> {
+                        truckDriverId?.let { removeDriver(it) }
                         return true
                     }
+
                     else ->  return false
                 }
             }
@@ -74,10 +86,6 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = arguments
-        val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
-
-        val truckDriverId = args?.getLong(FragConstants.DRIVER_ID)
 
         Log.i("NewDriverFrag", "companyId: $companyId")
         Log.i("NewDriverFrag", "driverId: $truckDriverId")
@@ -85,7 +93,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 if (truckDriverId != null) {
-                    viewModel.getTruckDriverById(truckDriverId)
+                    viewModel.getTruckDriverById(truckDriverId!!)
                 }
             }
         }
@@ -129,8 +137,8 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 if (surname.isNotEmpty()){
-                    viewModel.insertNewDriver(newDriver)
-                } else Toast.makeText(requireContext(), "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
+                    viewModel.insertNewDriver(newDriver, isNeedToSet)
+                } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -138,9 +146,18 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it == LoadState.Success.GoBack){
-                        findNavController().navigateUp()
-                        //findNavController().navigate(R.id.truckDriversListFragment)
+
+                    when (it) {
+                        is LoadState.Success.Created -> {
+                            findNavController().navigateUp()
+                            Toast.makeText(requireContext(),
+                                getString(R.string.created), Toast.LENGTH_SHORT).show()
+                        }
+                        is LoadState.Success.Removed -> {
+                            findNavController().navigateUp()
+                            Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {}
                     }
                 }
             }
@@ -163,6 +180,13 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
             phoneNumber.setText(truckDriver.phoneNumber)
             phoneNumber2.setText(truckDriver.secondNumber)
 
+        }
+    }
+
+    private fun removeDriver(id: Long){
+        Log.i("NewDriverFrag", "driverId: $id")
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.removeDriverById(id)
         }
     }
 }

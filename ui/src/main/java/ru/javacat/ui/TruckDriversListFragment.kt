@@ -29,7 +29,7 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
     private val viewModel: TruckFleetViewPagerViewModel by activityViewModels()
     private lateinit var truckDriversAdapter: TruckDriversAdapter
 
-    var companyId: Long? = -1
+    var companyId: Long = -1
 
     private var currentRoute : Route? = null
 
@@ -61,6 +61,19 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
                 viewModel.drivers.collectLatest {
                     truckDriversAdapter.submitList(it)
                 }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentCompanyId.collectLatest {
+                companyId = it?:-1L
+                Log.i("TruckDriverListFrag ", "companyIdInDriversList: $it")
+            }
+        }
+
+        binding.addDriverBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.COMPANY_ID, companyId)
+            findNavController().navigate(R.id.newDriverFragment, bundle)
         }
     }
 

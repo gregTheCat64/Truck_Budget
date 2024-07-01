@@ -28,8 +28,6 @@ import ru.javacat.ui.view_models.NewRouteViewModel
 @AndroidEntryPoint
 class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
-
     private val viewModel: NewRouteViewModel by viewModels()
     private val bundle = Bundle()
     private var isLastRouteLoaded = false
@@ -171,7 +169,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     private fun saveRoute(){
         binding.prepayEditText.let {
             if (it.text.isNullOrEmpty()){
-                Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
                 return
             } else {
                 val prepay = it.text.toString().toInt()

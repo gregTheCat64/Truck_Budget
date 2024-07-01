@@ -24,6 +24,10 @@ class TruckDriversRepositoryImpl @Inject constructor(
         _chosenDriver.emit(t)
     }
 
+    override suspend fun clearItem() {
+        _chosenDriver.emit(null)
+    }
+
     override suspend fun getAll(): List<TruckDriver> {
         return dbQuery {dao.getAll().map { it.toTruckDriverModel() }  }
     }
@@ -42,5 +46,9 @@ class TruckDriversRepositoryImpl @Inject constructor(
 
     override suspend fun insert(t: TruckDriver) {
         dbQuery { dao.insert(t.toDb()) }
+    }
+
+    override suspend fun removeById(id: Long) {
+        dbQuery { dao.removeStaff(id) }
     }
 }

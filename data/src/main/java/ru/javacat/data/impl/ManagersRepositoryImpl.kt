@@ -38,6 +38,10 @@ class ManagersRepositoryImpl @Inject constructor(
         _chosenManager.emit(t)
     }
 
+    override suspend fun clearItem() {
+        _chosenManager.emit(null)
+    }
+
     override suspend fun getManagersByCustomerId(customerId: Long): List<Manager> {
         val result = dbQuery {
             dao.getManagersByCustomerId(customerId).map {
@@ -48,5 +52,9 @@ class ManagersRepositoryImpl @Inject constructor(
 
     override suspend fun getById(id: Long): Manager {
         return dbQuery { dao.getById(id).toManagerModel() }
+    }
+
+    override suspend fun removeById(id: Long) {
+        TODO("Not yet implemented")
     }
 }

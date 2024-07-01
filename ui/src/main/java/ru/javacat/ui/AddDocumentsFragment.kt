@@ -19,7 +19,6 @@ import ru.javacat.ui.view_models.AddDocumentsViewModel
 @AndroidEntryPoint
 class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddDocumentsBinding
         get() = {inflater, container->
             FragmentAddDocumentsBinding.inflate(inflater, container, false)

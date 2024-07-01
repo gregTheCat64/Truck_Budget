@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,8 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
     private val viewModel: TruckFleetViewPagerViewModel by activityViewModels()
     private lateinit var trailersAdapter: TrailersAdapter
 
-    override var bottomNavViewVisibility: Int = View.GONE
+    var companyId: Long = -1
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentTrailersListBinding
         get() = { inflater, container ->
             FragmentTrailersListBinding.inflate(inflater, container, false)
@@ -51,6 +53,19 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
                     trailersAdapter.submitList(it)
                 }
             }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentCompanyId.collectLatest {
+                companyId = it?:-1L
+                Log.i("TruckListFrag ", "companyIdInTrailerList: $it")
+            }
+        }
+
+        binding.addTrailerBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRAILER")
+            bundle.putLong(FragConstants.COMPANY_ID, companyId)
         }
     }
 }

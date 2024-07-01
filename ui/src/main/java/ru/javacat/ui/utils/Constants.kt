@@ -24,6 +24,7 @@ object FragConstants{
 
     const val EDITING_ORDER = "EDITING_ORDER"
     const val IS_NEW_ORDER = "IS_NEW_ORDER"
+    const val IS_NEED_TO_SET = "IS_NEED_TO_SET"
 
     const val FILTER_ORDER = "FILTER_ORDER"
     const val FILTER_MONTH = "FILTER_MONTH"

@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
@@ -29,9 +30,11 @@ import ru.javacat.ui.view_models.NewTransportViewModel
 @AndroidEntryPoint
 class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
-
     private val viewModel: NewTransportViewModel by viewModels()
+    private var typeOfTransport = ""
+    private var transportId: Long = 0
+    private var isNeedToSet: Boolean = false
+    private var companyId: Long = -1L
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewTransportBinding
         get() = {inflater, container->
             FragmentNewTransportBinding.inflate(inflater, container, false)
@@ -43,22 +46,23 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_cancel, menu)
+                menuInflater.inflate(R.menu.menu_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.cancel_button_menu_item -> {
-                        //TODO добавить диалог!
-
+                    R.id.remove_menu_item -> {
+                        removeTransport(typeOfTransport, transportId)
                         findNavController().navigateUp()
                         return true
                     }
                     android.R.id.home -> {
-
+                        findNavController().navigateUp()
                         return true
                     }
                     else ->  return false
@@ -69,22 +73,26 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
+        val args = arguments
+        companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
+        typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT)?:"unknown"
+        transportId = args?.getLong(FragConstants.TRANSPORT_ID)?:0
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?:false
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = arguments
-        val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
-        val typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT)?:"unknown"
-        val transportId = args?.getLong(FragConstants.TRANSPORT_ID)?:0
 
         when (typeOfTransport){
             "TRUCK" -> {
                 viewLifecycleOwner.lifecycleScope.launch {
                     repeatOnLifecycle(Lifecycle.State.STARTED){
                         Log.i("newtransportFrag","gettin truck by transportId: $transportId")
-                        viewModel.getTruckById(transportId)
+                        viewModel.getTruckById(transportId!!)
 
                         binding.typeOfTransportLayout.visibility = View.GONE
                         binding.typeOfTransportChipGroup.visibility = View.GONE
@@ -141,8 +149,21 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED){
                     viewModel.loadState.collectLatest {
-                        if (it== LoadState.Success.GoBack){
-                            findNavController().navigateUp()
+                        when (it) {
+                            is LoadState.Success.GoBack -> {
+                                findNavController().navigateUp()
+                            }
+                            is LoadState.Success.Created -> {
+                                Toast.makeText(requireContext(), getString(R.string.created), Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
+                            }
+                            is LoadState.Success.Removed -> {
+                                Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
+                                findNavController().navigateUp()
+                            }
+                            else -> {
+                                Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -154,7 +175,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                         transportId, companyId, regNumber,regionCode, vin,model, year
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.insertNewTruck(newVehicle)
+                        viewModel.insertNewTruck(newVehicle, isNeedToSet)
                     }
 
                 }
@@ -163,7 +184,7 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
                         transportId, companyId, regNumber,regionCode, vin,model, year, type
                     )
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.insertNewTrailer(newVehicle)
+                        viewModel.insertNewTrailer(newVehicle, isNeedToSet)
                     }
                 }
             }
@@ -180,6 +201,21 @@ class NewTransportFragment: BaseFragment<FragmentNewTransportBinding>() {
             vin.setText(transport.vin.toString())
             modelOfVehicle.setText(transport.model.toString())
             yearOfManufacturing.setText(transport.yearOfManufacturing.toString())
+        }
+    }
+
+    private fun removeTransport(typeOfTransport: String, id: Long){
+        when (typeOfTransport) {
+            "TRUCK" -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.removeTruckById(id)
+                }
+            }
+            "TRAILER" -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.removeTrailerById(id)
+                }
+            }
         }
     }
 }

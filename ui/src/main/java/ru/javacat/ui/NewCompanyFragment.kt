@@ -24,15 +24,15 @@ import ru.javacat.domain.models.Company
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.NewCustomerViewModel
+import ru.javacat.ui.view_models.NewCompanyViewModel
 
 @AndroidEntryPoint
-class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
+class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
     private var customerId: Long? = null
+    private var isNeedToSet: Boolean = false
 
-    private val viewModel: NewCustomerViewModel by viewModels()
+    private val viewModel: NewCompanyViewModel by viewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewCustomerBinding
         get() = { inflater, container ->
@@ -50,6 +50,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?:false
     }
 
     override fun onCreateView(
@@ -72,11 +73,11 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
                         return true
                     }
                     R.id.save -> {
-                        getFieldsData()
-                        if (getFieldsData()){
-                            saveCustomer(customerId?:0L)
-                            //findNavController().navigateUp()
-                        }
+//                        getFieldsData()
+//                        if (getFieldsData()){
+//                            saveCustomer(customerId?:0L)
+//                            //findNavController().navigateUp()
+//                        }
                         return true
                     }
                     else -> return false
@@ -214,8 +215,7 @@ class NewCustomerFragment:BaseFragment<FragmentNewCustomerBinding>() {
                 id, companyName, atiNumber, emptyList(), telNumber, formalAddress, postAddress, shortName
             )
             AndroidUtils.hideKeyboard(requireView())
-            viewModel.saveNewCustomer(newCustomer)
-
+            viewModel.saveNewCustomer(newCustomer, isNeedToSet)
     }
 
     private fun formatName(str: String): String {

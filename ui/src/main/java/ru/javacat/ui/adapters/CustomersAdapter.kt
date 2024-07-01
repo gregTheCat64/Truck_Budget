@@ -3,6 +3,7 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class CustomersAdapter(
                 item.atiNumber?.let {
                     atiNumber.text = it.toString()
                 }
+                homeCompanySign.isGone = item.id != -1L
                 root.setOnClickListener {
                     onCustomerListener.onCustomer(item)
                 }

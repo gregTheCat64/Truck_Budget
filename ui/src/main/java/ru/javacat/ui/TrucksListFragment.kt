@@ -28,17 +28,13 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
     private val viewModel: TruckFleetViewPagerViewModel by activityViewModels()
     private lateinit var trucksAdapter: TrucksAdapter
 
-    override var bottomNavViewVisibility: Int = View.GONE
+    var companyId: Long = -1
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentTrucksListBinding
         get() = {inflater, container ->
             FragmentTrucksListBinding.inflate(inflater, container, false)
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,12 +57,17 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentCompanyId.collectLatest {
+                companyId = it?:-1L
+                Log.i("TruckListFrag ", "companyIdInTruckList: $it")
+            }
+        }
+
         binding.addTruckBtn.setOnClickListener {
-//            val bundle = Bundle()
-//            bundle.putLong(FragConstants.COMPANY_ID, compa)
-//            bundle.putLong(FragConstants.TRANSPORT_ID, 0)
-//            bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
-//            findNavController().navigate(R.id.newTransportFragment, bundle)
+            val bundle = Bundle()
+            bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
+            bundle.putLong(FragConstants.COMPANY_ID, companyId)
         }
 
     }

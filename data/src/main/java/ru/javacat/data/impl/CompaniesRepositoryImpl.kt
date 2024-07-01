@@ -36,6 +36,10 @@ class CompaniesRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id)?.toCompanyModel()}
     }
 
+    override suspend fun removeById(id: Long) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun search(s: String): List<Company> {
         return dbQuery { dao.searchCustomers(s).map { it.toCompanyModel() } }
     }
@@ -48,4 +52,7 @@ class CompaniesRepositoryImpl @Inject constructor(
         _chosenCustomer.emit(t)
     }
 
+    override suspend fun clearItem() {
+        _chosenCustomer.emit(null)
+    }
 }
