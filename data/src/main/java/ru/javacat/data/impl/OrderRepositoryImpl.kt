@@ -98,6 +98,10 @@ class OrderRepositoryImpl @Inject constructor(
         return result
     }
 
+    override suspend fun updateOrder(order: Order) {
+        dbQuery { ordersDao.updateOrder(order.toDb()) }
+    }
+
     override suspend fun getById(orderId: Long): Order {
         val order = dbQuery { ordersDao.getByOrderId(orderId) }
         return order.toOrderModel()

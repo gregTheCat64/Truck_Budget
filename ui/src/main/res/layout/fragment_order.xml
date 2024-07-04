@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical">
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:padding="18dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/editCustomerTv"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="8dp"
+                android:text="@string/customer" />
+
+
+            <TextView
+                android:id="@+id/customerTv"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="ООО Монополия"
+
+                />
+
+            <TextView
+                android:id="@+id/managerLabelTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/manager" />
+
+            <TextView
+                android:id="@+id/managerTv"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Екатерина Монопольная"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/callBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                app:icon="@drawable/baseline_local_phone_24"
+                android:text="Позвонить контакту"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <include layout="@layout/horizon_line" />
+
+
+            <TextView
+                android:id="@+id/editCargoTv"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="8dp"
+                android:text="@string/cargo" />
+
+
+            <TextView
+                android:id="@+id/cargoTv"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="20 т, 82 м3, Техника" />
+
+            <TextView
+                android:id="@+id/cargoExtraTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Зад/бок, палеты" />
+
+
+            <include layout="@layout/horizon_line"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/editPointsTv"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="8dp"
+                android:text="@string/route"
+                />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pointsRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                tools:itemCount="2"
+                tools:listitem="@layout/point_item_oneline" />
+
+
+            <include layout="@layout/horizon_line" />
+
+
+            <TextView
+                android:id="@+id/editPaymentTv"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+
+                android:layout_marginTop="8dp"
+                android:text="@string/payment" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="@string/cost" />
+
+                <TextView
+                    android:id="@+id/priceTv"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="85000 руб" />
+                <TextView
+                    android:id="@+id/priceExtraTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="без НДС, 7 б.дней"
+                    />
+
+
+
+            <LinearLayout
+                android:id="@+id/contractorsPriceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/contractor_s_cost" />
+
+                <TextView
+                    android:id="@+id/contractorsPrice"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp" />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/payDayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="@string/payment_date" />
+
+            <TextView
+                android:id="@+id/payDayValueTv"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/push_to_add" />
+
+            <TextView
+                android:id="@+id/payStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="@string/payment_status" />
+
+
+            <TextView
+                android:id="@+id/paidStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:text="@string/paid" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/paidBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="Отметить как оплаченный"
+                app:icon = "@drawable/baseline_money_24"
+                />
+
+            <include layout="@layout/horizon_line" />
+
+            <TextView
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+
+                android:layout_marginTop="8dp"
+                android:text="@string/documents" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="@string/sending_documents_track_number" />
+
+
+            <TextView
+                android:id="@+id/docsNumber"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/push_to_add" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="@string/receiving_date" />
+
+            <TextView
+                android:id="@+id/docsReceivedDateTvValue"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/push_to_add" />
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

@@ -63,7 +63,7 @@ class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
                         return true
                     }
 
-                    R.id.edit -> {
+                    R.id.edit_menu_item -> {
                         Log.i("HomeFrag", "customerId =  $customerId")
                         val bundle = Bundle()
                         if (customerId != null) {

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -83,7 +82,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
                 bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                 //bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-                findNavController().navigate(R.id.orderDetailsFragment,bundle)
+                findNavController().navigate(R.id.editOrderFragment,bundle)
             }
         }
         binding.ordersList.adapter = adapter

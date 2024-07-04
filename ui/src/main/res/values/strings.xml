@@ -121,4 +121,8 @@
     <string name="vehicles">Vehicles</string>
     <string name="removed">Removed</string>
     <string name="created">Created</string>
+    <string name="paid_order">Paid</string>
+    <string name="unpaid_order">Unpaid</string>
+    <string name="mark_as_unpaid">Mark as unpaid</string>
+    <string name="mark_as_paid">Mark as paid</string>
 </resources>

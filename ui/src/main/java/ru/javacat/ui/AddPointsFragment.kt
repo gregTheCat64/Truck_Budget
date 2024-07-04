@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -76,7 +75,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
                     R. id.cancel_button_menu_item-> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
-                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        } else findNavController().popBackStack(R.id.editOrderFragment, false)
                         return true
                     }
                     else -> return false
@@ -117,7 +116,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
         binding.okBtn.setOnClickListener {
             if (isNewOrder){
                 findNavController().navigate(R.id.addPaymentFragment)
-            } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+            } else findNavController().popBackStack(R.id.editOrderFragment, false)
 
         }
 

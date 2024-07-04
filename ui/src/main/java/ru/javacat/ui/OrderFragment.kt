@@ -23,58 +23,41 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Order
-import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.OneLinePointAdapter
-import ru.javacat.ui.databinding.FragmentOrderDetailsBinding
+import ru.javacat.ui.databinding.FragmentOrderBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import ru.javacat.ui.view_models.OrderViewModel
-
-
+import java.lang.StringBuilder
 
 @AndroidEntryPoint
-class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
-
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderDetailsBinding
-        get() = { inflater, container ->
-            FragmentOrderDetailsBinding.inflate(inflater, container, false)
+class OrderFragment: BaseFragment<FragmentOrderBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderBinding
+        get() = {inflater, container ->
+            FragmentOrderBinding.inflate(inflater, container, false)
         }
 
     private val viewModel: OrderViewModel by viewModels()
     private lateinit var pointsAdapter: OneLinePointAdapter
 
-    private var currentOrder: Order? = null
-    private var currentRoute: Route? = null
-
-    //private var routeIdArg: Long? = null
     private var orderIdArg: Long? = null
+    private var isNewOrder: Boolean? = false
+    private var isPaid: Boolean = false
 
-    private var isEditingOrderArg: Boolean? = false
-
-    private val bundle = Bundle()
-
-    private var isOrderUpdated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isEditingOrderArg = arguments?.getBoolean(FragConstants.EDITING_ORDER, false)
         orderIdArg = arguments?.getLong(FragConstants.ORDER_ID)
-        //routeId = arguments?.getLong(FragConstants.ROUTE_ID)
-
-        Log.i("OrderFrag", "orderId: $orderIdArg")
-        //Log.i("OrderFrag", "routeId: $routeId")
+        isNewOrder = arguments?.getBoolean(FragConstants.IS_NEW_ORDER, false)
 
         setFragmentResultListener(FragConstants.NEW_VALUE) {_, bundle ->
-            val price = bundle.getString(FragConstants.PRICE)
-            val daysToPay = bundle.getString(FragConstants.DAYS_TO_PAY)
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
-
-            if (price != null) viewModel.editOrder(price = price.toInt())
-            if (daysToPay != null) viewModel.editOrder(daysToPay = daysToPay.toInt())
-            if (docsNumber != null) viewModel.editOrder(sentDocsNumber = docsNumber)
+            docsNumber?.let {
+                viewModel.updateOrder(sentDocsNumber = it)
+                binding.docsNumber.text = it
+            }
         }
     }
 
@@ -83,295 +66,153 @@ class OrderFragment : BaseFragment<FragmentOrderDetailsBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        Log.i("OrderFrag", "isCreateOrderArg: $isEditingOrderArg")
-
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_cancel, menu)
+                menuInflater.inflate(R.menu.menu_edit_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
-                        findNavController().navigateUp()
+                        if (isNewOrder == true){
+                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                        } else {
+                            findNavController().navigateUp()
+                        }
                         return true
                     }
-                    R.id.cancel_button_menu_item -> {
-                        viewModel.clearOrder()
-                        //findNavController().navigateUp()
-                        if (isEditingOrderArg == true){
-                            findNavController().navigateUp()
-                        } else findNavController().popBackStack(R.id.viewPagerFragment, false)
+                    R.id.edit_menu_item -> {
+                        val bundle = Bundle()
+                        bundle.putLong(FragConstants.ORDER_ID, orderIdArg?:0)
+                        findNavController().navigate(R.id.editOrderFragment, bundle)
+
+                        return true
+                    }
+                    R.id.remove_menu_item -> {
                         return true
                     }
                     else -> return false
                 }
             }
         }, viewLifecycleOwner)
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //обнвляем Заявку если аргумент не тру и заявка еще не восстановлена(режим редактирования)
-        viewLifecycleOwner.lifecycleScope.launch{
+
+        orderIdArg?.let { viewModel.getOrderById(it) }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                if (isEditingOrderArg == true && !isOrderUpdated) {
-                    Log.i("OrderFrag", "restoring Order")
-                    viewModel.restoringOrder(orderIdArg!!)
-                    isOrderUpdated = true
+                viewModel.editedOrder.collectLatest {
+                    it?.let { initUi(it) }
                 }
             }
         }
 
-        //обновление  UI
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editedOrder.collectLatest { order ->
-                    if (order != null) {
-                        initUi(order)
-                        currentOrder = order
-                        //в режиме редактирования восстанавливаем Рейс во флоу
-                        if (isEditingOrderArg == true) {
-                            viewModel.restoringRoute(order.routeId)
-                        }
-                    }
-                    Log.i("OrderFrag", "currentOrder: $order")
-                }
+            viewModel.loadState.collectLatest {
+                binding.progressBar.isVisible = it == LoadState.Loading
             }
-        }
-
-        //кнопка сохранить появляется если заявка изменена
-        viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    viewModel.isOrderEdited.collectLatest {
-                        Log.i("orderFrag", " $it")
-                        binding.saveBtn.isGone = !it
-                    }
-                }
-        }
-
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editedRoute.collectLatest { route ->
-                    Log.i("OrderFrag", "currentRoute: $route")
-                    currentRoute = route
-                }
-            }
-        }
-
-        initPointAdapter()
-
-        paidCheck()
-        //documentsCheckBoxListener()
-
-        //viewModel.setOrderFlag(false)
-
-        binding.editCustomerTv.setOnClickListener {
-            changingCustomer()
-        }
-
-        binding.editCargoTv.setOnClickListener {
-            changingCargo()
-        }
-
-
-        binding.editPointsTv.setOnClickListener {
-            changingPoints()
-        }
-
-        binding.editPaymentTv.setOnClickListener {
-            //changingPayment()
-        }
-
-        binding.priceTv.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(currentOrder?.price.toString(), FragConstants.PRICE)
-        }
-
-        binding.daysToPayTv.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(
-                currentOrder?.daysToPay?.toString() ?:"",
-                FragConstants.DAYS_TO_PAY)
         }
 
         binding.docsNumber.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(currentOrder?.sentDocsNumber?:"", FragConstants.DOCS_NUMBER)
+            parentFragmentManager.showOneInputDialog("", FragConstants.DOCS_NUMBER)
         }
 
         binding.docsReceivedDateTvValue.setOnClickListener {
-            parentFragmentManager.showCalendar { date->
-                viewModel.editOrder(docsReceived = date)
+            parentFragmentManager.showCalendar { date ->
+                viewModel.updateOrder(docsReceived = date)
+                binding.docsReceivedDateTvValue.text = date.asDayAndMonthFully()
             }
         }
 
         binding.payDayValueTv.setOnClickListener {
-            parentFragmentManager.showCalendar { date->
-                viewModel.editOrder(paymentDeadline = date)
+            parentFragmentManager.showCalendar {date->
+                viewModel.updateOrder(paymentDeadline = date)
+                binding.payDayValueTv.text = date.asDayAndMonthFully()
             }
         }
 
-
-        //Сохранение заявки
-        binding.saveBtn.setOnClickListener {
-            saveOrder()
-        }
-
-
-
-        //Навигация
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadState.collectLatest {
-                Log.i("OrderFrag", "state: $it")
-                if (it == LoadState.Success.GoBack) {
-                    //сохранились, идем назад:
-                    if (isEditingOrderArg == true){
-                        Log.i("OrderFrag", "isEditing: $isEditingOrderArg")
-                        findNavController().navigateUp()
-                    } else findNavController().popBackStack(R.id.viewPagerFragment, false)
-                }
+        binding.paidBtn.setOnClickListener {
+            if (isPaid) {
+                viewModel.updateOrder(isPaid = false)
+                setUnpaidUi()
+            } else {
+                viewModel.updateOrder(isPaid = true)
+                setPaidUi()
             }
+            isPaid = !isPaid
         }
+
     }
 
     private fun initUi(order: Order){
-            val title = if (order.id == 0L) {
-                "Новая заявка"
-            } else {
-                "Заявка № ${order.id}"
-            }
-            //binding.orderTitle.text = title
-            (activity as AppCompatActivity).supportActionBar?.title = title
-            currentOrder = order
+        isPaid = order.isPaidByCustomer
 
-            order.daysToPay?.let {
-                val value = "$it дней"
-                binding.daysToPayTv.text = value
-            }
+        val title = if (order.id == 0L) {
+            "Новая заявка"
+        } else {
+            "Заявка № ${order.id}"
+        }
+        val typeOfUpload = StringBuilder()
+        when  {
+            order.cargo?.isBackLoad == true -> typeOfUpload.append("Зад")
+            order.cargo?.isSideLoad == true -> typeOfUpload.append("/бок")
+            order.cargo?.isTopLoad == true -> typeOfUpload.append("/верх")
+        }
 
-            order.price.let {
-                val value = "$it руб."
-                binding.priceTv.text = value
-            }
+       //TODO добавить в груз - способ погрузки - палеты, валом и тд
+        //TODO добавить способ оплаты - нал безнал ндс
 
-            order.cargo?.cargoVolume.let {
-                val value = "$it м3"
-                binding.tvVolume.text = value
-            }
+        (activity as AppCompatActivity).supportActionBar?.title = title
 
-            order.cargo?.cargoWeight.let {
-                val value = "$it т"
-                binding.weightTv.text = value
-            }
+        binding.apply {
+            callBtn.isGone = order.manager == null
+            managerLabelTv.isGone = order.manager == null
+            managerTv.isGone = order.manager == null
+
+            customerTv.text = order.customer?.nameToShow
+            managerTv.text = order.manager?.nameToShow
+            cargoTv.text =
+                "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
+            cargoExtraTv.text = "$typeOfUpload "
+            priceTv.text = "${order.price} руб."
+            priceExtraTv.text = "без НДС, ${order.daysToPay} б.дней"
 
             order.sentDocsNumber?.let {
-                binding.docsNumber.text = it
-            }
-            order.customer.let {
-                binding.customerTv.text = it?.nameToShow
-            }
-
-            order.manager.let {
-                binding.managerTv.text = it?.nameToShow
-            }
-
-            order.cargo?.cargoName.let {
-                binding.cargoTv.text = it
+                docsNumber.text = it
             }
             order.docsReceived?.let {
-                binding.docsReceivedDateTvValue.text = it.asDayAndMonthFully()
+                docsReceivedDateTvValue.text = it.asDayAndMonthFully()
             }
             order.paymentDeadline?.let {
-                binding.payDayValueTv.text = it.asDayAndMonthFully()
+                payDayValueTv.text = it.asDayAndMonthFully()
             }
 
-            if (order.contractorPrice!= null){
-                binding.contractorsPriceLayout.isVisible = true
-                order.contractorPrice?.let {
-                    val value = "$it руб."
-                    binding.contractorsPrice.text = value
-                }
-
-            }
-
-            val loadList = StringBuilder()
-
-            if (order.cargo?.isBackLoad == true) loadList.append("Зад")
-            if (order.cargo?.isSideLoad == true) loadList.append("/Бок")
-            if (order.cargo?.isTopLoad == true) loadList.append("/Верх")
-
-            binding.loadTypeTv.setText(loadList.toString())
-
-            pointsAdapter.submitList(order.points)
-
-            binding.payStatusCheck.isChecked = order.isPaidByCustomer
-
-    }
-
-    private fun saveOrder() {
-        val routeId = currentRoute?.id?:0
-
-        val id = currentOrder?.id?:0
-            //currentOrder.id.ifEmpty { "R$routeId" + "/" + (currentRoute.orderList.size + 1).toString() }
-
-        val routeTruck = currentOrder?.truck?:currentRoute?.contractor?.truck
-
-        val routeTrailer = currentOrder?.trailer?:currentRoute?.contractor?.trailer
-
-        val routeDriver = currentOrder?.driver?:currentRoute?.contractor?.driver
-
-
-        val newOrder = viewModel.editedOrder.value?.copy(
-            id,
-            routeId = routeId,
-            driver = routeDriver,
-            truck = routeTruck,
-            trailer = routeTrailer
-        )
-        if (newOrder != null) {
-            viewModel.saveOrder(newOrder)
+            if (order.isPaidByCustomer) {
+                setPaidUi()
+            } else  setUnpaidUi()
         }
-    }
 
-
-    private fun initPointAdapter() {
+        //adapter
         pointsAdapter = OneLinePointAdapter()
         binding.pointsRecView.adapter = pointsAdapter
+        pointsAdapter.submitList(order.points)
     }
 
-    private fun changingCustomer() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addCustomerFragment, bundle)
+    private fun setPaidUi(){
+        binding.paidBtn.text = getString(R.string.mark_as_unpaid)
+        binding.paidStatusTv.text = getString(R.string.paid_order)
     }
 
-    private fun changingCargo() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addCargoFragment, bundle)
+    private fun setUnpaidUi(){
+        binding.paidBtn.text = getString(R.string.mark_as_paid)
+        binding.paidStatusTv.text = getString(R.string.unpaid_order)
     }
-
-    private fun changingPoints() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addPointsFragment, bundle)
-    }
-
-    private fun changingPayment() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addPaymentFragment, bundle)
-    }
-
-    private fun paidCheck() {
-        binding.payStatusCheck.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.editOrder(isPaid = isChecked)
-        }
-    }
-
-
-
 }

@@ -118,4 +118,8 @@
     <string name="vehicles">Транспорт</string>
     <string name="removed">Удалён</string>
     <string name="created">Создан</string>
+    <string name="paid_order">Оплачен</string>
+    <string name="unpaid_order">Неоплачен</string>
+    <string name="mark_as_unpaid">Отметить как неоплаченный</string>
+    <string name="mark_as_paid">Отметить как оплаченный</string>
 </resources>

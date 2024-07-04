@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit"
+        android:id="@+id/edit_menu_item"
         android:icon="@drawable/baseline_edit_24"
         android:title="@string/edit"
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/remove"
+        android:id="@+id/remove_menu_item"
         android:icon="@drawable/baseline_delete_outline_24"
         app:showAsAction="withText"
         android:title="@string/remove" />

@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Order
-import ru.javacat.ui.adapters.CargoAdapter
+import ru.javacat.ui.adapters.CargoChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.view_models.AddCargoViewModel
@@ -39,7 +39,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
         }
 
     private val viewModel: AddCargoViewModel by viewModels()
-    private lateinit var cargoAdapter: CargoAdapter
+    private lateinit var cargoAdapter: CargoChipAdapter
     private var cargosFound: Boolean = false
     private var cargoList:List<CargoName> = emptyList()
 
@@ -80,7 +80,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
                     R. id.cancel_button_menu_item-> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
-                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        } else findNavController().popBackStack(R.id.editOrderFragment, false)
                         return true
                     }
                     else -> return false
@@ -154,7 +154,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     private fun initAdapter() {
         viewModel.getCargos()
 
-        cargoAdapter = CargoAdapter {
+        cargoAdapter = CargoChipAdapter {
             binding.cargoEditText.setText(it.nameToShow)
             binding.cargoRecView.isGone = true
         }

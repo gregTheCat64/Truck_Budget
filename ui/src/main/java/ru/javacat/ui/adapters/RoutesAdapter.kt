@@ -2,6 +2,7 @@ package ru.javacat.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.RouteItemBinding
@@ -23,7 +24,7 @@ class RoutesAdapter(
             it.customer?.shortName
         }
 
-        binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate}"
+        binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthShortly()}"
 
         item.profit?.let {
             binding.earnedMoneyTextView.text = it.toString() + " р."

@@ -4,6 +4,8 @@ object FragConstants{
     const val NEW_VALUE = "NEW_VALUE"
     const val OLD_VALUE = "OLD_VALUE"
     const val TYPE_OF_VALUE = "TYPE_OF_VALUE"
+    const val CARGO_WEIGHT = "CARGO_WEIGHT"
+    const val CARGO_VOLUME = "CARGO_VOLUME"
     const val PRICE = "PRICE"
     const val DAYS_TO_PAY = "DAYS_TO_PAY"
     const val DOCS_NUMBER = "DOCS_NUMBER"

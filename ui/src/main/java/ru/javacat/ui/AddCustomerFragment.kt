@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -20,8 +19,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -29,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
-import ru.javacat.ui.adapters.ChooseManagerAdapter
+import ru.javacat.ui.adapters.ChooseManagerChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
@@ -46,7 +43,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
 
     private val viewModel: AddCustomerViewModel by viewModels()
     private lateinit var customerAdapter: ChooseCustomerAdapter
-    private lateinit var employeeAdapter: ChooseManagerAdapter
+    private lateinit var employeeAdapter: ChooseManagerChipAdapter
 
     private var isNewOrder = true
 
@@ -81,7 +78,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
                     R. id.cancel_button_menu_item-> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
-                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        } else findNavController().popBackStack(R.id.editOrderFragment, false)
                         return true
                     }
                     else -> return false
@@ -89,7 +86,6 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
             }
 
         }, viewLifecycleOwner)
-
 
 
         initUi()
@@ -167,7 +163,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
     }
 
     private fun initEmployeeAdapter() {
-        employeeAdapter = ChooseManagerAdapter {
+        employeeAdapter = ChooseManagerChipAdapter {
             viewModel.setEmployee(it)
             binding.managerInputEditText.setText(it.nameToShow)
         }
@@ -227,7 +223,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
                     if (it is LoadState.Success.OK) {
                         if (isNewOrder) {
                             findNavController().navigate(R.id.addCargoFragment)
-                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        } else findNavController().popBackStack(R.id.editOrderFragment, false)
                     }
                     if (it is LoadState.Error) {
                         Toast.makeText(

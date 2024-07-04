@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,7 +41,7 @@ class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {
         viewLifecycleOwner.lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.OK) findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                    if (it is LoadState.Success.OK) findNavController().popBackStack(R.id.editOrderFragment, false)
                 }
             }
         }

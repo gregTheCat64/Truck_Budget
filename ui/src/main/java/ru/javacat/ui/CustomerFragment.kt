@@ -65,7 +65,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
                         return true
                     }
 
-                    R.id.edit -> {
+                    R.id.edit_menu_item -> {
                         val bundle = Bundle()
                         if (customerId != null) {
                             bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.common.utils.asDayAndMonthFully
+import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Order
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.OrderItemBinding
@@ -52,6 +53,9 @@ class OrdersAdapter(
             binding.customerName.text = item.customer?.nameToShow
             binding.points.text = points.toString()
             binding.income.text = item.price.toString()+"р."
+            binding.paymentDeadLineTv.text = if (item.paymentDeadline == null){
+                "Срок оплаты ${item.daysToPay.toString()} дней"
+            } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly().toString()}"
 
             binding.root.setOnClickListener {
                 onItem(item)

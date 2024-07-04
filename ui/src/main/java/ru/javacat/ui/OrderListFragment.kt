@@ -126,11 +126,10 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
 
         ordersAdapter = OrdersAdapter {
             viewLifecycleOwner.lifecycleScope.launch{
-                //viewModel.getOrderAndUpdateEditedOrder(it.id)
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
-                bundle.putBoolean(FragConstants.EDITING_ORDER, true)
-                findNavController().navigate(R.id.orderDetailsFragment, bundle)
+                bundle.putBoolean(FragConstants.IS_NEW_ORDER, false)
+                findNavController().navigate(R.id.orderFragment, bundle)
             }
         }
 

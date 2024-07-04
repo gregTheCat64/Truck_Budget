@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -18,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -69,7 +67,7 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
                     R. id.cancel_button_menu_item-> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
-                        } else findNavController().popBackStack(R.id.orderDetailsFragment, false)
+                        } else findNavController().popBackStack(R.id.editOrderFragment, false)
                         return true
                     }
                     else -> return false
@@ -109,10 +107,23 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
         //navigation
 
 
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.loadState.collectLatest {
+//                if (it == LoadState.Success.GoForward) {
+//                    val bundle = Bundle()
+//                    bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
+//                    findNavController().navigate(R.id.orderFragment, bundle)
+//                }
+//            }
+//        }
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadState.collectLatest {
-                if (it == LoadState.Success.GoForward) {
-                    findNavController().navigate(R.id.orderDetailsFragment)
+            viewModel.newOrderIdFlow.collectLatest {
+                if (it != null) {
+                    val bundle = Bundle()
+                    bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
+                    bundle.putLong(FragConstants.ORDER_ID, it)
+                    findNavController().navigate(R.id.orderFragment, bundle)
                 }
             }
         }
