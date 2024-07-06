@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
@@ -31,21 +32,21 @@ class EditOrderViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    fun getEditedRoute(): Route {
+    fun getEditedRoute(): Route? {
         return routeRepository.editedItem.value
     }
     suspend fun getRouteById(id: Long): Route? {
         return routeRepository.getById(id)
     }
 
-    suspend fun restoringOrder(id: Long) {
+    suspend fun updateEditedOrder(id: Long) {
         _loadState.emit(LoadState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 //saveRoute()
                 val editedOrder = orderRepository.getById(id)
                 if (editedOrder != null) {
-                    orderRepository.restoringOrder(editedOrder)
+                    orderRepository.updateEditedItem(editedOrder)
                 }
                 _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
@@ -54,7 +55,7 @@ class EditOrderViewModel @Inject constructor(
         }
     }
 
-    suspend fun restoringRoute(id: Long) {
+    suspend fun updateEditedRoute(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = routeRepository.getById(id)
             if (result != null) {
@@ -69,12 +70,14 @@ class EditOrderViewModel @Inject constructor(
             try {
                 orderRepository.insert(order)
                 //val orders = routeRepository.getById(editedRoute.value.id?:0)?.orderList
-                val routeToUpdate = editedRoute.value.copy(
+                val routeToUpdate = editedRoute.value?.copy(
                     //orderList = orders?: emptyList(),
                     startDate = order.date
                 )
 
-                routeRepository.updateRoute(routeToUpdate)
+                if (routeToUpdate != null) {
+                    routeRepository.updateRouteToDb(routeToUpdate)
+                }
                 //routeRepository.updateEditedItem(routeToUpdate)
 
                 orderRepository.clearCurrentOrder()
@@ -105,7 +108,7 @@ class EditOrderViewModel @Inject constructor(
         Log.i("orderVM", "editOrder")
         viewModelScope.launch(Dispatchers.IO){
             editedOrder.value?.copy(
-                customer = customer?:editedOrder.value.customer,
+                customer = customer?: editedOrder.value?.customer,
                 price = price?:editedOrder.value?.price?:0,
                 cargo = cargo?: editedOrder.value!!.cargo,
                 daysToPay = daysToPay?: editedOrder.value!!.daysToPay,
@@ -114,6 +117,20 @@ class EditOrderViewModel @Inject constructor(
                 docsReceived = docsReceived?: editedOrder.value!!.docsReceived,
                 isPaidByCustomer = isPaid?:false
             )?.let { orderRepository.updateEditedItem(it) }
+        }
+    }
+
+    fun removePoint(point: Point){
+        val pointList = editedOrder.value?.points?.toMutableList()
+        pointList?.remove(point)
+        viewModelScope.launch(Dispatchers.IO) {
+            if (pointList != null) {
+                editedOrder.value?.copy(points = pointList).let {
+                    if (it != null) {
+                        orderRepository.updateEditedItem(it)
+                    }
+                }
+            }
         }
     }
 

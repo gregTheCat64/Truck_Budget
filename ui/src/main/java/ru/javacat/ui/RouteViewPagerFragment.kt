@@ -152,7 +152,7 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
-                    initUi(it)
+                    it?.let { initUi(it) }
                 }
             }
         }

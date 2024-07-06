@@ -106,14 +106,17 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
                 Log.i("FinishRouteFrag", "route: $it")
-                currentRoute = it
+                if (it!= null){
+                    currentRoute = it
 
-                prepay = it.countRoute?.prepayment ?: 0
-                routeDuration = countRouteDuration(it)
+                    prepay = it.countRoute?.prepayment ?: 0
+                    routeDuration = countRouteDuration(it)
 
-                if (!it.isFinished) {
-                    getDataFromLastRoute()
-                } else getDataFromCurrentRoute(it)
+                    if (!it.isFinished) {
+                        getDataFromLastRoute()
+                    } else getDataFromCurrentRoute(it)
+                }
+
             }
         }
 

@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.text.Editable
@@ -24,6 +24,9 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Order
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.CargoChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
@@ -77,7 +80,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
-                    R. id.cancel_button_menu_item-> {
+                    R.id.cancel_button_menu_item -> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
                         } else findNavController().popBackStack(R.id.editOrderFragment, false)

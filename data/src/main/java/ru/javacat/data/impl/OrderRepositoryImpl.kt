@@ -34,8 +34,8 @@ class OrderRepositoryImpl @Inject constructor(
     override val items: Flow<List<Order>>
         get() = _orders
 
-    private val _editedOrder = MutableStateFlow(emptyOrder)
-    override val editedItem: StateFlow<Order>
+    private val _editedOrder = MutableStateFlow<Order?>(null)
+    override val editedItem: StateFlow<Order?>
         get() = _editedOrder.asStateFlow()
 
     override suspend fun getAll() {
@@ -81,14 +81,12 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun setOrderFlag(isEdited: Boolean) {
         _isOrderEdited.emit(isEdited)
     }
-    override suspend fun updateEditedItem(newOrder: Order) {
-        _editedOrder.emit(newOrder)
+    override suspend fun updateEditedItem(t: Order) {
+        _editedOrder.emit(t)
         _isOrderEdited.emit(true)
         Log.i("orderRepo", "updating order = ${editedItem.value}")
     }
-    override suspend fun restoringOrder(order: Order) {
-        _editedOrder.emit(order)
-    }
+
 
     override suspend fun insert(order: Order): Long {
         Log.i("orderRepo", "inserting order: $order")
@@ -98,7 +96,7 @@ class OrderRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun updateOrder(order: Order) {
+    override suspend fun updateOrderToDb(order: Order) {
         dbQuery { ordersDao.updateOrder(order.toDb()) }
     }
 

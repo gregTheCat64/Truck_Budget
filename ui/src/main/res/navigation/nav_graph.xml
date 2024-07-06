@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/editOrderFragment"
-        android:name="ru.javacat.ui.EditOrderFragment"
+        android:name="ru.javacat.ui.edit_order.EditOrderFragment"
         tools:layout="@layout/fragment_edit_order"
         android:label="@string/order" />
     <fragment
@@ -89,7 +89,7 @@
         android:label="TestFragment" />
     <fragment
         android:id="@+id/newRouteFragment"
-        android:name="ru.javacat.ui.NewRouteFragment"
+        android:name="ru.javacat.ui.new_route.NewRouteFragment"
         tools:layout="@layout/fragment_create_route"
         android:label="@string/new_route" >
         <action
@@ -103,7 +103,7 @@
         android:label="@string/finish_route" />
     <fragment
         android:id="@+id/addDocumentsFragment"
-        android:name="ru.javacat.ui.AddDocumentsFragment"
+        android:name="ru.javacat.ui.new_route.AddDocumentsFragment"
         tools:layout="@layout/fragment_add_documents"
         android:label="@string/add_documents" />
     <fragment
@@ -159,7 +159,7 @@
 
         <fragment
             android:id="@+id/addCargoFragment"
-            android:name="ru.javacat.ui.AddCargoFragment"
+            android:name="ru.javacat.ui.new_route.AddCargoFragment"
             android:label="@string/add_cargo"
             tools:layout="@layout/fragment_add_cargo">
 
@@ -169,12 +169,12 @@
         </fragment>
         <fragment
             android:id="@+id/addPaymentFragment"
-            android:name="ru.javacat.ui.AddPaymentFragment"
+            android:name="ru.javacat.ui.new_route.AddPaymentFragment"
             android:label="@string/add_payment"
             tools:layout="@layout/fragment_add_payment" />
         <fragment
             android:id="@+id/addCustomerFragment"
-            android:name="ru.javacat.ui.AddCustomerFragment"
+            android:name="ru.javacat.ui.new_route.AddCustomerFragment"
             android:label="@string/add_company"
             tools:layout="@layout/fragment_add_customer">
             <action
@@ -183,7 +183,7 @@
         </fragment>
         <fragment
             android:id="@+id/addPointsFragment"
-            android:name="ru.javacat.ui.AddPointsFragment"
+            android:name="ru.javacat.ui.new_route.AddPointsFragment"
             android:label="@string/add_points"
             tools:layout="@layout/fragment_add_points">
             <action
@@ -257,7 +257,15 @@
         <action
             android:id="@+id/action_orderFragment_to_orderDetailsFragment"
             app:destination="@id/editOrderFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_editPointsFragment"
+            app:destination="@id/editPointsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editPointsFragment"
+        android:name="ru.javacat.ui.edit_order.EditPointsFragment"
+        tools:layout="@layout/fragment_edit_points"
+        android:label="@string/add_the_point" />
 
 
 </navigation>

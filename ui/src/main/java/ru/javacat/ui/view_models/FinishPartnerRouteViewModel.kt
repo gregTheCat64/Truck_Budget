@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.CountRoute
-import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -35,15 +33,15 @@ class FinishPartnerRouteViewModel @Inject constructor(
     fun saveRoute(profit: Int, revenue: Int, moneyToPay: Int, prepayment: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                repository.updateEditedItem(editedRoute.value.copy(
+                editedRoute.value?.copy(
                     isFinished = true,
                     profit = profit,
                     revenue = revenue,
                     countRoute = CountRoute(
                         prepayment = prepayment,
                         moneyToPay = moneyToPay)
-                ))
-                repository.updateRoute(editedRoute.value)
+                )?.let { repository.updateEditedItem(it) }
+                editedRoute.value?.let { repository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

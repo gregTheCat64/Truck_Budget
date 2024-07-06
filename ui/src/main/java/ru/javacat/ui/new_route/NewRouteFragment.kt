@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +19,9 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.CountRoute
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.ChooseItemFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentCreateRouteBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.NewRouteViewModel

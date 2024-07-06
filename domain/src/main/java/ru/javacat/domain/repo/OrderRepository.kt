@@ -9,11 +9,10 @@ interface OrderRepository: BaseRepository<Order, Long> {
     suspend fun getUnpaidOrders()
     suspend fun filterOrders(year: Year? = null, month: Month? = null, customerId: Long? = null, paid: Boolean? = null)
 
-    suspend fun updateOrder(order: Order)
+    suspend fun updateOrderToDb(order: Order)
 
     suspend fun getOrdersByMonth(month: Month)
     suspend fun setOrderFlag(isEdited: Boolean)
-    suspend fun restoringOrder(order: Order)
     suspend fun clearCurrentOrder()
 
 

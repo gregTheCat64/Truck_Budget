@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +22,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentAddPaymentBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
@@ -64,7 +66,7 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
-                    R. id.cancel_button_menu_item-> {
+                    R.id.cancel_button_menu_item -> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
                         } else findNavController().popBackStack(R.id.editOrderFragment, false)
@@ -80,7 +82,7 @@ class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
                     currentOrder = order
-                    viewModel.getRouteById(order.routeId)
+                    order?.routeId?.let { viewModel.getRouteById(it) }
                 }
             }
         }

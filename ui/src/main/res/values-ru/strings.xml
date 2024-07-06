@@ -35,7 +35,7 @@
     <string name="driver_salary">Зарплата водителю</string>
     <string name="net_income">Чистая прибыль</string>
     <string name="close">Закрыть</string>
-    <string name="ok">Лады</string>
+    <string name="ok">Ок</string>
     <string name="documents">Документы</string>
     <string name="cargo_name">Наименование</string>
     <string name="payment_status">Статус оплаты</string>
@@ -122,4 +122,6 @@
     <string name="unpaid_order">Неоплачен</string>
     <string name="mark_as_unpaid">Отметить как неоплаченный</string>
     <string name="mark_as_paid">Отметить как оплаченный</string>
+    <string name="add_point">Add point</string>
+    <string name="add_the_point">Добавьте место</string>
 </resources>

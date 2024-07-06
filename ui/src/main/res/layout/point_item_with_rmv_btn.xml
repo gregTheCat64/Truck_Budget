@@ -9,17 +9,29 @@
     >
 
     <TextView
-        android:id="@+id/pointNameTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Саратов"
-        />
-    <TextView
         android:id="@+id/pointDateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="19 января"
+        android:textStyle="bold"
+
+        />
+
+    <TextView
+        android:id="@+id/pointNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Саратов"
         android:layout_marginStart="8dp"
         />
 
+
+    <ImageView
+        android:id="@+id/removeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_delete_outline_24"
+        android:layout_marginStart="16dp"
+        android:layout_gravity="end"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>

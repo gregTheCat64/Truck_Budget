@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,9 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentAddDocumentsBinding
 import ru.javacat.ui.view_models.AddDocumentsViewModel
 

@@ -1,8 +1,5 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Order
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER

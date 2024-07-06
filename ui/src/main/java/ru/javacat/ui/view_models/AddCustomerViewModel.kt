@@ -71,7 +71,7 @@ class AddCustomerViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 if (_customer != null) {
-                    editedOrder.value.copy(
+                    editedOrder.value?.copy(
                         routeId = routeId, customer = _customer!!, manager = _manager)
                         ?.let { orderRepository.updateEditedItem(it) }
                     _loadState.emit(LoadState.Success.OK)

@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.text.Editable
@@ -25,6 +25,9 @@ import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.adapters.ChooseManagerChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
@@ -75,7 +78,7 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
-                    R. id.cancel_button_menu_item-> {
+                    R.id.cancel_button_menu_item -> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
                         } else findNavController().popBackStack(R.id.editOrderFragment, false)
@@ -120,10 +123,10 @@ class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    order.customer?.let {
+                    order?.customer?.let {
                         binding.customerInputEditText.setText(it.nameToShow)
                     }
-                    order.manager?.let {
+                    order?.manager?.let {
                         binding.managerInputEditText.setText(it.nameToShow)
                     }
                 }

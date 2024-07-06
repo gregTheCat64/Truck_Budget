@@ -91,7 +91,9 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
-                    initUi(it)
+                    if (it != null) {
+                        initUi(it)
+                    }
                 }
             }
         }

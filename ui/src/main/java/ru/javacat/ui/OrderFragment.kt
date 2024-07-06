@@ -1,7 +1,6 @@
 package ru.javacat.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -55,7 +54,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         setFragmentResultListener(FragConstants.NEW_VALUE) {_, bundle ->
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
             docsNumber?.let {
-                viewModel.updateOrder(sentDocsNumber = it)
+                viewModel.updateOrderToDb(sentDocsNumber = it)
                 binding.docsNumber.text = it
             }
         }
@@ -87,6 +86,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
                     R.id.edit_menu_item -> {
                         val bundle = Bundle()
                         bundle.putLong(FragConstants.ORDER_ID, orderIdArg?:0)
+                        bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                         findNavController().navigate(R.id.editOrderFragment, bundle)
 
                         return true
@@ -110,6 +110,9 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedOrder.collectLatest {
+                    //обновили текущий Рейс:
+                    //it?.routeId?.let { it1 -> viewModel.updateEditedRoute(it1) }
+                    //обновили экран:
                     it?.let { initUi(it) }
                 }
             }
@@ -127,24 +130,24 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
 
         binding.docsReceivedDateTvValue.setOnClickListener {
             parentFragmentManager.showCalendar { date ->
-                viewModel.updateOrder(docsReceived = date)
+                viewModel.updateOrderToDb(docsReceived = date)
                 binding.docsReceivedDateTvValue.text = date.asDayAndMonthFully()
             }
         }
 
         binding.payDayValueTv.setOnClickListener {
             parentFragmentManager.showCalendar {date->
-                viewModel.updateOrder(paymentDeadline = date)
+                viewModel.updateOrderToDb(paymentDeadline = date)
                 binding.payDayValueTv.text = date.asDayAndMonthFully()
             }
         }
 
         binding.paidBtn.setOnClickListener {
             if (isPaid) {
-                viewModel.updateOrder(isPaid = false)
+                viewModel.updateOrderToDb(isPaid = false)
                 setUnpaidUi()
             } else {
-                viewModel.updateOrder(isPaid = true)
+                viewModel.updateOrderToDb(isPaid = true)
                 setPaidUi()
             }
             isPaid = !isPaid
@@ -167,7 +170,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
             order.cargo?.isTopLoad == true -> typeOfUpload.append("/верх")
         }
 
-       //TODO добавить в груз - способ погрузки - палеты, валом и тд
+        //TODO добавить в груз - способ погрузки - палеты, валом и тд
         //TODO добавить способ оплаты - нал безнал ндс
 
         (activity as AppCompatActivity).supportActionBar?.title = title

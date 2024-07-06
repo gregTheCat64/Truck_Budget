@@ -61,7 +61,9 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedRoute.collectLatest {
-                initUi(it)
+                if (it != null) {
+                    initUi(it)
+                }
             }
         }
 

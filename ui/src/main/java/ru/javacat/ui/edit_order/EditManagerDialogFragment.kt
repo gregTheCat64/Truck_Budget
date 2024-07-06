@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseManagerChipAdapter
 import ru.javacat.ui.adapters.my_adapter.ChooseManagerAdapter
 import ru.javacat.ui.databinding.FragmentChooseItemBinding
@@ -32,6 +34,7 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChooseItemBinding.inflate(layoutInflater)
+        binding.newItemBtn.isGone = true
         customerId = arguments?.getLong(FragConstants.COMPANY_ID)
         Log.i("EditManagerDialogFragment", "customerId: $customerId")
 
@@ -47,8 +50,9 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
             viewModel.addManagerToOrder(it)
             this.dismiss()
         }
+
         binding.itemList.adapter = managerAdapter
-        binding.itemNameTextView.text = "Сотрудники"
+        binding.itemNameTextView.text = getString(R.string.employee)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

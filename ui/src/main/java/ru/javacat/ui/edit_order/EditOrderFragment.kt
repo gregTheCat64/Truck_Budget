@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.edit_order
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -22,14 +21,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
-import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
-import ru.javacat.ui.adapters.OneLinePointAdapter
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
+import ru.javacat.ui.adapters.PointWithRemoveAdapter
 import ru.javacat.ui.databinding.FragmentEditOrderBinding
-import ru.javacat.ui.edit_order.EditCargoDialogFragment
-import ru.javacat.ui.edit_order.EditCustomerDialogFragment
-import ru.javacat.ui.edit_order.EditManagerDialogFragment
 
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
@@ -47,7 +45,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
     private val viewModel: EditOrderViewModel by viewModels()
-    private lateinit var pointsAdapter: OneLinePointAdapter
+    private lateinit var pointsAdapter: PointWithRemoveAdapter
 
     private var currentOrder: Order? = null
     private var currentRoute: Route? = null
@@ -65,11 +63,13 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.i("EditOrderFrag", "onCreate")
+
         isEditingOrderArg = arguments?.getBoolean(FragConstants.EDITING_ORDER, false)
         orderIdArg = arguments?.getLong(FragConstants.ORDER_ID)
         //routeId = arguments?.getLong(FragConstants.ROUTE_ID)
 
-        Log.i("OrderFrag", "orderId: $orderIdArg")
+        Log.i("EditOrderFrag", "orderId: $orderIdArg")
         //Log.i("OrderFrag", "routeId: $routeId")
 
         setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
@@ -105,29 +105,20 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.i("OrderFrag", "isCreateOrderArg: $isEditingOrderArg")
+        Log.i("EditOrderFrag", "isEditingOrderArg: $isEditingOrderArg")
 
         (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_cancel, menu)
+                menuInflater.inflate(R.menu.menu_empty, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.cancel_button_menu_item -> {
-                        viewModel.clearOrder()
-                        //findNavController().navigateUp()
-                        if (isEditingOrderArg == true) {
-                            findNavController().navigateUp()
-                        } else findNavController().popBackStack(R.id.viewPagerFragment, false)
                         return true
                     }
 
@@ -144,11 +135,11 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                //if (isEditingOrderArg == true && !isOrderUpdated) {
-                Log.i("OrderFrag", "restoring Order")
-                viewModel.restoringOrder(orderIdArg!!)
-                // isOrderUpdated = true
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                if (isEditingOrderArg == true ) {
+                    Log.i("EditOrderFrag", "restoring Order")
+                    viewModel.updateEditedOrder(orderIdArg!!)
+                }
             }
         }
 
@@ -156,13 +147,18 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    initUi(order)
-                    currentOrder = order
-                    //в режиме редактирования восстанавливаем Рейс во флоу
-                    if (isEditingOrderArg == true) {
-                        viewModel.restoringRoute(order.routeId)
+                    if (order != null){
+                        Log.i("EditOrderFrag", "collecting Order: $order")
+                        currentOrder = order
+                        initUi(order)
+                        //в режиме редактирования восстанавливаем Рейс во флоу
+                        if (isEditingOrderArg == true) {
+                            Log.i("EditOrderFrag", "restoringRoute, order.routeId: ${order.routeId}")
+                            order.routeId?.let { viewModel.updateEditedRoute(it) }
+                            isEditingOrderArg = false
                     }
-                    Log.i("OrderFrag", "currentOrder: $order")
+                    }
+                    Log.i("EditOrderFrag", "currentOrder: $order")
                 }
             }
         }
@@ -171,7 +167,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest { route ->
-                    Log.i("OrderFrag", "currentRoute: $route")
+                    Log.i("EditOrderFrag", "currentRoute: $route")
                     currentRoute = route
                 }
             }
@@ -205,7 +201,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             )
         }
 
-        binding.editPointsTv.setOnClickListener {
+        binding.addPointBtn.setOnClickListener {
             changingPoints()
         }
 
@@ -256,13 +252,13 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                Log.i("OrderFrag", "state: $it")
+                Log.i("EditOrderFrag", "state: $it")
                 if (it == LoadState.Success.GoBack) {
                     //сохранились, идем назад:
-                    if (isEditingOrderArg == true) {
-                        Log.i("OrderFrag", "isEditing: $isEditingOrderArg")
+                    //if (isEditingOrderArg == true) {
+                        Log.i("EditOrderFrag", "isEditing: $isEditingOrderArg")
                         findNavController().navigateUp()
-                    } else findNavController().popBackStack(R.id.viewPagerFragment, false)
+                    //} else findNavController().popBackStack(R.id.viewPagerFragment, false)
                 }
             }
         }
@@ -339,7 +335,9 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         } else getString(R.string.unpaid_order)
 
         //adapter
-        pointsAdapter = OneLinePointAdapter()
+        pointsAdapter = PointWithRemoveAdapter{
+            viewModel.removePoint(it)
+        }
         binding.pointsRecView.adapter = pointsAdapter
         pointsAdapter.submitList(order.points)
 
@@ -392,14 +390,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     }
 
     private fun changingPoints() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addPointsFragment, bundle)
+        //bundle.putBoolean(IS_NEW_ORDER, false)
+        findNavController().navigate(R.id.editPointsFragment)
     }
 
-    private fun changingPayment() {
-        bundle.putBoolean(IS_NEW_ORDER, false)
-        findNavController().navigate(R.id.addPaymentFragment, bundle)
-    }
 
     private fun paidCheck() {
         binding.paidBtn.setOnCheckedChangeListener { _, isChecked ->
@@ -408,16 +402,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 if (isChecked) getString(R.string.paid_order) else getString(R.string.unpaid_order)
         }
 
-//        binding.paidBtn.setOnClickListener {
-//            if (it.isActivated){
-//                viewModel.editOrder(isPaid = true)
-//                binding.paidBtn.text = getString(R.string.paid_order)
-//            } else {
-//                viewModel.editOrder(isPaid = false)
-//                binding.paidBtn.text = getString(R.string.unpaid_order)
-//            }
-//            //viewModel.editOrder(isPaid = !currentOrder?.isPaidByCustomer!!)
-//        }
     }
 
 

@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.new_route
 
 import android.os.Bundle
 import android.text.Editable
@@ -24,6 +24,8 @@ import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.LocationAdapter
 import ru.javacat.ui.adapters.OnPointListener
 import ru.javacat.ui.adapters.PointsAdapter
@@ -34,8 +36,6 @@ import ru.javacat.ui.view_models.AddPointsViewModel
 
 @AndroidEntryPoint
 class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
-
-    override var bottomNavViewVisibility: Int = View.GONE
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentAddPointsBinding
         get() = { inflater, container ->
             FragmentAddPointsBinding.inflate(inflater, container, false)
@@ -72,7 +72,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
-                    R. id.cancel_button_menu_item-> {
+                    R.id.cancel_button_menu_item -> {
                         if (isNewOrder){
                             findNavController().popBackStack(R.id.viewPagerFragment, false)
                         } else findNavController().popBackStack(R.id.editOrderFragment, false)

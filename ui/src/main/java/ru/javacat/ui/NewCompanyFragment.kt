@@ -72,14 +72,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
-                    R.id.save -> {
-//                        getFieldsData()
-//                        if (getFieldsData()){
-//                            saveCustomer(customerId?:0L)
-//                            //findNavController().navigateUp()
-//                        }
-                        return true
-                    }
+
                     else -> return false
                 }
             }

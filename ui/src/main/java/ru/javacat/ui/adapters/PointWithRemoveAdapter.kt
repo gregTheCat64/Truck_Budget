@@ -10,25 +10,30 @@ import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Point
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.PointItemOnelineBinding
+import ru.javacat.ui.databinding.PointItemWithRmvBtnBinding
 
-class OneLinePointAdapter: ListAdapter<Point, OneLinePointAdapter.Holder>(Comparator()) {
+class PointWithRemoveAdapter(
+    val onItem: (Point) -> Unit
+): ListAdapter<Point, PointWithRemoveAdapter.Holder>(Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.point_item_oneline, parent, false)
-        return Holder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.point_item_with_rmv_btn, parent, false)
+        return Holder(view, onItem)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class Holder(view: View): RecyclerView.ViewHolder(view){
-        private val binding = PointItemOnelineBinding.bind(view)
+    class Holder(view: View, val onItem: (Point) -> Unit): RecyclerView.ViewHolder(view){
+        private val binding = PointItemWithRmvBtnBinding.bind(view)
 
         fun bind(item: Point){
             binding.pointDateTv.text = item.arrivalDate.asDayAndMonthShortly()
             binding.pointNameTv.text = item.location
-
+            binding.removeBtn.setOnClickListener {
+                onItem(item)
+            }
         }
     }
 

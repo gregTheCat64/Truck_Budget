@@ -50,8 +50,10 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
-                    currentRoute = it
-                    initUi(it)
+                    if (it!=null){
+                        currentRoute = it
+                        initUi(it)
+                    }
                 }
             }
         }

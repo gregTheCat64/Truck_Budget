@@ -32,9 +32,13 @@ class AddPaymentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                editedOrder.value.copy(price = price, daysToPay = daysToPay, contractorPrice = contractorPrice)
-                    .let { orderRepository.updateEditedItem(it) }
-                val newOrderId = orderRepository.insert(editedOrder.value)
+                editedOrder.value?.copy(price = price, daysToPay = daysToPay, contractorPrice = contractorPrice)
+                    .let {
+                        if (it != null) {
+                            orderRepository.updateEditedItem(it)
+                        }
+                    }
+                val newOrderId = editedOrder.value?.let { orderRepository.insert(it) }
                 newOrderIdFlow.emit(newOrderId)
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception) {

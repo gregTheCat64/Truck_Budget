@@ -8,7 +8,7 @@ interface BaseRepository<T: Any, Id: Any> {
 
     val items: Flow<List<T>>
 
-    val editedItem: StateFlow<T>
+    val editedItem: StateFlow<T?>
 
     val isEdited: StateFlow<Boolean>
 

@@ -50,10 +50,14 @@ class EditManagerDialogViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                editedOrder.value.copy(
+                editedOrder.value?.copy(
                     manager = manager
                 )
-                    .let { orderRepository.updateEditedItem(it) }
+                    .let {
+                        if (it != null) {
+                            orderRepository.updateEditedItem(it)
+                        }
+                    }
                 _loadState.emit(LoadState.Success.OK)
 
             }catch (e: Exception){

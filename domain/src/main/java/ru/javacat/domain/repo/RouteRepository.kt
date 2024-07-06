@@ -8,7 +8,7 @@ import ru.javacat.domain.models.Route
 interface RouteRepository: BaseRepository<Route, Long> {
 
     val lastRoute: Route?
-    suspend fun updateRoute(route: Route)
+    suspend fun updateRouteToDb(route: Route)
 
 
 }

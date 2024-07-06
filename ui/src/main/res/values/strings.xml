@@ -125,4 +125,6 @@
     <string name="unpaid_order">Unpaid</string>
     <string name="mark_as_unpaid">Mark as unpaid</string>
     <string name="mark_as_paid">Mark as paid</string>
+    <string name="add_point">Add point</string>
+    <string name="add_the_point">Add the point</string>
 </resources>

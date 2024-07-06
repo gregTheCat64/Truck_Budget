@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.AppDb
 import ru.javacat.data.db.dao.RoutesDao
-import ru.javacat.data.db.entities.DbCountRoute
 
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
@@ -36,7 +35,7 @@ class RouteRepositoryImpl @Inject constructor(
         get() = _routes
 
     private val _editedRoute = MutableStateFlow(Route())
-    override val editedItem: StateFlow<Route>
+    override val editedItem: StateFlow<Route?>
         get() = _editedRoute.asStateFlow()
 
     private val _isEdited = MutableStateFlow(false)
@@ -50,8 +49,8 @@ class RouteRepositoryImpl @Inject constructor(
     override suspend fun getById(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
 
-    override suspend fun updateEditedItem(newRoute: Route) {
-        _editedRoute.emit(newRoute)
+    override suspend fun updateEditedItem(t: Route) {
+        _editedRoute.emit(t)
         _isEdited.emit(true)
         Log.i("RouteRepo", "edited Route: ${editedItem.value}")
     }
@@ -72,7 +71,7 @@ class RouteRepositoryImpl @Inject constructor(
         return routeId
     }
 
-    override suspend fun updateRoute(route: Route){
+    override suspend fun updateRouteToDb(route: Route){
         dbQuery { routesDao.updateRoute(route.toDb()) }
     }
 }

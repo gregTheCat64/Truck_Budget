@@ -55,13 +55,15 @@ class EditCargoDialogViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.value.let {
-                    orderRepository.updateEditedItem(
-                        it.copy(
-                            cargo = it.cargo?.copy(
-                                cargoName = cargoName.nameToShow
+                    if (it != null) {
+                        orderRepository.updateEditedItem(
+                            it.copy(
+                                cargo = it.cargo?.copy(
+                                    cargoName = cargoName.nameToShow
+                                )
                             )
                         )
-                    )
+                    }
                 }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception){
