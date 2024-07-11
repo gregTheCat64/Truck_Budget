@@ -146,7 +146,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
                     val bundle = Bundle()
                     if (it != null) {
                         bundle.putLong(FragConstants.ROUTE_ID, it)
-                        findNavController().navigate(R.id.viewPagerFragment, bundle)
+                        findNavController().navigate(R.id.routeViewPagerFragment, bundle)
                     }
                 }
             }

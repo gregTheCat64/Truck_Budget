@@ -122,6 +122,6 @@
     <string name="unpaid_order">Неоплачен</string>
     <string name="mark_as_unpaid">Отметить как неоплаченный</string>
     <string name="mark_as_paid">Отметить как оплаченный</string>
-    <string name="add_point">Add point</string>
+    <string name="add_point">Добавить точку</string>
     <string name="add_the_point">Добавьте место</string>
 </resources>

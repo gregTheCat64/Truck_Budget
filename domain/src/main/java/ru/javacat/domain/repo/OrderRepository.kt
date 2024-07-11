@@ -15,5 +15,7 @@ interface OrderRepository: BaseRepository<Order, Long> {
     suspend fun setOrderFlag(isEdited: Boolean)
     suspend fun clearCurrentOrder()
 
+    suspend fun createEmptyOrder()
+
 
 }

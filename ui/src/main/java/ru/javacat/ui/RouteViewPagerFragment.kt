@@ -102,7 +102,7 @@ class RouteViewPagerFragment:BaseFragment<FragmentRouteViewPagerBinding>() {
 
         Log.i("RouteVPFrag", "onViewCreated")
 
-        viewModel.clearEditedOrder()
+        //viewModel.clearEditedOrder()
 
         val routeFragment = RouteFragment()
         routeFragment.arguments = bundle

@@ -80,9 +80,9 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                 //viewModel.getOrderAndUpdateEditedOrder(it.id)
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
-                bundle.putBoolean(FragConstants.EDITING_ORDER, true)
+                //bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                 //bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-                findNavController().navigate(R.id.editOrderFragment,bundle)
+                findNavController().navigate(R.id.orderFragment,bundle)
             }
         }
         binding.ordersList.adapter = adapter
@@ -104,8 +104,8 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
             //viewModel.addRouteIdToOrder(routeId = currentRoute?.id?:0)
             val bundle = Bundle()
             bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-            bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
-            findNavController().navigate(R.id.addCustomerFragment, bundle)
+            //bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
+            findNavController().navigate(R.id.editOrderFragment, bundle)
         }
 
         //Завершаем рейс

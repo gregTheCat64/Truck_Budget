@@ -10,7 +10,6 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -19,6 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="48dp"
+                android:padding="24dp"
                 android:orientation="vertical">
 
 
@@ -37,6 +37,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/customerInputLayout"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -56,7 +57,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/managerInputLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/managerTv"
@@ -68,9 +70,6 @@
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
-                <include layout="@layout/horizon_line" />
 
 
                     <TextView
@@ -88,7 +87,8 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cargoTv"
@@ -174,8 +174,6 @@
 
 
 
-                <include layout="@layout/horizon_line" />
-
 
                     <TextView
                         android:id="@+id/editPointsTv"
@@ -183,10 +181,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/route"
                         android:layout_gravity="start"
-                        app:drawableEndCompat="@drawable/baseline_edit_24"
                          />
 
 
@@ -195,31 +192,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/point_item_oneline" />
+                    tools:listitem="@layout/point_item_with_rmv_btn" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addPointBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:text="@string/add_point"
+                    android:layout_gravity="center"
                     />
 
 
-                <include layout="@layout/horizon_line" />
-
-
-                    <TextView
+                <TextView
                         android:id="@+id/editPaymentTv"
                         style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:layout_gravity="start"
                         android:text="@string/payment" />
 
@@ -228,7 +223,8 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/priceTv"
@@ -241,7 +237,35 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/paymentTypeChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:singleSelection="true"
+                    android:layout_gravity="bottom"
+                    >
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="Нал"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:checked="true"
+                        android:text="Без НДС"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="НДС"
+                        />
 
+                </com.google.android.material.chip.ChipGroup>
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -260,7 +284,6 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -276,84 +299,52 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-
-                <TextView
-                    android:id="@+id/payStatus"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/paymentDeadlineChipGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/payment_status"
-                    />
-
-
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/paidBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/paid"
+                    app:singleSelection="true"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="8dp"
-                    android:layout_gravity="start"
-                    />
+                    >
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/days3Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:tag="3"
+                        android:text="3 дня"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/days7Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:tag="7"
+                        android:text="7 дней"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/days10Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10 дней"
+                        android:tag="10"
+                        android:checkable="true"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/days14Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:tag="14"
+                        android:text="14 дней"
+                        />
 
-                <include layout="@layout/horizon_line" />
-
-                <TextView
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="start"
-                    android:text="@string/documents" />
+                </com.google.android.material.chip.ChipGroup>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/docsNumber"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/sending_documents_track_number"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/docsReceivedDateTvValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:hint="@string/receiving_date"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/payDayValueTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:hint="@string/payment_date"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

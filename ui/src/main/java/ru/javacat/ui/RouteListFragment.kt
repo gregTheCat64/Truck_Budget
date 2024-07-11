@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +23,6 @@ import ru.javacat.ui.adapters.RoutesAdapter
 import ru.javacat.ui.databinding.FragmentRouteListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.RouteListViewModel
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
@@ -91,7 +89,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             val bundle = Bundle()
             override fun onItem(item: Route) {
                 bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
-                findNavController().navigate(R.id.viewPagerFragment, bundle)
+                findNavController().navigate(R.id.routeViewPagerFragment, bundle)
 
             }
 

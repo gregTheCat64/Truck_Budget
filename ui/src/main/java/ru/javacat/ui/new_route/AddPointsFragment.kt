@@ -74,7 +74,7 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
                     }
                     R.id.cancel_button_menu_item -> {
                         if (isNewOrder){
-                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                            findNavController().popBackStack(R.id.routeViewPagerFragment, false)
                         } else findNavController().popBackStack(R.id.editOrderFragment, false)
                         return true
                     }

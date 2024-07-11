@@ -77,7 +77,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         if (isNewOrder == true){
-                            findNavController().popBackStack(R.id.viewPagerFragment, false)
+                            findNavController().popBackStack(R.id.routeViewPagerFragment, false)
                         } else {
                             findNavController().navigateUp()
                         }

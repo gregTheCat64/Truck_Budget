@@ -32,11 +32,18 @@ class EditOrderViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
+    init {
+        createEmptyOrder()
+    }
+
     fun getEditedRoute(): Route? {
         return routeRepository.editedItem.value
     }
-    suspend fun getRouteById(id: Long): Route? {
-        return routeRepository.getById(id)
+
+    private fun createEmptyOrder(){
+        viewModelScope.launch (Dispatchers.IO){
+            orderRepository.createEmptyOrder()
+        }
     }
 
     suspend fun updateEditedOrder(id: Long) {

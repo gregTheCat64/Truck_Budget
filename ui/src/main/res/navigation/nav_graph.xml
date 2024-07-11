@@ -15,7 +15,7 @@
             app:destination="@id/newRouteFragment" />
         <action
             android:id="@+id/action_routeListFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/routeViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
@@ -94,7 +94,7 @@
         android:label="@string/new_route" >
         <action
             android:id="@+id/action_newRouteFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/routeViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/finishRouteFragment"
@@ -107,7 +107,7 @@
         tools:layout="@layout/fragment_add_documents"
         android:label="@string/add_documents" />
     <fragment
-        android:id="@+id/viewPagerFragment"
+        android:id="@+id/routeViewPagerFragment"
         android:name="ru.javacat.ui.RouteViewPagerFragment"
         tools:layout="@layout/fragment_route_view_pager"
         android:label="ViewPagerFragment" >
@@ -128,11 +128,11 @@
 
     <action
             android:id="@+id/action_global_orderDetailsFragment"
-            app:popUpTo="@id/viewPagerFragment"
+            app:popUpTo="@id/routeViewPagerFragment"
             app:destination="@id/editOrderFragment" />
         <action
             android:id="@+id/action_global_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/routeViewPagerFragment" />
 
     <fragment
         android:id="@+id/navigation_customer_list"

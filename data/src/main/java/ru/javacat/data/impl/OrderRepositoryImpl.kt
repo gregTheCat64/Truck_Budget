@@ -110,8 +110,12 @@ class OrderRepositoryImpl @Inject constructor(
         dbQuery { ordersDao.removeOrder(orderId) }
     }
 
-    override suspend fun clearCurrentOrder() {
+    override suspend fun createEmptyOrder() {
         _editedOrder.emit(emptyOrder)
-        _isOrderEdited.emit(false)
+    }
+
+    override suspend fun clearCurrentOrder() {
+        _editedOrder.emit(null)
+        //_isOrderEdited.emit(false)
     }
 }

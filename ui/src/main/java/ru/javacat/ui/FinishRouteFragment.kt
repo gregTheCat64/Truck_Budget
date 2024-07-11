@@ -18,14 +18,12 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.databinding.FragmentFinishRouteBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.FinishRouteViewModel
 import java.time.Period
 import kotlin.math.roundToInt
-import kotlin.time.times
 
 @AndroidEntryPoint
 class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
@@ -123,7 +121,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.viewPagerFragment)
+                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.routeViewPagerFragment)
             }
         }
 
