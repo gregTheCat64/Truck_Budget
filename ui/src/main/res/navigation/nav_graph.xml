@@ -43,8 +43,8 @@
         tools:layout="@layout/fragment_edit_order"
         android:label="@string/order" />
     <fragment
-        android:id="@+id/newTransportFragment"
-        android:name="ru.javacat.ui.NewTransportFragment"
+        android:id="@+id/newTruckFragment"
+        android:name="ru.javacat.ui.NewTruckFragment"
         tools:layout="@layout/fragment_new_transport"
         android:label="@string/vehicles" />
     <fragment
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/chooseItemFragment"
-        android:name="ru.javacat.ui.ChooseItemFragment"
+        android:name="ru.javacat.ui.new_route.ChooseContractorFragment"
         tools:layout="@layout/fragment_choose_item"
         android:label="@string/choose_the_item" />
     <fragment
@@ -237,7 +237,7 @@
         android:label="@string/trailers" >
         <action
             android:id="@+id/action_trailersListFragment_to_newTransportFragment"
-            app:destination="@id/newTransportFragment" />
+            app:destination="@id/newTruckFragment" />
     </fragment>
 
     <fragment
@@ -247,7 +247,7 @@
         android:label="@string/trucks" >
         <action
             android:id="@+id/action_trucksListFragment_to_newTransportFragment"
-            app:destination="@id/newTransportFragment" />
+            app:destination="@id/newTruckFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
@@ -266,6 +266,10 @@
         android:name="ru.javacat.ui.edit_order.EditPointsFragment"
         tools:layout="@layout/fragment_edit_points"
         android:label="@string/add_the_point" />
+    <fragment
+        android:id="@+id/newTrailerFragment"
+        android:name="ru.javacat.ui.NewTrailerFragment"
+        android:label="NewTrailerFragment" />
 
 
 </navigation>

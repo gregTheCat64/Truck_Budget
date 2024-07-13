@@ -19,14 +19,13 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
-import ru.javacat.ui.ChooseItemFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentCreateRouteBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.NewRouteViewModel
 
-    const val itemParam = "item"
+const val itemParam = "item"
 @AndroidEntryPoint
 class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
@@ -34,6 +33,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     private val bundle = Bundle()
     private var isLastRouteLoaded = false
     private var companyId: Long? = null
+    private var currentRoute: Route? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCreateRouteBinding
         get() = {inflater, container ->
@@ -45,6 +45,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
@@ -80,62 +81,41 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
 
         binding.addContractorEditText.setOnClickListener {
-            addItemToRoute("CONTRACTOR")
+            addContractorToRoute()
         }
 
         //Добавляем водителя
         binding.addDriverEditText.setOnClickListener {
-            addItemToRoute("DRIVER")
+            addTruckDriverToRoute()
         }
 
         //Добавляем тягач
         binding.addTruckEditText.setOnClickListener {
-            addItemToRoute("TRUCK")
+            addTruckToRoute()
         }
 
         //Добавляем прицеп
         binding.addTrailerEditText.setOnClickListener {
-            addItemToRoute("TRAILER")
+            addTrailerToRoute()
         }
 
         //Обновляем и сохраняем
         binding.nextBtn.setOnClickListener {
-            saveRoute()
+            currentRoute?.let { it1 -> saveRoute(it1) }
         }
 
         //Инициализация ui
-        viewLifecycleOwner.lifecycleScope.launch{
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.chosenCompany.collectLatest {
-                    binding.addContractorEditText.setText(it?.nameToShow)
-                    companyId = it?.id?:0L
+                viewModel.editedRoute.collectLatest {
+                    Log.i("NewRouteFrag", "route: $it")
+                    companyId = it?.contractor?.company?.id
+                    currentRoute = it
+                    it?.let { initUi(it) }
                 }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.chosenDriver.collectLatest {
-                    binding.addDriverEditText.setText(it?.surname)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.chosenTruck.collectLatest {
-                    binding.addTruckEditText.setText(it?.regNumber)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.chosenTrailer.collectLatest {
-                    binding.addTrailerEditText.setText(it?.regNumber)
-                }
-            }
-        }
 
 
         //Навигация
@@ -151,24 +131,58 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
                 }
             }
         }
+    }
 
+    private fun initUi(route: Route){
+        route.contractor?.company?.let {
+            binding.addContractorEditText.setText(it.nameToShow)
+        }
+        route.contractor?.driver?.let {
+            binding.addDriverEditText.setText(it.nameToShow)
+        }?:binding.addDriverEditText.setText("")
+        route.contractor?.truck?.let {
+            binding.addTruckEditText.setText(it.nameToShow)
+        }?:binding.addTruckEditText.setText("")
+        route.contractor?.trailer?.let {
+            binding.addTrailerEditText.setText(it.regNumber)
+        }?:binding.addTrailerEditText.setText("")
     }
 
     private fun setLastRouteToCurrent(){
         viewModel.setLastRouteToEditedRoute()
     }
 
-    private fun addItemToRoute(item: String){
+    private fun addContractorToRoute(){
         bundle.putLong(FragConstants.COMPANY_ID, companyId?:0L)
-        bundle.putString(itemParam, item)
-        val dialogFragment = ChooseItemFragment()
+        val dialogFragment = ChooseContractorFragment()
         dialogFragment.arguments = bundle
         dialogFragment.show(parentFragmentManager, "")
         //findNavController().navigate(R.id.chooseItemFragment, bundle)
     }
 
+    private fun addTruckToRoute(){
+        bundle.putLong(FragConstants.COMPANY_ID, companyId?:0L)
+        val dialogFragment = ChooseTruckFragment()
+        dialogFragment.arguments = bundle
+        dialogFragment.show(parentFragmentManager, "")
+    }
 
-    private fun saveRoute(){
+    private fun addTrailerToRoute(){
+        bundle.putLong(FragConstants.COMPANY_ID, companyId?:0L)
+        val dialogFragment = ChooseTrailerFragment()
+        dialogFragment.arguments = bundle
+        dialogFragment.show(parentFragmentManager, "")
+    }
+
+    private fun addTruckDriverToRoute(){
+        bundle.putLong(FragConstants.COMPANY_ID, companyId?:0L)
+        val dialogFragment = ChooseTruckDriverFragment()
+        dialogFragment.arguments = bundle
+        dialogFragment.show(parentFragmentManager, "")
+    }
+
+
+    private fun saveRoute(route: Route){
         binding.prepayEditText.let {
             if (it.text.isNullOrEmpty()){
                 Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
@@ -176,7 +190,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
             } else {
                 val prepay = it.text.toString().toInt()
                 viewModel.setRouteParameters(prepay)
-                viewModel.saveNewRoute()
+                viewModel.saveNewRoute(route)
             }
         }
     }

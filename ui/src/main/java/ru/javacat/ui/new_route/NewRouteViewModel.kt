@@ -1,6 +1,5 @@
-package ru.javacat.ui.view_models
+package ru.javacat.ui.new_route
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Contractor
 import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.CompaniesRepository
@@ -36,45 +34,38 @@ class NewRouteViewModel @Inject constructor(
     private val setCompanyUseCase: SetCompanyUseCase,
     private val setTruckDriverUseCase: SetTruckDriverUseCase,
     private val setTruckUseCase: SetTruckUseCase,
-    private val setTrailerUseCase: SetTrailerUseCase
+    private val setTrailerUseCase: SetTrailerUseCase,
 ) : ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
     var routeId = MutableStateFlow<Long?>(null)
 
-    //val editedRoute = repo.editedItem
+    val editedRoute = repo.editedItem
 
     private var _prepay: Int? = null
 
     private val date = LocalDate.now()
 
-    val chosenCompany = companiesRepository.chosenItem
 
-    val chosenTruck = trucksRepository.chosenItem
+//    val chosenCompany = companiesRepository.chosenItem
+//
+//    val chosenTruck = trucksRepository.chosenItem
+//
+//    val chosenTrailer = trailersRepository.chosenItem
+//
+//    val chosenDriver = truckDriversRepository.chosenItem
 
-    val chosenTrailer = trailersRepository.chosenItem
-
-    val chosenDriver = truckDriversRepository.chosenItem
-
-    fun saveNewRoute() {
+    fun saveNewRoute(route: Route) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                val _countRoute: CountRoute = if (chosenCompany.value?.id == FragConstants.MY_COMPANY_ID) {
-                    CountRoute(prepayment = _prepay)
-                } else CountRoute(null)
+                val _countRoute: CountRoute =
+                    if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID) {
+                        CountRoute(prepayment = _prepay)
+                    } else CountRoute(null)
                 val result = repo.insert(
-                    Route(
-                        contractor = Contractor(
-                        chosenCompany.value,
-                        chosenDriver.value,
-                        chosenTruck.value,
-                        chosenTrailer.value
-                    ),
-                        countRoute = _countRoute,
-                        startDate = date
-                )
+                    route.copy(startDate = date, countRoute = _countRoute)
                 )
                 routeId.emit(result)
 
@@ -89,11 +80,18 @@ class NewRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
             lastRoute?.contractor?.apply {
-                this.company?.let { setCompanyUseCase.invoke(it) }
-                this.driver?.let { setTruckDriverUseCase.invoke(it) }
-                this.truck?.let { setTruckUseCase.invoke(it) }
-                this.trailer?.let { setTrailerUseCase.invoke(it) }
-                 }
+//                this.company?.let { setCompanyUseCase.invoke(it) }
+//                this.driver?.let { setTruckDriverUseCase.invoke(it) }
+//                this.truck?.let { setTruckUseCase.invoke(it) }
+//                this.trailer?.let { setTrailerUseCase.invoke(it) }
+                editedRoute.value?.copy(
+                    contractor = lastRoute.contractor
+                )?.let {
+                    repo.updateEditedItem(
+                        it
+                    )
+                }
+            }
         }
     }
 

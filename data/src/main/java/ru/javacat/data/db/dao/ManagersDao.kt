@@ -18,7 +18,7 @@ interface ManagersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertManager(
         employee: DbManager
-    )
+    ): Long
 
     @Query("SELECT * FROM managers_table WHERE customerId =:customerId")
     fun getManagersByCustomerId(

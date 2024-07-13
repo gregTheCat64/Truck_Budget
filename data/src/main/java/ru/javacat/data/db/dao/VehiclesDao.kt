@@ -23,7 +23,7 @@ interface TrucksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(
         dbVehicle: DbTruck
-    )
+    ): Long
 
     @Query("SELECT * FROM trucks_table " +
             "WHERE regNumber LIKE '%' || :search || '%'")

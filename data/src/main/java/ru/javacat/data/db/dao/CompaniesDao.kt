@@ -31,7 +31,7 @@ interface CompaniesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(
         customer: DbCompany
-    )
+    ): Long
 
     @Update()
     suspend fun updateCustomer(

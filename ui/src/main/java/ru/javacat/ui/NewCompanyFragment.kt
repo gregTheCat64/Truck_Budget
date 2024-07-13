@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -97,13 +98,22 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch { 
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest { 
-                    if (it is LoadState.Success.GoBack){
-                        Toast.makeText(requireContext(),
-                            getString(R.string.saved), Toast.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
-                    }
-                    if (it is LoadState.Error) {
-                        Toast.makeText(requireContext(), "Some Error", Toast.LENGTH_SHORT).show()
+                    when (it) {
+                        is LoadState.Success.GoBack -> {
+                            Toast.makeText(requireContext(),
+                                getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                        }
+                        is LoadState.Error -> {
+                            Toast.makeText(requireContext(), "Some Error", Toast.LENGTH_SHORT).show()
+                        }
+                        is LoadState.Loading -> {
+                            binding.progressBar.isGone = false
+                        }
+                        else -> {
+                            Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }

@@ -21,7 +21,7 @@ interface TruckDriversDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(
         staff: DbTruckDriver
-    )
+    ): Long
 
     @Query("SELECT * FROM truck_drivers_table " +
             "WHERE surName LIKE '%' || :search || '%'")

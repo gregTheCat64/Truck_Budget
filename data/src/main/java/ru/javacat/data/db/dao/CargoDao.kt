@@ -21,5 +21,5 @@ interface CargoDao {
     suspend fun searchCargos(search: String): List<DbCargo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCargo(cargo: DbCargo)
+    suspend fun insertCargo(cargo: DbCargo): Long
 }

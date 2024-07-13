@@ -44,8 +44,8 @@ class CompaniesRepositoryImpl @Inject constructor(
         return dbQuery { dao.searchCustomers(s).map { it.toCompanyModel() } }
     }
 
-    override suspend fun insert(t: Company) {
-        dbQuery { dao.insertCustomer(t.toDb()) }
+    override suspend fun insert(t: Company): Long {
+        return dbQuery { dao.insertCustomer(t.toDb()) }
     }
 
     override suspend fun setItem(t: Company) {

@@ -40,8 +40,8 @@ class TrucksRepositoryImpl @Inject constructor(
         return dbQuery { dao.searchTrucks(s).map { it.toTruck() } }
     }
 
-    override suspend fun insert(t: Truck) {
-        dbQuery { dao.insert(t.toDb()) }
+    override suspend fun insert(t: Truck): Long {
+        return dbQuery { dao.insert(t.toDb()) }
     }
 
     override suspend fun setItem(t: Truck) {

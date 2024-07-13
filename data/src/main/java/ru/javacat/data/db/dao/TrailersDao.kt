@@ -23,7 +23,7 @@ interface TrailersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(
         dbVehicle: DbTrailer
-    )
+    ): Long
 
     @Query("SELECT * FROM trailers_table " +
             "WHERE regNumber LIKE '%' || :search || '%'")

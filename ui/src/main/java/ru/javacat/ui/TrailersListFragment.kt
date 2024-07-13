@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,7 +16,6 @@ import kotlinx.coroutines.launch
 import ru.javacat.ui.adapters.TrailersAdapter
 import ru.javacat.ui.databinding.FragmentTrailersListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TrailersViewModel
 import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
@@ -42,7 +40,7 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
             bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRAILER")
-            findNavController().navigate(R.id.newTransportFragment, bundle)
+            findNavController().navigate(R.id.newTruckFragment, bundle)
         }
 
         binding.trailerRecView.adapter = trailersAdapter

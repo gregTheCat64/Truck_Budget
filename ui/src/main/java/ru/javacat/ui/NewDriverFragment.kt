@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -92,7 +93,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                if (truckDriverId != null) {
+                if (truckDriverId != 0L) {
                     viewModel.getTruckDriverById(truckDriverId!!)
                 }
             }
@@ -152,6 +153,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                             findNavController().navigateUp()
                             Toast.makeText(requireContext(),
                                 getString(R.string.created), Toast.LENGTH_SHORT).show()
+                        }
+                        is LoadState.Loading -> {
+                            binding.progressBar.isGone = false
                         }
                         is LoadState.Success.Removed -> {
                             findNavController().navigateUp()

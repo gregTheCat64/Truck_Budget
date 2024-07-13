@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.repo.OrderRepository
 import java.time.LocalDate
@@ -17,7 +18,7 @@ import java.time.Year
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val emptyOrder: Order = Order(
+var emptyOrder: Order = Order(
     date = LocalDate.now()
 )
 
@@ -25,6 +26,9 @@ val emptyOrder: Order = Order(
 class OrderRepositoryImpl @Inject constructor(
     private val ordersDao: OrdersDao
 ): OrderRepository {
+
+    override val lastOrder: Order?
+        get() = ordersDao.getLastOrder()?.toOrderModel()
 
     private val _isOrderEdited = MutableStateFlow(false)
     override val isEdited: StateFlow<Boolean>
@@ -39,7 +43,6 @@ class OrderRepositoryImpl @Inject constructor(
         get() = _editedOrder.asStateFlow()
 
     override suspend fun getAll() {
-        //_allOrders = ordersDao.getAllOrders().map {it.toOrderModel() }
         _orders.emit(ordersDao.getAllOrders().map {it.toOrderModel() })
     }
 
@@ -111,6 +114,10 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createEmptyOrder() {
+        emptyOrder = emptyOrder.copy(cargo = Cargo(
+            lastOrder?.cargo?.cargoWeight?:10,
+            lastOrder?.cargo?.cargoVolume?:32
+        ))
         _editedOrder.emit(emptyOrder)
     }
 

@@ -14,7 +14,7 @@ interface BaseChooseItemRepository<T: Any,S : Any, Id: Any> {
 
     suspend fun search(s: S): List<T>
 
-    suspend fun insert(t: T)
+    suspend fun insert(t: T): Long
 
     suspend fun setItem(t: T)
 

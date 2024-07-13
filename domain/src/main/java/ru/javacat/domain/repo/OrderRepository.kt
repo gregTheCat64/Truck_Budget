@@ -6,7 +6,9 @@ import java.time.Year
 
 interface OrderRepository: BaseRepository<Order, Long> {
 
+    val lastOrder: Order?
     suspend fun getUnpaidOrders()
+
     suspend fun filterOrders(year: Year? = null, month: Month? = null, customerId: Long? = null, paid: Boolean? = null)
 
     suspend fun updateOrderToDb(order: Order)

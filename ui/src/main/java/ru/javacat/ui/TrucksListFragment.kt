@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -19,7 +17,6 @@ import ru.javacat.ui.adapters.TrucksAdapter
 import ru.javacat.ui.databinding.FragmentTrucksListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
-import ru.javacat.ui.view_models.TrucksViewModel
 
 
 @AndroidEntryPoint
@@ -45,7 +42,7 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
             bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
-            findNavController().navigate(R.id.newTransportFragment, bundle)
+            findNavController().navigate(R.id.newTruckFragment, bundle)
         }
         binding.trucksRecView.adapter = trucksAdapter
 

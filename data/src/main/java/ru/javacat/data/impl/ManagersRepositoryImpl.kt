@@ -30,8 +30,8 @@ class ManagersRepositoryImpl @Inject constructor(
         return dbQuery { dao.searchManagers(s).map { it.toManagerModel() } }
     }
 
-    override suspend fun insert(t: Manager) {
-        dbQuery { dao.insertManager(t.toDb()) }
+    override suspend fun insert(t: Manager): Long {
+        return dbQuery { dao.insertManager(t.toDb()) }
     }
 
     override suspend fun setItem(t: Manager) {

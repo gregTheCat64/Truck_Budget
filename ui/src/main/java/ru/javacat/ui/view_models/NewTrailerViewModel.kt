@@ -9,71 +9,71 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.TruckDriver
+import ru.javacat.domain.models.Contractor
+import ru.javacat.domain.models.Trailer
+import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
-import ru.javacat.domain.repo.TruckDriversRepository
-import ru.javacat.domain.use_case.SetTruckDriverUseCase
+import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
-class NewDriverViewModel @Inject constructor(
-    private val truckDriversRepository: TruckDriversRepository,
-    private val routeRepository: RouteRepository,
-    private val setTruckDriverUseCase: SetTruckDriverUseCase
-):ViewModel() {
-
-    val editedTruckDriver = MutableStateFlow<TruckDriver?>(null)
+class NewTrailerViewModel @Inject constructor(
+    private val trailersRepository: TrailersRepository,
+    private val routeRepository: RouteRepository
+): ViewModel() {
     val editedRoute = routeRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-     suspend fun insertNewDriver(driver: TruckDriver, isNeedToSet: Boolean){
-        _loadState.emit(LoadState.Loading)
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val newDriverId = truckDriversRepository.insert(driver)
-                val newDriver = driver.copy(id = newDriverId)
-                Log.i("NewDriverVM", "newdriver: $newDriver")
-                if (isNeedToSet){
-                    //setTruckDriverUseCase.invoke(newDriver)
-                    editedRoute.value?.let {
-                        routeRepository.updateEditedItem(
-                            it.copy(
-                                contractor = it.contractor?.copy(
-                                    driver = newDriver
-                                )
-                            )
-                        )
-                    }
+    val editedTrailer = MutableStateFlow<Trailer?>(null)
 
-                }
-                _loadState.emit(LoadState.Success.Created)
-            }catch (e: Exception){
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
-
-    suspend fun getTruckDriverById(id: Long){
+    suspend fun getTrailerById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                editedTruckDriver.emit(truckDriversRepository.getById(id))
+                val trailer = trailersRepository.getById(id)
+                editedTrailer.emit(trailer)
+                Log.i("newTransportVm", "result: $trailer")
                 _loadState.emit(LoadState.Success.OK)
             }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }
     }
+    suspend fun insertNewTrailer(trailer: Trailer, isNeedToSet: Boolean) {
+        _loadState.emit(LoadState.Loading)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val newTrailerId = trailersRepository.insert(trailer)
+                val newTrailer = trailer.copy(id = newTrailerId)
+                Log.i("NewTransportVM", "newTrailer: $newTrailer")
+                if (isNeedToSet){
+                    //setTrailerUseCase.invoke(newTrailer)
+                    editedRoute.value?.let {
+                        routeRepository.updateEditedItem(
+                            it.copy(
+                                contractor = it.contractor?.copy(
+                                    trailer = newTrailer
+                                )
+                            )
+                        )
+                    }
+                }
+                _loadState.emit(LoadState.Success.Created)
+            } catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
 
-    suspend fun removeDriverById(id: Long){
+
+    suspend fun removeTrailerById(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                 truckDriversRepository.removeById(id)
-                Log.i("NewDriverVM", "deleting driver: $id")
+                trailersRepository.removeById(id)
                 _loadState.emit(LoadState.Success.Removed)
             }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

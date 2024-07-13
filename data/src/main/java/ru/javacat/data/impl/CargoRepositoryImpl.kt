@@ -36,8 +36,8 @@ class CargoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun insert(t: CargoName) {
-        dbQuery { dao.insertCargo(t.toDb()) }
+    override suspend fun insert(t: CargoName):Long {
+        return dbQuery { dao.insertCargo(t.toDb()) }
     }
 
     override suspend fun getById(id: Long): CargoName {
