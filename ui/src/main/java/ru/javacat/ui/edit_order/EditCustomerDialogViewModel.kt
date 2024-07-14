@@ -43,6 +43,27 @@ class EditCustomerDialogViewModel @Inject constructor(
         }
     }
 
+    fun insertNewCompany(company: Company){
+        viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
+            try {
+                val newCompanyId = companiesRepository.insert(company)
+                val newCompany = company.copy(id = newCompanyId)
+                editedOrder.value?.let {
+                    orderRepository.updateEditedItem(
+                        it.copy(
+                            customer = newCompany
+                        )
+                    )
+                }
+                _loadState.emit(LoadState.Success.Created)
+            } catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+
+    }
+
     fun addCustomerToOrder(customer: Company){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)

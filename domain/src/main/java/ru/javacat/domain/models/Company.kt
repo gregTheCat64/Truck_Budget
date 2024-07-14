@@ -9,6 +9,6 @@ data class Company (
     val companyPhone: String? = null,
     val formalAddress: String? = null,
     val postAddress: String? = null,
-    val shortName: String? = null,
+    val shortName: String? = nameToShow,
     override val positionId: Long = 0L,
 ): BaseNameModel<Long>()

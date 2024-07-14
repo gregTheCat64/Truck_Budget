@@ -10,15 +10,18 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.repo.ManagersRepository
+import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
 class NewEmployeeViewModel @Inject constructor(
-    private val repository: ManagersRepository
+    private val repository: ManagersRepository,
+    private val orderRepository: OrderRepository
 ): ViewModel() {
 
     var editedManager = MutableStateFlow<Manager?>(null)
+    val editedOrder = orderRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -35,9 +38,20 @@ class NewEmployeeViewModel @Inject constructor(
         }
     }
 
-    fun saveNewManager(manager: Manager){
+    fun saveNewManager(manager: Manager, isNeedToSet: Boolean){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insert(manager)
+            val newManagerId = repository.insert(manager)
+            val newManager = manager.copy(id = newManagerId)
+
+            if (isNeedToSet) {
+                editedOrder.value?.copy(
+                    manager = newManager
+                )?.let {
+                    orderRepository.updateEditedItem(
+                        it
+                    )
+                }
+            }
         }
     }
 }

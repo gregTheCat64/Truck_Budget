@@ -33,14 +33,14 @@ class EditOrderViewModel @Inject constructor(
     val loadState = _loadState.asSharedFlow()
 
     init {
-        createEmptyOrder()
+        //createEmptyOrder()
     }
 
     fun getEditedRoute(): Route? {
         return routeRepository.editedItem.value
     }
 
-    private fun createEmptyOrder(){
+    fun createEmptyOrder(){
         viewModelScope.launch (Dispatchers.IO){
             orderRepository.createEmptyOrder()
         }

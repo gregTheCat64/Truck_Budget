@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -85,17 +86,21 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             if (daysToPay != null) viewModel.editOrder(daysToPay = daysToPay.toInt())
             if (docsNumber != null) viewModel.editOrder(sentDocsNumber = docsNumber)
 
-            cargoWeight?.let { viewModel.editOrder(
-                cargo = currentOrder?.cargo?.copy(
-                    cargoWeight = it.toInt()
+            cargoWeight?.let {
+                viewModel.editOrder(
+                    cargo = currentOrder?.cargo?.copy(
+                        cargoWeight = it.toInt()
+                    )
                 )
-            ) }
+            }
 
-            cargoVolume?.let { viewModel.editOrder(
-                cargo = currentOrder?.cargo?.copy(
-                    cargoVolume = it.toInt()
+            cargoVolume?.let {
+                viewModel.editOrder(
+                    cargo = currentOrder?.cargo?.copy(
+                        cargoVolume = it.toInt()
+                    )
                 )
-            ) }
+            }
 
         }
     }
@@ -139,7 +144,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 if (needToRestore) {
                     Log.i("EditOrderFrag", "restoring Order")
                     viewModel.updateEditedOrder(orderIdArg!!)
-                }
+
+                } else viewModel.createEmptyOrder()
             }
         }
 
@@ -147,13 +153,16 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest { order ->
-                    if (order != null){
+                    if (order != null) {
                         Log.i("EditOrderFrag", "collecting Order: $order")
                         currentOrder = order
                         initUi(order)
                         //в режиме редактирования восстанавливаем Рейс во флоу
                         if (needToRestore) {
-                            Log.i("EditOrderFrag", "restoringRoute, order.routeId: ${order.routeId}")
+                            Log.i(
+                                "EditOrderFrag",
+                                "restoringRoute, order.routeId: ${order.routeId}"
+                            )
                             order.routeId.let { viewModel.updateEditedRoute(it) }
                             needToRestore = false
                         } else {
@@ -240,7 +249,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
 
-
         //Сохранение заявки
         binding.saveBtn.setOnClickListener {
             saveOrder()
@@ -251,15 +259,22 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
                 Log.i("EditOrderFrag", "state: $it")
-                if (it == LoadState.Success.GoBack) {
-                    //сохранились, идем назад:
-                    //if (isEditingOrderArg == true) {
-                    if (needToRestore){
-                        Log.i("EditOrderFrag", "isEditing: $needToRestore")
-                        findNavController().navigateUp()
-                    } else  findNavController().popBackStack(R.id.routeViewPagerFragment,false)
+                when {
+                    it is LoadState.Success.GoBack -> {
+                        //сохранились, идем назад:
+                        if (needToRestore) {
+                            Log.i("EditOrderFrag", "isEditing: $needToRestore")
+                            findNavController().navigateUp()
+                        } else findNavController().popBackStack(R.id.routeViewPagerFragment, false)
+                    }
 
-                    //} else findNavController().popBackStack(R.id.viewPagerFragment, false)
+                    it is LoadState.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.fill_requested_fields),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -281,7 +296,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             binding.daysToPayTv.setText(value)
         }
 
-        order.price.let {
+        order.price?.let {
             val value = "$it"
             binding.priceTv.setText(value)
         }
@@ -327,7 +342,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 //        } else getString(R.string.unpaid_order)
 
         //adapter
-        pointsAdapter = PointWithRemoveAdapter{
+        pointsAdapter = PointWithRemoveAdapter {
             viewModel.removePoint(it)
         }
         binding.pointsRecView.adapter = pointsAdapter
@@ -341,18 +356,12 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         val id = currentOrder?.id ?: 0
         //currentOrder.id.ifEmpty { "R$routeId" + "/" + (currentRoute.orderList.size + 1).toString() }
 
-        val routeTruck = currentOrder?.truck ?: currentRoute?.contractor?.truck
-
-        val routeTrailer = currentOrder?.trailer ?: currentRoute?.contractor?.trailer
-
-        val routeDriver = currentOrder?.driver ?: currentRoute?.contractor?.driver
+        val contractor = currentOrder?.contractor?: currentRoute?.contractor
 
         val newOrder = viewModel.editedOrder.value?.copy(
             id,
             routeId = routeId,
-            driver = routeDriver,
-            truck = routeTruck,
-            trailer = routeTrailer
+            contractor = contractor
         )
 
         if (newOrder != null) {

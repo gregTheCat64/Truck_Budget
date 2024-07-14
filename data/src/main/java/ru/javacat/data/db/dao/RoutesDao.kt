@@ -19,7 +19,7 @@ interface RoutesDao {
     fun getAllRoutes(): List<DbRouteWithOrders>
 
     @Transaction
-    @Query("SELECT * FROM routes_table WHERE isFinished = 1 ORDER BY id DESC LIMIT 1 ")
+    @Query("SELECT * FROM routes_table WHERE companyId = -1 ORDER BY id DESC LIMIT 1 ")
     fun getLastRoute(): DbRouteWithOrders?
 
     @Transaction

@@ -114,10 +114,13 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createEmptyOrder() {
+        Log.i("OrderRepo", "lastOrder: $lastOrder")
+
         emptyOrder = emptyOrder.copy(cargo = Cargo(
             lastOrder?.cargo?.cargoWeight?:10,
             lastOrder?.cargo?.cargoVolume?:32
         ))
+        Log.i("OrderRepo", "emptyOrder: $emptyOrder")
         _editedOrder.emit(emptyOrder)
     }
 

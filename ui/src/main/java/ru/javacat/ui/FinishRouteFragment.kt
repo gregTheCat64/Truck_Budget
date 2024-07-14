@@ -292,7 +292,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         revenue = 0
         val orders = route.orderList
         for (i in orders) {
-            revenue = revenue?.plus(i.price)
+            revenue = i.price?.let { revenue?.plus(it) }
         }
         Log.i("FinishRouteFrag", "revenue: $revenue")
     }

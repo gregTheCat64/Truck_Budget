@@ -11,6 +11,7 @@ import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.data.db.entities.DbTrailer
 import ru.javacat.data.db.entities.DbTruck
+import ru.javacat.domain.models.Contractor
 import ru.javacat.domain.models.Order
 
 data class DbOrderWithCustomer(
@@ -81,10 +82,12 @@ data class DbOrderWithCustomer(
             commission = order.commission,
             customer = customer.toCompanyModel(),
             manager = manager?.toManagerModel(),
-            contractor = contractor?.toCompanyModel(),
-            driver = driver?.toTruckDriverModel(),
-            truck = truck?.toTruck(),
-            trailer = trailer?.toTrailer(),
+            contractor = Contractor(
+                contractor?.toCompanyModel(),
+                driver?.toTruckDriverModel(),
+                truck?.toTruck(),
+                trailer?.toTrailer()
+            ),
             cargo = order.cargo,
             extraConditions = order.extraConditions,
             daysToPay = order.daysToPay,

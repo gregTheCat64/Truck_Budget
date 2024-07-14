@@ -60,19 +60,17 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
+
+
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_remove, menu)
+                menuInflater.inflate(R.menu.menu_empty, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
-                        return true
-                    }
-                    R.id.remove_menu_item -> {
-                        truckDriverId?.let { removeDriver(it) }
                         return true
                     }
 

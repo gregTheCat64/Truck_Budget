@@ -94,7 +94,7 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
         prepayment = route.countRoute?.prepayment?:0
 
         for (i in route.orderList){
-            revenue = revenue + i.price
+            revenue = revenue + i.price!!
             contractorsCost = contractorsCost + i.contractorPrice!!
         }
         profit =  revenue - contractorsCost

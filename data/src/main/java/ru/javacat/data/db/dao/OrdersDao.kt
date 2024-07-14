@@ -19,7 +19,7 @@ interface OrdersDao {
     suspend fun getUnpaidOrder(): List<DbOrderWithCustomer>
 
     @Transaction
-    @Query("SELECT * FROM orders_table WHERE customerId = -1 ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM orders_table  ORDER BY id DESC LIMIT 1")
     fun getLastOrder(): DbOrderWithCustomer?
 
     @Upsert

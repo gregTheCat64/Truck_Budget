@@ -52,16 +52,11 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_remove, menu)
+                menuInflater.inflate(R.menu.menu_empty, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.remove_menu_item -> {
-                        removeTransport(transportId)
-                        findNavController().navigateUp()
-                        return true
-                    }
 
                     android.R.id.home -> {
                         findNavController().navigateUp()

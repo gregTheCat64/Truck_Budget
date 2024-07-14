@@ -65,7 +65,7 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
 
     private fun initUi(route: Route) {
         //TODO перенести этот блок на основнюу страницу:
-        val currentIncome = (route.orderList.map { it.price }).sum()
+        val currentIncome = (route.orderList.map { it.price!! }).sum()
 
         if (route.isFinished && route.revenue != currentIncome){
                 Toast.makeText(requireContext(), "Изменилась выручка, пересчитайте рейс", Toast.LENGTH_SHORT).show()

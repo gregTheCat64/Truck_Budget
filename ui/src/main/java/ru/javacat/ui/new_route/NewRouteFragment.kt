@@ -149,6 +149,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     }
 
     private fun setLastRouteToCurrent(){
+        Log.i("NewRouteFrag", "settingLastRoute")
         viewModel.setLastRouteToEditedRoute()
     }
 

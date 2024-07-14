@@ -6,7 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +17,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.formatCompanyName
+import ru.javacat.common.utils.toShortCompanyName
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseCompanyAdapter
 import ru.javacat.ui.databinding.FragmentChooseItemBinding
@@ -56,6 +61,22 @@ class EditCustomerDialogFragment: BottomSheetDialogFragment() {
                 }
             }
         }
+
+        binding.saveBtn.setOnClickListener {
+            val newCompanyName = binding.searchEditText.text.toString().trim()
+            val newCompany = if (newCompanyName.isNotEmpty()) {
+                Company(0,
+                    nameToShow = newCompanyName.formatCompanyName(),
+                    shortName = newCompanyName.toShortCompanyName()
+                    )
+            } else null
+            if (newCompany != null) {
+                viewModel.insertNewCompany(newCompany)
+                this.dismiss()
+            } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     private fun addEditTextListener() {
@@ -66,6 +87,7 @@ class EditCustomerDialogFragment: BottomSheetDialogFragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchCustomers(p0.toString())
+                binding.saveBtn.isVisible = !p0.isNullOrEmpty()
             }
 
             override fun afterTextChanged(p0: Editable?) {

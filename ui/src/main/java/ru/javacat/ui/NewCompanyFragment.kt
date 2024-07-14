@@ -21,6 +21,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.formatCompanyName
+import ru.javacat.common.utils.toShortCompanyName
 import ru.javacat.domain.models.Company
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
@@ -59,12 +61,14 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
+
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_cancel, menu)
+                menuInflater.inflate(R.menu.menu_empty, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -189,7 +193,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
             binding.name.requestFocus()
             return false
         } else {
-            companyName = formatName(binding.name.text.toString())
+            companyName = binding.name.text.toString().formatCompanyName()
 
         }
 
@@ -207,7 +211,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
 
 
         if (binding.shortName.text.isNullOrEmpty()) {
-            shortName = toShortName(companyName)
+            shortName = companyName.toShortCompanyName()
         } else shortName = binding.shortName.text.toString()
 
         return true
@@ -221,21 +225,6 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
             viewModel.saveNewCustomer(newCustomer, isNeedToSet)
     }
 
-    private fun formatName(str: String): String {
-        return str
-            .replace("Ооо", "ООО")
-            .replace("Ип", "ИП")
-            .trim()
-    }
-
-    private fun toShortName(str: String): String {
-        return str
-            .replace("ООО", "")
-            .replace("Ооо", "")
-            .replace("ИП", "")
-            .replace("Ип", "")
-            .replace("\"", "").trim()
-    }
 }
 
 //    override fun onResume() {

@@ -1,5 +1,6 @@
 package ru.javacat.ui.new_route
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -79,12 +80,14 @@ class NewRouteViewModel @Inject constructor(
     fun setLastRouteToEditedRoute() {
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
+            Log.i("NewRouteVM", "lastRoute: $lastRoute")
             lastRoute?.contractor?.apply {
 //                this.company?.let { setCompanyUseCase.invoke(it) }
 //                this.driver?.let { setTruckDriverUseCase.invoke(it) }
 //                this.truck?.let { setTruckUseCase.invoke(it) }
 //                this.trailer?.let { setTrailerUseCase.invoke(it) }
                 editedRoute.value?.copy(
+                    id = 0,
                     contractor = lastRoute.contractor
                 )?.let {
                     repo.updateEditedItem(

@@ -38,6 +38,8 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
             FragmentNewEmployeeBinding.inflate(inflater, container, false)
         }
 
+    private var isNeedToSet: Boolean = false
+
     private var firstName: String = ""
     private var surName: String = ""
     private var phoneNumber: String = ""
@@ -52,6 +54,7 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
         val args = arguments
         customerId = args?.getLong(FragConstants.CUSTOMER_ID)?:0
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?: false
         Log.i("Log", "custmId: $customerId")
 
         //employeeId = null
@@ -84,7 +87,7 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
                     R.id.save -> {
                         getFieldsData()
-                        saveManager(managerId?:0L)
+                        saveManager(managerId?:0L, isNeedToSet)
                         return true
                     }
 
@@ -120,14 +123,20 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         }
 
 
+        binding.saveBtn.setOnClickListener {
+            if (getFieldsData()){
+                saveManager(managerId?:0L, isNeedToSet)
+            } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
+        }
+
         binding.firstName.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (!p0.isNullOrBlank()){
-                    binding.firstName.error = null
+                if (!p0.isNullOrEmpty()){
+                    binding.firstNameLayout.error = null
                 }
             }
 
@@ -135,32 +144,19 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
 
             }
         })
-
-        binding.saveBtn.setOnClickListener {
-            getFieldsData()
-            saveManager(managerId?:0L)
-        }
-
-
     }
 
-    private fun getFieldsData(){
+    private fun getFieldsData(): Boolean{
         val requestField = "Обязательное поле"
-        if (binding.firstName.text.isNullOrEmpty()){
-            binding.firstNameLayout.error = requestField
-            binding.firstName.requestFocus()
-            return
-        } else {
-            firstName = binding.firstName.text.toString()
-        }
 
 //        if (binding.phoneNumber.text.isNullOrEmpty()){
 //            binding.phoneLayout.error = requestField
 //            binding.phoneNumber.requestFocus()
-//            return
+//            return false
 //        } else {
 //            phoneNumber = binding.phoneNumber.text.toString()
 //        }
+
         binding.surName.text?.let {
             surName = it.toString()
         }
@@ -178,6 +174,16 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         comment = binding.comment.text?.let {
             if (it.isBlank()) null else it.toString()
         }
+
+        if (binding.firstName.text.isNullOrEmpty()){
+            binding.firstNameLayout.error = requestField
+            binding.firstName.requestFocus()
+            return false
+        } else {
+            firstName = binding.firstName.text.toString().trim()
+            Log.i("NewEmplFrag", "firstname = $firstName")
+        }
+        return true
     }
 
     private fun updateUi(manager: Manager){
@@ -192,14 +198,14 @@ class NewEmployeeFragment: BaseFragment<FragmentNewEmployeeBinding>() {
         }
     }
     
-    private fun saveManager(id: Long){
+    private fun saveManager(id: Long, isNeedToSet: Boolean){
         if (firstName.isNotEmpty() &&  customerId != 0L){
             val newEmployee = Manager(
                 id , 0,customerId, firstName,null,
                 surName, null,null, null, null,
                 phoneNumber, secondPhoneNumber, email, comment
             )
-            viewModel.saveNewManager(newEmployee)
+            viewModel.saveNewManager(newEmployee, isNeedToSet)
             findNavController().navigateUp()
         } else {
             Toast.makeText(requireContext(), "Заполните необходимые поля", Toast.LENGTH_SHORT).show()

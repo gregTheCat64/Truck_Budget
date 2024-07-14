@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -34,7 +35,7 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChooseItemBinding.inflate(layoutInflater)
-        binding.newItemBtn.isGone = true
+        //binding.newItemBtn.isGone = true
         customerId = arguments?.getLong(FragConstants.COMPANY_ID)
         Log.i("EditManagerDialogFragment", "customerId: $customerId")
 
@@ -53,6 +54,15 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
 
         binding.itemList.adapter = managerAdapter
         binding.itemNameTextView.text = getString(R.string.employee)
+        binding.newItemBtn.text = getString(R.string.create_new_employee)
+        binding.newItemBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
+            customerId?.let { bundle.putLong(FragConstants.COMPANY_ID, it) }
+
+            this.dismiss()
+            findNavController().navigate(R.id.newEmployeeFragment, bundle)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

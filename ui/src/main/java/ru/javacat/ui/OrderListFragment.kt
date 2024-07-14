@@ -148,7 +148,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         var debt = 0
         orderList.forEach {
             if (!it.isPaidByCustomer){
-                debt += it.price
+                debt += it.price!!
             }
         }
         binding.debtValue.text = "$debt руб."
