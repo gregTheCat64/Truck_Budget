@@ -18,9 +18,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="48dp"
-                android:padding="24dp"
+                android:padding="18dp"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/customerCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/unfilled_circle" />
 
                     <TextView
                         android:id="@+id/editCustomerTv"
@@ -28,16 +39,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+
                         android:text="@string/customer"
-                        android:layout_gravity="start"
+                        android:layout_gravity="center"
                         />
+
+                </LinearLayout>
+
+
 
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/customerInputLayout"
                     android:layout_marginTop="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -58,6 +75,9 @@
                     android:id="@+id/managerInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -72,16 +92,32 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/cargoCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/unfilled_circle"
+                        />
+
                     <TextView
                         android:id="@+id/editCargoTv"
                         style="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
                         android:text="@string/cargo"
-                        android:layout_gravity="start"
-                         />
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+
 
 
 
@@ -94,6 +130,8 @@
                         android:id="@+id/cargoTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginEnd="36dp"
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="@string/cargo_name"
@@ -103,14 +141,15 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tvVolume"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginEnd="36dp"
                         android:hint="@string/volume_m3"
                         />
 
@@ -118,14 +157,15 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/weightTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginEnd="36dp"
                         android:hint="@string/weight_ton"
                         />
 
@@ -137,7 +177,7 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="36dp"
                     android:layout_marginTop="8dp"
                     android:hint="@string/loading_type" />
 
@@ -145,6 +185,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
                     >
 
                     <CheckBox
@@ -173,7 +215,18 @@
                 </LinearLayout>
 
 
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:id="@+id/routeCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/unfilled_circle"
+                        />
 
                     <TextView
                         android:id="@+id/editPointsTv"
@@ -181,10 +234,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
                         android:text="@string/route"
-                        android:layout_gravity="start"
-                         />
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+
+
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -193,7 +250,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/point_item_with_rmv_btn" />
 
@@ -207,6 +265,18 @@
                     android:layout_gravity="center"
                     />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                <ImageView
+                    android:id="@+id/paymentCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/unfilled_circle"
+                    />
 
                 <TextView
                         android:id="@+id/editPaymentTv"
@@ -214,9 +284,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="start"
+
+                        android:layout_gravity="center"
                         android:text="@string/payment" />
+                </LinearLayout>
 
 
 
@@ -224,14 +295,15 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
                     android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/priceTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:inputType="number"
                         android:hint="@string/cost"
                         />
 
@@ -241,59 +313,55 @@
                     android:id="@+id/paymentTypeChipGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="36dp"
                     app:singleSelection="true"
                     android:layout_gravity="bottom"
                     >
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/cash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="Нал"
+                        android:text="@string/cash"
                         />
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/card"
+                        />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/withoutFee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:checked="true"
-                        android:text="Без НДС"
+                        android:text="@string/w_o_fee"
                         />
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/withFee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="НДС"
+                        android:text="@string/with_fee"
                         />
 
                 </com.google.android.material.chip.ChipGroup>
 
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/contractorsPriceLayout"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/contractorsPrice"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/contractor_s_cost"
-                            />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/daysToPayTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
+                        android:inputType="number"
                         android:hint="@string/days_to_pay"
                         />
 
@@ -305,7 +373,7 @@
                     android:layout_height="wrap_content"
                     app:singleSelection="true"
                     android:layout_gravity="bottom"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="36dp"
                     >
                     <com.google.android.material.chip.Chip
                         android:id="@+id/days3Chip"
@@ -342,9 +410,83 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
-                <com.google.android.material.textfield.TextInputLayout
+
+
+                <LinearLayout
+                    android:id="@+id/contractorsFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/contractorsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:endIconMode="clear_text"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginEnd="36dp"
+                        android:layout_marginTop="16dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/contractorsPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Перевозчику, руб."
+                            android:inputType="number"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="36dp"
+                        android:layout_gravity="bottom"
+                        >
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cashToContractor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/cash"
+                            />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cardToContractor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/card"
+                            />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/withoutFeeToContractor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:checked="true"
+                            android:text="@string/w_o_fee"
+                            />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/withFeeToContractor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:text="@string/with_fee"
+                            />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </LinearLayout>
+
+
+
+
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

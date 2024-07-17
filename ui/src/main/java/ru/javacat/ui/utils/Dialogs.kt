@@ -29,10 +29,12 @@ fun FragmentManager.showCalendar(callback: (LocalDate) -> Unit) {
     picker.show(this, "materialDatePicker")
 }
 
-fun FragmentManager.showOneInputDialog(oldValue: String, typeOfValue: String){
+fun FragmentManager.showOneInputDialog(oldValue: Int?, typeOfValue: String){
     val dialogFragment = OneInputValueDialogFragment()
     val dialogBundle = Bundle()
-    dialogBundle.putString(FragConstants.OLD_VALUE, oldValue)
+    if (oldValue != null) {
+        dialogBundle.putInt(FragConstants.OLD_VALUE, oldValue)
+    }
     dialogBundle.putString(FragConstants.TYPE_OF_VALUE, typeOfValue)
     dialogFragment.arguments = dialogBundle
     dialogFragment.show(this, "")

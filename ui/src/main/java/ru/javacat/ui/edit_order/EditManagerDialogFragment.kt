@@ -35,7 +35,6 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChooseItemBinding.inflate(layoutInflater)
-        //binding.newItemBtn.isGone = true
         customerId = arguments?.getLong(FragConstants.COMPANY_ID)
         Log.i("EditManagerDialogFragment", "customerId: $customerId")
 
@@ -59,9 +58,9 @@ class EditManagerDialogFragment: BottomSheetDialogFragment() {
             val bundle = Bundle()
             bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
             customerId?.let { bundle.putLong(FragConstants.COMPANY_ID, it) }
-
-            this.dismiss()
             findNavController().navigate(R.id.newEmployeeFragment, bundle)
+            this.dismiss()
+
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

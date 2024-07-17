@@ -71,9 +71,6 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO добавить тут инициацию по первому входу во фрагмент
-
-        //Получаем прошлый рейс и выставляем последние значения
         if (!isLastRouteLoaded){
             setLastRouteToCurrent()
             isLastRouteLoaded = true

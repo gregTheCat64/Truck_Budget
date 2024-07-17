@@ -1,6 +1,8 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -57,4 +59,6 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+
 }

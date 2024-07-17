@@ -125,7 +125,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         }
 
         binding.docsNumber.setOnClickListener {
-            parentFragmentManager.showOneInputDialog("", FragConstants.DOCS_NUMBER)
+            parentFragmentManager.showOneInputDialog(0, FragConstants.DOCS_NUMBER)
         }
 
         binding.docsReceivedDateTvValue.setOnClickListener {

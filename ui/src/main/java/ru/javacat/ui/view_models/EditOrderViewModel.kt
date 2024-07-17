@@ -46,9 +46,9 @@ class EditOrderViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateEditedOrder(id: Long) {
-        _loadState.emit(LoadState.Loading)
+    fun updateEditedOrder(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
             try {
                 //saveRoute()
                 val editedOrder = orderRepository.getById(id)
@@ -105,6 +105,7 @@ class EditOrderViewModel @Inject constructor(
     fun editOrder(
         customer: Company? = null,
         price: Int? = null,
+        contractorsPrice: Int? = null,
         cargo: Cargo? = null,
         daysToPay: Int? = null,
         paymentDeadline: LocalDate? = null,
@@ -116,7 +117,8 @@ class EditOrderViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             editedOrder.value?.copy(
                 customer = customer?: editedOrder.value?.customer,
-                price = price?:editedOrder.value?.price?:0,
+                price = price?:editedOrder.value?.price,
+                contractorPrice = contractorsPrice,
                 cargo = cargo?: editedOrder.value!!.cargo,
                 daysToPay = daysToPay?: editedOrder.value!!.daysToPay,
                 paymentDeadline = paymentDeadline?: editedOrder.value!!.paymentDeadline,

@@ -16,10 +16,13 @@ class OneInputValueDialogFragment : DialogFragment(R.layout.fragment_one_input_v
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val binding = FragmentOneInputValueDialogBinding.inflate(layoutInflater)
 
-        val oldValue = arguments?.getString(FragConstants.OLD_VALUE)
+        val oldValue = arguments?.getInt(FragConstants.OLD_VALUE)
         val typeOfValue = arguments?.getString(FragConstants.TYPE_OF_VALUE)
 
+        Toast.makeText(requireContext(), "oldValue: ${oldValue.toString()}", Toast.LENGTH_SHORT).show()
+
         //typeOfValue.let { Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show() }
+        //TODO посмотреть по аргументам, прилетают нули если не обновлял поле
         val hint = when (typeOfValue) {
             FragConstants.DAYS_TO_PAY -> "Срок оплаты, дней"
             FragConstants.PRICE -> "Цена, руб."
@@ -27,14 +30,17 @@ class OneInputValueDialogFragment : DialogFragment(R.layout.fragment_one_input_v
             else -> "Новое Значение"
         }
         binding.oneValueInputLayout.setHint(hint)
+        binding.newValueEt.requestFocus()
 
-        oldValue.let { if (!it.isNullOrEmpty()) binding.newValueEt.setText(it.toString()) }
+        oldValue?.let { binding.newValueEt.setText(it.toString()) }
+
+        //TODO разобратсья с типами, для документов стринг должен быть или лонг!
 
         val listener = DialogInterface.OnClickListener { _, i ->
             when (i) {
                 DialogInterface.BUTTON_NEGATIVE -> this.dismiss()
                 DialogInterface.BUTTON_POSITIVE -> {
-                    val newValue = binding.newValueEt.text.toString()
+                    val newValue = binding.newValueEt.text
                     setFragmentResult(FragConstants.NEW_VALUE, bundleOf(typeOfValue.toString() to newValue))
                 }
             }
