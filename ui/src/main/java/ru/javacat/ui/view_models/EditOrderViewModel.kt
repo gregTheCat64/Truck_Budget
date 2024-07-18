@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Company
+import ru.javacat.domain.models.Contractor
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
@@ -105,6 +106,7 @@ class EditOrderViewModel @Inject constructor(
     fun editOrder(
         customer: Company? = null,
         price: Int? = null,
+        contractor: Contractor? = null,
         contractorsPrice: Int? = null,
         cargo: Cargo? = null,
         daysToPay: Int? = null,
@@ -118,6 +120,7 @@ class EditOrderViewModel @Inject constructor(
             editedOrder.value?.copy(
                 customer = customer?: editedOrder.value?.customer,
                 price = price?:editedOrder.value?.price,
+                contractor = contractor,
                 contractorPrice = contractorsPrice,
                 cargo = cargo?: editedOrder.value!!.cargo,
                 daysToPay = daysToPay?: editedOrder.value!!.daysToPay,

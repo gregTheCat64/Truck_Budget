@@ -100,7 +100,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
 
         //Новый заказ
         binding.addOrderBtn.setOnClickListener {
-            //viewModel.clearEditedOrder()
+            viewModel.clearOrder()
             //viewModel.addRouteIdToOrder(routeId = currentRoute?.id?:0)
             val bundle = Bundle()
             bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)

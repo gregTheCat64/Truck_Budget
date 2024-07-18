@@ -62,8 +62,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     private var newCargoVolume: Int? = null
 
 
-    var customerId: Long? = null
-
     private var orderIdArg: Long? = null
     private var routeIdArg: Long? = null
 
@@ -86,36 +84,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         Log.i("EditOrderFrag", "orderId: $orderIdArg")
         Log.i("EditOrderFrag", "routeId: $routeIdArg")
 
-        setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
-            //val price = bundle.getInt(FragConstants.PRICE)
-            val contractorsPrice = bundle.getInt(FragConstants.PRICE)
-            val daysToPay = bundle.getInt(FragConstants.DAYS_TO_PAY)
-            val docsNumber = bundle.getInt(FragConstants.DOCS_NUMBER)
-
-            val cargoWeight = bundle.getInt(FragConstants.CARGO_WEIGHT)
-            val cargoVolume = bundle.getInt(FragConstants.CARGO_VOLUME)
-
-            //if (price != null) viewModel.editOrder(price = price.toInt())
-            if (contractorsPrice != null) viewModel.editOrder(contractorsPrice=contractorsPrice.toInt())
-            if (daysToPay != null) viewModel.editOrder(daysToPay = daysToPay.toInt())
-            if (docsNumber != null) viewModel.editOrder(sentDocsNumber = docsNumber.toString())
-
-            cargoWeight?.let {
-                viewModel.editOrder(
-                    cargo = currentOrder?.cargo?.copy(
-                        cargoWeight = it.toInt()
-                    )
-                )
-            }
-
-            cargoVolume?.let {
-                viewModel.editOrder(
-                    cargo = currentOrder?.cargo?.copy(
-                        cargoVolume = it.toInt()
-                    )
-                )
-            }
-        }
     }
 
     override fun onCreateView(
@@ -153,7 +121,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!isLastOrderLoaded){
+        if (!isLastOrderLoaded) {
             if (needToRestore) {
                 Log.i("EditOrderFrag", "restoring Order")
                 viewModel.updateEditedOrder(orderIdArg!!)
@@ -198,7 +166,9 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 viewModel.editedRoute.collectLatest { route ->
                     Log.i("EditOrderFrag", "currentRoute: $route")
                     currentRoute = route
-                    binding.contractorsFrame.isGone = currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
+//                    binding.contractorsFrame.isGone =
+//                        currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
+                    //viewModel.editOrder(contractor = route?.contractor)
                 }
             }
         }
@@ -228,7 +198,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             //Log.i("AddpaymentFrag", "checkedId: $checkedId")
             val chip = chipGroup.findViewById<Chip>(checkedId)
             binding.daysToPayTv.setText(chip?.tag?.toString())
-            viewModel.editOrder(daysToPay = chip?.tag?.toString()?.toInt())
+            //newDaysToPay = binding.daysToPayTv.text.toString().toInt()
+            //viewModel.editOrder(daysToPay = chip?.tag?.toString()?.toInt())
         }
 
         binding.paymentTypeChipGroup.setOnCheckedStateChangeListener { chipGroup, list ->
@@ -308,10 +279,11 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         Log.i("EditOrderFrag", "order comp id: ${currentRoute?.contractor?.company?.id}")
-        binding.contractorsFrame.isGone = currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
+        binding.contractorsFrame.isGone =
+            currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
 
         order.contractorPrice?.let {
-            val value = "$it руб."
+            val value = "$it"
             binding.contractorsPrice.setText(value)
         }
 
@@ -328,87 +300,120 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
     }
 
-    private fun checkPayment(): Boolean{
-        if (binding.priceTv.text.isNullOrEmpty()) {return false} else {
+    private fun checkPayment(): Boolean {
+        if (binding.priceTv.text.isNullOrEmpty() ||
+            binding.daysToPayTv.text.isNullOrEmpty()
+            ) {
+            binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+            return false
+        } else {
             newPrice = binding.priceTv.text.toString().toInt()
-        }
-        if (binding.daysToPayTv.text.isNullOrEmpty()) {return false} else {
             newDaysToPay = binding.daysToPayTv.text.toString().toInt()
         }
-        if (currentOrder?.contractor?.company?.id != FragConstants.MY_COMPANY_ID
-            && binding.contractorsPrice.text.isNullOrEmpty()
-            ) {return false} else {
+
+        println("currentOrderIdComp = ${currentRoute?.contractor?.company?.id}")
+        if (currentRoute?.contractor?.company?.id != FragConstants.MY_COMPANY_ID){
+            if ( binding.contractorsPrice.text.isNullOrEmpty()){
+                binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+                return false
+            } else {
                 newContractorPrice = binding.contractorsPrice.text?.toString()?.toInt()
+            }
         }
 
+        binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
         return true
     }
 
-    private fun checkCargo(): Boolean{
-        if (currentOrder?.cargo?.cargoName.isNullOrEmpty()) {return false}
-        if (binding.weightTv.text.isNullOrEmpty()) {return false} else {
-            newCargoWeight = binding.weightTv.text.toString().toInt()
+    private fun checkCargo(): Boolean {
+        if (currentOrder?.cargo?.cargoName.isNullOrEmpty() ||
+            binding.weightTv.text.isNullOrEmpty() ||
+            binding.tvVolume.text.isNullOrEmpty()
+            ) {
+            binding.cargoCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+            return false
+        } else {
+            binding.cargoCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
+            return true
         }
-        if (binding.tvVolume.text.isNullOrEmpty()) {return false} else {
-            newCargoVolume = binding.tvVolume.text.toString().toInt()
-        }
-
-        return true
     }
 
-    private fun checkPoints(): Boolean{
-         return currentOrder?.points?.size!! >= 2
+    private fun checkPoints(): Boolean {
+        if ( currentOrder?.points?.size!! < 2){
+            binding.routeCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+            return false
+        } else {
+            binding.routeCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
+            return true
+        }
     }
 
-    private fun checkCustomer(): Boolean{
+    private fun checkCustomer(): Boolean {
         return currentOrder?.customer != null
     }
 
-    private fun paintOrder(unCheckedImage: Int){
+//    private fun checkOrder(): Boolean {
+//        if (checkCustomer() && checkPayment() && checkPoints() && checkCargo()) {
+//            return true
+//        } else {
+//            paintOrder(R.drawable.unfilled_circle)
+//            return false
+//        }
+//    }
+
+    private fun paintOrder(unCheckedImage: Int) {
         val checkedCircle = requireContext().getDrawable(R.drawable.filled_circle)
         var unCheckedCircle = requireActivity().getDrawable(unCheckedImage)
 
         if (checkCustomer()) {
             binding.customerCheck.setImageDrawable(checkedCircle)
-        } else  binding.customerCheck.setImageDrawable(unCheckedCircle)
+        } else {
+            binding.scroll.smoothScrollTo(0, binding.customerCheck.baseline)
+            binding.customerCheck.setImageDrawable(requireActivity().getDrawable(unCheckedImage))
+        }
 
         if (checkCargo()) {
             binding.cargoCheck.setImageDrawable(checkedCircle)
-        } else  binding.cargoCheck.setImageDrawable(unCheckedCircle)
+        } else {
+            binding.scroll.smoothScrollTo(0, binding.cargoCheck.baseline)
+            binding.cargoCheck.setImageDrawable(unCheckedCircle)
+        }
 
-        if (checkPoints()){
+        if (checkPoints()) {
             binding.routeCheck.setImageDrawable(checkedCircle)
-        } else binding.routeCheck.setImageDrawable(unCheckedCircle)
+        } else {
+            binding.scroll.smoothScrollTo(0, binding.routeCheck.baseline)
+            binding.routeCheck.setImageDrawable(unCheckedCircle)
+        }
 
-        if (checkPayment()){
+        if (checkPayment()) {
             binding.paymentCheck.setImageDrawable(checkedCircle)
-        } else binding.paymentCheck.setImageDrawable(unCheckedCircle)
+        } else {
+            binding.scroll.smoothScrollTo(0, binding.paymentCheck.baseline)
+            binding.paymentCheck.setImageDrawable(unCheckedCircle)
+        }
     }
 
     private fun saveOrder() {
         val routeId = currentRoute?.id ?: 0
         val id = currentOrder?.id ?: 0
 
-
-        val contractor = currentOrder?.contractor?: currentRoute?.contractor
-
+        val newContractor = currentOrder?.contractor ?: currentRoute?.contractor
 
         val newCargo = if (newCargoWeight != null && newCargoVolume != null) {
-            viewModel.editedOrder.value?.cargo?.copy(
+            currentOrder?.cargo?.copy(
                 cargoWeight = newCargoWeight!!,
                 cargoVolume = newCargoVolume!!
             )
         } else {
             null
         }
-
         //Добавить проверку всё ли ок и чек
-        if (checkCustomer() && checkPoints() && checkCustomer() && checkPayment()){
+        if (checkCustomer() && checkPoints() && checkCargo() && checkPayment()) {
 
-            val newOrder = viewModel.editedOrder.value?.copy(
+            val newOrder = currentOrder?.copy(
                 id,
                 routeId = routeId,
-                contractor = contractor,
                 price = newPrice,
                 daysToPay = newDaysToPay,
                 contractorPrice = newContractorPrice,
@@ -418,12 +423,14 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             if (newOrder != null) {
                 viewModel.saveOrder(newOrder)
             }
+
         } else {
-
-            //unCheckedCircle = requireActivity().getDrawable(R.drawable.baseline_cancel_24)
-
-            paintOrder(R.drawable.baseline_cancel_24)
-            Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
+            paintOrder(R.drawable.error_circle)
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_requested_fields),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }
@@ -452,8 +459,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         findNavController().navigate(R.id.editPointsFragment)
     }
 
-    private fun addEditTextListeners(){
-        binding.weightTv.addTextChangedListener(object : TextWatcher{
+    private fun addEditTextListeners() {
+        binding.weightTv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -462,6 +469,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
             override fun afterTextChanged(p0: Editable?) {
                 currentOrder?.let { checkCargo() }
+                //checkOrder()
             }
         })
 

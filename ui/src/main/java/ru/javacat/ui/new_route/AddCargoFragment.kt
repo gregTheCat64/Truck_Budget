@@ -202,8 +202,7 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.cargoRecView.isGone = false
-                viewModel.searchCargos(p0.toString())
+
 
 //                if (!cargosFound && p0?.length != 0) {
 //                    binding.addNewCargoBtn.isVisible = true
@@ -211,6 +210,8 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
 //                } else binding.addNewCargoBtn.isGone = true
             }
             override fun afterTextChanged(p0: Editable?) {
+                binding.cargoRecView.isGone = p0.isNullOrEmpty()
+                viewModel.searchCargos(p0.toString())
             }
         })
     }

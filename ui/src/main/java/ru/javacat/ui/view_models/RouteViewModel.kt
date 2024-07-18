@@ -17,13 +17,20 @@ import javax.inject.Inject
 @HiltViewModel
 class RouteViewModel @Inject constructor(
     routeRepository: RouteRepository,
-
+    private val orderRepository: OrderRepository
 ) : ViewModel() {
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
     val editedRoute = routeRepository.editedItem
+
+    fun clearOrder(){
+        viewModelScope.launch(Dispatchers.IO){
+            orderRepository.clearCurrentOrder()
+            //_loadState.emit(LoadState.Success.GoBack)
+        }
+    }
 
 
 }
