@@ -1,8 +1,8 @@
 package ru.javacat.domain.models
 
 data class Cargo (
-    val cargoWeight: Int,
-    val cargoVolume: Int,
+    val cargoWeight: Int? = null,
+    val cargoVolume: Int? = null,
     val cargoName: String? = null,
 
     val isBackLoad: Boolean = true,

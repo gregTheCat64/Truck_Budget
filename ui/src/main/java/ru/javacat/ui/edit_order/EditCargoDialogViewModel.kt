@@ -61,9 +61,9 @@ class EditCargoDialogViewModel @Inject constructor(
                                     cargoName = cargoName.nameToShow
                                 )?:Cargo(
                                     cargoName = cargoName.nameToShow,
-                                    cargoWeight = 20,
-                                    cargoVolume = 82,
-                                    isBackLoad = false,
+                                    cargoWeight = null,
+                                    cargoVolume = null,
+                                    isBackLoad = true,
                                     isSideLoad = false,
                                     isTopLoad = false
                                     )

@@ -41,6 +41,7 @@
                 android:id="@+id/regNumber"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:inputType="textCapCharacters"
                 android:hint="@string/plate_number"
                 />
 

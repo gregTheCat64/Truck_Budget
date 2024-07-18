@@ -61,6 +61,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     private var newCargoWeight: Int? = null
     private var newCargoVolume: Int? = null
 
+    private var isBackUpload: Boolean = false
+    private var isSideUpload: Boolean = false
+    private var isTopUpload: Boolean = false
+
 
     private var orderIdArg: Long? = null
     private var routeIdArg: Long? = null
@@ -128,6 +132,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             } else {
                 Log.i("EditOrderFrag", "creating empty Order")
                 viewModel.createEmptyOrder()
+                binding.tvVolume.setText("82")
+                binding.weightTv.setText("20")
             }
             isLastOrderLoaded = true
         }
@@ -166,9 +172,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 viewModel.editedRoute.collectLatest { route ->
                     Log.i("EditOrderFrag", "currentRoute: $route")
                     currentRoute = route
-//                    binding.contractorsFrame.isGone =
-//                        currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
-                    //viewModel.editOrder(contractor = route?.contractor)
                 }
             }
         }
@@ -187,6 +190,18 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         binding.cargoTv.setOnClickListener {
             changingCargo()
+        }
+
+        binding.backCheck.setOnCheckedChangeListener{_, isChecked->
+                isBackUpload = isChecked
+        }
+
+        binding.sideCheck.setOnCheckedChangeListener{_, isChecked->
+            isSideUpload = isChecked
+        }
+
+        binding.upCheck.setOnCheckedChangeListener{_, isChecked->
+            isTopUpload = isChecked
         }
 
         addEditTextListeners()
@@ -256,12 +271,12 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             binding.priceTv.setText(value)
         }
 
-        order.cargo?.cargoVolume.let {
+        order.cargo?.cargoVolume?.let {
             val value = "$it"
             binding.tvVolume.setText(value)
         }
 
-        order.cargo?.cargoWeight.let {
+        order.cargo?.cargoWeight?.let {
             val value = "$it"
             binding.weightTv.setText(value)
         }
@@ -333,6 +348,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             binding.cargoCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
             return false
         } else {
+            newCargoWeight = binding.weightTv.text.toString().toInt()
+            newCargoVolume = binding.tvVolume.text.toString().toInt()
             binding.cargoCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
             return true
         }
@@ -403,12 +420,16 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         val newCargo = if (newCargoWeight != null && newCargoVolume != null) {
             currentOrder?.cargo?.copy(
                 cargoWeight = newCargoWeight!!,
-                cargoVolume = newCargoVolume!!
+                cargoVolume = newCargoVolume!!,
+                isBackLoad = isBackUpload,
+                isSideLoad = isSideUpload,
+                isTopLoad = isTopUpload
             )
         } else {
-            null
+            currentOrder?.cargo
         }
-        //Добавить проверку всё ли ок и чек
+        Log.i("EditOrderFrag", "newCargo: $newCargo")
+
         if (checkCustomer() && checkPoints() && checkCargo() && checkPayment()) {
 
             val newOrder = currentOrder?.copy(
@@ -416,8 +437,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 routeId = routeId,
                 price = newPrice,
                 daysToPay = newDaysToPay,
+                contractor = newContractor,
                 contractorPrice = newContractorPrice,
-                cargo = newCargo
+                cargo = newCargo,
+
             )
 
             if (newOrder != null) {
@@ -481,6 +504,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+
                 currentOrder?.let { checkCargo() }
             }
         })

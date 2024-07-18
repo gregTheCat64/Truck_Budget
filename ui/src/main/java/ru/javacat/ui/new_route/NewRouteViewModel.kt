@@ -88,7 +88,16 @@ class NewRouteViewModel @Inject constructor(
 //                this.trailer?.let { setTrailerUseCase.invoke(it) }
                 editedRoute.value?.copy(
                     id = 0,
-                    contractor = lastRoute.contractor
+                    contractor = lastRoute.contractor,
+                    startDate = null,
+                    endDate = null,
+                    orderList = emptyList(),
+                    countRoute = null,
+                    contractorsCost = 0,
+                    routeExpenses = 0,
+                    revenue = null,
+                    profit = null,
+                    isFinished = false
                 )?.let {
                     repo.updateEditedItem(
                         it

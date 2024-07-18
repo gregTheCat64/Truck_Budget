@@ -118,20 +118,19 @@
                 </LinearLayout>
 
 
-
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginTop="16dp"
+                   >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cargoTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginEnd="36dp"
+
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="@string/cargo_name"
@@ -143,14 +142,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:endIconMode="clear_text"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tvVolume"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginEnd="36dp"
+
                         android:inputType="number"
                         android:hint="@string/volume_m3"
                         />
@@ -161,14 +162,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:endIconMode="clear_text"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginTop="8dp"
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/weightTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginEnd="36dp"
+
                         android:inputType="number"
                         android:hint="@string/weight_ton"
                         />

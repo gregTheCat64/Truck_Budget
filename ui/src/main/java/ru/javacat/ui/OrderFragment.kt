@@ -1,6 +1,7 @@
 package ru.javacat.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -156,6 +157,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
     }
 
     private fun initUi(order: Order){
+        Log.i("OrderFrag", "order: $order")
         isPaid = order.isPaidByCustomer
 
         val title = if (order.id == 0L) {
@@ -163,12 +165,13 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         } else {
             "Заявка № ${order.id}"
         }
-        val typeOfUpload = StringBuilder()
-        when  {
-            order.cargo?.isBackLoad == true -> typeOfUpload.append("Зад")
-            order.cargo?.isSideLoad == true -> typeOfUpload.append("/бок")
-            order.cargo?.isTopLoad == true -> typeOfUpload.append("/верх")
-        }
+        val typeOfUploadList = mutableListOf<String>()
+            if (order.cargo?.isBackLoad == true) { typeOfUploadList.add("зад")}
+            if (order.cargo?.isSideLoad == true) { typeOfUploadList.add("бок")}
+            if (order.cargo?.isTopLoad == true) { typeOfUploadList.add("верх")}
+        val typeOfUploadString = typeOfUploadList.joinToString(separator = "/")
+
+
 
         //TODO добавить в груз - способ погрузки - палеты, валом и тд
         //TODO добавить способ оплаты - нал безнал ндс
@@ -184,7 +187,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
             managerTv.text = order.manager?.nameToShow
             cargoTv.text =
                 "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
-            cargoExtraTv.text = "$typeOfUpload "
+            cargoExtraTv.text = typeOfUploadString
             priceTv.text = "${order.price} руб."
             priceExtraTv.text = "без НДС, ${order.daysToPay} б.дней"
 
