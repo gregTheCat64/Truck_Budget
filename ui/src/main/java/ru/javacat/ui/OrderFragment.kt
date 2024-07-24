@@ -29,12 +29,11 @@ import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import ru.javacat.ui.view_models.OrderViewModel
-import java.lang.StringBuilder
 
 @AndroidEntryPoint
-class OrderFragment: BaseFragment<FragmentOrderBinding>() {
+class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderBinding
-        get() = {inflater, container ->
+        get() = { inflater, container ->
             FragmentOrderBinding.inflate(inflater, container, false)
         }
 
@@ -42,6 +41,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
     private lateinit var pointsAdapter: OneLinePointAdapter
 
     private var orderIdArg: Long? = null
+    private var routeId: Long? = null
     private var isNewOrder: Boolean? = false
     private var isPaid: Boolean = false
 
@@ -50,9 +50,10 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         super.onCreate(savedInstanceState)
 
         orderIdArg = arguments?.getLong(FragConstants.ORDER_ID)
+
         isNewOrder = arguments?.getBoolean(FragConstants.IS_NEW_ORDER, false)
 
-        setFragmentResultListener(FragConstants.NEW_VALUE) {_, bundle ->
+        setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
             docsNumber?.let {
                 viewModel.updateOrderToDb(sentDocsNumber = it)
@@ -77,24 +78,28 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
-                        if (isNewOrder == true){
+                        if (isNewOrder == true) {
                             findNavController().popBackStack(R.id.routeViewPagerFragment, false)
                         } else {
                             findNavController().navigateUp()
                         }
                         return true
                     }
+
                     R.id.edit_menu_item -> {
                         val bundle = Bundle()
-                        bundle.putLong(FragConstants.ORDER_ID, orderIdArg?:0)
+                        bundle.putLong(FragConstants.ORDER_ID, orderIdArg ?: 0)
+                        bundle.putLong(FragConstants.ROUTE_ID, routeId ?:0)
                         bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                         findNavController().navigate(R.id.editOrderFragment, bundle)
 
                         return true
                     }
+
                     R.id.remove_menu_item -> {
                         return true
                     }
+
                     else -> return false
                 }
             }
@@ -109,7 +114,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         orderIdArg?.let { viewModel.getOrderById(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest {
                     //обновили текущий Рейс:
                     //it?.routeId?.let { it1 -> viewModel.updateEditedRoute(it1) }
@@ -137,7 +142,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         }
 
         binding.payDayValueTv.setOnClickListener {
-            parentFragmentManager.showCalendar {date->
+            parentFragmentManager.showCalendar { date ->
                 viewModel.updateOrderToDb(paymentDeadline = date)
                 binding.payDayValueTv.text = date.asDayAndMonthFully()
             }
@@ -156,9 +161,11 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
 
     }
 
-    private fun initUi(order: Order){
+    private fun initUi(order: Order) {
         Log.i("OrderFrag", "order: $order")
         isPaid = order.isPaidByCustomer
+
+        routeId = order.routeId
 
         val title = if (order.id == 0L) {
             "Новая заявка"
@@ -166,11 +173,16 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
             "Заявка № ${order.id}"
         }
         val typeOfUploadList = mutableListOf<String>()
-            if (order.cargo?.isBackLoad == true) { typeOfUploadList.add("зад")}
-            if (order.cargo?.isSideLoad == true) { typeOfUploadList.add("бок")}
-            if (order.cargo?.isTopLoad == true) { typeOfUploadList.add("верх")}
+        if (order.cargo?.isBackLoad == true) {
+            typeOfUploadList.add("зад")
+        }
+        if (order.cargo?.isSideLoad == true) {
+            typeOfUploadList.add("бок")
+        }
+        if (order.cargo?.isTopLoad == true) {
+            typeOfUploadList.add("верх")
+        }
         val typeOfUploadString = typeOfUploadList.joinToString(separator = "/")
-
 
 
         //TODO добавить в груз - способ погрузки - палеты, валом и тд
@@ -203,7 +215,7 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
 
             if (order.isPaidByCustomer) {
                 setPaidUi()
-            } else  setUnpaidUi()
+            } else setUnpaidUi()
         }
 
         //adapter
@@ -212,12 +224,12 @@ class OrderFragment: BaseFragment<FragmentOrderBinding>() {
         pointsAdapter.submitList(order.points)
     }
 
-    private fun setPaidUi(){
+    private fun setPaidUi() {
         binding.paidBtn.text = getString(R.string.mark_as_unpaid)
         binding.paidStatusTv.text = getString(R.string.paid_order)
     }
 
-    private fun setUnpaidUi(){
+    private fun setUnpaidUi() {
         binding.paidBtn.text = getString(R.string.mark_as_paid)
         binding.paidStatusTv.text = getString(R.string.unpaid_order)
     }

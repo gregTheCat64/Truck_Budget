@@ -191,10 +191,10 @@
                 app:destination="@id/addPaymentFragment" />
         </fragment>
     <fragment
-        android:id="@+id/navigation_home_company"
-        android:name="ru.javacat.ui.HomeCompanyFragment"
-        tools:layout="@layout/fragment_home_company"
-        android:label="@string/home" />
+        android:id="@+id/navigation_stats"
+        android:name="ru.javacat.ui.StatsFragment"
+        tools:layout="@layout/fragment_stats"
+        android:label="@string/statistics" />
     <dialog
         android:id="@+id/finishPartnerRouteFragment"
         tools:layout="@layout/fragment_finish_partner_route"

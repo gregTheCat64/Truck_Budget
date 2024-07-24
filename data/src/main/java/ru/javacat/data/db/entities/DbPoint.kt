@@ -24,7 +24,7 @@ data class DbPoint(
     val id: String,
     //val orderId: String,
     val location: String,
-    val arrivalDate: String
+    val arrivalDate: Long
 ) {
     fun toPointModel() = Point(
         id, location, arrivalDate.toLocalDate()

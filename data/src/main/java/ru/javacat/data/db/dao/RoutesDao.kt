@@ -5,11 +5,12 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
-import kotlinx.coroutines.flow.Flow
 import ru.javacat.data.db.entities.DbCountRoute
 
 import ru.javacat.data.db.entities.DbRoute
+import ru.javacat.data.db.models.DbMonthlyProfit
 import ru.javacat.data.db.models.DbRouteWithOrders
+import ru.javacat.domain.models.MonthlyProfit
 
 @Dao
 interface RoutesDao {
@@ -17,6 +18,20 @@ interface RoutesDao {
     @Transaction
     @Query("SELECT * FROM routes_table")
     fun getAllRoutes(): List<DbRouteWithOrders>
+
+    @Query("""
+        SELECT COUNT(*) FROM routes_table 
+        WHERE   companyId = -1 AND
+            strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+    """)
+    fun getCompanyRoutesCount(year: String): Int
+
+    @Query("""
+        SELECT COUNT(*) FROM routes_table 
+        WHERE   companyId != -1 AND
+            strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+    """)
+    fun getNotCompanyRoutesCount(year: String): Int
 
     @Transaction
     @Query("SELECT * FROM routes_table WHERE companyId = -1 ORDER BY id DESC LIMIT 1 ")
@@ -50,4 +65,13 @@ interface RoutesDao {
     suspend fun removeRoute(id: Long)
 
 
+    @Query("""
+        SELECT startDate / 1000 as monthDate,
+        SUM(profit) as totalProfit
+        FROM routes_table
+        WHERE strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+        GROUP BY monthDate
+        ORDER BY monthDate
+    """)
+    fun getMonthlyIncomeByYear(year: String): List<DbMonthlyProfit>
 }

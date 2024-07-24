@@ -29,9 +29,9 @@ class NewDriverViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-     suspend fun insertNewDriver(driver: TruckDriver, isNeedToSet: Boolean){
-        _loadState.emit(LoadState.Loading)
+     fun insertNewDriver(driver: TruckDriver, isNeedToSet: Boolean){
         viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
             try {
                 val newDriverId = truckDriversRepository.insert(driver)
                 val newDriver = driver.copy(id = newDriverId)

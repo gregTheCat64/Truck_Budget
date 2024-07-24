@@ -128,6 +128,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             viewLifecycleOwner.lifecycleScope.launch{
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
+                bundle.putLong(FragConstants.ROUTE_ID, it.routeId)
                 bundle.putBoolean(FragConstants.IS_NEW_ORDER, false)
                 findNavController().navigate(R.id.orderFragment, bundle)
             }

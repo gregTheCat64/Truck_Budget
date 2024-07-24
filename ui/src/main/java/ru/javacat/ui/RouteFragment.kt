@@ -80,6 +80,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
                 //viewModel.getOrderAndUpdateEditedOrder(it.id)
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
+                bundle.putLong(FragConstants.ROUTE_ID, it.routeId)
                 //bundle.putBoolean(FragConstants.EDITING_ORDER, true)
                 //bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
                 findNavController().navigate(R.id.orderFragment,bundle)

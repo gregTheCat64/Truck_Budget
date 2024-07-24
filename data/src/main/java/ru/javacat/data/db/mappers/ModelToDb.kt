@@ -1,5 +1,6 @@
 package ru.javacat.data.db.mappers
 
+import ru.javacat.common.utils.toLong
 import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.entities.DbCompany
 import ru.javacat.data.db.entities.DbCountRoute
@@ -26,8 +27,8 @@ import ru.javacat.domain.models.TruckDriver
 
 fun Route.toDb() = DbRoute(
     id,
-    startDate?.toString() ,
-    endDate?.toString(),
+    startDate?.toLong() ,
+    endDate?.toLong(),
     contractor?.company?.id,
     contractor?.driver?.id,
     contractor?.truck?.id,
@@ -44,7 +45,7 @@ fun Order.toDb() = DbOrder(
     id,
     routeId?:0L,
     points.map { it.toDb() },
-    points[0].arrivalDate.toString(),
+    points[0].arrivalDate.toLong(),
     price?:0,
     contractorPrice,
     commission,
@@ -57,15 +58,15 @@ fun Order.toDb() = DbOrder(
     cargo?: Cargo(20, 82, "ТНП", true, false,false),
     extraConditions,
     daysToPay,
-    paymentDeadline?.toString(),
+    paymentDeadline?.toLong(),
     sentDocsNumber,
-    docsReceived?.toString(),
+    docsReceived?.toLong(),
     isPaidByCustomer,
     isPaidToContractor
 )
 
 fun Point.toDb() = DbPoint(
-    id,  location, arrivalDate.toString()
+    id,  location, arrivalDate.toLong()
 )
 
 fun Truck.toDb() = DbTruck(

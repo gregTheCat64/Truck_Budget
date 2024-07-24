@@ -30,7 +30,7 @@ import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.NewCompanyViewModel
 
 @AndroidEntryPoint
-class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
+class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
 
     private var customerId: Long? = null
     private var isNeedToSet: Boolean = false
@@ -53,7 +53,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
-        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?:false
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET) ?: false
     }
 
     override fun onCreateView(
@@ -66,15 +66,20 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
 
-        requireActivity().addMenuProvider(object : MenuProvider{
+        requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
+                        return true
+                    }
+
+                    R.id.save -> {
+                        saveCustomer()
                         return true
                     }
 
@@ -91,29 +96,35 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (customerId != null) {
                     viewModel.getCustomerById(customerId!!)
                 }
             }
         }
-        
+
         //nav
-        viewLifecycleOwner.lifecycleScope.launch { 
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.loadState.collectLatest { 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loadState.collectLatest {
                     when (it) {
                         is LoadState.Success.GoBack -> {
-                            Toast.makeText(requireContext(),
-                                getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.saved), Toast.LENGTH_SHORT
+                            ).show()
                             findNavController().navigateUp()
                         }
+
                         is LoadState.Error -> {
-                            Toast.makeText(requireContext(), "Some Error", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Some Error", Toast.LENGTH_SHORT)
+                                .show()
                         }
+
                         is LoadState.Loading -> {
                             binding.progressBar.isGone = false
                         }
+
                         else -> {
                             Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT)
                                 .show()
@@ -124,7 +135,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedCustomer.collectLatest {
                     it?.let { updateUi(it) }
                 }
@@ -132,11 +143,8 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-            getFieldsData()
-            if (getFieldsData()){
-                saveCustomer(customerId?:0L)
-                //findNavController().navigateUp()
-            }
+            saveCustomer()
+
         }
 
         binding.name.addTextChangedListener(object : TextWatcher {
@@ -158,7 +166,7 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
 
     }
 
-    private fun updateUi(customer: Company){
+    private fun updateUi(customer: Company) {
         binding.apply {
             (activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
             name.setText(customer.nameToShow)
@@ -217,14 +225,22 @@ class NewCompanyFragment: BaseFragment<FragmentNewCustomerBinding>() {
         return true
     }
 
-    private fun saveCustomer(id: Long) {
+    private fun saveCustomer() {
+        if (getFieldsData()) {
             val newCustomer = Company(
-                id, companyName, atiNumber, emptyList(), telNumber, formalAddress, postAddress, shortName
+                customerId?:0,
+                companyName,
+                atiNumber,
+                emptyList(),
+                telNumber,
+                formalAddress,
+                postAddress,
+                shortName
             )
             AndroidUtils.hideKeyboard(requireView())
             viewModel.saveNewCustomer(newCustomer, isNeedToSet)
+        }
     }
-
 }
 
 //    override fun onResume() {

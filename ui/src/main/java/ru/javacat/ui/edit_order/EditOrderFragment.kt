@@ -104,13 +104,18 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
+                        return true
+                    }
+
+                    R.id.save -> {
+                        saveOrder()
                         return true
                     }
 
@@ -152,16 +157,15 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                         if (needToRestore) {
                             Log.i(
                                 "EditOrderFrag",
-                                "restoringRoute, order.routeId: ${order.routeId}"
+                                "restoringRoute by order.routeid, order.routeId: ${order.routeId}"
                             )
                             order.routeId.let { viewModel.updateEditedRoute(it) }
                             needToRestore = false
                         } else {
-                            Log.i("EditOrderFrag", "restoringRoute, order.routeId: $routeIdArg")
+                            Log.i("EditOrderFrag", "restoringRoute by routeIdArg, order.routeId: $routeIdArg")
                             routeIdArg?.let { viewModel.updateEditedRoute(it) }
                         }
                     }
-                    Log.i("EditOrderFrag", "currentOrder: $order")
                 }
             }
         }
@@ -172,6 +176,11 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 viewModel.editedRoute.collectLatest { route ->
                     Log.i("EditOrderFrag", "currentRoute: $route")
                     currentRoute = route
+
+                    //если рейс привлеченный - поле с ценой для перевозчика видимо!
+                    Log.i("EditOrderFrag", "order comp id: ${currentRoute?.contractor?.company?.id}")
+                    binding.contractorsFrame.isGone =
+                        currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
                 }
             }
         }
@@ -293,18 +302,16 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             binding.cargoTv.setText(it)
         }
 
-        Log.i("EditOrderFrag", "order comp id: ${currentRoute?.contractor?.company?.id}")
-        binding.contractorsFrame.isGone =
-            currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
+
 
         order.contractorPrice?.let {
             val value = "$it"
             binding.contractorsPrice.setText(value)
         }
 
-        if (order.cargo?.isBackLoad == true) binding.backCheck.isChecked = true
-        if (order.cargo?.isSideLoad == true) binding.sideCheck.isChecked = true
-        if (order.cargo?.isTopLoad == true) binding.upCheck.isChecked = true
+        binding.backCheck.isChecked = order.cargo?.isBackLoad == true
+        binding.sideCheck.isChecked = order.cargo?.isSideLoad == true
+        binding.upCheck.isChecked =  order.cargo?.isTopLoad == true
 
         //adapter
         pointsAdapter = PointWithRemoveAdapter {

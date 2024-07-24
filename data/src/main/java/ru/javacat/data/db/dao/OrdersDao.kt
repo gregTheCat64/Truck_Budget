@@ -22,6 +22,21 @@ interface OrdersDao {
     @Query("SELECT * FROM orders_table  ORDER BY id DESC LIMIT 1")
     fun getLastOrder(): DbOrderWithCustomer?
 
+    @Query("""
+        SELECT COUNT(*) FROM orders_table 
+        WHERE   contractorId = -1 AND
+            strftime('%Y', datetime(date / 1000, 'unixepoch')) = :year
+    """)
+    fun getCountCompanyOrdersByYear(year: String): Int
+
+    @Query("""
+        SELECT COUNT(*) FROM orders_table 
+        WHERE   contractorId != -1 AND
+            strftime('%Y', datetime(date / 1000, 'unixepoch')) = :year
+    """)
+    fun getCountNotCompanyOrdersByYear(year: String): Int
+
+
     @Upsert
     suspend fun insertOrder(
         order: DbOrder,

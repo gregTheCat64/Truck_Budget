@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024"
+        android:layout_gravity="end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+
+        />
+
+    <include layout="@layout/horizon_line"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Рейсов выполнено"
+            />
+        <TextView
+            android:id="@+id/companyRoutesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="44 рейса"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Заявок выполнено"
+        />
+    <TextView
+        android:id="@+id/companyOrdersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="44 рейса"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Привлеченных заявок выполнено"
+        />
+
+    <TextView
+        android:id="@+id/notCompanyOrdersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="16 рейсов"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Заработано за год" />
+
+    <TextView
+        android:id="@+id/totalYearProfit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="860000 руб."
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Средний заработок в месяц"
+        />
+    <TextView
+        android:id="@+id/averageProfit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="86000 руб."
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Заработок на привлеченных рейсах"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40000 руб."
+        style="@style/TextAppearance.Material3.BodyLarge"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Заработок по месяцам"
+            />
+        <TextView
+            android:id="@+id/monthlyProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="40000 руб."
+            style="@style/TextAppearance.Material3.BodyLarge"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profitList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+
+
+
+</LinearLayout>
+
+</ScrollView>
+
+</LinearLayout>

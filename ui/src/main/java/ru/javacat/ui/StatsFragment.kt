@@ -19,21 +19,23 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
-import ru.javacat.ui.databinding.FragmentHomeCompanyBinding
+import ru.javacat.domain.models.MonthlyProfit
+import ru.javacat.domain.models.StatsModel
+import ru.javacat.ui.adapters.MonthlyProfitAdapter
+import ru.javacat.ui.databinding.FragmentStatsBinding
 
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.HomeFragmentViewModel
+import ru.javacat.ui.view_models.StatsViewModel
 
 @AndroidEntryPoint
-class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
-    private val viewModel: HomeFragmentViewModel by viewModels()
+class StatsFragment: BaseFragment<FragmentStatsBinding>() {
+    private val viewModel: StatsViewModel by viewModels()
 
-    var customerId: Long? = null
+    private lateinit var monthlyProfitAdapter: MonthlyProfitAdapter
 
-    override var bottomNavViewVisibility: Int = View.VISIBLE
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentHomeCompanyBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentStatsBinding
         get() = {inflater, container ->
-            FragmentHomeCompanyBinding.inflate(inflater, container, false)
+            FragmentStatsBinding.inflate(inflater, container, false)
         }
 
     override fun onCreateView(
@@ -41,11 +43,8 @@ class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
-        viewModel.getHomeCustomer()
-        customerId = FragConstants.MY_COMPANY_ID
 
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
@@ -64,12 +63,7 @@ class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
                     }
 
                     R.id.edit_menu_item -> {
-                        Log.i("HomeFrag", "customerId =  $customerId")
-                        val bundle = Bundle()
-                        if (customerId != null) {
-                            bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
-                            findNavController().navigate(R.id.newCustomerFragment, bundle)
-                        }
+
                         return true
                     }
                     else -> return false
@@ -77,13 +71,6 @@ class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
             }
         }, viewLifecycleOwner)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.homeCustomer.collectLatest {
-                    it?.let { updateUi(it)}
-                }
-            }
-        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -91,31 +78,46 @@ class HomeCompanyFragment: BaseFragment<FragmentHomeCompanyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toTruckDriversBtn.setOnClickListener {
-            findNavController().navigate(R.id.truckDriversListFragment)
+        val monthlyProfitAdapter = MonthlyProfitAdapter()
+        binding.profitList.adapter = monthlyProfitAdapter
+
+        viewModel.getMonthlyIncomeByYear("2024")
+        viewModel.getCompanyOrdersCountByYear("2024")
+        viewModel.getNotCompanyOrdersCountByYear("2024")
+        viewModel.getCompanyRoutesCountByYear("2024")
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.monthlyProfitList.collectLatest {
+                   println(it.toString())
+                    binding.monthlyProfit.setText(
+                        it?.map {
+                            it.monthDate.month
+                        }.toString()
+                    )
+
+                    monthlyProfitAdapter.submitList(it)
+                }
+            }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.stats.collectLatest {
+                    it?.let { updateUi(it) }
+                }
+            }
+        }
+
+
     }
 
-    private fun updateUi(customer: Company){
-        binding.apply {
-            customer.nameToShow.let {
-                customerNameTv.text = it
-            }
-            customer.shortName?.let {
-                shortNameTv.text = it
-            }
-            customer.atiNumber?.let {
-                atiNumberTv.text = it.toString()
-            }
-            customer.companyPhone?.let {
-                phoneNumberTv.text = it
-            }
-            customer.formalAddress?.let {
-                formalAddressTv.text = it
-            }
-            customer.postAddress?.let {
-                postAddressTv.text = it
-            }
-        }
+    private fun updateUi(stats: StatsModel){
+        binding.companyRoutesCount.setText(stats.companyRoutesCount.toString())
+        binding.companyOrdersCount.setText(stats.companyOrdersCount.toString())
+        binding.notCompanyOrdersCount.setText(stats.notCompanyOrdersCount.toString())
+        binding.totalYearProfit.setText(stats.totalProfit.toString())
+        binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
     }
+
 }

@@ -64,13 +64,18 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> {
                         findNavController().navigateUp()
+                        return true
+                    }
+
+                    R.id.save -> {
+                        saveNewDriver()
                         return true
                     }
 
@@ -113,33 +118,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-            val firstName = binding.firstName.text.toString()
-            val middleName = binding.middleName.text.toString()
-            val surname = binding.surName.text.toString()
-            val passSerial = binding.passSerial.text.toString()
-            val passNumber = binding.passNumber.text.toString()
-            val passWhen = binding.passWhen.text.toString()
-            val passWhere = binding.passWhere.text.toString()
-            val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
-            val address = binding.address.text.toString()
-            val phoneNumber = binding.phoneNumber.text.toString()
-
-            val passportData = "$passSerial $passNumber"
-
-            //val id = passSerial.toString()+passNumber.toString()
-
-            //TODO добавить поле для 2 номера тел.
-            val newDriver = TruckDriver(
-                truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
-                passWhere, driveLicenseNumber, address, phoneNumber, "",""
-            )
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                if (surname.isNotEmpty()){
-                    viewModel.insertNewDriver(newDriver, isNeedToSet)
-                } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
-
-            }
+            saveNewDriver()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -164,6 +143,33 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                 }
             }
         }
+    }
+
+    private fun saveNewDriver(){
+        val firstName = binding.firstName.text.toString()
+        val middleName = binding.middleName.text.toString()
+        val surname = binding.surName.text.toString()
+        val passSerial = binding.passSerial.text.toString()
+        val passNumber = binding.passNumber.text.toString()
+        val passWhen = binding.passWhen.text.toString()
+        val passWhere = binding.passWhere.text.toString()
+        val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
+        val address = binding.address.text.toString()
+        val phoneNumber = binding.phoneNumber.text.toString()
+
+        val passportData = "$passSerial $passNumber"
+
+        //val id = passSerial.toString()+passNumber.toString()
+
+        //TODO добавить поле для 2 номера тел.
+        val newDriver = TruckDriver(
+            truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
+            passWhere, driveLicenseNumber, address, phoneNumber, "",""
+        )
+
+        if (surname.isNotEmpty()){
+            viewModel.insertNewDriver(newDriver, isNeedToSet)
+        } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
     }
 
     private fun updateUi(truckDriver: TruckDriver){

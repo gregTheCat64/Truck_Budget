@@ -15,9 +15,9 @@
     android:title="@string/companies"
     android:orderInCategory="3"
     />
-    <item android:id="@+id/navigation_home_company"
-    android:icon="@drawable/baseline_cottage_24"
-    android:title="@string/home"
+    <item android:id="@+id/navigation_stats"
+    android:icon="@drawable/baseline_query_stats_24"
+    android:title="@string/statistics"
     android:orderInCategory="4"
     />
 </menu>

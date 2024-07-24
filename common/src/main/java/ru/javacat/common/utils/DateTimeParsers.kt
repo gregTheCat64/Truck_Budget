@@ -3,6 +3,15 @@ package ru.javacat.common.utils
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.ZoneId
+import java.util.Date
+
+fun LocalDate.toLong(): Long {
+    return this.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+}
+
+fun Long.toLocalDate(): LocalDate =
+    Date(this).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
 fun LocalDate.asDayOfWeek(): String = format(DateTimeFormatter.ofPattern("EEE"))
 

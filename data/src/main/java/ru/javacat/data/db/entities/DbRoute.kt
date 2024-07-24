@@ -10,8 +10,8 @@ import ru.javacat.domain.models.CountRoute
 data class DbRoute (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val startDate: String?,
-    val endDate: String?,
+    val startDate: Long?,
+    val endDate: Long?,
     val companyId: Long?,
     val driverId: Long?,
     val truckId: Long?,

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_route_list,
             R.id.navigation_order_list,
             R.id.navigation_customer_list,
-            R.id.navigation_home_company
+            R.id.navigation_stats
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 nd.id == R.id.navigation_route_list ||
                 nd.id == R.id.navigation_order_list ||
                 nd.id == R.id.navigation_customer_list ||
-                nd.id == R.id.navigation_home_company
+                nd.id == R.id.navigation_stats
                 ) navView.visibility = View.VISIBLE
             else navView.visibility = View.GONE
         }

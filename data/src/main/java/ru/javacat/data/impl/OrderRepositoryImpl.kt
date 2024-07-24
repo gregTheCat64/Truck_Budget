@@ -47,6 +47,14 @@ class OrderRepositoryImpl @Inject constructor(
         _orders.emit(ordersDao.getAllOrders().map {it.toOrderModel() })
     }
 
+    override suspend fun getCompanyOrdersCountByYear(year: String): Int {
+        return dbQuery { ordersDao.getCountCompanyOrdersByYear(year) }
+    }
+
+    override suspend fun getNotCompanyOrdersCountByYear(year: String): Int {
+        return dbQuery { ordersDao.getCountNotCompanyOrdersByYear(year) }
+    }
+
     override suspend fun getUnpaidOrders() {
         //_orders.emit(ordersDao.getUnpaidOrder().map { it.toOrderModel()})
         val filtered = items.map { it.filter { it.isPaidByCustomer == false } }

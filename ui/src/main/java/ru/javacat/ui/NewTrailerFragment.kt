@@ -69,6 +69,10 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
+                    R.id.save -> {
+                        saveNewTrailer()
+                        return true
+                    }
 
                     else -> return false
                 }
@@ -109,31 +113,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-            val regNumber = binding.regNumber.text.toString()
-            val regionCode = if (binding.regCode.text?.isNotEmpty() == true) {
-                binding.regCode.text?.toString()?.toInt() ?: 0
-            } else {
-                0
-            }
-
-            val vin = binding.vin.text.toString()
-            val model = binding.modelOfVehicle.text.toString()
-            val year = binding.yearOfManufacturing.text.toString()
-            val type = binding.typeOfTransportEt.text.toString()
-
-            val newVehicle = Trailer(
-                transportId, companyId, regNumber, regionCode, vin, model, year, type
-            )
-            viewLifecycleOwner.lifecycleScope.launch {
-                if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
-                    viewModel.insertNewTrailer(newVehicle, isNeedToSet)
-                } else Toast.makeText(
-                    requireContext(),
-                    getString(R.string.fill_requested_fields),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
+           saveNewTrailer()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -185,6 +165,34 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
             vin.setText(transport.vin.toString())
             modelOfVehicle.setText(transport.model.toString())
             yearOfManufacturing.setText(transport.yearOfManufacturing.toString())
+        }
+    }
+
+    private fun saveNewTrailer(){
+        val regNumber = binding.regNumber.text.toString()
+        val regionCode = if (binding.regCode.text?.isNotEmpty() == true) {
+            binding.regCode.text?.toString()?.toInt() ?: 0
+        } else {
+            0
+        }
+
+        val vin = binding.vin.text.toString()
+        val model = binding.modelOfVehicle.text.toString()
+        val year = binding.yearOfManufacturing.text.toString()
+        val type = binding.typeOfTransportEt.text.toString()
+
+        val newVehicle = Trailer(
+            transportId, companyId, regNumber, regionCode, vin, model, year, type
+        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
+                viewModel.insertNewTrailer(newVehicle, isNeedToSet)
+            } else Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_requested_fields),
+                Toast.LENGTH_SHORT
+            ).show()
+
         }
     }
 

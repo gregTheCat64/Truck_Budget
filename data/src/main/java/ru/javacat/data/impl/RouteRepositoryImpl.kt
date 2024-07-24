@@ -11,6 +11,7 @@ import ru.javacat.data.db.dao.RoutesDao
 
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.domain.models.MonthlyProfit
 
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
@@ -48,6 +49,20 @@ class RouteRepositoryImpl @Inject constructor(
 
     override suspend fun getById(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()
 
+    override suspend fun getMonthlyIncomeByYear(year: String): List<MonthlyProfit> {
+        //println("routesdaoRes : ${routesDao.getMonthlyIncomeByYear(year)}")
+        return dbQuery { routesDao.getMonthlyIncomeByYear(year).map{
+            it.toMonthlyProfitModel()
+        } }
+    }
+
+    override suspend fun getCompanyRoutesCountByYear(year: String): Int {
+        return dbQuery { routesDao.getCompanyRoutesCount(year) }
+    }
+
+    override suspend fun getNotCompanyRoutesCountByYear(year: String): Int {
+        return dbQuery { routesDao.getNotCompanyRoutesCount(year) }
+    }
 
     override suspend fun updateEditedItem(t: Route) {
         _editedRoute.emit(t)

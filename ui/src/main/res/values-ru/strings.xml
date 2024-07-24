@@ -129,4 +129,5 @@
     <string name="card">Карта</string>
     <string name="w_o_fee">Без НДС</string>
     <string name="with_fee">НДС</string>
+    <string name="statistics">Statistics</string>
 </resources>

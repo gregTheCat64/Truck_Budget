@@ -48,9 +48,9 @@ class NewTruckViewModel @Inject constructor(
         }
     }
 
-    suspend fun insertNewTruck(truck: Truck, isNeedToSet: Boolean) {
-        _loadState.emit(LoadState.Loading)
+    fun insertNewTruck(truck: Truck, isNeedToSet: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
             try {
                 val newTruckId = trucksRepository.insert(truck)
                 val newTruck = truck.copy(id = newTruckId)

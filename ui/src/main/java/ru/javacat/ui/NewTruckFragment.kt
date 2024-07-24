@@ -52,14 +52,17 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-
                     android.R.id.home -> {
                         findNavController().navigateUp()
+                        return true
+                    }
+                    R.id.save -> {
+                        saveNewTruck()
                         return true
                     }
 
@@ -118,31 +121,7 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-            val regNumber = binding.regNumber.text.toString()
-            val regionCode = if (binding.regCode.text?.isNotEmpty() == true) {
-                binding.regCode.text?.toString()?.toInt() ?: 0
-            } else {
-                0
-            }
-
-            val vin = binding.vin.text.toString()
-            val model = binding.modelOfVehicle.text.toString()
-            val year = binding.yearOfManufacturing.text.toString()
-            val type = binding.typeOfTransportEt.text.toString()
-
-
-            val newVehicle = Truck(
-                transportId, companyId, regNumber, regionCode, vin, model, year
-            )
-            viewLifecycleOwner.lifecycleScope.launch {
-                if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
-                    viewModel.insertNewTruck(newVehicle, isNeedToSet)
-                } else Toast.makeText(
-                    requireContext(),
-                    getString(R.string.fill_requested_fields),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+           saveNewTruck()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -198,6 +177,33 @@ private fun updateUi(transport: Vehicle) {
         yearOfManufacturing.setText(transport.yearOfManufacturing.toString())
     }
 }
+
+    private fun saveNewTruck(){
+        val regNumber = binding.regNumber.text.toString()
+        val regionCode = if (binding.regCode.text?.isNotEmpty() == true) {
+            binding.regCode.text?.toString()?.toInt() ?: 0
+        } else {
+            0
+        }
+
+        val vin = binding.vin.text.toString()
+        val model = binding.modelOfVehicle.text.toString()
+        val year = binding.yearOfManufacturing.text.toString()
+        val type = binding.typeOfTransportEt.text.toString()
+
+
+        val newVehicle = Truck(
+            transportId, companyId, regNumber, regionCode, vin, model, year
+        )
+
+        if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
+            viewModel.insertNewTruck(newVehicle, isNeedToSet)
+        } else Toast.makeText(
+            requireContext(),
+            getString(R.string.fill_requested_fields),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
 private fun removeTransport(id: Long) {
     viewLifecycleOwner.lifecycleScope.launch {
