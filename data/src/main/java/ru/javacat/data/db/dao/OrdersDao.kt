@@ -25,14 +25,14 @@ interface OrdersDao {
     @Query("""
         SELECT COUNT(*) FROM orders_table 
         WHERE   contractorId = -1 AND
-            strftime('%Y', datetime(date / 1000, 'unixepoch')) = :year
+            strftime('%Y', date) = :year
     """)
     fun getCountCompanyOrdersByYear(year: String): Int
 
     @Query("""
         SELECT COUNT(*) FROM orders_table 
         WHERE   contractorId != -1 AND
-            strftime('%Y', datetime(date / 1000, 'unixepoch')) = :year
+            strftime('%Y', date) = :year
     """)
     fun getCountNotCompanyOrdersByYear(year: String): Int
 

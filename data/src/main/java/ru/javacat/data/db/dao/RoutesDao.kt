@@ -22,14 +22,14 @@ interface RoutesDao {
     @Query("""
         SELECT COUNT(*) FROM routes_table 
         WHERE   companyId = -1 AND
-            strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+            strftime('%Y', startDate) = :year
     """)
     fun getCompanyRoutesCount(year: String): Int
 
     @Query("""
         SELECT COUNT(*) FROM routes_table 
         WHERE   companyId != -1 AND
-            strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+            strftime('%Y', startDate) = :year
     """)
     fun getNotCompanyRoutesCount(year: String): Int
 
@@ -66,10 +66,10 @@ interface RoutesDao {
 
 
     @Query("""
-        SELECT startDate / 1000 as monthDate,
+        SELECT strftime('%m', startDate) as monthDate,
         SUM(profit) as totalProfit
         FROM routes_table
-        WHERE strftime('%Y', datetime(startDate / 1000, 'unixepoch')) = :year
+        WHERE strftime('%Y', startDate) = :year
         GROUP BY monthDate
         ORDER BY monthDate
     """)

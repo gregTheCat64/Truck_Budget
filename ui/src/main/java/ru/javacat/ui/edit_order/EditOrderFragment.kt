@@ -35,6 +35,7 @@ import ru.javacat.ui.databinding.FragmentEditOrderBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.view_models.EditOrderViewModel
+import java.time.LocalDate
 
 
 @AndroidEntryPoint
@@ -47,7 +48,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
     private val viewModel: EditOrderViewModel by viewModels()
     private lateinit var pointsAdapter: PointWithRemoveAdapter
-
 
     private var currentOrder: Order? = null
     private var currentRoute: Route? = null
@@ -64,6 +64,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     private var isBackUpload: Boolean = false
     private var isSideUpload: Boolean = false
     private var isTopUpload: Boolean = false
+
+    private var startDate: LocalDate = LocalDate.now()
 
 
     private var orderIdArg: Long? = null
@@ -186,6 +188,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         binding.addPointBtn.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.paymentCheck.top)
             changingPoints()
         }
 
@@ -198,6 +201,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         binding.cargoTv.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.cargoCheck.top)
             changingCargo()
         }
 
@@ -368,6 +372,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             return false
         } else {
             binding.routeCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
+            startDate = currentOrder!!.points.first().arrivalDate
             return true
         }
     }
@@ -447,7 +452,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 contractor = newContractor,
                 contractorPrice = newContractorPrice,
                 cargo = newCargo,
-
+                date = startDate
             )
 
             if (newOrder != null) {

@@ -27,8 +27,8 @@ import ru.javacat.domain.models.TruckDriver
 
 fun Route.toDb() = DbRoute(
     id,
-    startDate?.toLong() ,
-    endDate?.toLong(),
+    startDate?.toString() ,
+    endDate?.toString(),
     contractor?.company?.id,
     contractor?.driver?.id,
     contractor?.truck?.id,
@@ -45,7 +45,7 @@ fun Order.toDb() = DbOrder(
     id,
     routeId?:0L,
     points.map { it.toDb() },
-    points[0].arrivalDate.toLong(),
+    points[0].arrivalDate.toString(),
     price?:0,
     contractorPrice,
     commission,
@@ -58,15 +58,15 @@ fun Order.toDb() = DbOrder(
     cargo?: Cargo(20, 82, "ТНП", true, false,false),
     extraConditions,
     daysToPay,
-    paymentDeadline?.toLong(),
+    paymentDeadline?.toString(),
     sentDocsNumber,
-    docsReceived?.toLong(),
+    docsReceived?.toString(),
     isPaidByCustomer,
     isPaidToContractor
 )
 
 fun Point.toDb() = DbPoint(
-    id,  location, arrivalDate.toLong()
+    id,  location, arrivalDate.toString()
 )
 
 fun Truck.toDb() = DbTruck(

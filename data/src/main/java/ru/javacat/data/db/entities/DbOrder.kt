@@ -31,7 +31,7 @@ data class DbOrder(
     val routeId: Long,
     @TypeConverters(PointConverter::class)
     val points: List<DbPoint>,
-    val date: Long,
+    val date: String,
     val price: Int,
     val contractorPrice: Int?,
     val commission: Int?,
@@ -45,9 +45,9 @@ data class DbOrder(
     val cargo: Cargo,
     val extraConditions: String?,
     val daysToPay: Int?,
-    val paymentDeadline: Long?,
+    val paymentDeadline: String?,
     val sentDocsNumber: String?,
-    val docsReceived: Long?,
+    val docsReceived: String?,
     //@TypeConverters(StatusConverter::class)
     val isPaidByCustomer: Boolean,
     val isPaidToContractor: Boolean

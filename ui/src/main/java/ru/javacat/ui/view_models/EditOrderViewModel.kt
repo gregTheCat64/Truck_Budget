@@ -79,14 +79,13 @@ class EditOrderViewModel @Inject constructor(
                 orderRepository.insert(order)
                 //val orders = routeRepository.getById(editedRoute.value.id?:0)?.orderList
                 val routeToUpdate = editedRoute.value?.copy(
-                    //orderList = orders?: emptyList(),
                     startDate = order.date
                 )
+                Log.i("editOrderVM", "routeToUpdate: $routeToUpdate")
 
-                if (routeToUpdate != null) {
+                if (routeToUpdate != null && routeToUpdate.orderList.isEmpty()) {
                     routeRepository.updateRouteToDb(routeToUpdate)
                 }
-                //routeRepository.updateEditedItem(routeToUpdate)
 
                 orderRepository.clearCurrentOrder()
 

@@ -92,7 +92,7 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
                    println(it.toString())
                     binding.monthlyProfit.setText(
                         it?.map {
-                            it.monthDate.month
+                            it.monthDate.toString()
                         }.toString()
                     )
 

@@ -25,7 +25,7 @@ class MonthlyProfitAdapter: ListAdapter<MonthlyProfit, MonthlyProfitAdapter.Hold
         private val binding = MonthlyProfitItemBinding.bind(view)
 
         fun bind(item: MonthlyProfit){
-            binding.month.text = item.monthDate.month.toString()
+            binding.month.text = item.monthDate.toString()
             binding.profitTv.text = item.totalProfit.toString()
         }
     }
