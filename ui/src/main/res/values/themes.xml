@@ -44,6 +44,10 @@
 <!--        <item name="android:textStyle">bold</item>-->
     </style>
 
+    <style name="TextAppearance.MainValues" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
     <style name="TextAppearance.MyTitleMedium" parent="TextAppearance.Material3.TitleMedium">
             <item name="textFillColor">@color/md_theme_primary</item>
             <item name="android:textColor">@color/md_theme_primary</item>

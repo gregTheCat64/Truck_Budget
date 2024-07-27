@@ -5,7 +5,9 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.time.ZoneId
+import java.time.format.TextStyle
 import java.util.Date
+import java.util.Locale
 
 fun LocalDate.toLong(): Long {
     return this.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
@@ -54,6 +56,8 @@ fun String.toMonth(): Month? {
         else -> null // Если передан неверный номер месяца
     }
 }
+
+fun Month.asShortMonth(): String = this.getDisplayName(TextStyle.SHORT, Locale.getDefault())
 
 //enum class Month(val number: Int) {
 //    JANUARY(1),

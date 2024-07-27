@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,21 +15,7 @@
         android:layout_height="wrap_content"
         />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2024"
-        android:layout_gravity="end"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
 
-        />
-
-    <include layout="@layout/horizon_line"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,6 +30,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Транспорт компании"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Рейсов выполнено"
             />
@@ -51,25 +44,67 @@
             android:id="@+id/companyRoutesCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="44 рейса"
-            style="@style/TextAppearance.Material3.BodyLarge"
+            android:text="0"
+            style="@style/TextAppearance.MainValues"
             />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Заявок выполнено"
         />
     <TextView
         android:id="@+id/companyOrdersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="44 рейса"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        android:text="0"
+        style="@style/TextAppearance.MainValues"
         />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Заработано за год всего, руб." />
+
+        <TextView
+            android:id="@+id/totalYearProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            style="@style/TextAppearance.MainValues"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Средний заработок в месяц, руб."
+            />
+        <TextView
+            android:id="@+id/averageProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            style="@style/TextAppearance.MainValues"
+            />
+
+        <include layout="@layout/horizon_line"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Привлеченный транспорт"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            />
 
 
     <TextView
@@ -83,75 +118,69 @@
         android:id="@+id/notCompanyOrdersCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="16 рейсов"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Заработано за год" />
-
-    <TextView
-        android:id="@+id/totalYearProfit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="860000 руб."
-        style="@style/TextAppearance.Material3.BodyLarge"
+        android:text="0"
+        style="@style/TextAppearance.MainValues"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Средний заработок в месяц"
-        />
-    <TextView
-        android:id="@+id/averageProfit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="86000 руб."
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Заработок на привлеченных рейсах"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="40000 руб."
-        style="@style/TextAppearance.Material3.BodyLarge"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Заработано за год, руб."
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            style="@style/TextAppearance.MainValues"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Средний заработок в месяц, руб."
+            />
+        <TextView
+            android:id="@+id/notCompanyTransportAverageProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            style="@style/TextAppearance.MainValues"
+            />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Заработок по месяцам"
-            />
-        <TextView
-            android:id="@+id/monthlyProfit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="40000 руб."
-            style="@style/TextAppearance.Material3.BodyLarge"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:text="График доходов"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/profitList"
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="200dp"
             />
-
 
 
 </LinearLayout>
 
 </ScrollView>
 
-</LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        />
+
+</FrameLayout>

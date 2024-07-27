@@ -25,14 +25,14 @@ class MonthlyProfitAdapter: ListAdapter<MonthlyProfit, MonthlyProfitAdapter.Hold
         private val binding = MonthlyProfitItemBinding.bind(view)
 
         fun bind(item: MonthlyProfit){
-            binding.month.text = item.monthDate.toString()
+            binding.month.text = item.month.toString()
             binding.profitTv.text = item.totalProfit.toString()
         }
     }
 
     class Comparator: DiffUtil.ItemCallback<MonthlyProfit>(){
         override fun areItemsTheSame(oldItem: MonthlyProfit, newItem: MonthlyProfit): Boolean {
-            return oldItem.monthDate != newItem.monthDate
+            return oldItem.month != newItem.month
         }
 
         override fun areContentsTheSame(oldItem: MonthlyProfit, newItem: MonthlyProfit): Boolean {
