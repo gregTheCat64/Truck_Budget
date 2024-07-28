@@ -34,53 +34,45 @@ class StatsViewModel @Inject constructor(
     val loadState = _loadState.asSharedFlow()
 
 
-    fun getMonthlyIncomeByYear(year: String){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateStats(year: String){
+        viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
-            val result = routeRepository.getMonthlyIncomeByYear(year)
-            val averageMonthlyProfit = result.map { it.totalProfit }.average().toInt().toLong()
-            var totalYearProfit = 0L
-            result.forEach {
-                totalYearProfit += it.totalProfit
-            }
-            _stats.value = _stats.value.copy(
-                totalProfit = totalYearProfit,
-                companyAverageMonthlyProfit = averageMonthlyProfit
+
+            try {
+                val companyRoutesCountResult = routeRepository.getCompanyRoutesCountByYear(year)
+                Log.i("statsVM", "CompanyCount: $companyRoutesCountResult")
+
+                val companyOrdersCountResult = orderRepository.getCompanyOrdersCountByYear(year)
+                Log.i("statsVM", "CompanyCount: $companyOrdersCountResult")
+
+                val notCompanyOrdersCountResult = orderRepository.getNotCompanyOrdersCountByYear(year)
+                Log.i("statsVM", "notCompanyCount: $notCompanyOrdersCountResult")
+
+                val monthlyProfitResult = routeRepository.getMonthlyIncomeByYear(year)
+                val averageMonthlyProfit = monthlyProfitResult.map { it.totalProfit }.average().toInt().toLong()
+                var totalYearProfit = 0L
+                monthlyProfitResult.forEach {
+                    totalYearProfit += it.totalProfit
+                }
+
+                _stats.value = _stats.value.copy(
+                    companyRoutesCount = companyRoutesCountResult,
+                    companyOrdersCount = companyOrdersCountResult,
+                    notCompanyOrdersCount = notCompanyOrdersCountResult,
+                    totalProfit = totalYearProfit,
+                    companyAverageMonthlyProfit = averageMonthlyProfit,
+                    monthlyProfitList = monthlyProfitResult
+
                 )
-            monthlyProfitList.emit(result)
-            _loadState.emit(LoadState.Success.OK)
-        }
-    }
 
-    fun getCompanyRoutesCountByYear(year: String){
-        viewModelScope.launch(Dispatchers.IO){
-            val result = routeRepository.getCompanyRoutesCountByYear(year)
-            Log.i("statsVM", "CompanyCount: $result")
-            _stats.value = _stats.value.copy(companyRoutesCount = result)
-        }
-    }
+                //monthlyProfitList.emit(monthlyProfitResult)
 
-    fun getNotCompanyRoutesCountByYear(year: String){
-        viewModelScope.launch(Dispatchers.IO){
-            val result = routeRepository.getNotCompanyRoutesCountByYear(year)
-            Log.i("statsVM", "notCompanyCount: $result")
-            _stats.value = _stats.value.copy(notCompanyOrdersCount = result)
-        }
-    }
+                _loadState.emit(LoadState.Success.OK)
 
-    fun getCompanyOrdersCountByYear(year: String){
-        viewModelScope.launch(Dispatchers.IO){
-            val result = orderRepository.getCompanyOrdersCountByYear(year)
-            Log.i("statsVM", "CompanyCount: $result")
-            _stats.value = _stats.value.copy(companyOrdersCount = result)
+            }catch (e: Exception){
+                println(e.message)
+            }
         }
-    }
 
-    fun getNotCompanyOrdersCountByYear(year: String){
-        viewModelScope.launch(Dispatchers.IO){
-            val result = orderRepository.getNotCompanyOrdersCountByYear(year)
-            Log.i("statsVM", "notCompanyCount: $result")
-            _stats.value = _stats.value.copy(notCompanyOrdersCount = result)
-        }
     }
 }

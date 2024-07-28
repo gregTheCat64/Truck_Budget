@@ -102,31 +102,37 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
             }
         }
 
+        viewModel.updateStats(year = "2024")
 
-//        val monthlyProfitAdapter = MonthlyProfitAdapter()
-//        binding.profitList.adapter = monthlyProfitAdapter
 
-        viewModel.getMonthlyIncomeByYear("2024")
-        viewModel.getCompanyOrdersCountByYear("2024")
-        viewModel.getNotCompanyOrdersCountByYear("2024")
-        viewModel.getCompanyRoutesCountByYear("2024")
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.monthlyProfitList.collectLatest {
-                   println(it.toString())
-                    it?.let { buildChart(it) }
-                }
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//                viewModel.monthlyProfitList.collectLatest {
+//                   println(it.toString())
+//                    it?.let { buildChart(it) }
+//                }
+//            }
+//        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.stats.collectLatest {
-                    it?.let { updateUi(it) }
+                    it.let { updateUi(it) }
                 }
             }
         }
+    }
+
+
+
+    private fun updateUi(stats: StatsModel){
+        binding.companyRoutesCount.setText(stats.companyRoutesCount.toString())
+        binding.companyOrdersCount.setText(stats.companyOrdersCount.toString())
+        binding.notCompanyOrdersCount.setText(stats.notCompanyOrdersCount.toString())
+        binding.totalYearProfit.setText(stats.totalProfit.toString())
+        binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
+
+        stats.monthlyProfitList?.let { buildChart(it) }
     }
 
     private fun buildChart(list: List<MonthlyProfit>){
@@ -160,14 +166,6 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
         chart.description.text = ""
         chart.animateY(1000)
         chart.invalidate()
-    }
-
-    private fun updateUi(stats: StatsModel){
-        binding.companyRoutesCount.setText(stats.companyRoutesCount.toString())
-        binding.companyOrdersCount.setText(stats.companyOrdersCount.toString())
-        binding.notCompanyOrdersCount.setText(stats.notCompanyOrdersCount.toString())
-        binding.totalYearProfit.setText(stats.totalProfit.toString())
-        binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
     }
 
 }
