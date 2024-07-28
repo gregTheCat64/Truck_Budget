@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.FilterOrderModel
 import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.OrdersAdapter
 import ru.javacat.ui.databinding.FragmentOrderListBinding
@@ -52,21 +53,6 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         super.onViewCreated(view, savedInstanceState)
         Log.i("orderListFrag", "onViewCreated")
 
-        val monthNames = arrayOf(
-            getString(R.string.month),
-            getString(R.string.january),
-            getString(R.string.february),
-            getString(R.string.march),
-            getString(R.string.april),
-            getString(R.string.may),
-            getString(R.string.june),
-            getString(R.string.july),
-            getString(R.string.august),
-            getString(R.string.september),
-            getString(R.string.october),
-            getString(R.string.november),
-            getString(R.string.december))
-
 
         setFragmentResultListener(FragConstants.FILTER_ORDER){_, bundle ->
             val monthId = bundle.getInt(FragConstants.FILTER_MONTH, -1)
@@ -77,7 +63,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             Log.i("OrderListFrag", "customerId: $customerId")
 
             if (monthId>=0){
-                binding.monthsFilter.setText(monthNames.get(monthId))
+
                 if (monthId > 0){
                     val monthToFilter = Month.of(monthId)
                     viewModel.setMonthFilter(monthToFilter)
@@ -92,18 +78,25 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             if (customerId != -1L){
                 if (customerId == 0L){
                     binding.companiesFilter.text = getString(R.string.customer)
-                    viewModel.setCustomerFilter(null)
+                    viewModel.setCustomerFilter(null, null)
                     binding.companiesFilter.isChecked = false
                 } else {
-                    binding.companiesFilter.text = customerName
-                    viewModel.setCustomerFilter(customerId)
+                    viewModel.setCustomerFilter(customerId, customerName)
                     binding.companiesFilter.isChecked = true
                 }
             }
             viewModel.filterOrders()
         }
 
-        viewModel.getAllOrders()
+        viewModel.filterOrders()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.filters.collectLatest {
+                    updateFiltersUi(it)
+                }
+            }
+        }
 
         binding.monthsFilter.setOnClickListener{
             val dialogFragment = MonthsDialogFragment()
@@ -118,8 +111,8 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
 
         binding.unpaidBtn.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                viewModel.setPaidFilter(paidParam = false)
-            } else {viewModel.setPaidFilter(paidParam = null)}
+                viewModel.setPaidFilter(paidParam = true)
+            } else {viewModel.setPaidFilter(paidParam = false)}
 
             viewModel.filterOrders()
         }
@@ -155,5 +148,27 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         binding.debtValue.text = "$debt руб."
         //Toast.makeText(requireContext(), "$debt", Toast.LENGTH_SHORT).show()
         ordersAdapter.submitList(orderList)
+    }
+
+    private fun updateFiltersUi(filterOrderModel: FilterOrderModel){
+        val monthNames = arrayOf(
+            getString(R.string.month),
+            getString(R.string.january),
+            getString(R.string.february),
+            getString(R.string.march),
+            getString(R.string.april),
+            getString(R.string.may),
+            getString(R.string.june),
+            getString(R.string.july),
+            getString(R.string.august),
+            getString(R.string.september),
+            getString(R.string.october),
+            getString(R.string.november),
+            getString(R.string.december))
+
+        binding.monthsFilter.setText(filterOrderModel.month?.value?.let { monthNames.get(it) }?:"Месяц")
+        binding.companiesFilter.text = filterOrderModel.customerName?:"Клиент"
+        //binding.unpaidBtn.isChecked = filterOrderModel.isUnPaid
+
     }
 }

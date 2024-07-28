@@ -66,12 +66,12 @@ class OrderRepositoryImpl @Inject constructor(
         _orders.emit(filteredByMonth)
     }
 
-    override suspend fun filterOrders(year: Year?, month: Month?, customerId: Long?, paid: Boolean?){
-        Log.i("orderRepo", "filter: year: $year, month: $month, customerId: $customerId, paid: $paid")
+    override suspend fun filterOrders(year: Int?, month: Month?, customerId: Long?, unPaid: Boolean){
+        Log.i("orderRepo", "filter: year: $year, month: $month, customerId: $customerId, unPaid: $unPaid")
         var orders = ordersDao.getAllOrders().map { it.toOrderModel()}
 
         if (year != null) {
-            orders = orders.filter { it.date.year.equals(year)}
+            orders = orders.filter { it.date.year == year }
         }
 
         if (month != null) {
@@ -82,8 +82,8 @@ class OrderRepositoryImpl @Inject constructor(
             orders = orders.filter { it.customer?.id == customerId }
         }
 
-        if (paid != null) {
-            orders = orders.filter { it.isPaidByCustomer == paid }
+        if (unPaid) {
+            orders = orders.filter { !it.isPaidByCustomer }
         }
 
         _orders.emit(orders)

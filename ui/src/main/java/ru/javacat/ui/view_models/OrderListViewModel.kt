@@ -1,16 +1,19 @@
 package ru.javacat.ui.view_models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.FilterOrderModel
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.ui.LoadState
 import java.time.Month
-import java.time.Year
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,32 +24,50 @@ class OrderListViewModel @Inject constructor(
     val loadState = _loadState.asSharedFlow()
     val orders = orderRepository.items
 
-    //filters:
-    private var paid: Boolean? = null
-    private var year: Year? = null
-    private var month: Month? = null
-    private var customerId: Long? = null
+    private val _filters = MutableStateFlow(FilterOrderModel())
+    val filters: StateFlow<FilterOrderModel> get() = _filters
 
-    fun setPaidFilter(paidParam: Boolean?){
-        paid = paidParam
+    //filters:
+//    private var paid: Boolean? = null
+//    private var year: Int? = LocalDate.now().year
+//    private var month: Month? = null
+//    private var customerId: Long? = null
+
+    fun setPaidFilter(paidParam: Boolean){
+        Log.i("OrderListVM", "setUnpaid $paidParam")
+        _filters.value = _filters.value.copy(
+            isUnPaid = paidParam
+        )
     }
 
-    fun setYearFilter(yearParam: Year?){
-        year = yearParam
+    fun setYearFilter(yearParam: Int?){
+        _filters.value = _filters.value.copy(
+            year = yearParam
+        )
     }
 
     fun setMonthFilter(monthParam: Month?){
-        month = monthParam
+        _filters.value = _filters.value.copy(
+            month = monthParam
+        )
     }
 
-    fun setCustomerFilter(customerIdParam: Long?){
-        customerId = customerIdParam
+    fun setCustomerFilter(customerIdParam: Long?, customerNameParam: String?){
+        _filters.value = _filters.value.copy(
+            customerId = customerIdParam,
+            customerName = customerNameParam
+        )
     }
 
     fun filterOrders(){
+        Log.i("OrderListVM", "filtering orders")
         viewModelScope.launch(Dispatchers.IO) {
-            //orderRepository.getUnpaidOrders()
-            orderRepository.filterOrders(year, month, customerId, paid)
+            val year = filters.value.year
+            val month = filters.value.month
+            val customerId = filters.value.customerId
+            val unPaid = filters.value.isUnPaid
+            orderRepository.filterOrders(
+                year, month, customerId, unPaid)
         }
     }
 
