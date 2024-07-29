@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.navigation_route_list,
             R.id.navigation_order_list,
-            R.id.navigation_customer_list,
+            R.id.navigation_company_list,
+            R.id.navigation_expense_list,
             R.id.navigation_stats
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -42,7 +43,8 @@ class MainActivity : AppCompatActivity() {
             if (
                 nd.id == R.id.navigation_route_list ||
                 nd.id == R.id.navigation_order_list ||
-                nd.id == R.id.navigation_customer_list ||
+                nd.id == R.id.navigation_company_list ||
+                nd.id == R.id.navigation_expense_list ||
                 nd.id == R.id.navigation_stats
                 ) navView.visibility = View.VISIBLE
             else navView.visibility = View.GONE
@@ -71,8 +73,5 @@ class MainActivity : AppCompatActivity() {
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.nav_host_fragment, fragment)
         transaction.commit()
-    }
-    fun setBottomNavVisibility(visibility: Int) {
-        binding.bottomNav.visibility = visibility
     }
 }

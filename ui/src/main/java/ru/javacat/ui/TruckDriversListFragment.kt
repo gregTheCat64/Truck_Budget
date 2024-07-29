@@ -24,7 +24,6 @@ import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
 class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() {
-    override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: TruckFleetViewPagerViewModel by activityViewModels()
     private lateinit var truckDriversAdapter: TruckDriversAdapter

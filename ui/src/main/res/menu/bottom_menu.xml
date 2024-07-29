@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@+id/navigation_route_list"
         android:icon="@drawable/baseline_route_24"
         android:title="@string/routes"
@@ -10,14 +11,21 @@
         android:title="@string/orders"
         android:orderInCategory="2"
         />
-    <item android:id="@+id/navigation_customer_list"
+    <item android:id="@+id/navigation_company_list"
     android:icon="@drawable/baseline_apartment_24"
     android:title="@string/companies"
     android:orderInCategory="3"
     />
+
+    <item android:id="@+id/navigation_expense_list"
+        android:icon="@drawable/baseline_credit_card_24"
+        android:title="@string/expenses"
+        android:orderInCategory="4"
+        />
+
     <item android:id="@+id/navigation_stats"
     android:icon="@drawable/baseline_query_stats_24"
     android:title="@string/statistics"
-    android:orderInCategory="4"
+    android:orderInCategory="5"
     />
 </menu>

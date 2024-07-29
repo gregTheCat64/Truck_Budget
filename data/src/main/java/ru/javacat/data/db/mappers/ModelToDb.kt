@@ -4,6 +4,7 @@ import ru.javacat.common.utils.toLong
 import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.entities.DbCompany
 import ru.javacat.data.db.entities.DbCountRoute
+import ru.javacat.data.db.entities.DbExpense
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
@@ -16,6 +17,7 @@ import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.CountRoute
+import ru.javacat.domain.models.Expense
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.Order
@@ -120,3 +122,5 @@ fun Manager.toDb() = DbManager(
 )
 
 fun CargoName.toDb() = DbCargo(id, nameToShow, positionId)
+
+fun Expense.toDb() = DbExpense(id, name, description, date.toString(), price)

@@ -16,15 +16,15 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
 import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
-import ru.javacat.ui.databinding.FragmentCustomerListBinding
+import ru.javacat.ui.databinding.FragmentCompanyListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.CustomerListViewModel
 
 @AndroidEntryPoint
-class CustomerListFragment: BaseFragment<FragmentCustomerListBinding>() {
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCustomerListBinding
+class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCompanyListBinding
         get() = {inflater, container->
-            FragmentCustomerListBinding.inflate(inflater, container, false)
+            FragmentCompanyListBinding.inflate(inflater, container, false)
         }
     private val  viewModel: CustomerListViewModel by viewModels()
     private lateinit var customersAdapter: CustomersAdapter

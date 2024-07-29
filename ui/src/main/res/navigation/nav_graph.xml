@@ -135,9 +135,9 @@
             app:destination="@id/routeViewPagerFragment" />
 
     <fragment
-        android:id="@+id/navigation_customer_list"
-        android:name="ru.javacat.ui.CustomerListFragment"
-        tools:layout="@layout/fragment_customer_list"
+        android:id="@+id/navigation_company_list"
+        android:name="ru.javacat.ui.CompanyListFragment"
+        tools:layout="@layout/fragment_company_list"
         android:label="@string/companies" >
         <action
             android:id="@+id/action_customerListFragment_to_customerFragment"
@@ -270,6 +270,11 @@
         android:id="@+id/newTrailerFragment"
         android:name="ru.javacat.ui.NewTrailerFragment"
         android:label="NewTrailerFragment" />
+    <fragment
+        android:id="@+id/navigation_expense_list"
+        android:name="ru.javacat.ui.ExpenseListFragment"
+        tools:layout="@layout/fragment_expense_list"
+        android:label="ExpenseListFragment" />
 
 
 </navigation>

@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CompaniesDao
+import ru.javacat.data.db.dao.ExpenseDao
 import ru.javacat.data.db.dao.ManagersDao
 import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.dao.LocationsDao
@@ -15,6 +16,7 @@ import ru.javacat.data.db.dao.TrailersDao
 import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.entities.DbCompany
 import ru.javacat.data.db.entities.DbCountRoute
+import ru.javacat.data.db.entities.DbExpense
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
 import ru.javacat.data.db.entities.DbOrder
@@ -36,7 +38,8 @@ import ru.javacat.data.db.entities.PointConverter
         DbTrailer::class,
         DbLocation::class,
         DbCargo::class,
-        DbCountRoute::class
+        DbCountRoute::class,
+        DbExpense::class
     ],
     version = 1, exportSchema = false
 )
@@ -51,4 +54,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val locationsDao: LocationsDao
     abstract val cargoDao: CargoDao
     abstract val ordersDao: OrdersDao
+    abstract val expenseDao: ExpenseDao
 }

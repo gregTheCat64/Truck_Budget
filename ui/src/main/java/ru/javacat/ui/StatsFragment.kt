@@ -1,5 +1,6 @@
 package ru.javacat.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -37,8 +39,6 @@ import java.time.Month
 class StatsFragment: BaseFragment<FragmentStatsBinding>() {
     private val viewModel: StatsViewModel by viewModels()
 
-    private lateinit var monthlyProfitAdapter: MonthlyProfitAdapter
-
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentStatsBinding
         get() = {inflater, container ->
             FragmentStatsBinding.inflate(inflater, container, false)
@@ -51,40 +51,11 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.hide()
 
-
-        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
-
-
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_edit_remove, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.edit_menu_item -> {
-
-                        return true
-                    }
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
-
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -104,26 +75,14 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
 
         viewModel.updateStats(year = "2024")
 
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED){
-//                viewModel.monthlyProfitList.collectLatest {
-//                   println(it.toString())
-//                    it?.let { buildChart(it) }
-//                }
-//            }
-//        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.stats.collectLatest {
-                    it.let { updateUi(it) }
+                    updateUi(it)
                 }
             }
         }
     }
-
-
 
     private fun updateUi(stats: StatsModel){
         binding.companyRoutesCount.setText(stats.companyRoutesCount.toString())
@@ -155,9 +114,8 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
             profits.add(BarEntry((l.month!!.value-1).toFloat(), l.totalProfit.toFloat()))
         }
 
-
         val dataSet = BarDataSet(profits, "Ежемесячный доход")
-        dataSet.color = R.color.md_theme_primary
+        dataSet.color = ContextCompat.getColor(requireContext(), R.color.md_theme_primary)
 
         chart.xAxis.valueFormatter = IndexAxisValueFormatter(monthNames)
         chart.xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE

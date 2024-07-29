@@ -133,4 +133,5 @@
     <string name="w_o_fee">W/o fee</string>
     <string name="with_fee">With fee</string>
     <string name="statistics">Statistics</string>
+    <string name="expenses">Expenses</string>
 </resources>
