@@ -9,7 +9,7 @@
     >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/expenseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Масло"
@@ -18,22 +18,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/expenseDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Замена, 40л"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="@+id/expenseName"
+        app:layout_constraintTop_toBottomOf="@+id/expenseName" />
 
     <TextView
+        android:id="@+id/expenseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="29 июля"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/expenseCost" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/expenseCost"
         style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

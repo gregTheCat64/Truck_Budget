@@ -5,12 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -19,7 +15,6 @@ import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.TruckDriversAdapter
 import ru.javacat.ui.databinding.FragmentTruckDriversListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TruckDriversViewModel
 import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
@@ -45,7 +40,6 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("DriverListFrag", "onViewCreated")
-
 
         truckDriversAdapter = TruckDriversAdapter{
             val bundle = Bundle()
