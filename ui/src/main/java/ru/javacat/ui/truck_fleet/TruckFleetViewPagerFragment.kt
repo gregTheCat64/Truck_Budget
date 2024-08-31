@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.truck_fleet
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,9 +18,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Company
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.RouteViewPagerAdapter
 import ru.javacat.ui.databinding.FragmentTruckFleetViewPagerBinding
 import ru.javacat.ui.utils.FragConstants

@@ -25,8 +25,6 @@ import ru.javacat.ui.view_models.RouteCountViewModel
 @AndroidEntryPoint
 class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
-
     private val viewModel: RouteCountViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteCalculationInfoBinding
         get() = { inflater, container ->
@@ -74,22 +72,22 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID){
             binding.myTransportLayout.isVisible = true
 
-            val subsistenceExp = route.countRoute?.payPerDiem?.let { route.countRoute?.routeDuration?.times(it) }
+            val subsistenceExp = route.salaryParameters.costPerDiem?.let { route.routeDuration?.times(it) }
 
-            val fuelSpending = route.countRoute?.fuelPrice?.let { route.countRoute?.fuelUsedUp?.times(it) }
+            val fuelSpending = route.fuelPrice?.let { route.fuelUsedUp?.times(it) }
             val fuelSpendingString = if (fuelSpending!=null){
-                "${route.countRoute?.fuelPrice} ${getString(R.string.rub)} * ${route.countRoute?.fuelUsedUp} л. = $fuelSpending"
+                "${route.fuelPrice} ${getString(R.string.rub)} * ${route.fuelUsedUp} л. = $fuelSpending"
             } else ""
 
-            binding.prepayTv.text = route.countRoute?.prepayment.toString()
+            binding.prepayTv.text = route.prepayment.toString()
             binding.fuelCostTv.text = fuelSpendingString
             subsistenceExp?.let {
                 binding.subsistenceExpensesTv.text = "${it} ${getString(R.string.rub)}"
             }
-            route.countRoute?.otherExpenses?.let {
+            route.extraExpenses?.let {
                 binding.otherSpendingTv.text = "$it ${getString(R.string.rub)}"
             }
-            route.countRoute?.driverSalary?.let {
+            route.driverSalary?.let {
                 binding.salaryTv.text = "$it ${getString(R.string.rub)}"
             }
 
@@ -104,7 +102,7 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         route.profit?.let {
             binding.profitTv.text = "$it ${getString(R.string.rub)}"
         }
-        route.countRoute?.moneyToPay?.let {
+        route.moneyToPay?.let {
             binding.moneyToPayTv.text = "$it ${getString(R.string.rub)}"
         }
 

@@ -16,9 +16,9 @@ class ManagersRepositoryImpl @Inject constructor(
     private val dao: ManagersDao
 ): ManagersRepository {
 
-    private val _chosenManager = MutableStateFlow<Manager?>(null)
-    override val chosenItem: StateFlow<Manager?>
-        get() = _chosenManager.asStateFlow()
+//    private val _chosenManager = MutableStateFlow<Manager?>(null)
+//    override val chosenItem: StateFlow<Manager?>
+//        get() = _chosenManager.asStateFlow()
 
     override suspend fun getAll(): List<Manager> {
         return dbQuery { dao.getAll().map {
@@ -35,11 +35,11 @@ class ManagersRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setItem(t: Manager) {
-        _chosenManager.emit(t)
+        //_chosenManager.emit(t)
     }
 
     override suspend fun clearItem() {
-        _chosenManager.emit(null)
+        //_chosenManager.emit(null)
     }
 
     override suspend fun getManagersByCustomerId(customerId: Long): List<Manager> {

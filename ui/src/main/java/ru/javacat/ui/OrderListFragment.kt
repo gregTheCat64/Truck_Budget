@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.FilterOrderModel
 import ru.javacat.domain.models.Order
 import ru.javacat.ui.adapters.OrdersAdapter
+import ru.javacat.ui.companies.CustomerDialogFragment
 import ru.javacat.ui.databinding.FragmentOrderListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.OrderListViewModel

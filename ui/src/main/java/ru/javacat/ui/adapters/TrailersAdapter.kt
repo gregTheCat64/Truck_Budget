@@ -28,7 +28,10 @@ class TrailersAdapter(
 
         fun bind(item: Trailer){
             binding.regNumberTv.text = item.nameToShow
-            binding.infoTv.text = "${item.type} ${item.model}"
+            val trailerModel = item.model?:""
+            val trailerYear = item.yearOfManufacturing?:""
+            val trailerInfo = "$trailerModel $trailerYear"
+            binding.infoTv.text = trailerInfo
             binding.root.setOnClickListener {
                 onItem(item)
             }

@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.companies
 
 import android.os.Bundle
 import android.text.Editable
@@ -24,6 +24,9 @@ import kotlinx.coroutines.launch
 import ru.javacat.common.utils.formatCompanyName
 import ru.javacat.common.utils.toShortCompanyName
 import ru.javacat.domain.models.Company
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.FragConstants

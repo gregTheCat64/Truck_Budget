@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/newCustomerFragment"
-        android:name="ru.javacat.ui.NewCompanyFragment"
+        android:name="ru.javacat.ui.companies.NewCompanyFragment"
         tools:layout="@layout/fragment_new_customer"
         android:label="@string/create_new_partner" >
         <action
@@ -136,7 +136,7 @@
 
     <fragment
         android:id="@+id/navigation_company_list"
-        android:name="ru.javacat.ui.CompanyListFragment"
+        android:name="ru.javacat.ui.companies.CompanyListFragment"
         tools:layout="@layout/fragment_company_list"
         android:label="@string/companies" >
         <action
@@ -149,7 +149,7 @@
     <fragment
         android:id="@+id/customerFragment"
         tools:layout="@layout/fragment_customer"
-        android:name="ru.javacat.ui.CustomerFragment"
+        android:name="ru.javacat.ui.companies.CustomerFragment"
         android:label="@string/customer" >
         <action
             android:id="@+id/action_customerFragment_to_truckFleetViewPager"
@@ -202,7 +202,7 @@
         android:label="@string/finish_route" />
     <fragment
         android:id="@+id/truckFleetViewPager"
-        android:name="ru.javacat.ui.TruckFleetViewPagerFragment"
+        android:name="ru.javacat.ui.truck_fleet.TruckFleetViewPagerFragment"
         tools:layout="@layout/fragment_truck_fleet_view_pager"
         android:label="@string/truck_fleet" >
         <action
@@ -218,7 +218,7 @@
 
         <fragment
             android:id="@+id/truckDriversListFragment"
-            android:name="ru.javacat.ui.TruckDriversListFragment"
+            android:name="ru.javacat.ui.truck_fleet.TruckDriversListFragment"
             tools:layout="@layout/fragment_truck_drivers_list"
             android:label="@string/truck_drivers">
             <action
@@ -232,7 +232,7 @@
             tools:layout="@layout/fragment_new_driver" />
     <fragment
         android:id="@+id/trailersListFragment"
-        android:name="ru.javacat.ui.TrailersListFragment"
+        android:name="ru.javacat.ui.truck_fleet.TrailersListFragment"
         tools:layout="@layout/fragment_trailers_list"
         android:label="@string/trailers" >
         <action
@@ -242,7 +242,7 @@
 
     <fragment
         android:id="@+id/trucksListFragment"
-        android:name="ru.javacat.ui.TrucksListFragment"
+        android:name="ru.javacat.ui.truck_fleet.TrucksListFragment"
         tools:layout="@layout/fragment_trucks_list"
         android:label="@string/trucks" >
         <action
@@ -272,9 +272,18 @@
         android:label="NewTrailerFragment" />
     <fragment
         android:id="@+id/navigation_expense_list"
-        android:name="ru.javacat.ui.ExpenseListFragment"
+        android:name="ru.javacat.ui.expense.ExpenseListFragment"
         tools:layout="@layout/fragment_expense_list"
-        android:label="ExpenseListFragment" />
+        android:label="ExpenseListFragment" >
+        <action
+            android:id="@+id/action_navigation_expense_list_to_editExpenseFragment"
+            app:destination="@id/editExpenseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editExpenseFragment"
+        android:name="ru.javacat.ui.expense.EditExpenseFragment"
+        tools:layout="@layout/fragment_edit_expense"
+        android:label="EditExpenseFragment" />
 
 
 </navigation>

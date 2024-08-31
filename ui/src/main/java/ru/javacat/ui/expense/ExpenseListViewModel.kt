@@ -1,4 +1,4 @@
-package ru.javacat.ui.view_models
+package ru.javacat.ui.expense
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

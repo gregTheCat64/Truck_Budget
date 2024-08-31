@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ru.javacat.data.db.entities.DbExpense
+import ru.javacat.data.db.models.DbMonthlyProfit
 import ru.javacat.domain.models.Expense
 
 @Dao
@@ -20,4 +21,14 @@ interface ExpenseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(expense: DbExpense): Long
+
+    @Query("""
+        SELECT strftime('%m', date) as monthDate,
+        SUM(price) as totalProfit
+        FROM expenses_table
+        WHERE strftime('%Y', date) = :year
+        GROUP BY monthDate
+        ORDER BY monthDate
+    """)
+    fun getMonthlyExpenseByYear(year: String): List<DbMonthlyProfit>
 }

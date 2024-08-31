@@ -28,13 +28,13 @@ class RouteListViewModel @Inject constructor(
 
     val allRoutes = repo.items
 
-    suspend fun getAllRoutes(){
+    fun getAllRoutes(){
         viewModelScope.launch(Dispatchers.IO) {
             repo.getAll()
         }
     }
 
-    suspend fun getCustomerById(id: Long){
+   fun getCustomerById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
@@ -45,10 +45,12 @@ class RouteListViewModel @Inject constructor(
         }
     }
 
-    suspend fun removeRoute(id: Long){
+
+  fun removeRoute(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             repo.removeById(id)
         }
     }
+
 
 }

@@ -91,39 +91,74 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
         binding.totalYearProfit.setText(stats.totalProfit.toString())
         binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
 
-        stats.monthlyProfitList?.let { buildChart(it) }
+        //stats.monthlyProfitList?.let { buildChart(it) }
+        if (stats.monthlyProfitList!= null && stats.monthlyExpenseList != null){
+            buildChart(stats.monthlyProfitList!!, stats.monthlyExpenseList!!)
+        }
+
     }
 
-    private fun buildChart(list: List<MonthlyProfit>){
+    private fun buildChart(profitList: List<MonthlyProfit>, expenseList: List<MonthlyProfit>){
         Log.i("StatsFrag", "building chart")
         val chart = binding.chart
 
         val profits = ArrayList<BarEntry>()
+        val expenses = ArrayList<BarEntry>()
 
         val monthNames = listOf(Month.JANUARY.asShortMonth(), Month.FEBRUARY.asShortMonth(), Month.MARCH.asShortMonth(), Month.APRIL.asShortMonth(),
             Month.MAY.asShortMonth(), Month.JUNE.asShortMonth(), Month.JULY.asShortMonth(), Month.AUGUST.asShortMonth(), Month.SEPTEMBER.asShortMonth(), Month.OCTOBER.asShortMonth(),
             Month.NOVEMBER.asShortMonth(), Month.DECEMBER.asShortMonth())
 
-        Log.i("StatsFrag", "profits: $profits")
+        val intNames = listOf(1,2,3,4,5,6).map {
+            it.toString()
+        }
+
+
+        Log.i("StatsFrag", "profits: $profitList")
+        Log.i("StatsFrag", "expenses: $expenseList")
 
         for (m in monthNames){
             profits.add(BarEntry(0F, 0F))
+            expenses.add(BarEntry(0F, 0F))
         }
 
-        for (l in list){
+        for (l in profitList){
             profits.add(BarEntry((l.month!!.value-1).toFloat(), l.totalProfit.toFloat()))
         }
 
+        for (e in expenseList) {
+            expenses.add(BarEntry((e.month!!.value)-0.5.toFloat(), e.totalProfit.toFloat()))
+        }
+
         val dataSet = BarDataSet(profits, "Ежемесячный доход")
+        val expensesDataSet = BarDataSet(expenses, "Расход")
         dataSet.color = ContextCompat.getColor(requireContext(), R.color.md_theme_primary)
+        expensesDataSet.color = ContextCompat.getColor(requireContext(), R.color.md_theme_error)
+
+        val datasets = listOf(dataSet, expensesDataSet)
 
         chart.xAxis.valueFormatter = IndexAxisValueFormatter(monthNames)
-        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
-        chart.data = BarData(dataSet)
-        chart.setFitBars(true)
-        chart.description.text = ""
-        chart.animateY(1000)
-        chart.invalidate()
+        chart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            isGranularityEnabled = true
+            granularity = 1f
+            labelRotationAngle = 0f
+            axisMinimum = 0f
+
+        }
+        chart.axisRight.isEnabled = false
+
+        chart.apply {
+            isDragXEnabled = true
+            isDragYEnabled = true
+            setVisibleXRangeMaximum(3f)
+            data = BarData(datasets)
+            data.barWidth = 0.5f
+            description.text = ""
+            animateY(1000)
+            invalidate()
+        }
+
     }
 
 }

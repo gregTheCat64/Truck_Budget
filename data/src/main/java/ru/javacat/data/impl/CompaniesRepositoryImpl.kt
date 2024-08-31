@@ -1,5 +1,6 @@
 package ru.javacat.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,19 +18,23 @@ class CompaniesRepositoryImpl @Inject constructor(
     private val dao: CompaniesDao
 ): CompaniesRepository {
 
-    override val chosenItem: StateFlow<Company?>
-        get() = _chosenCustomer.asStateFlow()
-    private val _chosenCustomer = MutableStateFlow<Company?>(null)
-//    override val chosenCustomer: StateFlow<Customer?>
+//    override val chosenItem: StateFlow<Company?>
 //        get() = _chosenCustomer.asStateFlow()
-
-    private var _customers = MutableStateFlow(emptyList<Company>())
-    override val customers: Flow<List<Company>>
-        get() = _customers
+//    private val _chosenCustomer = MutableStateFlow<Company?>(null)
 
     override suspend fun getAll(): List<Company> {
-        _customers.emit(dao.getAll().map { it.toCompanyModel() })
         return dbQuery { dao.getCustomers().map { it.toCompanyModel() } }
+    }
+
+    override suspend fun createDefaultCompany() {
+        if (getAll().isEmpty()){
+            Log.i("companiesRepo", "creating default Company")
+            val defaultCompany = Company(
+                -1,
+                "Моя Компания"
+            )
+            dbQuery { dao.insertCustomer(defaultCompany.toDb()) }
+        }
     }
 
     override suspend fun getById(id: Long): Company? {
@@ -49,10 +54,10 @@ class CompaniesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setItem(t: Company) {
-        _chosenCustomer.emit(t)
+        //_chosenCustomer.emit(t)
     }
 
     override suspend fun clearItem() {
-        _chosenCustomer.emit(null)
+        //_chosenCustomer.emit(null)
     }
 }

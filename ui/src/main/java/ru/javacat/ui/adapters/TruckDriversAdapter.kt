@@ -29,7 +29,13 @@ class TruckDriversAdapter(
 
         fun bind(item: TruckDriver){
             binding.apply {
-                name.text = "${item.firstName} ${item.middleName} ${item.surname}"
+                val firstName = item.firstName?:""
+                val middleName = item.middleName?:""
+                val surname = item.surname
+
+                val fullName = "$firstName $middleName $surname"
+
+                name.text = fullName
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {
                     onItem(item)

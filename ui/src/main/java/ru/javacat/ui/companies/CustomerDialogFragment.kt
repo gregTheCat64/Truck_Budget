@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.companies
 
 import android.os.Bundle
 import android.text.Editable

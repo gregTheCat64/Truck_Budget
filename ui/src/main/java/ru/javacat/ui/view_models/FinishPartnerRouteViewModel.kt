@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -30,16 +29,15 @@ class FinishPartnerRouteViewModel @Inject constructor(
         }
     }
 
-    fun saveRoute(profit: Int, revenue: Int, moneyToPay: Int, prepayment: Int){
+    fun saveRoute(profit: Int, revenue: Int, moneyToPay: Float, prepayment: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
                 editedRoute.value?.copy(
                     isFinished = true,
                     profit = profit,
                     revenue = revenue,
-                    countRoute = CountRoute(
-                        prepayment = prepayment,
-                        moneyToPay = moneyToPay)
+                    prepayment = prepayment,
+                    moneyToPay = moneyToPay,
                 )?.let { repository.updateEditedItem(it) }
                 editedRoute.value?.let { repository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)

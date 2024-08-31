@@ -1,8 +1,12 @@
 package ru.javacat.data.db.entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.javacat.common.utils.toLocalDate
+import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.models.TruckDriver
+import java.time.LocalDate
 
 @Entity(tableName = "truck_drivers_table")
 data class DbTruckDriver (
@@ -20,7 +24,9 @@ data class DbTruckDriver (
     val placeOfRegistration: String?,
     val phoneNumber: String?,
     val secondNumber: String?,
-    val comment: String?
+    val comment: String?,
+    @Embedded
+    val salaryParameters: SalaryParameters?
 ){
     fun toTruckDriverModel() = TruckDriver(
         id,
@@ -30,12 +36,13 @@ data class DbTruckDriver (
         middleName,
         surName,
         passportNumber,
-        passportReceivedDate,
+        passportReceivedDate?.toLocalDate(),
         passportReceivedPlace,
         driveLicenseNumber,
         placeOfRegistration,
         phoneNumber,
         secondNumber,
-        comment
+        comment,
+        salaryParameters
     )
 }

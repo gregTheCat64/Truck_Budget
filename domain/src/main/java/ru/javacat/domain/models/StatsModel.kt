@@ -8,5 +8,6 @@ data class StatsModel (
     val totalProfit: Long? = null,
     val companyAverageMonthlyProfit: Long? = null,
     val notCompanyAverageMonthlyProfit: Long? = null,
-    val monthlyProfitList: List<MonthlyProfit>? = null
+    val monthlyProfitList: List<MonthlyProfit>? = null,
+    val monthlyExpenseList: List<MonthlyProfit>? = null
 )

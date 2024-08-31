@@ -34,7 +34,7 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
     var revenue = 0
     var contractorsCost = 0
     var profit = 0
-    var moneyToPay = 0
+    var moneyToPay = 0f
     var prepayment = 0
 
     override fun onCreateView(
@@ -91,14 +91,14 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
 
 
     private fun initUi(route: Route) {
-        prepayment = route.countRoute?.prepayment?:0
+        prepayment = route.prepayment?:0
 
         for (i in route.orderList){
             revenue = revenue + i.price!!
             contractorsCost = contractorsCost + i.contractorPrice!!
         }
         profit =  revenue - contractorsCost
-        moneyToPay = contractorsCost-prepayment
+        //moneyToPay = contractorsCost-prepayment
         binding.revenueTv.setText("$revenue ${getString(R.string.rub)}")
         binding.contractorCostTv.setText("$contractorsCost ${getString(R.string.rub)}")
         binding.profitEt.setText("$profit")

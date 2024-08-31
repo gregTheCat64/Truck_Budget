@@ -134,4 +134,6 @@
     <string name="with_fee">With fee</string>
     <string name="statistics">Statistics</string>
     <string name="expenses">Expenses</string>
+    <string name="year">Year</string>
+    <string name="add_to_prepay">Add to Prepay</string>
 </resources>

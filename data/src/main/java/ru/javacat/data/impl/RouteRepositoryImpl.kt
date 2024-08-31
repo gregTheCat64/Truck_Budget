@@ -14,6 +14,7 @@ import ru.javacat.data.dbQuery
 import ru.javacat.domain.models.MonthlyProfit
 
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.repo.RouteRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,7 +36,7 @@ class RouteRepositoryImpl @Inject constructor(
     override val items: Flow<List<Route>>
         get() = _routes
 
-    private val _editedRoute = MutableStateFlow(Route())
+    private val _editedRoute = MutableStateFlow(Route(salaryParameters = SalaryParameters()))
     override val editedItem: StateFlow<Route?>
         get() = _editedRoute.asStateFlow()
 

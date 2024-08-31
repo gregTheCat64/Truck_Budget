@@ -1,5 +1,6 @@
 package ru.javacat.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,7 @@ class TrailersRepositoryImpl @Inject constructor(
 ): TrailersRepository {
 
     private val _chosenTrailer = MutableStateFlow<Trailer?>(null)
-    override val chosenItem: StateFlow<Trailer?>
+    override val chosenTrailer: StateFlow<Trailer?>
         get() = _chosenTrailer.asStateFlow()
 
     override suspend fun getAll(): List<Trailer> {
@@ -28,12 +29,25 @@ class TrailersRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id).toTrailer() }
     }
 
+    override suspend fun createDefaultTrailer(){
+        if (getByCompanyId(-1).isEmpty()){
+            Log.i("trailerRepo", "creating default trailer")
+            val defaultTrailer = Trailer(
+                0,
+                -1,
+                "МойПрицеп",
+                regionCode = 0
+            )
+            dbQuery { dao.insert(defaultTrailer.toDb()) }
+        }
+    }
+
     override suspend fun removeById(id: Long) {
         dbQuery { dao.remove(id) }
     }
 
-    override suspend fun getByCompanyId(companyId: Long): List<Trailer>? {
-        return dbQuery { dao.getByCompanyId(companyId)?.map { it.toTrailer() } }
+    override suspend fun getByCompanyId(companyId: Long): List<Trailer> {
+        return dbQuery { dao.getByCompanyId(companyId).map { it.toTrailer() } }
     }
 
     override suspend fun search(s: String): List<Trailer> {

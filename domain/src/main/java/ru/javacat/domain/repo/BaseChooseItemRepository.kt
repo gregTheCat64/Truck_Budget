@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface BaseChooseItemRepository<T: Any,S : Any, Id: Any> {
 
-    val chosenItem: StateFlow<T?>
+    //val chosenItem: StateFlow<T?>
 
     suspend fun getAll(): List<T>
 

@@ -17,9 +17,9 @@ data class Truck(
     override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,
-    override val vin: String?,
-    override val model: String?,
-    override val yearOfManufacturing: String?,
+    override val vin: String? = null,
+    override val model: String? = null,
+    override val yearOfManufacturing: String? = null,
 ): Vehicle(){
     override val positionId: Long
         get() = 0L
@@ -34,10 +34,10 @@ data class Trailer(
     override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,
-    override val vin: String?,
-    override val model: String?,
-    override val yearOfManufacturing: String?,
-    override val type: String?
+    override val vin: String? = null,
+    override val model: String? = null,
+    override val yearOfManufacturing: String? = null,
+    override val type: String? = null
     ): Vehicle(){
     override val positionId: Long
         get() = 0L

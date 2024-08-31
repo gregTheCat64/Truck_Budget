@@ -1,9 +1,7 @@
 package ru.javacat.data.db.mappers
 
-import ru.javacat.common.utils.toLong
 import ru.javacat.data.db.entities.DbCargo
 import ru.javacat.data.db.entities.DbCompany
-import ru.javacat.data.db.entities.DbCountRoute
 import ru.javacat.data.db.entities.DbExpense
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
@@ -16,7 +14,6 @@ import ru.javacat.data.db.entities.DbTruckDriver
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Company
-import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Expense
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Manager
@@ -35,9 +32,19 @@ fun Route.toDb() = DbRoute(
     contractor?.driver?.id,
     contractor?.truck?.id,
     contractor?.trailer?.id,
-    countRoute,
+    salaryParameters,
+    prepayment,
+    fuelUsedUp,
+    fuelPrice,
+    extraExpenses,
+    roadFee,
+    extraPoints,
+    routeDuration,
+    routeDistance,
+    driverSalary,
     contractorsCost,
-    routeExpenses,
+    totalExpenses,
+    moneyToPay,
     revenue,
     profit,
     isFinished
@@ -87,13 +94,14 @@ fun TruckDriver.toDb() = DbTruckDriver(
     middleName,
     surname,
     passportNumber,
-    passportReceivedDate,
+    passportReceivedDate?.toString(),
     passportReceivedPlace,
     driveLicenseNumber,
     placeOfRegistration,
     phoneNumber,
     secondNumber,
-    comment
+    comment,
+    salaryParameters
 )
 
 fun Location.toDb() = DbLocation(
@@ -112,7 +120,7 @@ fun Manager.toDb() = DbManager(
     middleName,
     surname,
     passportNumber,
-    passportReceivedDate,
+    passportReceivedDate.toString(),
     passportReceivedPlace,
     placeOfRegistration,
     phoneNumber,
@@ -123,4 +131,4 @@ fun Manager.toDb() = DbManager(
 
 fun CargoName.toDb() = DbCargo(id, nameToShow, positionId)
 
-fun Expense.toDb() = DbExpense(id, name, description, date.toString(), price)
+fun Expense.toDb() = DbExpense(id, nameToShow, positionId, description, date.toString(), price)

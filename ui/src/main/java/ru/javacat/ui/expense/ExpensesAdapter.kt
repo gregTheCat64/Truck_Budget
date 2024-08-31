@@ -1,4 +1,4 @@
-package ru.javacat.ui.adapters
+package ru.javacat.ui.expense
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Expense
-import ru.javacat.domain.models.Order
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.ExpenseItemBinding
 
@@ -30,7 +29,7 @@ class ExpensesAdapter(
 
         fun bind(item: Expense) {
             binding.apply {
-                expenseName.text = item.name
+                expenseName.text = item.nameToShow
                 expenseDescription.text = item.description
                 expenseCost.text = item.price.toString()
                 expenseDate.text = item.date.asDayAndMonthFully()

@@ -15,7 +15,6 @@ import ru.javacat.data.db.dao.TruckDriversDao
 import ru.javacat.data.db.dao.TrailersDao
 import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.entities.DbCompany
-import ru.javacat.data.db.entities.DbCountRoute
 import ru.javacat.data.db.entities.DbExpense
 import ru.javacat.data.db.entities.DbManager
 import ru.javacat.data.db.entities.DbLocation
@@ -38,7 +37,7 @@ import ru.javacat.data.db.entities.PointConverter
         DbTrailer::class,
         DbLocation::class,
         DbCargo::class,
-        DbCountRoute::class,
+//        DbCountRoute::class,
         DbExpense::class
     ],
     version = 1, exportSchema = false

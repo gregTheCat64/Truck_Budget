@@ -1,5 +1,6 @@
 package ru.javacat.data.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,7 @@ class TruckDriversRepositoryImpl @Inject constructor(
 ): TruckDriversRepository {
 
     private val _chosenDriver = MutableStateFlow<TruckDriver?>(null)
-    override val chosenItem: StateFlow<TruckDriver?>
+    override val chosenDriver: StateFlow<TruckDriver?>
         get() = _chosenDriver.asStateFlow()
 
     override suspend fun setItem(t: TruckDriver) {
@@ -38,6 +39,21 @@ class TruckDriversRepositoryImpl @Inject constructor(
 
     override suspend fun getByCompanyId(companyId: Long): List<TruckDriver> {
         return dbQuery { dao.getByCompanyId(companyId).map { it.toTruckDriverModel() } }
+    }
+
+    override suspend fun createDefaultTruckDriver(){
+        if (getByCompanyId(-1).isEmpty()){
+            Log.i("truckDriverRepo", "creating default driver")
+            val defaultDriver = TruckDriver(
+                0,
+                0,
+                -1,
+                "Мой",
+                surname = "Водитель",
+                salaryParameters = null
+            )
+            dbQuery { dao.insert(defaultDriver.toDb()) }
+        }
     }
 
     override suspend fun search(s: String): List<TruckDriver> {

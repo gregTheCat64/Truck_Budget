@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:text="@string/my_company"
                 android:hint="Исполнитель*" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -47,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="Тягач" />
+                android:hint="Тягач*" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +85,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:hint="Водитель" />
+            android:hint="Водитель*" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +99,7 @@
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Аванс, руб." />
+            android:hint="Аванс, руб.*" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.toLocalDate
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.utils.FragConstants
@@ -151,7 +152,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         val surname = binding.surName.text.toString()
         val passSerial = binding.passSerial.text.toString()
         val passNumber = binding.passNumber.text.toString()
-        val passWhen = binding.passWhen.text.toString()
+        val passWhen = if (binding.passWhen.text?.isNotEmpty() == true){
+            binding.passWhen.text?.toString()?.toLocalDate()
+        } else null
         val passWhere = binding.passWhere.text.toString()
         val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
         val address = binding.address.text.toString()
@@ -161,10 +164,11 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         //val id = passSerial.toString()+passNumber.toString()
 
+        //TODO добавить вызов календаря по клику
         //TODO добавить поле для 2 номера тел.
         val newDriver = TruckDriver(
             truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
-            passWhere, driveLicenseNumber, address, phoneNumber, "",""
+            passWhere, driveLicenseNumber, address, phoneNumber, "","",null
         )
 
         if (surname.isNotEmpty()){

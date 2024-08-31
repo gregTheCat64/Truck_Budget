@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.CountRoute
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TrailersRepository
@@ -49,24 +49,16 @@ class NewRouteViewModel @Inject constructor(
     private val date = LocalDate.now()
 
 
-//    val chosenCompany = companiesRepository.chosenItem
-//
-//    val chosenTruck = trucksRepository.chosenItem
-//
-//    val chosenTrailer = trailersRepository.chosenItem
-//
-//    val chosenDriver = truckDriversRepository.chosenItem
-
     fun saveNewRoute(route: Route) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                val _countRoute: CountRoute =
-                    if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID) {
-                        CountRoute(prepayment = _prepay)
-                    } else CountRoute(null)
+//                val _countRoute: SalaryCount =
+//                    if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID) {
+//                        SalaryCount(prepayment = _prepay)
+//                    } else SalaryCount(0,null)
                 val result = repo.insert(
-                    route.copy(startDate = date, countRoute = _countRoute)
+                    route.copy(startDate = date, prepayment = _prepay?:0)
                 )
                 routeId.emit(result)
 
@@ -92,10 +84,20 @@ class NewRouteViewModel @Inject constructor(
                     startDate = null,
                     endDate = null,
                     orderList = emptyList(),
-                    countRoute = null,
+                    salaryParameters = SalaryParameters(),
+                    prepayment = 0,
+                    fuelPrice = 0f,
+                    fuelUsedUp = 0,
+                    extraExpenses = 0,
+                    roadFee = 0,
+                    extraPoints = 0,
+                    routeDuration = 0,
+                    routeDistance = 0,
+                    driverSalary = 0f,
                     contractorsCost = 0,
-                    routeExpenses = 0,
-                    revenue = null,
+                    totalExpenses = 0f,
+                    moneyToPay = 0f,
+                    revenue = 0,
                     profit = null,
                     isFinished = false
                 )?.let {

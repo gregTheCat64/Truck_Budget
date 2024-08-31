@@ -3,6 +3,7 @@ package ru.javacat.data.db.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.javacat.common.utils.toLocalDate
 import ru.javacat.domain.models.Manager
 
 @Entity(tableName = "managers_table")
@@ -32,7 +33,7 @@ data class DbManager(
         middleName,
         surName,
         passportNumber,
-        passportReceivedDate,
+        passportReceivedDate?.toLocalDate(),
         passportReceivedPlace,
         placeOfRegistration,
         phoneNumber,

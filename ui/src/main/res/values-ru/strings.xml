@@ -129,6 +129,8 @@
     <string name="card">Карта</string>
     <string name="w_o_fee">Без НДС</string>
     <string name="with_fee">НДС</string>
-    <string name="statistics">Statistics</string>
-    <string name="expenses">Expenses</string>
+    <string name="statistics">Статистика</string>
+    <string name="expenses">Расходы</string>
+    <string name="year">Год</string>
+    <string name="add_to_prepay">Add to Prepay</string>
 </resources>

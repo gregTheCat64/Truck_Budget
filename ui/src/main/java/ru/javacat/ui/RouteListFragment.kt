@@ -3,10 +3,14 @@ package ru.javacat.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -43,9 +47,18 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.hide()
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        //(activity as AppCompatActivity).supportActionBar?.title = getString(R.string.routes)
+        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_main, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                TODO("Not yet implemented")
+            }
+        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -55,22 +68,20 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
         Log.i("routeListFrag", "onViewCreated")
 
-        viewLifecycleOwner.lifecycleScope.launch {
+
             viewModel.getAllRoutes()
-        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
-        }
 
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editedCustomer.collectLatest {
-                    myCompany = it
-                }
-            }
-        }
+
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.editedCustomer.collectLatest {
+//                    myCompany = it
+//                }
+//            }
+//        }
 
 
         //NewRoute
@@ -113,19 +124,18 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
     }
 
-    fun toNewRoute(){
-        val bundle = Bundle()
-        if (myCompany != null) {
+    private fun toNewRoute(){
+        //val bundle = Bundle()
+        //if (myCompany != null) {
             findNavController().navigate(R.id.newRouteFragment)
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "Заполните карточку вашей компании",
-                Toast.LENGTH_SHORT
-            ).show()
-            bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
-            findNavController().navigate(R.id.newCustomerFragment, bundle)
-
-        }
+//        } else {
+//            Toast.makeText(
+//                requireContext(),
+//                "Заполните карточку вашей компании",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//            bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
+//            findNavController().navigate(R.id.newCustomerFragment, bundle)
+//        }
     }
 }

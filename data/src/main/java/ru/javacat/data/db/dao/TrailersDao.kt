@@ -18,7 +18,7 @@ interface TrailersDao {
     suspend fun getById(id: Long): DbTrailer
 
     @Query("SELECT * FROM trailers_table WHERE companyId =:id")
-    suspend fun getByCompanyId(id: Long): List<DbTrailer>?
+    suspend fun getByCompanyId(id: Long): List<DbTrailer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(

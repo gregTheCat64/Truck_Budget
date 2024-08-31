@@ -15,8 +15,8 @@ class CargoRepositoryImpl @Inject constructor(
     private val dao: CargoDao
 ): CargoRepository {
 
-    override val chosenItem: StateFlow<CargoName?>
-        get() = MutableStateFlow<CargoName?>(null)
+//    override val chosenItem: StateFlow<CargoName?>
+//        get() = MutableStateFlow<CargoName?>(null)
 
     override suspend fun setItem(t: CargoName) {
 

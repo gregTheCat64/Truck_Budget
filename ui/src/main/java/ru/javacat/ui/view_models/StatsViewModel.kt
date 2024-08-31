@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.MonthlyProfit
 import ru.javacat.domain.models.StatsModel
 import ru.javacat.domain.repo.CompaniesRepository
+import ru.javacat.domain.repo.ExpenseRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class StatsViewModel @Inject constructor(
     val repository: CompaniesRepository,
     val routeRepository: RouteRepository,
-    val orderRepository: OrderRepository
+    val orderRepository: OrderRepository,
+    val expenseRepository: ExpenseRepository
 ): ViewModel() {
 
     val monthlyProfitList = MutableStateFlow<List<MonthlyProfit>?>(null)
@@ -55,14 +57,16 @@ class StatsViewModel @Inject constructor(
                     totalYearProfit += it.totalProfit
                 }
 
+                val monthlyExpenseResult = expenseRepository.getMonthlyExpenseByYear(year)
+
                 _stats.value = _stats.value.copy(
                     companyRoutesCount = companyRoutesCountResult,
                     companyOrdersCount = companyOrdersCountResult,
                     notCompanyOrdersCount = notCompanyOrdersCountResult,
                     totalProfit = totalYearProfit,
                     companyAverageMonthlyProfit = averageMonthlyProfit,
-                    monthlyProfitList = monthlyProfitResult
-
+                    monthlyProfitList = monthlyProfitResult,
+                    monthlyExpenseList = monthlyExpenseResult
                 )
 
                 //monthlyProfitList.emit(monthlyProfitResult)

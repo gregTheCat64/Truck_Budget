@@ -19,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.SalaryCountMethod
+import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.ui.databinding.FragmentFinishRouteBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.view_models.FinishRouteViewModel
@@ -33,21 +35,32 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private val viewModel: FinishRouteViewModel by viewModels()
 
     private var prepay: Int = 0
-    private var otherExpenses: Int? = null
+    private var extraExpenses: Int = 0
+    private var roadFee: Int = 0
 
     private var routeDuration: Int = 0
-    private var payPerDiem: Int? = null
 
-    private var fuelUsedUp: Int? = null
-    private var fuelPrice: Float? = null
+    private var extraPoints: Int = 0
 
-    private var revenue: Int? = null
-
-    private var salary: Int? = null
-    private var profit: Int? = null
-    private var moneyToPay: Int? = null
+    private var fuelUsedUp: Int = 0
+    private var fuelPrice: Float = 0f
+//
+    private var revenue: Int = 0
+//
+    private var salary: Float = 0f
+    private var totalExpenses: Float = 0f
+    private var profit: Float = 0f
+    private var moneyToPay: Float? = 0f
+//
+    private var salaryCountMethod: SalaryCountMethod = SalaryCountMethod.BY_DISTANCE
+    private var profitPercentage: Int = 0
+    private var routeDistance: Int = 0
+    private var costPerDiem: Int = 0
+    private var costPerKilometer: Float = 0f
+    private var extraPointsCost: Int = 0
 
     private var currentRoute: Route? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentFinishRouteBinding
         get() = { inflater, container ->
             FragmentFinishRouteBinding.inflate(inflater, container, false)
@@ -106,8 +119,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 Log.i("FinishRouteFrag", "route: $it")
                 if (it!= null){
                     currentRoute = it
-
-                    prepay = it.countRoute?.prepayment ?: 0
+                    prepay = it.prepayment ?: 0
                     routeDuration = countRouteDuration(it)
 
                     if (!it.isFinished) {
@@ -125,9 +137,30 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             }
         }
 
+        //Salary count
+        binding.profitSalaryChip.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                binding.percentOfProfit.isGone = false
+                binding.priceForKm.isGone = true
+                binding.distanceSalaryChip.isChecked = false
+
+                salaryCountMethod = SalaryCountMethod.BY_PROFIT
+            }
+        }
+
+        binding.distanceSalaryChip.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                binding.percentOfProfit.isGone = true
+                binding.priceForKm.isGone = false
+                binding.profitSalaryChip.isChecked = false
+
+                salaryCountMethod = SalaryCountMethod.BY_DISTANCE
+            }
+        }
+
         binding.calculateSalaryBtn.setOnClickListener {
             if (getFieldsData()) {
-                currentRoute?.let { route -> calculateRouteRevenue(route) }
+                val revenue = currentRoute?.let { route -> calculateRouteRevenue(route) }
                 val countedSalary = calculateSalary()
                 binding.salaryEditText.setText(countedSalary.toString())
                 binding.revenueTv.setText(revenue.toString())
@@ -142,6 +175,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         binding.calculateRouteBtn.setOnClickListener {
             if (getFieldsWithSalary()) {
                 binding.saveBtn.isGone = false
+                totalExpenses = calculateTotalExpenses()
                 profit = calculateProfit()
                 moneyToPay = calculateMoneyToPay()
                 binding.profitTv.setText(profit.toString())
@@ -156,16 +190,22 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         binding.saveBtn.setOnClickListener {
             if (getFieldsData() && revenue != null && salary != null && profit != null && fuelPrice != null) {
                 viewModel.saveRoute(
+                    extraPoints?:0,
                     prepay,
-                    otherExpenses!!,
+                    extraExpenses!!,
+                    roadFee!!,
                     routeDuration,
                     fuelUsedUp!!,
                     fuelPrice!!,
                     salary!!,
-                    payPerDiem!!,
+                    costPerDiem!!,
                     moneyToPay!!,
                     revenue!!,
-                    profit!!
+                    profit!!,
+                    salaryCountMethod?:SalaryCountMethod.BY_DISTANCE,
+                    profitPercentage,
+                    costPerKilometer,
+                    extraPointsCost
                 )
             } else Toast.makeText(
                 requireContext(),
@@ -201,7 +241,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         prepay.let {
             binding.prepayEditText.setText(it.toString())
         }
-        otherExpenses?.let {
+        extraExpenses?.let {
             binding.otherExpenses.setText(it.toString())
         }
         fuelUsedUp?.let {
@@ -210,7 +250,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         fuelPrice?.let {
             binding.fuelPrice.setText(it.toString())
         }
-        payPerDiem?.let {
+        costPerDiem?.let {
             binding.payPerDiem.setText(it.toString())
         }
         routeDuration.let {
@@ -225,19 +265,31 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private fun getFieldsData(): Boolean {
         if (!binding.prepayEditText.text.isNullOrEmpty()) {
             prepay = binding.prepayEditText.text.toString().toInt()
-        } else return false
+        } else prepay = 0
 
         if (!binding.otherExpenses.text.isNullOrEmpty()) {
-            otherExpenses = binding.otherExpenses.text.toString().toInt()
+            extraExpenses = binding.otherExpenses.text.toString().toInt()
+        } else extraExpenses = 0
+
+        if (!binding.roadFee.text.isNullOrEmpty()) {
+            roadFee = binding.roadFee.text.toString().toInt()
         } else return false
+
+        if (!binding.extraPointsCost.text.isNullOrEmpty()) {
+            extraPointsCost = binding.extraPointsCost.text.toString().toInt()
+        } else extraPointsCost = 0
+
+        if (!binding.extraPointsValue.text.isNullOrEmpty()) {
+            extraPoints = binding.extraPointsValue.text.toString().toInt()
+        } else extraPoints = 0
 
         if (!binding.routeDaysCount.text.isNullOrEmpty()) {
             routeDuration = binding.routeDaysCount.text.toString().toInt()
-        } else return false
+        } else routeDuration = 0
 
         if (!binding.payPerDiem.text.isNullOrEmpty()) {
-            payPerDiem = binding.payPerDiem.text.toString().toInt()
-        } else return false
+            costPerDiem = binding.payPerDiem.text.toString().toInt()
+        } else costPerDiem = 0
 
         if (!binding.fuelUsedUp.text.isNullOrEmpty()) {
             fuelUsedUp = binding.fuelUsedUp.text.toString().toInt()
@@ -247,7 +299,18 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             fuelPrice = binding.fuelPrice.text.toString().toFloat()
         } else return false
 
-
+        when (salaryCountMethod){
+            SalaryCountMethod.BY_PROFIT -> {
+                if (!binding.percentOfProfit.text.isNullOrEmpty()){
+                    profitPercentage = binding.percentOfProfit.text.toString().toInt()
+                } else return false
+            }
+            SalaryCountMethod.BY_DISTANCE -> {
+                if (!binding.priceForKm.text.isNullOrEmpty()){
+                    costPerKilometer = binding.priceForKm.text.toString().toFloat()
+                } else return false
+            }
+        }
 
         return true
     }
@@ -255,7 +318,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private fun getFieldsWithSalary(): Boolean{
         if (!getFieldsData()) return false
         if (!binding.salaryEditText.text.isNullOrEmpty()) {
-            salary = binding.salaryEditText.text.toString().toInt()
+            salary = binding.salaryEditText.text.toString().toFloat()
         } else return false
 
         return true
@@ -266,8 +329,17 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.lastRoute.collectLatest {
                 val lastRoute = viewModel.lastRoute.value
-                fuelPrice = lastRoute.countRoute?.fuelPrice
-                payPerDiem = lastRoute.countRoute?.payPerDiem
+                fuelPrice = lastRoute.fuelPrice
+
+                //TODO добавить тут данные из водителя
+
+                //забираем данные из прошлого рейса:
+                salaryCountMethod = lastRoute.salaryParameters.salaryCountMethod
+                costPerDiem = lastRoute.salaryParameters.costPerDiem
+                costPerKilometer  = lastRoute.salaryParameters.costPerKilometer
+                extraPointsCost = lastRoute.salaryParameters.extraPointsCost
+                profitPercentage = lastRoute.salaryParameters.profitPercentage
+
                 Log.i("FinishRouteFrag", "fuelPrice: $fuelPrice")
                 Log.i("FinishRouteFrag", "lastRoute: $it")
                 initUI()
@@ -276,37 +348,46 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     }
 
     private fun getDataFromCurrentRoute(route: Route) {
-        otherExpenses = route.countRoute?.otherExpenses
-        payPerDiem = route.countRoute?.payPerDiem
-        fuelUsedUp = route.countRoute?.fuelUsedUp
-        fuelPrice = route.countRoute?.fuelPrice
+        extraExpenses = route.extraExpenses
+        costPerDiem = route.salaryParameters.costPerDiem
+        fuelUsedUp = route.fuelUsedUp
+        fuelPrice = route.fuelPrice
         revenue = route.revenue
-        salary = route.countRoute?.driverSalary
+        salary = route.driverSalary
         profit = route.profit
-        moneyToPay = route.countRoute?.moneyToPay
+        moneyToPay = route.moneyToPay
+
+        salaryCountMethod = route.salaryParameters.salaryCountMethod
+        costPerDiem = route.salaryParameters.costPerDiem
+        costPerKilometer  = route.salaryParameters.costPerKilometer
+        extraPointsCost = route.salaryParameters.extraPointsCost
+        profitPercentage = route.salaryParameters.profitPercentage
 
         initUI()
     }
 
-    private fun calculateRouteRevenue(route: Route) {
-        revenue = 0
+    private fun calculateRouteRevenue(route: Route): Int {
+        var sumRevenue = 0
         val orders = route.orderList
         for (i in orders) {
-            revenue = i.price?.let { revenue?.plus(it) }
+            sumRevenue = i.price?.let { sumRevenue.plus(it) }?:0
         }
-        Log.i("FinishRouteFrag", "revenue: $revenue")
+        Log.i("FinishRouteFrag", "sumRevenue: $sumRevenue")
+        return sumRevenue
     }
 
-    private fun calculateSalary(): Int? {
-        return if (revenue != null && fuelPrice != null) {
-            ((revenue!! - ((fuelUsedUp!! * fuelPrice!!) + (routeDuration * payPerDiem!!) + otherExpenses!!)) / 5).roundToInt()
-        } else null
+    private fun calculateSalary(): Float {
+        return viewModel.calculateSalary(salaryCountMethod, revenue, extraExpenses, fuelPrice, fuelUsedUp,routeDuration, costPerDiem,
+            profitPercentage, roadFee, routeDistance, costPerKilometer
+            )
     }
 
-    private fun calculateProfit(): Int? {
-        return if (revenue != null && salary != null && fuelPrice != null) {
-            (revenue!! - (salary!! + (fuelPrice!! * fuelUsedUp!!) + (payPerDiem!! * routeDuration) + otherExpenses!!)).toInt()
-        } else null
+    private fun calculateTotalExpenses(): Float{
+        return viewModel.calculateTotalExpenses(salary, fuelUsedUp, fuelPrice, routeDuration, costPerDiem, extraPoints, extraPointsCost, extraExpenses, 0, roadFee)
+    }
+
+    private fun calculateProfit(): Float {
+        return viewModel.calculateProfit(revenue, totalExpenses)
     }
 
     private fun countRouteDuration(route: Route): Int {
@@ -317,10 +398,8 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         return period.days
     }
 
-    private fun calculateMoneyToPay(): Int? {
-        if (salary != null && fuelPrice != null) {
-            return ((prepay - (fuelPrice!! * fuelUsedUp!!) - (payPerDiem!! * routeDuration!!) - otherExpenses!! - salary!!).toInt())
-        } else return null
+    private fun calculateMoneyToPay(): Float {
+       return viewModel.calculateMyDebt(prepay, totalExpenses)
     }
 
     private fun roundToNearestMultiple(number: Int, multiple: Int): Int {

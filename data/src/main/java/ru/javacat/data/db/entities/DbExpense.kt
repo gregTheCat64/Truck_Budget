@@ -11,13 +11,14 @@ import java.time.LocalDate
 )
 data class DbExpense(
     @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
+    val id: Long,
     val name: String,
-    val description: String,
+    val position: Long,
+    val description: String? = null,
     val date: String,
     val price: Int
 ) {
     fun toExpenseModel() = Expense(
-        id, name, description, date.toLocalDate(), price
+        id, name,position, description, date.toLocalDate(), price
     )
 }

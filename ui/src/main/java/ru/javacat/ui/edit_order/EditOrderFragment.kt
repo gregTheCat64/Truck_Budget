@@ -138,6 +138,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 viewModel.updateEditedOrder(orderIdArg!!)
             } else {
                 Log.i("EditOrderFrag", "creating empty Order")
+
                 viewModel.createEmptyOrder()
                 binding.tvVolume.setText("82")
                 binding.weightTv.setText("20")

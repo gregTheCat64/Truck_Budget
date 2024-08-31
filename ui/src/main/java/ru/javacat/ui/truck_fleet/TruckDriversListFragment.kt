@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.truck_fleet
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TruckDriversAdapter
 import ru.javacat.ui.databinding.FragmentTruckDriversListBinding
 import ru.javacat.ui.utils.FragConstants

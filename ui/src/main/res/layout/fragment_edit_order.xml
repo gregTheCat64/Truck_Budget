@@ -130,7 +130,6 @@
                         android:id="@+id/cargoTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="@string/cargo_name"

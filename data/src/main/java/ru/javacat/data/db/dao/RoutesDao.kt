@@ -5,8 +5,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
-import ru.javacat.data.db.entities.DbCountRoute
-
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.models.DbMonthlyProfit
 import ru.javacat.data.db.models.DbRouteWithOrders
@@ -47,18 +45,18 @@ interface RoutesDao {
         route: DbRoute
     ): Long
 
-    @Upsert
-    suspend fun insertCountRoute(
-        countRoute: DbCountRoute
-    )
+//    @Upsert
+//    suspend fun insertCountRoute(
+//        countRoute: DbCountRoute
+//    )
 
     @Update
     suspend fun updateRoute(
         route: DbRoute
     )
 
-    @Update
-    suspend fun updateCountRoute(countRoute: DbCountRoute)
+//    @Update
+//    suspend fun updateCountRoute(countRoute: DbCountRoute)
 
 
     @Query("DELETE FROM routes_table WHERE id =:id")

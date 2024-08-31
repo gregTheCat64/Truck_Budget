@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.truck_fleet
 
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TrailersAdapter
 import ru.javacat.ui.databinding.FragmentTrailersListBinding
 import ru.javacat.ui.utils.FragConstants

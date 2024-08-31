@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.companies
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Manager
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
 import ru.javacat.ui.databinding.FragmentCustomerBinding
