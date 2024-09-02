@@ -201,7 +201,7 @@
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/payPerDiem"
+                android:id="@+id/costPerDiem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Цена за день, руб."
@@ -284,7 +284,7 @@
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/priceForKm"
+                android:id="@+id/costPerKilometer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

@@ -8,19 +8,13 @@ data class Route(
     val endDate: LocalDate? = null,
     val contractor: Contractor? = null,
     val orderList: List<Order> = emptyList(),
-    val salaryParameters: SalaryParameters,
 
+    val routeDetails: RouteDetails? = null,
+    val salaryParameters: SalaryParameters? = null,
     val prepayment: Int = 0,
-    val fuelUsedUp: Int = 0,
-    val fuelPrice: Float = 0F,
-    val extraExpenses: Int = 0,
-    val roadFee: Int = 0,
-    val extraPoints: Int = 0,
-    val routeDuration: Int = 0,
-    val routeDistance: Int = 0,
-
     val driverSalary: Float = 0F,
     val contractorsCost: Int = 0,
+
     val totalExpenses: Float = 0F,
 
     val moneyToPay: Float? = 0F,
@@ -28,20 +22,17 @@ data class Route(
     val profit: Float = 0f,
 
     val isFinished: Boolean = false
-    ){
-//    fun calculateSalary(){
-//        when (salaryParameters?.salaryCountMethod) {
-//            SalaryCountMethod.BY_PROFIT -> {
-//
-//            }
-//            SalaryCountMethod.BY_DISTANCE -> {
-//
-//            }
-//
-//            null -> TODO()
-//        }
-//    }
-}
+    )
+
+data class RouteDetails(
+    val fuelUsedUp: Int = 0,
+    val fuelPrice: Float = 0F,
+    val extraExpenses: Int = 0,
+    val roadFee: Int = 0,
+    val extraPoints: Int = 0,
+    val routeDuration: Int = 0,
+    val routeDistance: Int = 0,
+)
 
 data class Contractor(
     val company: Company? = null,

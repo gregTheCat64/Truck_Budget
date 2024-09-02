@@ -6,8 +6,17 @@ import javax.inject.Inject
 
 class CalculateTruckDriverSalaryUseCase @Inject constructor () {
     operator fun invoke(
-        salaryCountMethod: SalaryCountMethod, revenue: Int, extraExpenses: Int, fuelPrice: Float, fuelUsedUp: Int,
-        routeDuration: Int, costPerDiem: Int, profitPercentage: Int, roadFee: Int, routeDistance: Int, costPerKilometer: Float
+        salaryCountMethod: SalaryCountMethod,
+        revenue: Int,
+        extraExpenses: Int,
+        fuelPrice: Float,
+        fuelUsedUp: Int,
+        routeDuration: Int,
+        costPerDiem: Int,
+        profitPercentage: Int,
+        roadFee: Int,
+        routeDistance: Int,
+        costPerKilometer: Float
                         ): Float {
         return when (salaryCountMethod){
             SalaryCountMethod.BY_PROFIT -> {
