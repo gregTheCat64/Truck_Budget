@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.RouteDetails
 import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.RouteRepository
@@ -84,21 +85,22 @@ class NewRouteViewModel @Inject constructor(
                     startDate = null,
                     endDate = null,
                     orderList = emptyList(),
+                    routeDetails = RouteDetails(),
                     salaryParameters = SalaryParameters(),
                     prepayment = 0,
-                    fuelPrice = 0f,
-                    fuelUsedUp = 0,
-                    extraExpenses = 0,
-                    roadFee = 0,
-                    extraPoints = 0,
-                    routeDuration = 0,
-                    routeDistance = 0,
+//                    fuelPrice = 0f,
+//                    fuelUsedUp = 0,
+//                    extraExpenses = 0,
+//                    roadFee = 0,
+//                    extraPoints = 0,
+//                    routeDuration = 0,
+//                    routeDistance = 0,
                     driverSalary = 0f,
                     contractorsCost = 0,
                     totalExpenses = 0f,
                     moneyToPay = 0f,
                     revenue = 0,
-                    profit = null,
+                    profit = 0f,
                     isFinished = false
                 )?.let {
                     repo.updateEditedItem(

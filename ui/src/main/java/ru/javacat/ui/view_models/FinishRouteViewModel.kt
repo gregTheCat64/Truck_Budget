@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.RouteDetails
 import ru.javacat.domain.models.SalaryCountMethod
 import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.repo.RouteRepository
@@ -38,20 +39,20 @@ class FinishRouteViewModel @Inject constructor(
     val lastRoute: StateFlow<Route>
         get() = _lastRoute.asStateFlow()
 
-    fun calculateSalary(salaryCountMethod: SalaryCountMethod,
+    fun calculateSalary(salaryCountMethod: SalaryCountMethod?,
                         revenue: Int,
                         extraExpenses: Int,
                         fuelPrice: Float,
                         fuelUsedUp: Int,
                         routeDuration: Int,
                         costPerDiem: Int,
-                        profitPercentage: Int,
+                        profitPercentage: Int?,
                         roadFee: Int,
-                        routeDistance: Int,
-                        costPerKilometer: Float) = calculateTruckDriverSalaryUseCase.invoke(
-        salaryCountMethod,revenue, extraExpenses, fuelPrice, fuelUsedUp,
-        routeDuration, costPerDiem, profitPercentage, roadFee, routeDistance,
-        costPerKilometer)
+                        routeDistance: Int?,
+                        costPerKilometer: Float?) = calculateTruckDriverSalaryUseCase.invoke(
+        salaryCountMethod?:SalaryCountMethod.BY_PROFIT,revenue, extraExpenses, fuelPrice, fuelUsedUp,
+        routeDuration, costPerDiem, profitPercentage?:0, roadFee, routeDistance?:0,
+        costPerKilometer?:0f)
 
     fun calculateTotalExpenses(driverSalary: Float,
                                fuelUsedUp: Int,
@@ -88,8 +89,9 @@ class FinishRouteViewModel @Inject constructor(
         extraPoints: Int,
         prepay: Int,
         extraExpenses: Int,
-        roadFee: Int?,
+        roadFee: Int,
         routeDuration: Int,
+        routeDistance: Int,
         fuelUsedUp: Int,
         fuelPrice: Float,
         salary: Float,
@@ -98,31 +100,33 @@ class FinishRouteViewModel @Inject constructor(
         revenue: Int,
         profit: Float,
         salaryCountMethod: SalaryCountMethod,
-        profitPercentage: Int?,
-        costPerKilometer: Float?,
-        extraPointsCost: Int?
+        profitPercentage: Int,
+        costPerKilometer: Float,
+        extraPointsCost: Int,
+        endDate: LocalDate?,
+        totalExpenses: Float
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
                 val salaryParameters = SalaryParameters(
-                    salaryCountMethod,profitPercentage?:0,payPerDiem, costPerKilometer?:0f, extraPointsCost?:0
+                    salaryCountMethod, payPerDiem,profitPercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
+                )
+                val routeDetails = RouteDetails(
+                    fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance
                 )
 
                 editedRoute.value?.copy(
                     prepayment = prepay,
-                    fuelUsedUp = fuelUsedUp,
-                    fuelPrice = fuelPrice,
-                    extraExpenses = extraExpenses,
-                    roadFee = roadFee?:0,
-                    extraPoints = extraPoints,
-                    routeDuration = routeDuration,
+                    routeDetails = routeDetails,
                     driverSalary = salary,
                     moneyToPay = moneyToPay,
                     isFinished = true,
                     salaryParameters = salaryParameters,
                     revenue = revenue,
-                    profit = profit
+                    profit = profit,
+                    endDate = endDate,
+                    totalExpenses = totalExpenses
                 )?.let { routeRepository.updateEditedItem(it) }
                 editedRoute.value?.let { routeRepository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)

@@ -132,5 +132,6 @@
     <string name="statistics">Статистика</string>
     <string name="expenses">Расходы</string>
     <string name="year">Год</string>
-    <string name="add_to_prepay">Add to Prepay</string>
+    <string name="add_to_prepay">Добавить к предоплате</string>
+    <string name="distanse_km">Расстояние, км</string>
 </resources>

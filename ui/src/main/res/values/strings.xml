@@ -136,4 +136,5 @@
     <string name="expenses">Expenses</string>
     <string name="year">Year</string>
     <string name="add_to_prepay">Add to Prepay</string>
+    <string name="distanse_km">Distanse, km</string>
 </resources>

@@ -14,7 +14,6 @@ data class Route(
     val prepayment: Int = 0,
     val driverSalary: Float = 0F,
     val contractorsCost: Int = 0,
-
     val totalExpenses: Float = 0F,
 
     val moneyToPay: Float? = 0F,
@@ -50,7 +49,6 @@ data class SalaryParameters(
 
     val extraPointsCost: Int = 0,
 )
-
 
 enum class SalaryCountMethod{
     BY_PROFIT,

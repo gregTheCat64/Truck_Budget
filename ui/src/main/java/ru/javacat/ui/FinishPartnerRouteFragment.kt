@@ -70,7 +70,7 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
         binding.saveBtn.setOnClickListener {
             if (!binding.profitEt.text.isNullOrEmpty()){
                 viewModel.saveRoute(
-                    binding.profitEt.text.toString().toInt(),
+                    binding.profitEt.text.toString().toFloat(),
                     revenue,
                     moneyToPay,
                     prepayment

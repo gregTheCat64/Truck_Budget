@@ -72,11 +72,11 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID){
             binding.myTransportLayout.isVisible = true
 
-            val subsistenceExp = route.salaryParameters.costPerDiem?.let { route.routeDuration?.times(it) }
+            val subsistenceExp = route.salaryParameters?.costPerDiem?.let { route.routeDetails?.routeDuration?.times(it) }
 
-            val fuelSpending = route.fuelPrice?.let { route.fuelUsedUp?.times(it) }
+            val fuelSpending = route.routeDetails?.fuelPrice?.let { route.routeDetails?.fuelUsedUp?.times(it) }
             val fuelSpendingString = if (fuelSpending!=null){
-                "${route.fuelPrice} ${getString(R.string.rub)} * ${route.fuelUsedUp} л. = $fuelSpending"
+                "${route.routeDetails?.fuelPrice} ${getString(R.string.rub)} * ${route.routeDetails?.fuelUsedUp} л. = $fuelSpending"
             } else ""
 
             binding.prepayTv.text = route.prepayment.toString()
@@ -84,7 +84,7 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             subsistenceExp?.let {
                 binding.subsistenceExpensesTv.text = "${it} ${getString(R.string.rub)}"
             }
-            route.extraExpenses?.let {
+            route.routeDetails?.extraExpenses?.let {
                 binding.otherSpendingTv.text = "$it ${getString(R.string.rub)}"
             }
             route.driverSalary?.let {
