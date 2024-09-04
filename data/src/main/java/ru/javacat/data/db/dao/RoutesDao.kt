@@ -32,7 +32,7 @@ interface RoutesDao {
     fun getNotCompanyRoutesCount(year: String): Int
 
     @Transaction
-    @Query("SELECT * FROM routes_table WHERE companyId = -1 ORDER BY id DESC LIMIT 1 ")
+    @Query("SELECT * FROM routes_table WHERE companyId = -1 AND isFinished = 1 ORDER BY id DESC LIMIT 1 ")
     fun getLastRoute(): DbRouteWithOrders?
 
     @Transaction

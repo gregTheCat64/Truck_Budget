@@ -182,7 +182,14 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         binding.calculateSalaryBtn.setOnClickListener {
             if (getFieldsData()) {
                 revenue = currentRoute?.let { route -> calculateRouteRevenue(route) }
+                val fuelCost = fuelUsedUp?.let { it1 -> fuelPrice?.times(it1) }
+                val payDayResult = routeDuration?.let { it1 -> costPerDiem?.times(it1) }
+                val extraPointsResult = extraPointsCost?.let { it1 -> extraPoints?.times(it1) }
                 val countedSalary = calculateSalary()
+
+                binding.fuelCost.setText("Итого: $fuelCost руб.")
+                binding.payDayResult.setText("Итого: $payDayResult руб.")
+                binding.extraPointsResult.setText("Итого: $extraPointsResult руб.")
                 binding.salaryEditText.setText(countedSalary.toString())
                 binding.revenueTv.setText(revenue.toString())
             } else {

@@ -64,6 +64,10 @@ class TruckDriversRepositoryImpl @Inject constructor(
         return dbQuery { dao.insert(t.toDb()) }
     }
 
+    override suspend fun updateDriverToDb(truckDriver: TruckDriver) {
+        dao.update(truckDriver.toDb())
+    }
+
     override suspend fun removeById(id: Long) {
         dbQuery { dao.removeStaff(id) }
     }

@@ -27,7 +27,7 @@ interface TruckDriversDao {
             "WHERE surName LIKE '%' || :search || '%'")
     suspend fun searchStaff(search: String): List<DbTruckDriver>
 
-    @Update()
+    @Update
     suspend fun update(
         staff: DbTruckDriver
     )

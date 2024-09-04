@@ -185,7 +185,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
             //TODO разделить серию и номер
             //passSerial.setText(truckDriver.pa)
             passNumber.setText(truckDriver.passportNumber)
-            passWhen.setText(truckDriver.passportReceivedDate.toString())
+            passWhen.setText(truckDriver.passportReceivedDate?.toString())
             passWhere.setText(truckDriver.passportReceivedPlace)
             driveLicenseNumber.setText(truckDriver.driveLicenseNumber)
             address.setText(truckDriver.placeOfRegistration)

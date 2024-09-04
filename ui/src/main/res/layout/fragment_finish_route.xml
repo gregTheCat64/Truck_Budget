@@ -11,26 +11,11 @@
         android:padding="16dp"
         android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-       >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/prepayEditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Аванс, руб."
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
-            style="@style/TextAppearance.Material3.TitleMedium"
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
             android:text="@string/expenses" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -133,11 +118,34 @@
         android:layout_gravity="end"
         android:layout_marginEnd="16dp" />
 
+
+        <TextView
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/driver_salary" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/prepayEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Аванс, руб."
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Суточные" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -177,6 +185,13 @@
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:id="@+id/payDayResult"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp" />
 
         <TextView
             style="@style/TextAppearance.Material3.TitleMedium"
@@ -225,6 +240,14 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
+            android:id="@+id/extraPointsResult"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
             style="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -232,11 +255,11 @@
             android:layout_marginTop="16dp"
             android:text="Формула зарплаты*" />
 
-
-
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                >
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/profitSalaryChip"
@@ -256,7 +279,6 @@
                     />
 
             </com.google.android.material.chip.ChipGroup>
-
 
 
         <com.google.android.material.textfield.TextInputLayout

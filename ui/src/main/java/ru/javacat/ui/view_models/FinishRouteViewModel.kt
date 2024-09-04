@@ -15,6 +15,7 @@ import ru.javacat.domain.models.RouteDetails
 import ru.javacat.domain.models.SalaryCountMethod
 import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.use_case.CalculateMyDebtUseCase
 import ru.javacat.domain.use_case.CalculateProfitUseCase
 import ru.javacat.domain.use_case.CalculateTotalExpensesUseCase
@@ -26,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FinishRouteViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
+    private val truckDriversRepository: TruckDriversRepository,
     private val calculateTruckDriverSalaryUseCase: CalculateTruckDriverSalaryUseCase,
     private val calculateTotalExpenses: CalculateTotalExpensesUseCase,
     private val calculateProfitUseCase: CalculateProfitUseCase,
@@ -115,6 +117,18 @@ class FinishRouteViewModel @Inject constructor(
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance
                 )
+                //обновляем водителя:
+                var truckDriver = editedRoute.value?.contractor?.driver?.id?.let {
+                    truckDriversRepository.getById(
+                        it
+                    )
+                }
+
+                truckDriver = truckDriver?.copy(salaryParameters = salaryParameters)
+
+                if (truckDriver != null) {
+                    truckDriversRepository.updateDriverToDb(truckDriver)
+                }
 
                 editedRoute.value?.copy(
                     prepayment = prepay,
