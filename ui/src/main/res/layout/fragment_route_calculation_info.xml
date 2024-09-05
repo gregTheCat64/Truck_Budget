@@ -43,7 +43,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+
                         android:text="@string/advance"
                         />
 
@@ -53,7 +53,7 @@
                         style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
                         />
 
                 </LinearLayout>
@@ -183,7 +183,46 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/baseline_money_off_24"
+                    app:tint="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Road fee"
+                        />
+
+                    <TextView
+                        android:id="@+id/roadFee"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        />
+
+                </LinearLayout>
+
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -262,8 +301,29 @@
 
                 </LinearLayout>
 
+
+
             </LinearLayout>
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/paymentChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/paid"
+            android:checkable="true"
+            android:layout_marginStart="64dp"
+            />
+
+        <Button
+            android:id="@+id/paidBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mark_as_paid"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_gravity="start"
+            android:layout_marginStart="64dp"
+            />
 
 
             <androidx.appcompat.widget.LinearLayoutCompat

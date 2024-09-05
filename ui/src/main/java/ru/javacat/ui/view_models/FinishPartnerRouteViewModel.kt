@@ -38,6 +38,7 @@ class FinishPartnerRouteViewModel @Inject constructor(
                     revenue = revenue,
                     prepayment = prepayment,
                     moneyToPay = moneyToPay,
+                    isPaidToContractor = false
                 )?.let { repository.updateEditedItem(it) }
                 editedRoute.value?.let { repository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)

@@ -39,6 +39,7 @@ fun Route.toDb() = DbRoute(
     contractorsCost,
     totalExpenses,
     moneyToPay,
+    isPaidToContractor,
     revenue,
     profit,
     isFinished

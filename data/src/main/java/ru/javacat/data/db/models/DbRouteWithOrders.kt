@@ -87,6 +87,7 @@ data class DbRouteWithOrders (
             contractorsCost = route.contractorsCost,
             totalExpenses = route.totalExpenses,
             moneyToPay = route.moneyToPay,
+            isPaidToContractor = route.isPaidToContractor,
             revenue = route.revenue,
             profit = route.profit,
             isFinished = route.isFinished,

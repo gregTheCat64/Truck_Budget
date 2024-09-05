@@ -98,7 +98,8 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
             contractorsCost = contractorsCost + i.contractorPrice!!
         }
         profit =  revenue - contractorsCost
-        //moneyToPay = contractorsCost-prepayment
+        moneyToPay = (revenue - contractorsCost-prepayment).toFloat()
+
         binding.revenueTv.setText("$revenue ${getString(R.string.rub)}")
         binding.contractorCostTv.setText("$contractorsCost ${getString(R.string.rub)}")
         binding.profitEt.setText("$profit")

@@ -45,11 +45,14 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var isPaid = false
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
                     if (it!=null){
                         currentRoute = it
+                        isPaid = it.isPaidToContractor
                         initUi(it)
                     }
                 }
@@ -59,11 +62,26 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         binding.editCountBtn.setOnClickListener {
             calculate()
         }
+
+        binding.paymentChip.setOnClickListener {
+            if (isPaid){
+                viewModel.setPaid(isPaid = false)
+                setUnpaid()
+            } else {
+                viewModel.setPaid(isPaid = true)
+                setPaid()
+            }
+
+        }
     }
 
     private fun initUi(route: Route) {
         //TODO перенести этот блок на основнюу страницу:
         val currentIncome = (route.orderList.map { it.price!! }).sum()
+
+        if (route.isPaidToContractor) {
+            setPaid()
+        } else setUnpaid()
 
         if (route.isFinished && route.revenue != currentIncome){
                 Toast.makeText(requireContext(), "Изменилась выручка, пересчитайте рейс", Toast.LENGTH_SHORT).show()
@@ -83,6 +101,9 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             binding.fuelCostTv.text = fuelSpendingString
             subsistenceExp?.let {
                 binding.subsistenceExpensesTv.text = "${it} ${getString(R.string.rub)}"
+            }
+            route.routeDetails?.roadFee?.let {
+                binding.roadFee.text = "$it ${getString(R.string.rub)}"
             }
             route.routeDetails?.extraExpenses?.let {
                 binding.otherSpendingTv.text = "$it ${getString(R.string.rub)}"
@@ -117,6 +138,20 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             findNavController().navigate(R.id.finishRouteFragment)
         } else {
             Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setPaid(){
+        binding.paymentChip.apply {
+            isChecked = true
+            text = getString(R.string.paid_order)
+        }
+    }
+
+    private fun setUnpaid(){
+        binding.paymentChip.apply {
+            isChecked = false
+            text = getString(R.string.unpaid_order)
         }
     }
 

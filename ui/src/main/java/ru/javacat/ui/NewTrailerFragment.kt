@@ -159,12 +159,20 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
     private fun updateUi(transport: Vehicle) {
         (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
         Log.i("newTransportFragm", "vehicle: $transport")
+        transport.apply {
+            vin?.let {
+                binding.vin.setText(it)
+            }
+            model?.let {
+                binding.modelOfVehicle.setText(it)
+            }
+            yearOfManufacturing?.let {
+                binding.yearOfManufacturing.setText(it)
+            }
+        }
         binding.apply {
             regNumber.setText(transport.regNumber)
             regCode.setText(transport.regionCode.toString())
-            vin.setText(transport.vin.toString())
-            modelOfVehicle.setText(transport.model.toString())
-            yearOfManufacturing.setText(transport.yearOfManufacturing.toString())
         }
     }
 

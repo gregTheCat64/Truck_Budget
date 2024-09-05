@@ -28,6 +28,7 @@ data class DbRoute (
     val totalExpenses: Float = 0F,
 
     val moneyToPay: Float? = 0F,
+    val isPaidToContractor: Boolean = false,
     val revenue: Int,
     val profit: Float,
 

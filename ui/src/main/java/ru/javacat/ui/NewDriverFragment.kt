@@ -26,6 +26,7 @@ import ru.javacat.ui.databinding.FragmentNewDriverBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.view_models.NewDriverViewModel
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
@@ -36,6 +37,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
     private var isNeedToSet: Boolean = false
     private var truckDriverId: Long? = null
     private var companyId: Long = -1L
+
+    private var newPassWhen: LocalDate? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
         get() = { inflater, container ->
             FragmentNewDriverBinding.inflate(inflater, container, false)
@@ -115,6 +119,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         binding.passWhen.setOnClickListener {
             parentFragmentManager.showCalendar {
+                newPassWhen = it
             }
         }
 
@@ -152,9 +157,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         val surname = binding.surName.text.toString()
         val passSerial = binding.passSerial.text.toString()
         val passNumber = binding.passNumber.text.toString()
-        val passWhen = if (binding.passWhen.text?.isNotEmpty() == true){
-            binding.passWhen.text?.toString()?.toLocalDate()
-        } else null
+        val passWhen = newPassWhen
         val passWhere = binding.passWhere.text.toString()
         val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
         val address = binding.address.text.toString()

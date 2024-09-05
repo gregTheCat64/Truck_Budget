@@ -17,6 +17,7 @@ data class Route(
     val totalExpenses: Float = 0F,
 
     val moneyToPay: Float? = 0F,
+    val isPaidToContractor: Boolean = false,
     val revenue: Int = 0,
     val profit: Float = 0f,
 
