@@ -12,4 +12,6 @@ interface TruckDriversRepository: BaseChooseItemRepository<TruckDriver, String, 
     suspend fun updateDriverToDb(truckDriver: TruckDriver)
 
     suspend fun createDefaultTruckDriver()
+
+    suspend fun createMeAsTruckDriver()
 }

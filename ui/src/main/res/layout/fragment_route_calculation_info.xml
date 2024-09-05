@@ -21,6 +21,7 @@
             android:visibility="visible"
             >
             <LinearLayout
+                android:id="@+id/prepayLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -102,10 +103,10 @@
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/subsistenceLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -225,6 +226,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/salaryLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -264,6 +266,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
             <LinearLayout
+                android:id="@+id/moneyToPayLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

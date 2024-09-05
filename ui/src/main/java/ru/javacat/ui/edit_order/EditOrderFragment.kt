@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +33,6 @@ import ru.javacat.ui.databinding.FragmentEditOrderBinding
 
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
-import ru.javacat.ui.view_models.EditOrderViewModel
 import java.time.LocalDate
 
 

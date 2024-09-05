@@ -27,7 +27,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentAddPaymentBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
-import ru.javacat.ui.view_models.AddPaymentViewModel
 
 @AndroidEntryPoint
 class AddPaymentFragment : BaseFragment<FragmentAddPaymentBinding>() {

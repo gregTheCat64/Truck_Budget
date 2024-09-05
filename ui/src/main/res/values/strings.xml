@@ -137,4 +137,5 @@
     <string name="year">Year</string>
     <string name="add_to_prepay">Add to Prepay</string>
     <string name="distanse_km">Distanse, km</string>
+    <string name="finishing_route">Finishing route</string>
 </resources>

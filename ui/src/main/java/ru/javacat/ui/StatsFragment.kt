@@ -1,23 +1,17 @@
 package ru.javacat.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -29,10 +23,8 @@ import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asShortMonth
 import ru.javacat.domain.models.MonthlyProfit
 import ru.javacat.domain.models.StatsModel
-import ru.javacat.ui.adapters.MonthlyProfitAdapter
 import ru.javacat.ui.databinding.FragmentStatsBinding
 
-import ru.javacat.ui.view_models.StatsViewModel
 import java.time.Month
 
 @AndroidEntryPoint

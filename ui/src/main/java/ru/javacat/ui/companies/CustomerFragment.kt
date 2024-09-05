@@ -25,7 +25,6 @@ import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
 import ru.javacat.ui.databinding.FragmentCustomerBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.CustomerViewModel
 
 @AndroidEntryPoint
 class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {

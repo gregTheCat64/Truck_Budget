@@ -30,7 +30,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentNewCustomerBinding
 import ru.javacat.ui.utils.AndroidUtils
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.NewCompanyViewModel
 
 @AndroidEntryPoint
 class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {

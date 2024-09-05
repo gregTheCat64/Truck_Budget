@@ -17,7 +17,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TruckDriversAdapter
 import ru.javacat.ui.databinding.FragmentTruckDriversListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
 class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() {

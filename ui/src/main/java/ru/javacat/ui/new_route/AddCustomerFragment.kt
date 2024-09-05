@@ -33,7 +33,6 @@ import ru.javacat.ui.adapters.ChooseManagerChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
-import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint
 class AddCustomerFragment : BaseFragment<FragmentAddCustomerBinding>() {

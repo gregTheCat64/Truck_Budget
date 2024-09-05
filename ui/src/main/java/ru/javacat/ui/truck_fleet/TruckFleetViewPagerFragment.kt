@@ -24,7 +24,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.RouteViewPagerAdapter
 import ru.javacat.ui.databinding.FragmentTruckFleetViewPagerBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
 class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBinding>() {

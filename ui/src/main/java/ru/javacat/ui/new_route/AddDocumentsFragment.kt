@@ -16,7 +16,6 @@ import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentAddDocumentsBinding
-import ru.javacat.ui.view_models.AddDocumentsViewModel
 
 @AndroidEntryPoint
 class AddDocumentsFragment: BaseFragment<FragmentAddDocumentsBinding>() {

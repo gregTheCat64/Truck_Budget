@@ -6,7 +6,6 @@ import android.view.View
 import android.view.Window
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.javacat.ui.databinding.ActivityMainBinding
-import ru.javacat.ui.view_models.MainActivityViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

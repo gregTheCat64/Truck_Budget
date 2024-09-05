@@ -55,6 +55,22 @@ class TruckDriversRepositoryImpl @Inject constructor(
             dbQuery { dao.insert(defaultDriver.toDb()) }
         }
     }
+    override suspend fun createMeAsTruckDriver(){
+        if (getById(-1) == null){
+            Log.i("truckDriverRepo", "creating me as driver")
+            val defaultDriver = TruckDriver(
+                -1,
+                0,
+                -1,
+                "Сам",
+                surname = "Зарулем",
+                salaryParameters = null
+            )
+            dbQuery { dao.insert(defaultDriver.toDb()) }
+        }
+    }
+
+
 
     override suspend fun search(s: String): List<TruckDriver> {
         return dbQuery { dao.searchStaff(s).map { it.toTruckDriverModel() } }

@@ -18,7 +18,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TrucksAdapter
 import ru.javacat.ui.databinding.FragmentTrucksListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 
 @AndroidEntryPoint

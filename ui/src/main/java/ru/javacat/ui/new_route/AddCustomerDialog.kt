@@ -18,7 +18,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseCustomerAdapter
 import ru.javacat.ui.databinding.FragmentAddCustomerBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
-import ru.javacat.ui.view_models.AddCustomerViewModel
 
 @AndroidEntryPoint
 class AddCustomerDialog: DialogFragment() {

@@ -20,7 +20,6 @@ import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.databinding.FragmentCustomerDialogBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.CustomersDialogViewModel
 
 @AndroidEntryPoint
 class CustomerDialogFragment: BottomSheetDialogFragment() {

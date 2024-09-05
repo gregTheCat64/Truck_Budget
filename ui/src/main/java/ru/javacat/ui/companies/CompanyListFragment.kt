@@ -20,7 +20,6 @@ import ru.javacat.ui.adapters.CustomersAdapter
 import ru.javacat.ui.adapters.OnCustomerListener
 import ru.javacat.ui.databinding.FragmentCompanyListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.CustomerListViewModel
 
 @AndroidEntryPoint
 class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {

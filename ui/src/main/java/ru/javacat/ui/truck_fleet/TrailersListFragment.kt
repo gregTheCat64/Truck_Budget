@@ -18,7 +18,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TrailersAdapter
 import ru.javacat.ui.databinding.FragmentTrailersListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.view_models.TruckFleetViewPagerViewModel
 
 @AndroidEntryPoint
 class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {

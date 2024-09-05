@@ -30,7 +30,6 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.CargoChipAdapter
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
-import ru.javacat.ui.view_models.AddCargoViewModel
 
 @AndroidEntryPoint
 class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
