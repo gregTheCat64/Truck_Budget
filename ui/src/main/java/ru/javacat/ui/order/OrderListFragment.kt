@@ -3,9 +3,13 @@ package ru.javacat.ui.order
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.FilterOrderModel
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.MonthsDialogFragment
 import ru.javacat.ui.R
@@ -24,6 +29,7 @@ import ru.javacat.ui.adapters.OrdersAdapter
 import ru.javacat.ui.companies.CustomerDialogFragment
 import ru.javacat.ui.databinding.FragmentOrderListBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.showYearCalendar
 import java.time.Month
 
 
@@ -45,9 +51,31 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.hide()
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_main, menu)
+                val menuItem = menu.findItem(R.id.yearMenuBtn)
+                menuItem?.title = YearHolder.selectedYear.toString()
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.yearMenuBtn -> {
+                        showYearCalendar { selectedYear ->
+                            YearHolder.selectedYear = selectedYear
+                            menuItem.title = selectedYear.toString()
+                            updateList()
+                        }
+                        return true
+                    }
+
+                    else -> return false
+                }
+            }
+        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -91,7 +119,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
             viewModel.filterOrders()
         }
 
-        viewModel.filterOrders()
+        updateList()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -173,5 +201,11 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         binding.companiesFilter.text = filterOrderModel.customerName?:"Клиент"
         //binding.unpaidBtn.isChecked = filterOrderModel.isUnPaid
 
+    }
+
+    private fun updateList(){
+        val year = YearHolder.selectedYear
+        viewModel.setYearFilter(year)
+        viewModel.filterOrders()
     }
 }

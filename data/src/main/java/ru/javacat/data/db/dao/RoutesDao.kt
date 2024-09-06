@@ -19,8 +19,8 @@ interface RoutesDao {
     fun getAllRoutes(): List<DbRouteWithOrders>
 
     @Transaction
-    @Query("SELECT * FROM routes_table WHERE startDate")
-    fun getAllRoutesByYear(year: Int): List<DbRouteWithOrders>
+    @Query("SELECT * FROM routes_table WHERE strftime('%Y', startDate) = :year")
+    fun getAllRoutesByYear(year: String): List<DbRouteWithOrders>
 
     @Query("""
         SELECT COUNT(*) FROM routes_table 

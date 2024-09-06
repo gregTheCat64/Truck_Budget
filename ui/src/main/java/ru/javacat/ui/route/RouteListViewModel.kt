@@ -27,9 +27,9 @@ class RouteListViewModel @Inject constructor(
 
     val allRoutes = repo.items
 
-    fun getAllRoutes(){
+    fun getAllRoutes(year: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAll()
+            repo.getAllByYear(year)
         }
     }
 

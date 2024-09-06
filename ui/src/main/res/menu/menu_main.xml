@@ -4,6 +4,6 @@
 
     <item android:id="@+id/yearMenuBtn"
         app:showAsAction="always"
-        android:title="2024"
+        android:title=""
         />
 </menu>

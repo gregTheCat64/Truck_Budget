@@ -135,4 +135,5 @@
     <string name="add_to_prepay">Добавить к предоплате</string>
     <string name="distanse_km">Расстояние, км</string>
     <string name="finishing_route">Завершить рейс</string>
+    <string name="choose_year">Выбор года</string>
 </resources>

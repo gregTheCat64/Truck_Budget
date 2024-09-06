@@ -49,7 +49,7 @@ class RouteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllByYear(year: Int) {
-        TODO("Not yet implemented")
+        _routes.emit(routesDao.getAllRoutesByYear(year.toString()).map {it.toRouteModel() })
     }
 
     override suspend fun getById(id: Long): Route? = routesDao.getByRouteId(id)?.toRouteModel()

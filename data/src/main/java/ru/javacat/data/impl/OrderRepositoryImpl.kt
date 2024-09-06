@@ -47,6 +47,10 @@ class OrderRepositoryImpl @Inject constructor(
         _orders.emit(ordersDao.getAllOrders().map {it.toOrderModel() })
     }
 
+    override suspend fun getAllByYear(year: Int) {
+        _orders.emit(ordersDao.getAllOrdersByYear(year.toString()).map {it.toOrderModel() })
+    }
+
     override suspend fun getCompanyOrdersCountByYear(year: String): Int {
         return dbQuery { ordersDao.getCountCompanyOrdersByYear(year) }
     }
@@ -68,11 +72,11 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun filterOrders(year: Int?, month: Month?, customerId: Long?, unPaid: Boolean){
         Log.i("orderRepo", "filter: year: $year, month: $month, customerId: $customerId, unPaid: $unPaid")
-        var orders = ordersDao.getAllOrders().map { it.toOrderModel()}
+        var orders = ordersDao.getAllOrdersByYear(year.toString()).map { it.toOrderModel()}
 
-        if (year != null) {
-            orders = orders.filter { it.date.year == year }
-        }
+//        if (year != null) {
+//            orders = orders.filter { it.date.year == year }
+//        }
 
         if (month != null) {
             orders = orders.filter { it.date.month == month }

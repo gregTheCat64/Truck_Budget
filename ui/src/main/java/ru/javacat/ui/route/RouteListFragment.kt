@@ -52,7 +52,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        requireActivity().addMenuProvider(object : MenuProvider{
+        requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
                 val menuItem = menu.findItem(R.id.yearMenuBtn)
@@ -62,12 +62,14 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.yearMenuBtn -> {
-                            showYearCalendar {selectedYear ->
-                                YearHolder.selectedYear = selectedYear
-                                menuItem.title = selectedYear.toString()
+                        showYearCalendar { selectedYear ->
+                            YearHolder.selectedYear = selectedYear
+                            menuItem.title = selectedYear.toString()
+                            updateList()
                         }
                         return true
                     }
+
                     else -> return false
                 }
             }
@@ -81,25 +83,14 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
         Log.i("routeListFrag", "onViewCreated")
 
+        updateList()
 
-            viewModel.getAllRoutes()
-
-            viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
-
-
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.editedCustomer.collectLatest {
-//                    myCompany = it
-//                }
-//            }
-//        }
+        viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
 
 
         //NewRoute
         binding.newRouteBtn.setOnClickListener {
-           toNewRoute()
+            toNewRoute()
         }
 
 
@@ -137,10 +128,14 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
     }
 
-    private fun toNewRoute(){
+    private fun updateList() {
+        viewModel.getAllRoutes(YearHolder.selectedYear)
+    }
+
+    private fun toNewRoute() {
         //val bundle = Bundle()
         //if (myCompany != null) {
-            findNavController().navigate(R.id.newRouteFragment)
+        findNavController().navigate(R.id.newRouteFragment)
 //        } else {
 //            Toast.makeText(
 //                requireContext(),
