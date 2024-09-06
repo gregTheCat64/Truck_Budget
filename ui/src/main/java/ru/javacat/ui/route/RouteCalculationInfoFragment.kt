@@ -60,7 +60,7 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         }
 
         binding.editCountBtn.setOnClickListener {
-            calculate()
+            edit()
         }
 
         binding.paymentChip.setOnClickListener {
@@ -164,12 +164,14 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
 
     }
 
-    private fun calculate() {
-        if (currentRoute?.orderList?.isNotEmpty() == true) {
-            findNavController().navigate(R.id.finishRouteFragment)
-        } else {
-            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
-        }
+    private fun edit() {
+        if (currentRoute?.contractor?.company?.id == -1L){
+            if (currentRoute?.contractor?.driver?.id == -1L){
+                findNavController().navigate(R.id.finishRouteWithoutDriverFragment)
+            } else {
+                findNavController().navigate(R.id.finishRouteFragment)
+            }
+        } else findNavController().navigate(R.id.finishPartnerRouteFragment)
     }
 
     private fun setPaid() {

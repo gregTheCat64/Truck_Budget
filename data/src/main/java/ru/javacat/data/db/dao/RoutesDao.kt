@@ -9,6 +9,7 @@ import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.models.DbMonthlyProfit
 import ru.javacat.data.db.models.DbRouteWithOrders
 import ru.javacat.domain.models.MonthlyProfit
+import java.time.Year
 
 @Dao
 interface RoutesDao {
@@ -16,6 +17,10 @@ interface RoutesDao {
     @Transaction
     @Query("SELECT * FROM routes_table")
     fun getAllRoutes(): List<DbRouteWithOrders>
+
+    @Transaction
+    @Query("SELECT * FROM routes_table WHERE startDate")
+    fun getAllRoutesByYear(year: Int): List<DbRouteWithOrders>
 
     @Query("""
         SELECT COUNT(*) FROM routes_table 

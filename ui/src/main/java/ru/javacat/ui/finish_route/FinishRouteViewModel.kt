@@ -1,5 +1,6 @@
 package ru.javacat.ui.finish_route
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -77,6 +78,7 @@ class FinishRouteViewModel @Inject constructor(
 
     fun getEditedRoute(routeId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.i("FinishRouteVM", "getEditedRoute routeId: $routeId")
             val route = routeRepository.getById(routeId)
             if (route != null) {
                 routeRepository.updateEditedItem(route)

@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
@@ -19,12 +20,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Route
+import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.OnRouteListener
 import ru.javacat.ui.adapters.RoutesAdapter
 import ru.javacat.ui.databinding.FragmentRouteListBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.showCalendar
+import ru.javacat.ui.utils.showYearCalendar
 
 @AndroidEntryPoint
 class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
@@ -51,10 +55,21 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
+                val menuItem = menu.findItem(R.id.yearMenuBtn)
+                menuItem?.title = YearHolder.selectedYear.toString()
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                TODO("Not yet implemented")
+                when (menuItem.itemId) {
+                    R.id.yearMenuBtn -> {
+                            showYearCalendar {selectedYear ->
+                                YearHolder.selectedYear = selectedYear
+                                menuItem.title = selectedYear.toString()
+                        }
+                        return true
+                    }
+                    else -> return false
+                }
             }
         }, viewLifecycleOwner)
 

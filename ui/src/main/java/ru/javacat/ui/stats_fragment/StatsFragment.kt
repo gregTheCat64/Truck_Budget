@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.stats_fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +23,9 @@ import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asShortMonth
 import ru.javacat.domain.models.MonthlyProfit
 import ru.javacat.domain.models.StatsModel
+import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
+import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentStatsBinding
 
 import java.time.Month

@@ -238,7 +238,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         binding.add500btn.setOnClickListener {
             var inputSalary = if (binding.salaryEditText.text?.isNotEmpty() == true){
-                binding.salaryEditText.text?.toString()?.toInt()
+                binding.salaryEditText.text?.toString()?.toFloat()?.toInt()
             } else null
             if (inputSalary != null){
                 inputSalary = add500(inputSalary!!)

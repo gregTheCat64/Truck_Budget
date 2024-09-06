@@ -13,6 +13,7 @@ interface BaseRepository<T: Any, Id: Any> {
     val isEdited: StateFlow<Boolean>
 
     suspend fun getAll()
+    suspend fun getAllByYear(year: Int)
     suspend fun getById(id: Id): T?
     suspend fun insert(t: T): Long
 

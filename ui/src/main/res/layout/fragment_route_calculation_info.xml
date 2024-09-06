@@ -317,16 +317,6 @@
             android:layout_marginStart="64dp"
             />
 
-        <Button
-            android:id="@+id/paidBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mark_as_paid"
-            android:visibility="gone"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_gravity="start"
-            android:layout_marginStart="64dp"
-            />
 
 
             <androidx.appcompat.widget.LinearLayoutCompat

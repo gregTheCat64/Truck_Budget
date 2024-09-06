@@ -1,4 +1,4 @@
-package ru.javacat.ui
+package ru.javacat.ui.stats_fragment
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,6 +16,7 @@ import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.ExpenseRepository
 import ru.javacat.domain.repo.OrderRepository
 import ru.javacat.domain.repo.RouteRepository
+import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel

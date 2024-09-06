@@ -195,7 +195,7 @@
         </fragment>
     <fragment
         android:id="@+id/navigation_stats"
-        android:name="ru.javacat.ui.StatsFragment"
+        android:name="ru.javacat.ui.stats_fragment.StatsFragment"
         tools:layout="@layout/fragment_stats"
         android:label="@string/statistics" />
     <dialog
