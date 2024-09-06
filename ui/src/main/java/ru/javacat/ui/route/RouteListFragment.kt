@@ -37,7 +37,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
     private val viewModel: RouteListViewModel by viewModels()
     private lateinit var routesAdapter: RoutesAdapter
-    private var myCompany: Company? = null
+    //private var myCompany: Company? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
@@ -49,31 +49,9 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_main, menu)
-                val menuItem = menu.findItem(R.id.yearMenuBtn)
-                menuItem?.title = YearHolder.selectedYear.toString()
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.yearMenuBtn -> {
-                        showYearCalendar { selectedYear ->
-                            YearHolder.selectedYear = selectedYear
-                            menuItem.title = selectedYear.toString()
-                            updateList()
-                        }
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -82,11 +60,20 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.i("routeListFrag", "onViewCreated")
-
+        binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
         updateList()
 
         viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
 
+
+        binding.chooseYearBtn.setOnClickListener {
+            showYearCalendar {
+                    selectedYear ->
+                YearHolder.selectedYear = selectedYear
+                binding.chooseYearBtn.text = selectedYear.toString()
+                updateList()
+            }
+        }
 
         //NewRoute
         binding.newRouteBtn.setOnClickListener {

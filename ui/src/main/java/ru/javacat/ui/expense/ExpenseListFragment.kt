@@ -13,10 +13,12 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentExpenseListBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.showYearCalendar
 
 @AndroidEntryPoint
 class ExpenseListFragment: BaseFragment<FragmentExpenseListBinding>() {
@@ -40,7 +42,17 @@ class ExpenseListFragment: BaseFragment<FragmentExpenseListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getExpenseList()
+        binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
+        updateList()
+
+        binding.chooseYearBtn.setOnClickListener {
+            showYearCalendar {
+                    selectedYear ->
+                YearHolder.selectedYear = selectedYear
+                binding.chooseYearBtn.text = selectedYear.toString()
+                updateList()
+            }
+        }
 
         expensesAdapter = ExpensesAdapter{
             val bundle = Bundle().apply {
@@ -62,5 +74,9 @@ class ExpenseListFragment: BaseFragment<FragmentExpenseListBinding>() {
             findNavController().navigate(R.id.editExpenseFragment)
         }
 
+    }
+
+    private fun updateList() {
+        viewModel.getExpenseList(YearHolder.selectedYear)
     }
 }

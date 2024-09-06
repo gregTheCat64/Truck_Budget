@@ -51,31 +51,10 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_main, menu)
-                val menuItem = menu.findItem(R.id.yearMenuBtn)
-                menuItem?.title = YearHolder.selectedYear.toString()
-            }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.yearMenuBtn -> {
-                        showYearCalendar { selectedYear ->
-                            YearHolder.selectedYear = selectedYear
-                            menuItem.title = selectedYear.toString()
-                            updateList()
-                        }
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -117,6 +96,16 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
                 }
             }
             viewModel.filterOrders()
+        }
+
+        binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
+        binding.chooseYearBtn.setOnClickListener {
+            showYearCalendar {
+                    selectedYear ->
+                YearHolder.selectedYear = selectedYear
+                binding.chooseYearBtn.text = selectedYear.toString()
+                updateList()
+            }
         }
 
         updateList()

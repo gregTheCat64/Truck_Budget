@@ -24,15 +24,16 @@ class ExpenseListViewModel @Inject constructor(
     private val _expenses = MutableStateFlow<List<Expense>?>(null)
     val expenses = _expenses.asStateFlow()
 
-    fun getExpenseList(){
+    fun getExpenseList(year: Int){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                _expenses.emit(repository.getAll())
+                _expenses.emit(repository.getAllExpensesByYear(year))
             }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
             _loadState.emit(LoadState.Success.OK)
         }
     }
+
 }

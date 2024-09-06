@@ -13,6 +13,9 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses_table")
     suspend fun getExpenses(): List<DbExpense>
 
+    @Query("SELECT * FROM expenses_table WHERE strftime('%Y', date) = :year")
+    fun getAllExpensesByYear(year: String): List<DbExpense>
+
     @Query("SELECT * FROM expenses_table WHERE id =:id")
     suspend fun getExpenseById(id: Long): DbExpense
 

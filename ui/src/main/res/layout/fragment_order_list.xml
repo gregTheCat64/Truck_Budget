@@ -1,71 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:padding="8dp"
+
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/filtered_by"
-            android:layout_marginStart="12dp"
-            />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:orientation="horizontal">
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/monthsFilter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:checkable="true"
+                android:ellipsize="end"
+                android:text="@string/month"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/monthsFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:checkable="true"
-            android:text="@string/month"
-            />
-        <com.google.android.material.chip.Chip
-            android:id="@+id/companiesFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:layout_marginStart="16dp"
-            android:text="@string/customer"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/companiesFilter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1.5"
+                android:checkable="true"
+                android:ellipsize="end"
+                android:text="@string/customer"
+                app:layout_constraintStart_toEndOf="@id/monthsFilter" />
 
-            />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/unpaidBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1.5"
+                android:checkable="true"
+                android:ellipsize="end"
+                android:text="@string/unpaid"
+                app:layout_constraintStart_toEndOf="@id/companiesFilter" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/unpaidBtn"
-            android:checkable="true"
-            android:layout_marginStart="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unpaid"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chooseYearBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="2024"
+                app:chipBackgroundColor="@color/green"
+                app:layout_constraintStart_toEndOf="@id/unpaidBtn" />
 
-            />
+        </LinearLayout>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-
-    </LinearLayout>
 
 
 
@@ -96,9 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/order_item"
+        android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
     </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>

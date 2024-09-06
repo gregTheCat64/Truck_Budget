@@ -21,6 +21,10 @@ class ExpenseRepositoryImpl @Inject constructor(
         return dbQuery { dao.getExpenses().map { it.toExpenseModel() } }
     }
 
+    override suspend fun getAllExpensesByYear(year: Int): List<Expense> {
+        return dbQuery { dao.getAllExpensesByYear(year.toString()).map { it.toExpenseModel() } }
+    }
+
     override suspend fun getById(id: Long): Expense? {
         return dbQuery { dao.getExpenseById(id).toExpenseModel() }
     }
