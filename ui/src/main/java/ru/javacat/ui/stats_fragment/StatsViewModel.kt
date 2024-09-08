@@ -51,10 +51,19 @@ class StatsViewModel @Inject constructor(
                 Log.i("statsVM", "notCompanyCount: $notCompanyOrdersCountResult")
 
                 val monthlyProfitResult = routeRepository.getMonthlyIncomeByYear(year)
+                val notCompanyProfitResult = routeRepository.getMonthlyIncomeByYearNotCompanyTransport(year)
+                Log.i("statsVM", "notCompanyProfitResult: $notCompanyProfitResult")
+
                 val averageMonthlyProfit = monthlyProfitResult.map { it.totalProfit }.average().toInt().toLong()
                 var totalYearProfit = 0L
                 monthlyProfitResult.forEach {
                     totalYearProfit += it.totalProfit
+                }
+
+                val notCompanyAverageMonthlyProfit = notCompanyProfitResult.map { it.totalProfit }.average().toInt().toLong()
+                var notCompanyTotalYearProfit = 0L
+                notCompanyProfitResult.forEach {
+                    notCompanyTotalYearProfit += it.totalProfit
                 }
 
                 val monthlyExpenseResult = expenseRepository.getMonthlyExpenseByYear(year)
@@ -64,7 +73,9 @@ class StatsViewModel @Inject constructor(
                     companyOrdersCount = companyOrdersCountResult,
                     notCompanyOrdersCount = notCompanyOrdersCountResult,
                     totalProfit = totalYearProfit,
+                    notCompanyTotalProfit = notCompanyTotalYearProfit,
                     companyAverageMonthlyProfit = averageMonthlyProfit,
+                    notCompanyAverageMonthlyProfit = notCompanyAverageMonthlyProfit,
                     monthlyProfitList = monthlyProfitResult,
                     monthlyExpenseList = monthlyExpenseResult
                 )

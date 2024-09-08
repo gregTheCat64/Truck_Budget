@@ -26,7 +26,7 @@ data class DbRouteWithOrders (
     val orders: List<DbOrderWithCustomer>,
 
     @Relation(
-        parentColumn = "companyId",
+        parentColumn = "contractorId",
         entityColumn = "id",
         entity = DbCompany::class
     )
@@ -53,12 +53,7 @@ data class DbRouteWithOrders (
     )
     val trailer: DbTrailer?,
 
-//    @Relation(
-//        parentColumn = "id",
-//        entityColumn = "routeId",
-//        entity = DbCountRoute::class
-//    )
-//    val countRoute: DbCountRoute?,
+
 
 ) {
     fun toRouteModel(): Route {
@@ -76,13 +71,6 @@ data class DbRouteWithOrders (
             routeDetails = route.routeDetails,
             salaryParameters = route.salaryParameters?: SalaryParameters(),
             prepayment = route.prepayment,
-//            fuelUsedUp = route.fuelUsedUp,
-//            fuelPrice = route.fuelPrice,
-//            extraExpenses = route.extraExpenses,
-//            roadFee = route.roadFee,
-//            extraPoints = route.extraPoints,
-//            routeDuration = route.routeDuration,
-//            routeDistance = route.routeDistance,
             driverSalary = route.driverSalary,
             contractorsCost = route.contractorsCost,
             totalExpenses = route.totalExpenses,

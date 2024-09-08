@@ -39,7 +39,7 @@ class TrucksRepositoryImpl @Inject constructor(
             val defaultTruck = Truck(
                 0,
                 -1,
-                "МойТягач",
+                "А000АА",
                 regionCode = 0,
             )
             dbQuery { dao.insert(defaultTruck.toDb()) }

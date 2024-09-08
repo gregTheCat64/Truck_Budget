@@ -139,4 +139,6 @@
     <string name="distanse_km">Distanse, km</string>
     <string name="finishing_route">Finishing route</string>
     <string name="choose_year">Choose year</string>
+    <string name="change_home_company_name_advise">This default home company. Can change home company name later. Also created default truck driver, truck and trailer. These can be changed later too.</string>
+    <string name="success">Success</string>
 </resources>

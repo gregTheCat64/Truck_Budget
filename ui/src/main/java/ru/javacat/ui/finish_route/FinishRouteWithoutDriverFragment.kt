@@ -217,16 +217,9 @@ class FinishRouteWithoutDriverFragment: BaseFragment<FragmentFinishRouteWithoutD
                 0,
                 fuelUsedUp!!,
                 fuelPrice!!,
-                0f,
-                0,
-                0f,
                 revenue!!,
                 profit!!,
-                SalaryCountMethod.BY_DISTANCE,
-                0,
-                0f,
-                0,
-                lastDate,
+                null,
                 totalExpenses?:0f
             )
         } else Toast.makeText(

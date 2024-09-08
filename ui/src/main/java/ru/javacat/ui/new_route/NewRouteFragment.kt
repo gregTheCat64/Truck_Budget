@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -132,6 +133,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
     private fun initUi(route: Route){
         route.contractor?.company?.let {
+            binding.companyNameAdvise.isGone = !it.nameToShow.contains("Моя Компания", true)
             binding.addContractorEditText.setText(it.nameToShow)
         }
         route.contractor?.driver?.let {
@@ -181,16 +183,13 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
 
     private fun saveRoute(route: Route){
-        binding.prepayEditText.let {
-            if (it.text.isNullOrEmpty()){
-                Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
-                return
-            } else {
-                val prepay = it.text.toString().toInt()
-                viewModel.setRouteParameters(prepay)
-                viewModel.saveNewRoute(route)
-            }
-        }
+        if (route.contractor?.driver != null && route.contractor?.truck != null){
+            val prepay = if (!binding.prepayEditText.text.isNullOrEmpty()){
+                binding.prepayEditText.text?.toString()?.toInt()?:0
+            } else 0
+            viewModel.setRouteParameters(prepay)
+            viewModel.saveNewRoute(route)
+        } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
     }
 
 }

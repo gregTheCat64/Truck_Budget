@@ -23,10 +23,12 @@ import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asShortMonth
 import ru.javacat.domain.models.MonthlyProfit
 import ru.javacat.domain.models.StatsModel
+import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentStatsBinding
+import ru.javacat.ui.utils.showYearCalendar
 
 import java.time.Month
 
@@ -52,6 +54,7 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -68,7 +71,17 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
             }
         }
 
-        viewModel.updateStats(year = "2024")
+        updateList()
+
+
+        binding.chooseYearBtn.setOnClickListener {
+            showYearCalendar {
+                    selectedYear ->
+                YearHolder.selectedYear = selectedYear
+                binding.chooseYearBtn.text = selectedYear.toString()
+                updateList()
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -79,12 +92,18 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
         }
     }
 
+    private fun updateList(){
+        viewModel.updateStats(year = YearHolder.selectedYear.toString())
+    }
+
     private fun updateUi(stats: StatsModel){
         binding.companyRoutesCount.setText(stats.companyRoutesCount.toString())
         binding.companyOrdersCount.setText(stats.companyOrdersCount.toString())
         binding.notCompanyOrdersCount.setText(stats.notCompanyOrdersCount.toString())
         binding.totalYearProfit.setText(stats.totalProfit.toString())
         binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
+        binding.notCompanyTransportAverageProfit.setText(stats.notCompanyAverageMonthlyProfit.toString())
+        binding.notCompanyTotalProfit.setText(stats.notCompanyTotalProfit.toString())
 
         //stats.monthlyProfitList?.let { buildChart(it) }
         if (stats.monthlyProfitList!= null && stats.monthlyExpenseList != null){

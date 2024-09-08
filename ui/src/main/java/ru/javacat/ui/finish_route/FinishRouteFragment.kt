@@ -53,8 +53,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private var profit: Float? = null
     private var moneyToPay: Float? = null
 //
-    private var salaryCountMethod: SalaryCountMethod? = SalaryCountMethod.BY_PROFIT
+    private var salaryCountMethod: SalaryCountMethod? = SalaryCountMethod.BY_DISTANCE
     private var profitPercentage: Int? = null
+    private var revenuePercentage: Int? = null
     private var routeDistance: Int? = null
     private var costPerDiem: Int? = null
     private var costPerKilometer: Float? = null
@@ -113,7 +114,11 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             if (isChecked){
                 binding.percentOfProfit.isGone = false
                 binding.distanceLayout.isGone = true
+                binding.percentOfRevenue.isGone = true
+
                 binding.distanceSalaryChip.isChecked = false
+                binding.revenueSalaryChip.isChecked = false
+
 
                 salaryCountMethod = SalaryCountMethod.BY_PROFIT
             }
@@ -123,9 +128,26 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             if (isChecked){
                 binding.percentOfProfit.isGone = true
                 binding.distanceLayout.isGone = false
+                binding.percentOfRevenue.isGone = true
+
                 binding.profitSalaryChip.isChecked = false
+                binding.revenueSalaryChip.isChecked = false
+
 
                 salaryCountMethod = SalaryCountMethod.BY_DISTANCE
+            }
+        }
+
+        binding.revenueSalaryChip.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                binding.percentOfProfit.isGone = true
+                binding.distanceLayout.isGone = true
+                binding.percentOfRevenue.isGone = false
+
+                binding.profitSalaryChip.isChecked = false
+                binding.distanceSalaryChip.isChecked = false
+
+                salaryCountMethod = SalaryCountMethod.BY_REVENUE
             }
         }
 
@@ -283,14 +305,24 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             SalaryCountMethod.BY_DISTANCE -> {
                 binding.distanceSalaryChip.isChecked = true
                 binding.profitSalaryChip.isChecked = false
+                binding.revenueSalaryChip.isChecked = false
+            }
+            SalaryCountMethod.BY_PROFIT -> {
+                binding.distanceSalaryChip.isChecked = false
+                binding.profitSalaryChip.isChecked = true
+                binding.revenueSalaryChip.isChecked = false
             }
             else -> {
-                binding.profitSalaryChip.isChecked = true
                 binding.distanceSalaryChip.isChecked = false
+                binding.profitSalaryChip.isChecked = false
+                binding.revenueSalaryChip.isChecked = true
             }
         }
         profitPercentage?.let {
             binding.percentOfProfit.setText(it.toString())
+        }
+        revenuePercentage?.let {
+            binding.percentOfRevenue.setText(it.toString())
         }
         routeDistance?.let {
             binding.routeDistance.setText(it.toString())
@@ -350,6 +382,11 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                     routeDistance = binding.routeDistance.text.toString().toInt()
                 } else return false
             }
+            SalaryCountMethod.BY_REVENUE -> {
+                if (!binding.revenueSalaryChip.text.isNullOrEmpty()){
+                    revenuePercentage = binding.percentOfRevenue.text.toString().toInt()
+                } else return false
+            }
             null -> return false
         }
 
@@ -381,6 +418,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 costPerKilometer  = currentDriver?.salaryParameters?.costPerKilometer
                 extraPointsCost = currentDriver?.salaryParameters?.extraPointsCost
                 profitPercentage = currentDriver?.salaryParameters?.profitPercentage
+                revenuePercentage = currentDriver?.salaryParameters?.revenuePercentage
 
                 Log.i("FinishRouteFrag", "fuelPrice: $fuelPrice")
                 Log.i("FinishRouteFrag", "lastRoute: $it")
@@ -410,6 +448,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
             extraPointsCost = it.salaryParameters?.extraPointsCost
             costPerKilometer = it.salaryParameters?.costPerKilometer
             profitPercentage = it.salaryParameters?.profitPercentage
+            revenuePercentage = it.salaryParameters?.revenuePercentage
 
             println("salaryParam: ${it.salaryParameters}")
         }
@@ -423,7 +462,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
     private fun calculateSalary(): Float {
         return viewModel.calculateSalary(salaryCountMethod, revenue!!, extraExpenses!!, fuelPrice!!, fuelUsedUp!!,
             routeDuration!!, costPerDiem!!,
-            profitPercentage, roadFee!!, routeDistance, costPerKilometer
+            profitPercentage, revenuePercentage,  roadFee!!, routeDistance, costPerKilometer
             )
     }
 
@@ -483,6 +522,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 profit!!,
                 salaryCountMethod?:SalaryCountMethod.BY_DISTANCE,
                 profitPercentage?:0,
+                revenuePercentage?:0,
                 costPerKilometer?:0f,
                 extraPointsCost?:0,
                 lastDate,

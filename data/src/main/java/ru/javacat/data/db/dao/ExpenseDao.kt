@@ -13,7 +13,13 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses_table")
     suspend fun getExpenses(): List<DbExpense>
 
-    @Query("SELECT * FROM expenses_table WHERE strftime('%Y', date) = :year")
+    @Query("""
+        SELECT *, strftime('%m', date) as monthDate    
+        FROM expenses_table 
+        WHERE strftime('%Y', date) = :year
+        GROUP BY monthDate
+        ORDER BY monthDate
+    """)
     fun getAllExpensesByYear(year: String): List<DbExpense>
 
     @Query("SELECT * FROM expenses_table WHERE id =:id")

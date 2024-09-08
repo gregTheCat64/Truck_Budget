@@ -126,7 +126,7 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
     private fun initUi(route: Route){
         currentRoute = route
 
-        binding.docsImg.isGone = route.orderList.isNotEmpty()
+        binding.noRoutesLayout.isGone = route.orderList.isNotEmpty()
         binding.addOrderBtn.isGone = route.isFinished
         binding.finishRouteBtn.isGone = route.isFinished || route.orderList.isEmpty()
 

@@ -61,6 +61,12 @@ class RouteRepositoryImpl @Inject constructor(
         } }
     }
 
+    override suspend fun getMonthlyIncomeByYearNotCompanyTransport(year: String): List<MonthlyProfit> {
+        return dbQuery { routesDao.getMonthlyIncomeByYearFromNotCompanyTransport(year).map{
+            it.toMonthlyProfitModel()
+        } }
+    }
+
     override suspend fun getCompanyRoutesCountByYear(year: String): Int {
         return dbQuery { routesDao.getCompanyRoutesCount(year) }
     }

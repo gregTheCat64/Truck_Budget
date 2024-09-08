@@ -54,12 +54,22 @@ class FinishRouteViewModel @Inject constructor(
                         routeDuration: Int,
                         costPerDiem: Int,
                         profitPercentage: Int?,
+                        revenuePercentage: Int?,
                         roadFee: Int,
                         routeDistance: Int?,
                         costPerKilometer: Float?) = calculateTruckDriverSalaryUseCase.invoke(
-        salaryCountMethod?:SalaryCountMethod.BY_PROFIT,revenue, extraExpenses, fuelPrice, fuelUsedUp,
-        routeDuration, costPerDiem, profitPercentage?:0, roadFee, routeDistance?:0,
-        costPerKilometer?:0f)
+        salaryCountMethod = salaryCountMethod?:SalaryCountMethod.BY_DISTANCE,
+        revenue = revenue,
+        extraExpenses = extraExpenses,
+        fuelPrice = fuelPrice,
+        fuelUsedUp = fuelUsedUp,
+        routeDuration = routeDuration,
+        costPerDiem = costPerDiem,
+        profitPercentage = profitPercentage?:0,
+        revenuePercentage = revenuePercentage?:0,
+        roadFee = roadFee,
+        routeDistance = routeDistance?:0,
+        costPerKilometer = costPerKilometer?:0f)
 
     fun calculateTotalExpenses(driverSalary: Float,
                                fuelUsedUp: Int,
@@ -109,6 +119,7 @@ class FinishRouteViewModel @Inject constructor(
         profit: Float,
         salaryCountMethod: SalaryCountMethod,
         profitPercentage: Int,
+        revenuePercentage: Int?,
         costPerKilometer: Float,
         extraPointsCost: Int,
         endDate: LocalDate?,
@@ -118,7 +129,7 @@ class FinishRouteViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 val salaryParameters = SalaryParameters(
-                    salaryCountMethod, payPerDiem,profitPercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
+                    salaryCountMethod, payPerDiem,profitPercentage?:0,revenuePercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
                 )
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance

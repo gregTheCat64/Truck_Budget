@@ -115,7 +115,7 @@ fun Manager.toDb() = DbManager(
     middleName,
     surname,
     passportNumber,
-    passportReceivedDate.toString(),
+    passportReceivedDate?.toString(),
     passportReceivedPlace,
     placeOfRegistration,
     phoneNumber,

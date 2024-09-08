@@ -6,6 +6,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/noExpensesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        >
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/wrench"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyTitleLarge"
+            android:text="Пока нет расходов"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:layout_gravity="center|bottom"
+            android:gravity="bottom"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:text="@string/expenses"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -13,8 +48,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="end"
             android:orientation="horizontal">
 
@@ -31,25 +66,27 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chooseYearBtn"
-                android:layout_width="69dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 app:chipBackgroundColor="@color/green"
                 app:layout_constraintStart_toEndOf="@id/unpaidBtn" />
 
         </LinearLayout>
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expensesRecView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/expense_item"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
     </LinearLayout>
-
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addExpenseBtn"

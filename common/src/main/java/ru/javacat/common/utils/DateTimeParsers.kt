@@ -23,7 +23,7 @@ fun LocalDate.asDayAndMonthFully(): String = format(DateTimeFormatter.ofPattern(
 
 fun LocalDate.asDayAndMonthShortly(): String = format(DateTimeFormatter.ofPattern("d MMM"))
 
-fun String.toLocalDate(): LocalDate = LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+fun String?.toLocalDate(): LocalDate = LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
 
 fun String.toLocalDateTime(): LocalDateTime =

@@ -64,36 +64,25 @@ class FinishRouteWithoutDriverViewModel @Inject constructor(
         routeDistance: Int,
         fuelUsedUp: Int,
         fuelPrice: Float,
-        salary: Float,
-        payPerDiem: Int,
-        moneyToPay: Float,
         revenue: Int,
         profit: Float,
-        salaryCountMethod: SalaryCountMethod,
-        profitPercentage: Int,
-        costPerKilometer: Float,
-        extraPointsCost: Int,
         endDate: LocalDate?,
         totalExpenses: Float
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                val salaryParameters = SalaryParameters(
-                    salaryCountMethod, payPerDiem,profitPercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
-                )
+
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance
                 )
-
-
                 editedRoute.value?.copy(
                     prepayment = prepay,
                     routeDetails = routeDetails,
-                    driverSalary = salary,
-                    moneyToPay = moneyToPay,
+                    driverSalary = 0f,
+                    moneyToPay = 0f,
                     isFinished = true,
-                    salaryParameters = salaryParameters,
+                    salaryParameters = null,
                     revenue = revenue,
                     profit = profit,
                     endDate = endDate,

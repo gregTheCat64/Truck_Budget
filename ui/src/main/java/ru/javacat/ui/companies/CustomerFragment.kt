@@ -97,7 +97,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
         binding.addEmployeeBtn.setOnClickListener {
             if (customerId != null) {
                 val bundle = Bundle()
-                bundle.putLong(FragConstants.CUSTOMER_ID,customerId!!)
+                bundle.putLong(FragConstants.COMPANY_ID,customerId!!)
                 findNavController().navigate(R.id.newEmployeeFragment, bundle)
             }
         }

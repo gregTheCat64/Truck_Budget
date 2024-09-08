@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -159,6 +160,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
     }
 
     private fun initUi(orderList: List<Order>){
+        binding.noOrdersLayout.isGone = orderList.isNotEmpty()
         var debt = 0
         orderList.forEach {
             if (!it.isPaidByCustomer){

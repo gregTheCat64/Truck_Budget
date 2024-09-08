@@ -14,6 +14,7 @@ class CalculateTruckDriverSalaryUseCase @Inject constructor () {
         routeDuration: Int,
         costPerDiem: Int,
         profitPercentage: Int,
+        revenuePercentage: Int,
         roadFee: Int,
         routeDistance: Int,
         costPerKilometer: Float
@@ -21,16 +22,14 @@ class CalculateTruckDriverSalaryUseCase @Inject constructor () {
         return when (salaryCountMethod){
             SalaryCountMethod.BY_PROFIT -> {
                 (revenue - extraExpenses - (fuelPrice * fuelUsedUp) -
-                        (routeDuration * costPerDiem)) *
-                        profitPercentage/100 - roadFee
+                        (routeDuration * costPerDiem)  - roadFee) *
+                        profitPercentage/100
             }
             SalaryCountMethod.BY_DISTANCE -> {
                 routeDistance * costPerKilometer
-//                        + (route.extraPoints * route.salaryParameters.extraPointsCost) +
-//                        (route.salaryParameters.costPerDiem * route.routeDuration)
             }
-            null -> {
-                0f
+            SalaryCountMethod.BY_REVENUE -> {
+                (revenue * revenuePercentage/100).toFloat()
             }
         }
     }

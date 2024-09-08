@@ -42,10 +42,11 @@ data class Contractor(
 )
 
 data class SalaryParameters(
-    val salaryCountMethod: SalaryCountMethod = SalaryCountMethod.BY_DISTANCE,
+    val salaryCountMethod: SalaryCountMethod? = null,
     val costPerDiem: Int = 0,
 
     val profitPercentage: Int = 0,
+    val revenuePercentage: Int = 0,
     val costPerKilometer: Float = 0f,
 
     val extraPointsCost: Int = 0,
@@ -53,5 +54,6 @@ data class SalaryParameters(
 
 enum class SalaryCountMethod{
     BY_PROFIT,
+    BY_REVENUE,
     BY_DISTANCE
 }

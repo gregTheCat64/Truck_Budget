@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -66,6 +67,7 @@ class ExpenseListFragment: BaseFragment<FragmentExpenseListBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.expenses.collectLatest {
                     expensesAdapter.submitList(it)
+                    binding.noExpensesLayout.isGone = it?.isNotEmpty() == true
                 }
             }
         }

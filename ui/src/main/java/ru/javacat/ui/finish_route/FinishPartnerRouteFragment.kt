@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -74,7 +75,11 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
                 when (it) {
-                    LoadState.Success.GoBack -> this@FinishPartnerRouteFragment.dismiss()
+                    LoadState.Success.GoBack -> {
+                        this@FinishPartnerRouteFragment.dismiss()
+                        Toast.makeText(requireContext(),
+                            getString(R.string.success), Toast.LENGTH_SHORT).show()
+                    }
                    else ->Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT)
                        .show()
                 }

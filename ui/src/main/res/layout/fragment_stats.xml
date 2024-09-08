@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:text="@string/routes"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chooseYearBtn"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:layout_marginTop="8dp"
+            android:checkable="false"
+            android:checked="true"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            />
+    </FrameLayout>
 
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -15,23 +41,25 @@
         android:layout_height="wrap_content"
         />
 
-
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Транспорт компании"
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/TextAppearance.Material3.TitleMedium"
             />
 
         <TextView
@@ -103,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Привлеченный транспорт"
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/TextAppearance.Material3.TitleMedium"
             />
 
 
@@ -130,6 +158,7 @@
             android:text="Заработано за год, руб."
             />
         <TextView
+            android:id="@+id/notCompanyTotalProfit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -151,14 +180,6 @@
             />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:text="График доходов"
-            />
-
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/chart"
@@ -174,14 +195,4 @@
 
 
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2024"
-        android:layout_gravity="end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
-        />
-
-</FrameLayout>
+</LinearLayout>

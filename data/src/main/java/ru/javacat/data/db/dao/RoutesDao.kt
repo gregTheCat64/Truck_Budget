@@ -22,22 +22,26 @@ interface RoutesDao {
     @Query("SELECT * FROM routes_table WHERE strftime('%Y', startDate) = :year")
     fun getAllRoutesByYear(year: String): List<DbRouteWithOrders>
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*) FROM routes_table 
-        WHERE   companyId = -1 AND
+        WHERE   contractorId = -1 AND
             strftime('%Y', startDate) = :year
-    """)
+    """
+    )
     fun getCompanyRoutesCount(year: String): Int
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*) FROM routes_table 
-        WHERE   companyId != -1 AND
+        WHERE   contractorId != -1 AND
             strftime('%Y', startDate) = :year
-    """)
+    """
+    )
     fun getNotCompanyRoutesCount(year: String): Int
 
     @Transaction
-    @Query("SELECT * FROM routes_table WHERE companyId = -1 AND isFinished = 1 ORDER BY id DESC LIMIT 1 ")
+    @Query("SELECT * FROM routes_table WHERE contractorId = -1 AND isFinished = 1 ORDER BY id DESC LIMIT 1 ")
     fun getLastRoute(): DbRouteWithOrders?
 
     @Transaction
@@ -68,13 +72,29 @@ interface RoutesDao {
     suspend fun removeRoute(id: Long)
 
 
-    @Query("""
+    @Query(
+        """
         SELECT strftime('%m', startDate) as monthDate,
         SUM(profit) as totalProfit
         FROM routes_table
         WHERE strftime('%Y', startDate) = :year
+        AND contractorId = -1
         GROUP BY monthDate
         ORDER BY monthDate
-    """)
+    """
+    )
     fun getMonthlyIncomeByYear(year: String): List<DbMonthlyProfit>
+
+    @Query(
+        """
+        SELECT strftime('%m', startDate) as monthDate,
+        SUM(profit) as totalProfit
+        FROM routes_table
+        WHERE strftime('%Y', startDate) = :year
+        AND contractorId != -1
+        GROUP BY monthDate
+        ORDER BY monthDate
+    """
+    )
+    fun getMonthlyIncomeByYearFromNotCompanyTransport(year: String): List<DbMonthlyProfit>
 }

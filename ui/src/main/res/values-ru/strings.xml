@@ -136,4 +136,6 @@
     <string name="distanse_km">Расстояние, км</string>
     <string name="finishing_route">Завершить рейс</string>
     <string name="choose_year">Выбор года</string>
+    <string name="change_home_company_name_advise">Это название вашей компании по умолчанию. Его можно изменить позже. Также по умолчанию создан водитель, тягач и прицеп, которые также могут быть изменены позже.</string>
+    <string name="success">Успешно</string>
 </resources>

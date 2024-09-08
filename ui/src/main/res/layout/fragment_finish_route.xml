@@ -260,20 +260,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 >
-
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/distanceSalaryChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="От расстояния"
+                    android:checkable="true"
+                    android:checked="true"
+                    />
                 <com.google.android.material.chip.Chip
                     android:id="@+id/profitSalaryChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="От прибыли"
                     android:checkable="true"
-                    android:checked="true"
+                    android:checked="false"
                     />
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/distanceSalaryChip"
+                    android:id="@+id/revenueSalaryChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="От расстояния"
+                    android:text="От выручки"
                     android:checkable="true"
                     android:checked="false"
                     />
@@ -292,6 +299,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Процент от прибыли, %"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/percentOfRevenue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Процент от выручки, %"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -106,6 +106,7 @@
         <item name="colorSurfaceBright">@color/md_theme_surfaceBright</item>
         <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest</item>
         <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow</item>
+                <!--        cardview-->
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
@@ -117,6 +118,8 @@
     <style name="CardView.MyCard" parent="CardView.Dark">
         <item name="cardBackgroundColor">@color/md_theme_surfaceContainer</item>
         <item name="cardCornerRadius">16dp</item>
+        <item name="strokeColor">@color/green</item>
+        <item name="elevation">0dp</item>
     </style>
 
 </resources>

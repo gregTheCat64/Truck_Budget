@@ -12,7 +12,7 @@ data class DbRoute (
     val id: Long,
     val startDate: String?,
     val endDate: String?,
-    val companyId: Long?,
+    val contractorId: Long?,
     val driverId: Long?,
     val truckId: Long?,
     val trailerId: Long?,

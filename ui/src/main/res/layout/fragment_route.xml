@@ -16,7 +16,33 @@
         android:layout_gravity="center"
         />
 
+    <LinearLayout
+        android:id="@+id/noRoutesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:layout_marginTop="-64dp"
+        >
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/document"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyTitleLarge"
+            android:text="Добавьте первую заявку!"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:layout_gravity="center|bottom"
+            android:gravity="bottom"
+            />
+
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -29,15 +55,6 @@
             android:orientation="vertical">
 
 
-            <ImageView
-                android:id="@+id/docsImg"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_margin="32dp"
-                android:visibility="gone"
-                android:src="@drawable/camp_pic_round"
-                android:contentDescription="@string/empty_orders" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ordersList"

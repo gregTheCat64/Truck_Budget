@@ -35,7 +35,7 @@ class TrailersRepositoryImpl @Inject constructor(
             val defaultTrailer = Trailer(
                 0,
                 -1,
-                "МойПрицеп",
+                "АА0000",
                 regionCode = 0
             )
             dbQuery { dao.insert(defaultTrailer.toDb()) }
