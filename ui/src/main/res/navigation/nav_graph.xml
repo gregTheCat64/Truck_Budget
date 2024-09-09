@@ -12,10 +12,19 @@
         android:label="@string/routes" >
         <action
             android:id="@+id/action_routeListFragment_to_newRouteFragment"
-            app:destination="@id/newRouteFragment" />
+            app:destination="@id/newRouteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_routeListFragment_to_viewPagerFragment"
-            app:destination="@id/routeViewPagerFragment" />
+            app:destination="@id/routeViewPagerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
@@ -113,7 +122,7 @@
         android:id="@+id/routeViewPagerFragment"
         android:name="ru.javacat.ui.route.RouteViewPagerFragment"
         tools:layout="@layout/fragment_route_view_pager"
-        android:label="ViewPagerFragment" >
+        android:label="" >
 
         <action
             android:id="@+id/action_viewPagerFragment_to_routeFragment"

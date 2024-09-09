@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +25,7 @@ import ru.javacat.ui.utils.FragConstants
 class ChooseTruckFragment: BottomSheetDialogFragment() {
     private lateinit var binding: FragmentChooseItemBinding
 
-    private val viewModel: ChooseTruckViewModel by viewModels()
+    private val viewModel: NewRouteViewModel by activityViewModels()
     private lateinit var trucksAdapter: ChooseTruckAdapter
 
     override fun onCreateView(

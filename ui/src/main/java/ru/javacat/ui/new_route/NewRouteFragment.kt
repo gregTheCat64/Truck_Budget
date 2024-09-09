@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,7 @@ const val itemParam = "item"
 @AndroidEntryPoint
 class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
-    private val viewModel: NewRouteViewModel by viewModels()
+    private val viewModel: NewRouteViewModel by activityViewModels()
     private val bundle = Bundle()
     private var isLastRouteLoaded = false
     private var companyId: Long? = null
@@ -72,11 +73,12 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i("NewRouteFrag", "lastRouteLoaded: $isLastRouteLoaded")
+
         if (!isLastRouteLoaded){
             setLastRouteToCurrent()
             isLastRouteLoaded = true
         }
-
 
         binding.addContractorEditText.setOnClickListener {
             addContractorToRoute()
@@ -105,15 +107,14 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         //Инициализация ui
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.editedRoute.collectLatest {
-                    Log.i("NewRouteFrag", "route: $it")
+                viewModel.newRoute.collectLatest {
+                    Log.i("NewRouteFrag", "collecting newRoute: $it")
                     companyId = it?.contractor?.company?.id
                     currentRoute = it
                     it?.let { initUi(it) }
                 }
             }
         }
-
 
 
         //Навигация
@@ -124,6 +125,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
                     val bundle = Bundle()
                     if (it != null) {
                         bundle.putLong(FragConstants.ROUTE_ID, it)
+                        viewModel.clearRouteId()
                         findNavController().navigate(R.id.routeViewPagerFragment, bundle)
                     }
                 }
@@ -187,7 +189,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
             val prepay = if (!binding.prepayEditText.text.isNullOrEmpty()){
                 binding.prepayEditText.text?.toString()?.toInt()?:0
             } else 0
-            viewModel.setRouteParameters(prepay)
+            viewModel.setPrepayment(prepay)
             viewModel.saveNewRoute(route)
         } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
     }

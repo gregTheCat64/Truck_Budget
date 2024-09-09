@@ -74,6 +74,10 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val title = "Рейс № ${routeId}"
+
+        (activity as AppCompatActivity).supportActionBar?.title = title
+
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_remove, menu)
@@ -172,15 +176,23 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
     }
 
     private fun initUi(route: Route){
-        val title = "Рейс № ${route.id}"
-        //binding.titleRoute.text
-        (activity as AppCompatActivity).supportActionBar?.title = title
-        binding.driverTv.text = "${route.contractor?.driver?.surname},"
-        //+" "+ route.driver?.firstName + " "+ route.driver?.middleName
-        binding.truckTv.text = "${route.contractor?.truck?.regNumber} " +
-                "${route.contractor?.truck?.regionCode},"
-        binding.trailerTv.text = "${route.contractor?.trailer?.regNumber} " +
-                "${route.contractor?.trailer?.regionCode}"
+        Log.i("RouteViewPagerFrag", "init route: $route")
+
+        val truckInfoList = mutableListOf<String>()
+        val truckDriver = "${route.contractor?.driver?.surname} ${route.contractor?.driver?.firstName}"
+        val truck = "${route.contractor?.truck?.regNumber} ${route.contractor?.truck?.regionCode}"
+
+        val trailer = if (route.contractor?.trailer?.regNumber != null && route.contractor?.trailer?.regionCode != null){
+            "${route.contractor?.trailer?.regNumber} ${route.contractor?.trailer?.regionCode}"
+        } else ""
+
+        if (truckDriver.isNotEmpty()) truckInfoList.add(truckDriver)
+        if (truck.isNotEmpty())truckInfoList.add(truck)
+        if (trailer.isNotEmpty()) truckInfoList.add(trailer)
+
+        val resultString = truckInfoList.joinToString(separator = ", ")
+
+        binding.truckInfoTv.text = resultString
         binding.contractorValue.text = route.contractor?.company?.shortName
     }
 
@@ -189,5 +201,4 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
             viewModel.removeRoute(routeId)
         }
     }
-
 }

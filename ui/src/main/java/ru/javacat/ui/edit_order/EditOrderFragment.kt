@@ -391,13 +391,13 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
     private fun paintOrder(unCheckedImage: Int) {
         val checkedCircle = requireContext().getDrawable(R.drawable.filled_circle)
-        var unCheckedCircle = requireActivity().getDrawable(unCheckedImage)
+        val unCheckedCircle = requireActivity().getDrawable(unCheckedImage)
 
         if (checkCustomer()) {
             binding.customerCheck.setImageDrawable(checkedCircle)
         } else {
             binding.scroll.smoothScrollTo(0, binding.customerCheck.baseline)
-            binding.customerCheck.setImageDrawable(requireActivity().getDrawable(unCheckedImage))
+            binding.customerCheck.setImageDrawable(unCheckedCircle)
         }
 
         if (checkCargo()) {

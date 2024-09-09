@@ -91,7 +91,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             val bundle = Bundle()
             override fun onItem(item: Route) {
                 bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
-                findNavController().navigate(R.id.routeViewPagerFragment, bundle)
+                findNavController().navigate(R.id.action_routeListFragment_to_viewPagerFragment, bundle)
 
             }
 
@@ -122,15 +122,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     private fun toNewRoute() {
         //val bundle = Bundle()
         //if (myCompany != null) {
-        findNavController().navigate(R.id.newRouteFragment)
-//        } else {
-//            Toast.makeText(
-//                requireContext(),
-//                "Заполните карточку вашей компании",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//            bundle.putLong(FragConstants.CUSTOMER_ID, FragConstants.MY_COMPANY_ID)
-//            findNavController().navigate(R.id.newCustomerFragment, bundle)
-//        }
+        findNavController().navigate(R.id.action_routeListFragment_to_newRouteFragment)
+
     }
 }

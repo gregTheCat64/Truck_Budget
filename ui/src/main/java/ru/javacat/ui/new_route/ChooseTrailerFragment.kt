@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,7 @@ import ru.javacat.ui.utils.FragConstants
 class ChooseTrailerFragment: BottomSheetDialogFragment() {
     private lateinit var binding: FragmentChooseItemBinding
 
-    private val viewModel: ChooseTrailerViewModel by viewModels()
+    private val viewModel: NewRouteViewModel by activityViewModels()
     private lateinit var trailersAdapter: ChooseTrailerAdapter
 
     override fun onCreateView(

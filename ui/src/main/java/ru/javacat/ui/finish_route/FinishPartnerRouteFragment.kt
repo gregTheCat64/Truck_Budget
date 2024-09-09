@@ -76,9 +76,10 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
             viewModel.loadState.collectLatest {
                 when (it) {
                     LoadState.Success.GoBack -> {
-                        this@FinishPartnerRouteFragment.dismiss()
+                        //this@FinishPartnerRouteFragment.dismiss()
+                        findNavController().popBackStack(R.id.navigation_route_list, false)
                         Toast.makeText(requireContext(),
-                            getString(R.string.success), Toast.LENGTH_SHORT).show()
+                            getString(R.string.saved), Toast.LENGTH_SHORT).show()
                     }
                    else ->Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT)
                        .show()

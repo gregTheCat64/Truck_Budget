@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +27,7 @@ import ru.javacat.ui.utils.FragConstants
 @AndroidEntryPoint
 class ChooseTruckDriverFragment: BottomSheetDialogFragment() {
     private lateinit var binding: FragmentChooseItemBinding
-    private val viewModel: ChooseTruckDriverViewModel by viewModels()
+    private val viewModel: NewRouteViewModel by activityViewModels()
     private lateinit var driversAdapter: ChooseDriverAdapter
 
     override fun onCreateView(
