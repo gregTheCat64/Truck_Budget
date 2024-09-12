@@ -1,5 +1,6 @@
 package ru.javacat.ui.order
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -18,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,6 +34,7 @@ import ru.javacat.ui.databinding.FragmentOrderBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>() {
@@ -46,6 +50,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     private var routeId: Long? = null
     private var isNewOrder: Boolean? = false
     private var isPaid: Boolean = false
+    private var isPaidToContractor: Boolean = false
+    private var sentDocsNumber: String? = null
+    private var paymentDeadline: LocalDate? = null
+    private var docsReceived: LocalDate? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +66,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
             docsNumber?.let {
-                viewModel.updateOrderToDb(sentDocsNumber = it)
+                sentDocsNumber = it
+                updateOrderToDb()
                 binding.docsNumber.text = it
             }
         }
@@ -138,28 +147,46 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
         binding.docsReceivedDateTvValue.setOnClickListener {
             parentFragmentManager.showCalendar { date ->
-                viewModel.updateOrderToDb(docsReceived = date)
+                //viewModel.updateOrderToDb(docsReceived = date)
+                docsReceived = date
                 binding.docsReceivedDateTvValue.text = date.asDayAndMonthFully()
+                updateOrderToDb()
             }
         }
 
         binding.payDayValueTv.setOnClickListener {
             parentFragmentManager.showCalendar { date ->
-                viewModel.updateOrderToDb(paymentDeadline = date)
+                paymentDeadline = date
+                updateOrderToDb()
+                //viewModel.updateOrderToDb(paymentDeadline = date)
                 binding.payDayValueTv.text = date.asDayAndMonthFully()
             }
         }
 
-        binding.paidBtn.setOnClickListener {
+        binding.paidStatusTv.setOnClickListener {
             if (isPaid) {
-                viewModel.updateOrderToDb(isPaid = false)
-                setUnpaidUi()
+                //viewModel.updateOrderToDb(isPaid = false)
+                setUnpaidUi(binding.paidStatusTv)
             } else {
-                viewModel.updateOrderToDb(isPaid = true)
-                setPaidUi()
+                //viewModel.updateOrderToDb(isPaid = true)
+                setPaidUi(binding.paidStatusTv)
             }
             isPaid = !isPaid
+            updateOrderToDb()
         }
+
+        binding.contractorPaidStatusTv.setOnClickListener {
+            if (isPaidToContractor) {
+                //viewModel.updateOrderToDb(isPaidToContractor = false)
+                setUnpaidUi(binding.contractorPaidStatusTv)
+            } else {
+                //viewModel.updateOrderToDb(isPaidToContractor = true)
+                setPaidUi(binding.contractorPaidStatusTv)
+            }
+            isPaidToContractor = !isPaidToContractor
+            updateOrderToDb()
+        }
+
 
     }
 
@@ -203,7 +230,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
                 "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
             cargoExtraTv.text = typeOfUploadString
             priceTv.text = "${order.price} руб."
-            priceExtraTv.text = "без НДС, ${order.daysToPay} б.дней"
+            priceExtraTv.text = "${order.payType}, ${order.daysToPay} б.дней"
 
             order.sentDocsNumber?.let {
                 docsNumber.text = it
@@ -216,8 +243,26 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             }
 
             if (order.isPaidByCustomer) {
-                setPaidUi()
-            } else setUnpaidUi()
+                setPaidUi(binding.paidStatusTv)
+                isPaid = true
+            } else {
+                setUnpaidUi(binding.paidStatusTv)
+                isPaid = false
+            }
+
+            if (order.contractor?.company?.id != -1L){
+                contractorsPriceLayout.isGone = false
+                binding.contractorsPrice.text = "${order.contractorPrice.toString()} руб."
+                binding.contractorPriceExtraTv.text =
+                    "${order.payTypeToContractor}, ${order.daysToPayToContractor}б. дней"
+                if (order.isPaidToContractor){
+                    setPaidUi(binding.contractorPaidStatusTv)
+                    isPaidToContractor = true
+                } else {
+                    setUnpaidUi(binding.contractorPaidStatusTv)
+                    isPaidToContractor = false
+                }
+            }
         }
 
         //adapter
@@ -226,13 +271,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         pointsAdapter.submitList(order.points)
     }
 
-    private fun setPaidUi() {
-        binding.paidBtn.text = getString(R.string.mark_as_unpaid)
-        binding.paidStatusTv.text = getString(R.string.paid_order)
+    private fun setPaidUi(view: Chip) {
+        //binding.paidBtn.text = getString(R.string.mark_as_unpaid)
+        view.text = getString(R.string.paid_order)
+        view.setChipBackgroundColorResource(R.color.green)
     }
 
-    private fun setUnpaidUi() {
-        binding.paidBtn.text = getString(R.string.mark_as_paid)
-        binding.paidStatusTv.text = getString(R.string.unpaid_order)
+    private fun setUnpaidUi(view: Chip) {
+        //binding.paidBtn.text = getString(R.string.mark_as_paid)
+        view.text = getString(R.string.unpaid_order)
+        view.setChipBackgroundColorResource(R.color.red)
+    }
+
+    private fun updateOrderToDb(){
+        viewModel.updateOrderToDb(paymentDeadline, sentDocsNumber, docsReceived, isPaid, isPaidToContractor)
     }
 }

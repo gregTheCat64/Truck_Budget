@@ -54,7 +54,8 @@ class OrderViewModel @Inject constructor(
         paymentDeadline: LocalDate? = null,
         sentDocsNumber: String? = null,
         docsReceived: LocalDate? = null,
-        isPaid: Boolean? = null
+        isPaid: Boolean? = null,
+        isPaidToContractor: Boolean? = null
     ){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
@@ -63,7 +64,8 @@ class OrderViewModel @Inject constructor(
                     paymentDeadline = paymentDeadline?: editedOrder.value!!.paymentDeadline,
                     sentDocsNumber = sentDocsNumber?: editedOrder.value!!.sentDocsNumber,
                     docsReceived = docsReceived?: editedOrder.value!!.docsReceived,
-                    isPaidByCustomer = isPaid?:false
+                    isPaidByCustomer = isPaid?:false,
+                    isPaidToContractor = isPaidToContractor?:false
                 )
                 orderToUpdate?.let { orderRepository.updateOrderToDb(it) }
                 _loadState.emit(LoadState.Success.OK)

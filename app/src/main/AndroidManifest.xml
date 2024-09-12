@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!--            android:windowSoftInputMode="adjustResize"-->
     <application
         android:name="ru.javacat.app.App"
         android:allowBackup="true"
@@ -15,6 +15,7 @@
         tools:targetApi="31">
         <activity
             android:name="ru.javacat.ui.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

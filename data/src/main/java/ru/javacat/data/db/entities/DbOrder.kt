@@ -10,6 +10,7 @@ import androidx.room.TypeConverters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.javacat.domain.models.Cargo
+import ru.javacat.domain.models.PayType
 
 @Entity(
     tableName = "orders_table",
@@ -33,7 +34,9 @@ data class DbOrder(
     val points: List<DbPoint>,
     val date: String,
     val price: Int,
+    val payType: PayType,
     val contractorPrice: Int?,
+    val payTypeToContractor: PayType?,
     val commission: Int?,
     val customerId: Long,
     val managerId: Long?,
@@ -45,6 +48,7 @@ data class DbOrder(
     val cargo: Cargo,
     val extraConditions: String?,
     val daysToPay: Int?,
+    val daysToPayToContractor: Int?,
     val paymentDeadline: String?,
     val sentDocsNumber: String?,
     val docsReceived: String?,

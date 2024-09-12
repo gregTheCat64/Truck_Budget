@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Order
+import ru.javacat.domain.models.PayType
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
@@ -53,8 +54,13 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
     //Переменные из EditText:
     private var newPrice: Int? = null
+    private var newPayType: PayType? = null
     private var newDaysToPay: Int? = null
     private var newContractorPrice: Int? = null
+
+    private var newDaysToPayToContractor: Int? = null
+    private var newPayTypeToContractor: PayType? = null
+
 
     private var newCargoWeight: Int? = null
     private var newCargoVolume: Int? = null
@@ -64,7 +70,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     private var isTopUpload: Boolean = false
 
     private var startDate: LocalDate = LocalDate.now()
-
 
     private var orderIdArg: Long? = null
     private var routeIdArg: Long? = null
@@ -130,6 +135,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val paddingToScroll = 200
+
         if (!isLastOrderLoaded) {
             if (needToRestore) {
                 Log.i("EditOrderFrag", "restoring Order")
@@ -171,6 +178,13 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
         }
 
+        //adapter
+        pointsAdapter = PointWithRemoveAdapter {
+            viewModel.removePoint(it)
+        }
+        binding.pointsRecView.adapter = pointsAdapter
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -185,22 +199,36 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 }
             }
         }
-
-        binding.addPointBtn.setOnClickListener {
-            binding.scroll.smoothScrollTo(0, binding.paymentCheck.top)
-            changingPoints()
-        }
-
         binding.customerTv.setOnClickListener {
             changingCustomer()
         }
 
         binding.managerTv.setOnClickListener {
-            currentOrder?.customer?.id?.let { it1 -> changingManager(it1) }
+            if (currentOrder?.customer?.id != null){
+            changingManager(currentOrder?.customer?.id!!)} else Toast.makeText(
+                requireContext(),
+                "Добавьте сначала заказчика",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
-        binding.cargoTv.setOnClickListener {
-            binding.scroll.smoothScrollTo(0, binding.cargoCheck.top)
+        binding.addPointBtn.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.routeCheckTitle.top-paddingToScroll)
+            changingPoints()
+        }
+
+        binding.cargoEditText.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.cargoCheckLayout.top-paddingToScroll)
+            changingCargo()
+        }
+
+        binding.tvVolume.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.cargoCheckLayout.top-paddingToScroll)
+            changingCargo()
+        }
+
+        binding.weightTv.setOnClickListener {
+            binding.scroll.smoothScrollTo(0, binding.cargoCheckLayout.top-paddingToScroll)
             changingCargo()
         }
 
@@ -216,21 +244,70 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             isTopUpload = isChecked
         }
 
+        binding.priceTv.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                binding.scroll.post{
+                    binding.scroll.smoothScrollTo(0, binding.paymentLayout.bottom-200)
+                }
+            }
+        }
+
+        binding.daysToPayTv.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                //binding.scroll.smoothScrollTo(0, -100)
+            }
+        }
+
         addEditTextListeners()
 
 
-
-        binding.paymentDeadlineChipGroup.setOnCheckedStateChangeListener { chipGroup, list ->
-            val checkedId = chipGroup.checkedChipId
-            //Log.i("AddpaymentFrag", "checkedId: $checkedId")
-            val chip = chipGroup.findViewById<Chip>(checkedId)
-            binding.daysToPayTv.setText(chip?.tag?.toString())
-            //newDaysToPay = binding.daysToPayTv.text.toString().toInt()
-            //viewModel.editOrder(daysToPay = chip?.tag?.toString()?.toInt())
-        }
+//        binding.paymentDeadlineChipGroup.setOnCheckedStateChangeListener { chipGroup, list ->
+//            val checkedId = chipGroup.checkedChipId
+//            //Log.i("AddpaymentFrag", "checkedId: $checkedId")
+//            val chip = chipGroup.findViewById<Chip>(checkedId)
+//            binding.daysToPayTv.setText(chip?.tag?.toString())
+//            //newDaysToPay = binding.daysToPayTv.text.toString().toInt()
+//            //viewModel.editOrder(daysToPay = chip?.tag?.toString()?.toInt())
+//        }
 
         binding.paymentTypeChipGroup.setOnCheckedStateChangeListener { chipGroup, list ->
+            val checkedId = chipGroup.checkedChipId
+            val chip = chipGroup.findViewById<Chip>(checkedId)
 
+            when (chip) {
+                binding.card ->{
+                    newPayType = PayType.CARD
+                }
+                binding.cash -> {
+                    newPayType = PayType.CASH
+                }
+                binding.withFee -> {
+                    newPayType = PayType.WITH_FEE
+                }
+                binding.withoutFee -> {
+                    newPayType = PayType.WITHOUT_FEE
+                }
+            }
+        }
+
+        binding.paymentTypeChipToContractorGroup.setOnCheckedStateChangeListener { chipGroup, list ->
+            val checkedId = chipGroup.checkedChipId
+            val chip = chipGroup.findViewById<Chip>(checkedId)
+
+            when (chip) {
+                binding.cardToContractor ->{
+                    newPayTypeToContractor = PayType.CARD
+                }
+                binding.cashToContractor -> {
+                    newPayTypeToContractor = PayType.CASH
+                }
+                binding.withFeeToContractor -> {
+                    newPayTypeToContractor = PayType.WITH_FEE
+                }
+                binding.withoutFeeToContractor -> {
+                    newPayTypeToContractor = PayType.WITHOUT_FEE
+                }
+            }
         }
 
         //Сохранение заявки
@@ -302,27 +379,58 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         order.cargo?.cargoName.let {
-            binding.cargoTv.setText(it)
+            binding.cargoEditText.setText(it)
         }
-
-
 
         order.contractorPrice?.let {
             val value = "$it"
             binding.contractorsPrice.setText(value)
         }
 
+        order.daysToPayToContractor?.let {
+            val value = "$it"
+            binding.daysToPaytoContractorEditText.setText(value)
+        }
+
+        when (order.payType) {
+            PayType.CASH -> {
+                binding.cash.isChecked = true
+            }
+            PayType.CARD -> {
+                binding.card.isChecked = true
+            }
+            PayType.WITHOUT_FEE -> {
+                binding.withoutFee.isChecked = true
+            }
+            PayType.WITH_FEE -> {
+                binding.withFee.isChecked = true
+            }
+            else -> {
+
+            }
+        }
+
+        when (order.payTypeToContractor) {
+            PayType.CASH -> {
+                binding.cashToContractor.isChecked = true
+            }
+            PayType.CARD -> {
+                binding.cardToContractor.isChecked = true
+            }
+            PayType.WITHOUT_FEE -> {
+                binding.withoutFeeToContractor.isChecked = true
+            }
+            PayType.WITH_FEE -> {
+                binding.withFeeToContractor.isChecked = true
+            }
+            else -> {}
+        }
+
         binding.backCheck.isChecked = order.cargo?.isBackLoad == true
         binding.sideCheck.isChecked = order.cargo?.isSideLoad == true
         binding.upCheck.isChecked =  order.cargo?.isTopLoad == true
 
-        //adapter
-        pointsAdapter = PointWithRemoveAdapter {
-            viewModel.removePoint(it)
-        }
-        binding.pointsRecView.adapter = pointsAdapter
         pointsAdapter.submitList(order.points)
-
     }
 
     private fun checkPayment(): Boolean {
@@ -338,11 +446,14 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         println("currentOrderIdComp = ${currentRoute?.contractor?.company?.id}")
         if (currentRoute?.contractor?.company?.id != FragConstants.MY_COMPANY_ID){
-            if ( binding.contractorsPrice.text.isNullOrEmpty()){
+            if ( binding.contractorsPrice.text.isNullOrEmpty() ||
+                binding.daysToPaytoContractorEditText.text.isNullOrEmpty()
+                ){
                 binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
                 return false
             } else {
                 newContractorPrice = binding.contractorsPrice.text?.toString()?.toInt()
+                newDaysToPayToContractor = binding.daysToPaytoContractorEditText.text.toString().toInt()
             }
         }
 
@@ -448,8 +559,11 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 routeId = routeId,
                 price = newPrice,
                 daysToPay = newDaysToPay,
+                payType = newPayType?:PayType.WITHOUT_FEE,
                 contractor = newContractor,
                 contractorPrice = newContractorPrice,
+                daysToPayToContractor = newDaysToPayToContractor,
+                payTypeToContractor = newPayTypeToContractor,
                 cargo = newCargo,
                 date = startDate
             )

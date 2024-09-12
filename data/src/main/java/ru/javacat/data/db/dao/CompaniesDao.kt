@@ -25,6 +25,7 @@ interface CompaniesDao {
     @Query("SELECT * FROM companies_table")
     suspend fun getCustomers(): List<DbCompanyWithManagers>
 
+    @Transaction
     @Query("SELECT * FROM companies_table WHERE companyName LIKE '%' || :search || '%'")
     suspend fun searchCustomers(search: String): List<DbCompanyWithManagers>
 

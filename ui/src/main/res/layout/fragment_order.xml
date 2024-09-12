@@ -72,7 +72,11 @@
                 android:layout_gravity="center_horizontal"
                 />
 
-            <include layout="@layout/horizon_line" />
+            <include layout="@layout/horizon_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                />
 
 
             <TextView
@@ -163,33 +167,6 @@
                     android:text="без НДС, 7 б.дней"
                     />
 
-
-
-            <LinearLayout
-                android:id="@+id/contractorsPriceLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/contractor_s_cost" />
-
-                <TextView
-                    android:id="@+id/contractorsPrice"
-                    style="@style/TextAppearance.Material3.BodyLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp" />
-
-            </LinearLayout>
-
-
-
             <TextView
                 android:id="@+id/payDayTv"
                 android:layout_width="wrap_content"
@@ -215,7 +192,7 @@
                 android:hint="@string/payment_status" />
 
 
-            <TextView
+            <com.google.android.material.chip.Chip
                 android:id="@+id/paidStatusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,15 +200,70 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:text="@string/paid" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/paidBtn"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/contractorsPriceLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:text="Отметить как оплаченный"
-                app:icon = "@drawable/baseline_money_24"
-                />
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/contractor_s_cost" />
+
+                <TextView
+                    android:id="@+id/contractorsPrice"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     />
+
+                <TextView
+                    android:id="@+id/contractorPriceExtraTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+
+                <TextView
+                    android:id="@+id/contractorPayStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/payment_status" />
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/contractorPaidStatusTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:text="@string/paid" />
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/contractorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
 
             <include layout="@layout/horizon_line" />
 
