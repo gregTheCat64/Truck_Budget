@@ -57,6 +57,7 @@
     <string name="legal_address">Юридический адрес</string>
     <string name="post_address">Почтовый адрес</string>
     <string name="short_name">Короткое название</string>
+    <string name="all_companies">Все компании</string>
     <string name="january">Январь</string>
     <string name="february">Февраль</string>
     <string name="march">Март</string>
@@ -72,6 +73,7 @@
     <string name="no">нет</string>
     <string name="any">Любой</string>
     <string name="choose_month">Выберите месяц</string>
+    <string name="search">Поиск</string>
     <string name="required_field">*обязательное поле</string>
     <string name="legal_information">Юридическая информация</string>
     <string name="main">Главное</string>
@@ -110,6 +112,7 @@
     <string name="choose_the_item">Сделать выбор</string>
     <string name="add_documents">Добавить документы</string>
     <string name="add_cargo">Добавить груз</string>
+    <string name="add_payment">Добавить оплату</string>
     <string name="add_points">Добавить маршрут</string>
     <string name="truck_drivers">Водители</string>
     <string name="trailers">Прицепы</string>

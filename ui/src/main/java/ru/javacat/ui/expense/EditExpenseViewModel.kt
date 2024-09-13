@@ -1,5 +1,6 @@
 package ru.javacat.ui.expense
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,10 +38,23 @@ class EditExpenseViewModel @Inject constructor(
     }
 
     fun saveExpense(expense: Expense){
+        Log.i("editExpVM", "saveExpense: $expense")
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
                 repository.insert(expense)
+            } catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+            _loadState.emit(LoadState.Success.GoBack)
+        }
+    }
+
+    fun removeExpense(id: Long){
+        viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
+            try {
+                repository.removeById(id)
             } catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

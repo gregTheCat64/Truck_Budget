@@ -1,6 +1,7 @@
 package ru.javacat.ui.expense
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,7 @@ class ExpenseListFragment: BaseFragment<FragmentExpenseListBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.expenses.collectLatest {
+                    Log.i("ExpenseList", "expenses: $it")
                     expensesAdapter.submitList(it)
                     binding.noExpensesLayout.isGone = it?.isNotEmpty() == true
                 }

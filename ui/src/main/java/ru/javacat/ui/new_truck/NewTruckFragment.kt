@@ -42,6 +42,16 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
             FragmentNewTransportBinding.inflate(inflater, container, false)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = arguments
+        companyId = args?.getLong(FragConstants.COMPANY_ID) ?: -1L
+        typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT) ?: "unknown"
+        transportId = args?.getLong(FragConstants.TRANSPORT_ID) ?: 0
+        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET) ?: false
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,20 +85,10 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        val args = arguments
-        companyId = args?.getLong(FragConstants.COMPANY_ID) ?: -1L
-        typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT) ?: "unknown"
-        transportId = args?.getLong(FragConstants.TRANSPORT_ID) ?: 0
-        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET) ?: false
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -156,8 +156,7 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
                         }
 
                         else -> {
-                            Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT)
-                                .show()
+//
                         }
                     }
                 }

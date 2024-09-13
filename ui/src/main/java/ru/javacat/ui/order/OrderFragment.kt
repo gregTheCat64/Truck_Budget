@@ -215,9 +215,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
 
         //TODO добавить в груз - способ погрузки - палеты, валом и тд
-        //TODO добавить способ оплаты - нал безнал ндс
 
         (activity as AppCompatActivity).supportActionBar?.title = title
+
+        val cargoText =  "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
+        val priceText = "${order.price} руб."
+        val priceExtraText  = "${order.payType.toRussian()}, ${order.daysToPay} б.дней"
 
         binding.apply {
             callBtn.isGone = order.manager == null
@@ -226,11 +229,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
             customerTv.text = order.customer?.nameToShow
             managerTv.text = order.manager?.nameToShow
-            cargoTv.text =
-                "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
+            cargoTv.text = cargoText
+
             cargoExtraTv.text = typeOfUploadString
-            priceTv.text = "${order.price} руб."
-            priceExtraTv.text = "${order.payType}, ${order.daysToPay} б.дней"
+            priceTv.text =  priceText
+            priceExtraTv.text = priceExtraText
 
             order.sentDocsNumber?.let {
                 docsNumber.text = it
@@ -252,9 +255,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
             if (order.contractor?.company?.id != -1L){
                 contractorsPriceLayout.isGone = false
-                binding.contractorsPrice.text = "${order.contractorPrice.toString()} руб."
-                binding.contractorPriceExtraTv.text =
-                    "${order.payTypeToContractor}, ${order.daysToPayToContractor}б. дней"
+                val contractorsPriceText = "${order.contractorPrice.toString()}, ${getString(R.string.rub)}"
+                val contractorPriceExtraText =  "${order.payTypeToContractor?.toRussian()}, ${order.daysToPayToContractor} б. дней"
+
+                binding.contractorsPrice.text = contractorsPriceText
+                binding.contractorPriceExtraTv.text = contractorPriceExtraText
+
                 if (order.isPaidToContractor){
                     setPaidUi(binding.contractorPaidStatusTv)
                     isPaidToContractor = true

@@ -161,13 +161,18 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
 
     private fun initUi(orderList: List<Order>){
         binding.noOrdersLayout.isGone = orderList.isNotEmpty()
-        var debt = 0
+        var theirDebt = 0
+        var myDebt = 0
         orderList.forEach {
             if (!it.isPaidByCustomer){
-                debt += it.price!!
+                theirDebt += it.price!!
+            }
+            if (!it.isPaidToContractor){
+                myDebt += it.contractorPrice?:0
             }
         }
-        binding.debtValue.text = "$debt руб."
+        binding.theirDebtValue.text = "$theirDebt р"
+        binding.myDebtValue.text = "$myDebt р"
         //Toast.makeText(requireContext(), "$debt", Toast.LENGTH_SHORT).show()
         ordersAdapter.submitList(orderList)
     }

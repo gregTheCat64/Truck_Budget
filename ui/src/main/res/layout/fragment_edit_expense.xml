@@ -57,7 +57,7 @@
             android:id="@+id/expensePriceTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:inputType="number"
             android:hint="Price*"
             />
 
@@ -80,6 +80,17 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/removeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="@string/remove"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        />
 
 
 </LinearLayout>

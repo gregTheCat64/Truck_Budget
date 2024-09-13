@@ -168,8 +168,6 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
 
         //val id = passSerial.toString()+passNumber.toString()
 
-        //TODO добавить вызов календаря по клику
-        //TODO добавить поле для 2 номера тел.
         val newDriver = TruckDriver(
             truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
             passWhere, driveLicenseNumber, address, phoneNumber, "","",null

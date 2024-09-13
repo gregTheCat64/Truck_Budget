@@ -42,7 +42,7 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
             val bundle = Bundle()
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
-            bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
+            //bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
             findNavController().navigate(R.id.newTruckFragment, bundle)
         }
         binding.trucksRecView.adapter = trucksAdapter
@@ -64,8 +64,9 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
 
         binding.addTruckBtn.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
+            //bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
             bundle.putLong(FragConstants.COMPANY_ID, companyId)
+            findNavController().navigate(R.id.newTruckFragment, bundle)
         }
 
     }

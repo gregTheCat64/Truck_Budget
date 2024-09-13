@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -117,9 +118,15 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-                    if (it is LoadState.Success.GoBack) {
-                        findNavController().navigateUp()
-                    } else Toast.makeText(requireContext(), "Saving Error", Toast.LENGTH_SHORT).show()
+                    when (it) {
+                        LoadState.Success.GoBack -> {
+                            findNavController().navigateUp()
+                        }
+                        LoadState.Error(this.toString()) ->{
+                            Toast.makeText(requireContext(), "Saving Error", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {}
+                    }
                 }
             }
         }
@@ -134,6 +141,11 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
                 binding.expenseDateTv.setText(it.toString())
             }
         }
+
+        binding.removeBtn.setOnClickListener {
+            expenseIdArg?.let { id -> viewModel.removeExpense(id) }
+            Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeName(){
@@ -142,8 +154,11 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
     }
 
     fun saveOrder(){
+        //TODO Распространить на всё приложение!
         name = binding.expenseTv.text.toString().takeIf { it.isNotEmpty() }
         description = binding.DescriptionTv.text.toString().takeIf { it.isNotEmpty() }
+
+        //TODO Распространить на всё приложение!
         try {
             if (binding.expensePriceTv.text.toString().isNotEmpty()){
                 cost = binding.expensePriceTv.text.toString().toInt()
@@ -152,7 +167,7 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
             Toast.makeText(requireContext(), "Wrong number format", Toast.LENGTH_SHORT).show()
         }
 
-        Log.i("EditExpenseFrag", "name = $name, desc = $description, cost = $cost, date = $date")
+        Log.i("EditExpenseFrag", "id = $expenseIdArg, name = $name, desc = $description, cost = $cost, date = $date")
 
         if (name!=null && cost!=null){
             viewModel.saveExpense(Expense(expenseIdArg?:0, name!!,0, description, date, cost!!))
@@ -175,5 +190,6 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
             }
         }
 
+        binding.removeBtn.isGone = false
     }
 }

@@ -62,7 +62,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
+                menuInflater.inflate(R.menu.menu_save, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -92,8 +92,8 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
                 if (transportId != 0L) {
                     viewModel.getTrailerById(transportId)
 
-                    binding.typeOfTransportLayout.visibility = View.GONE
-                    binding.typeOfTransportChipGroup.visibility = View.GONE
+                    binding.typeOfTransportLayout.visibility = View.VISIBLE
+                    binding.typeOfTransportChipGroup.visibility = View.VISIBLE
                 }
             }
         }
@@ -170,6 +170,9 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
             }
             yearOfManufacturing?.let {
                 binding.yearOfManufacturing.setText(it)
+            }
+            type?.let {
+                binding.typeOfTransportEt.setText(it)
             }
         }
         binding.apply {

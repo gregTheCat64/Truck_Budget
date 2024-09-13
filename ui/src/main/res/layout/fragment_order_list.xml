@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_gravity="center"
         >
         <ImageView
@@ -61,32 +61,13 @@
                 android:layout_marginEnd="22dp"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="end"
-                app:chipBackgroundColor="@color/green"
+
                 app:layout_constraintStart_toEndOf="@id/unpaidBtn" />
 
 
         </FrameLayout>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="@string/debt"
-                />
 
-            <TextView
-                android:id="@+id/debtValue"
-                android:layout_marginStart="16dp"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,14 +121,86 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/green"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Нам должны"
+                    />
+
+                <TextView
+                    android:id="@+id/theirDebtValue"
+                    android:layout_marginStart="16dp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:text="16000"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </FrameLayout>
 
 
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="@color/red"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мы должны"
+                    android:layout_marginStart="4dp"
+                    />
+
+                <TextView
+                    android:id="@+id/myDebtValue"
+                    android:layout_marginStart="16dp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:text="16000"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </FrameLayout>
 
 
-
-
-
-
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

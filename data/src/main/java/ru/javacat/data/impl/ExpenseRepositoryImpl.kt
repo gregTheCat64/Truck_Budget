@@ -36,7 +36,7 @@ class ExpenseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeById(id: Long) {
-        TODO("Not yet implemented")
+        dbQuery { dao.remove(id) }
     }
 
     override suspend fun search(s: String): List<Expense> {

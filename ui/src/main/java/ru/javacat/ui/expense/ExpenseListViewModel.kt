@@ -1,5 +1,6 @@
 package ru.javacat.ui.expense
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,7 @@ class ExpenseListViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 _expenses.emit(repository.getAllExpensesByYear(year))
+
             }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

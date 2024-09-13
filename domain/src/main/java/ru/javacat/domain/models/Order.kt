@@ -27,7 +27,17 @@ data class Order (
 )
 
 enum class PayType{
-    CASH, CARD, WITHOUT_FEE, WITH_FEE
+    CASH, CARD, WITHOUT_FEE, WITH_FEE;
+
+    fun toRussian(): String {
+        return when (this){
+            CASH -> "Нал"
+            CARD -> "Карта"
+            WITHOUT_FEE -> "без НДС"
+            WITH_FEE -> "с НДС"
+        }
+
+    }
 }
 
 //enum class OrderStatus(){

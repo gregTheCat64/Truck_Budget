@@ -14,11 +14,8 @@ interface ExpenseDao {
     suspend fun getExpenses(): List<DbExpense>
 
     @Query("""
-        SELECT *, strftime('%m', date) as monthDate    
-        FROM expenses_table 
-        WHERE strftime('%Y', date) = :year
-        GROUP BY monthDate
-        ORDER BY monthDate
+        SELECT * FROM expenses_table WHERE strftime('%Y', date) = :year
+        ORDER BY date
     """)
     fun getAllExpensesByYear(year: String): List<DbExpense>
 
@@ -40,4 +37,7 @@ interface ExpenseDao {
         ORDER BY monthDate
     """)
     fun getMonthlyExpenseByYear(year: String): List<DbMonthlyProfit>
+
+    @Query("DELETE FROM expenses_table WHERE id =:id")
+    suspend fun remove(id: Long)
 }
