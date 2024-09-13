@@ -59,6 +59,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextAppearance.StatsCardsDescription" parent="TextAppearance.Material3.TitleSmall">
+
+    </style>
+
     <style name="AppTheme" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>

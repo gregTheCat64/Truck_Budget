@@ -67,6 +67,10 @@ class StatsViewModel @Inject constructor(
                 }
 
                 val monthlyExpenseResult = expenseRepository.getMonthlyExpenseByYear(year)
+                var totalYearExpense = 0L
+                monthlyExpenseResult.forEach {
+                    totalYearExpense += it.totalProfit
+                }
 
                 _stats.value = _stats.value.copy(
                     companyRoutesCount = companyRoutesCountResult,
@@ -74,6 +78,7 @@ class StatsViewModel @Inject constructor(
                     notCompanyOrdersCount = notCompanyOrdersCountResult,
                     totalProfit = totalYearProfit,
                     notCompanyTotalProfit = notCompanyTotalYearProfit,
+                    totalExpense = totalYearExpense,
                     companyAverageMonthlyProfit = averageMonthlyProfit,
                     notCompanyAverageMonthlyProfit = notCompanyAverageMonthlyProfit,
                     monthlyProfitList = monthlyProfitResult,

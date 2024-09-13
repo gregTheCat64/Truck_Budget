@@ -6,7 +6,8 @@
         <color name="grey">#6C6C6C</color>
         <color name="green">#78AF9F</color>
         <color name="red">#E87955</color>
-        <color name="blue">#404C58</color>
+        <color name="blue">#98B6DC</color>
+        <color name="grey_blue">#404C58</color>
         <color name="brown">#403A33</color>
         <color name="icon_color">@color/md_theme_primary</color>
 

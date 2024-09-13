@@ -104,6 +104,7 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
         binding.averageProfit.setText(stats.companyAverageMonthlyProfit.toString())
         binding.notCompanyTransportAverageProfit.setText(stats.notCompanyAverageMonthlyProfit.toString())
         binding.notCompanyTotalProfit.setText(stats.notCompanyTotalProfit.toString())
+        binding.yearExpense.setText(stats.totalExpense.toString())
 
         //stats.monthlyProfitList?.let { buildChart(it) }
         if (stats.monthlyProfitList!= null && stats.monthlyExpenseList != null){
@@ -146,8 +147,8 @@ class StatsFragment: BaseFragment<FragmentStatsBinding>() {
 
         val dataSet = BarDataSet(profits, "Ежемесячный доход")
         val expensesDataSet = BarDataSet(expenses, "Расход")
-        dataSet.color = ContextCompat.getColor(requireContext(), R.color.md_theme_primary)
-        expensesDataSet.color = ContextCompat.getColor(requireContext(), R.color.md_theme_error)
+        dataSet.color = ContextCompat.getColor(requireContext(), R.color.green)
+        expensesDataSet.color = ContextCompat.getColor(requireContext(), R.color.red)
 
         val datasets = listOf(dataSet, expensesDataSet)
 
