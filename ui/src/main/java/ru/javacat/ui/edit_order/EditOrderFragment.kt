@@ -322,10 +322,12 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 when {
                     it is LoadState.Success.GoBack -> {
                         //сохранились, идем назад:
-                        if (needToRestore) {
+                        Log.i("EditOrderFrag", "isNeedToRestore: $needToRestore")
+                        if (orderIdArg!= 0L) {
                             Log.i("EditOrderFrag", "isEditing: $needToRestore")
                             findNavController().navigateUp()
-                        } else findNavController().popBackStack(R.id.routeViewPagerFragment, false)
+                        } else {findNavController().popBackStack(R.id.routeViewPagerFragment, false)}
+                        Toast.makeText(requireContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show()
                     }
 
                     it is LoadState.Error -> {

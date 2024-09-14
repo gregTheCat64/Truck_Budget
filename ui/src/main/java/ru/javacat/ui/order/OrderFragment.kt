@@ -1,6 +1,9 @@
 package ru.javacat.ui.order
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +12,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
@@ -35,6 +40,8 @@ import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import java.time.LocalDate
+import android.Manifest
+import ru.javacat.ui.utils.makePhoneCall
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>() {
@@ -54,6 +61,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     private var sentDocsNumber: String? = null
     private var paymentDeadline: LocalDate? = null
     private var docsReceived: LocalDate? = null
+
+    private var companyPhoneNumber: String? = null
+    private var managerPhoneNumber: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -187,20 +197,38 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             updateOrderToDb()
         }
 
+        binding.callCompanyPhoneBtn.setOnClickListener {
+            if (companyPhoneNumber!=null){
+                makePhoneCall(companyPhoneNumber!!)
+            } else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.callToManagerBtn.setOnClickListener {
+            if (managerPhoneNumber!=null){
+                makePhoneCall(managerPhoneNumber!!)
+            } else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 
     private fun initUi(order: Order) {
         Log.i("OrderFrag", "order: $order")
         isPaid = order.isPaidByCustomer
-
         routeId = order.routeId
+        companyPhoneNumber = order.customer?.companyPhone
+        managerPhoneNumber = order.manager?.phoneNumber
 
+        //тайтл
         val title = if (order.id == 0L) {
             "Новая заявка"
         } else {
             "Заявка № ${order.id}"
         }
+
+        (activity as AppCompatActivity).supportActionBar?.title = title
+
+        //надпись с типом погрузки
         val typeOfUploadList = mutableListOf<String>()
         if (order.cargo?.isBackLoad == true) {
             typeOfUploadList.add("зад")
@@ -216,24 +244,25 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
         //TODO добавить в груз - способ погрузки - палеты, валом и тд
 
-        (activity as AppCompatActivity).supportActionBar?.title = title
-
         val cargoText =  "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
-        val priceText = "${order.price} руб."
-        val priceExtraText  = "${order.payType.toRussian()}, ${order.daysToPay} б.дней"
+        val priceText = "${order.price} руб., ${order.payType.toRussian()}, ${order.daysToPay} б.дней"
+
 
         binding.apply {
-            callBtn.isGone = order.manager == null
+            callCompanyPhoneBtn.isGone = order.customer?.companyPhone == null
+            callToManagerBtn.isGone = order.manager?.phoneNumber == null
             managerLabelTv.isGone = order.manager == null
             managerTv.isGone = order.manager == null
 
+            callCompanyPhoneBtn.text = order.customer?.companyPhone
+            callToManagerBtn.text = order.manager?.phoneNumber
             customerTv.text = order.customer?.nameToShow
             managerTv.text = order.manager?.nameToShow
             cargoTv.text = cargoText
 
             cargoExtraTv.text = typeOfUploadString
             priceTv.text =  priceText
-            priceExtraTv.text = priceExtraText
+
 
             order.sentDocsNumber?.let {
                 docsNumber.text = it
@@ -292,4 +321,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     private fun updateOrderToDb(){
         viewModel.updateOrderToDb(paymentDeadline, sentDocsNumber, docsReceived, isPaid, isPaidToContractor)
     }
+
+
 }

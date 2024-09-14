@@ -7,8 +7,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +27,7 @@ import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
 import ru.javacat.ui.databinding.FragmentCustomerBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.makePhoneCall
 
 @AndroidEntryPoint
 class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
@@ -86,6 +89,12 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.callBtn.setOnClickListener {
+            binding.phoneNumberTv.text?.let {
+                if (it.isNotEmpty()) makePhoneCall(it.toString())
+            }
+        }
+
         binding.toTruckFleet.setOnClickListener {
             if (customerId != null) {
                 val bundle = Bundle()
@@ -107,6 +116,12 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.MANAGER_ID, item.id)
                 findNavController().navigate(R.id.newEmployeeFragment, bundle)
+            }
+
+            override fun onPhone(item: String?) {
+                if (item != null) {
+                    makePhoneCall(item)
+                } else Toast.makeText(requireContext(), "Номер не найден", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -137,6 +152,7 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
             customer.atiNumber?.let {
                 atiNumberTv.text = it.toString()
             }
+            callBtn.isGone = customer.companyPhone==null
             customer.companyPhone?.let {
                 phoneNumberTv.text = it
             }

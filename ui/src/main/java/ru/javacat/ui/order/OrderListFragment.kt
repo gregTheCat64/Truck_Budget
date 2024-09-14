@@ -171,8 +171,8 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
                 myDebt += it.contractorPrice?:0
             }
         }
-        binding.theirDebtValue.text = "$theirDebt р"
-        binding.myDebtValue.text = "$myDebt р"
+        binding.theirDebtValue.text = theirDebt.toString()
+        binding.myDebtValue.text = myDebt.toString()
         //Toast.makeText(requireContext(), "$debt", Toast.LENGTH_SHORT).show()
         ordersAdapter.submitList(orderList)
     }

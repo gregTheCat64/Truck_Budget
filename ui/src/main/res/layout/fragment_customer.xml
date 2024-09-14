@@ -145,17 +145,31 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/phone_number" />
 
-            <TextView
-                android:id="@+id/phoneNumberTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                style="@style/TextAppearance.Material3.BodyLarge"
-                />
+                <TextView
+                    android:id="@+id/phoneNumberTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    />
+
+
         </LinearLayout>
+
 
     </FrameLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/callBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_gravity="center|bottom"
+            android:layout_marginTop="8dp"
+            android:text="Позвонить"
+            app:icon="@drawable/baseline_local_phone_24"
+            />
 
 
     <FrameLayout
@@ -243,6 +257,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/employee_item"
@@ -257,7 +272,9 @@
         app:iconTint="@color/grey"
         android:textColor="@color/grey"
         android:text="@string/add_employee"
-        android:layout_gravity="start"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         />
 
         <include layout="@layout/horizon_line" />
@@ -265,9 +282,11 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/toTruckFleet"
             app:icon="@drawable/baseline_people_alt_24"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/truck_fleet"
             />
 

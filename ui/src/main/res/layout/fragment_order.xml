@@ -43,8 +43,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:text="ООО Монополия"
 
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/callCompanyPhoneBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                style="@style/Widget.Material3.Button.TextButton"
+                app:icon="@drawable/baseline_local_phone_24"
+                android:text="Позвонить"
                 />
 
             <TextView
@@ -52,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:hint="@string/manager" />
 
             <TextView
@@ -59,17 +70,18 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="Екатерина Монопольная"
                 />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/callBtn"
+                android:id="@+id/callToManagerBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.Button.TextButton"
                 app:icon="@drawable/baseline_local_phone_24"
                 android:text="Позвонить контакту"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="start"
                 />
 
             <include layout="@layout/horizon_line"
@@ -95,12 +107,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:text="20 т, 82 м3, Техника" />
 
             <TextView
                 android:id="@+id/cargoExtraTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="Зад/бок, палеты" />
 
 
@@ -125,7 +139,7 @@
                 android:id="@+id/pointsRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -150,7 +164,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/cost" />
 
@@ -159,25 +173,21 @@
                     style="@style/TextAppearance.Material3.BodyLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:text="85000 руб" />
-                <TextView
-                    android:id="@+id/priceExtraTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="без НДС, 7 б.дней"
-                    />
+
 
             <TextView
                 android:id="@+id/payDayTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/payment_date" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/payDayValueTv"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -187,7 +197,7 @@
                 android:id="@+id/payStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/payment_status" />
 
@@ -197,6 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_marginStart="8dp"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:text="@string/paid" />
 
@@ -279,14 +290,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/sending_documents_track_number" />
 
 
-            <TextView
+            <Button
                 android:id="@+id/docsNumber"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -296,13 +307,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/receiving_date" />
 
-            <TextView
+            <Button
                 android:id="@+id/docsReceivedDateTvValue"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 

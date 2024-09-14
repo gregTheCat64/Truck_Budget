@@ -147,14 +147,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="Нам"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:layout_gravity="center_vertical"
+                    android:text="Должны нам"
                     />
 
                 <TextView
                     android:id="@+id/theirDebtValue"
                     android:layout_marginStart="16dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:text="16000"
                     android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -183,7 +184,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Им"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:layout_gravity="center_vertical"
+                    android:text="Должны мы"
                     android:layout_marginStart="4dp"
                     />
 
@@ -191,7 +194,7 @@
                     android:id="@+id/myDebtValue"
                     android:layout_marginStart="16dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:text="16000"
+
                     android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -12,6 +12,7 @@ import ru.javacat.ui.databinding.EmployeeItemBinding
 
 interface OnManagerListener {
     fun onManager(item: Manager)
+    fun onPhone(item: String?)
 }
 class ManagerAdapter(
     private val onManagerListener: OnManagerListener
@@ -35,6 +36,9 @@ class ManagerAdapter(
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {
                     onManagerListener.onManager(item)
+                }
+                phoneNumber.setOnClickListener {
+                    onManagerListener.onPhone(phoneNumber.text.toString())
                 }
             }
         }
