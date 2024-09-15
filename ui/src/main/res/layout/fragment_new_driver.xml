@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp"
+        android:padding="32dp"
         android:layout_marginBottom="16dp"
         >
 
@@ -103,31 +103,15 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passSerial"
+                android:id="@+id/passData"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number"
-                android:hint="Серия"
+                android:hint="Серия, номер"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:layout_marginStart="8dp"
-            >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passNumber"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Номер"
-                android:inputType="number"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -201,7 +185,7 @@
             android:id="@+id/driveLicenseNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Номер"
+            android:hint="Серия, номер"
 
             />
 
@@ -271,19 +255,35 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дополнительно"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapSentences"
+                android:hint="Комментарий"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
 
     </ScrollView>
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сохранить"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center|bottom"
-        />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

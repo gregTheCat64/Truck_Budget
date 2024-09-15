@@ -11,9 +11,10 @@ data class DbCargo(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val name: String,
+    val isHidden: Boolean,
     val positionId: Long,
 ) {
     fun toCargoModel() = CargoName(
-        id, name, positionId
+        id, name,isHidden,  positionId
     )
 }

@@ -9,4 +9,6 @@ interface TrailersRepository: BaseChooseItemRepository<Trailer, String, Long> {
     suspend fun getByCompanyId(companyId: Long):  List<Trailer>?
 
     suspend fun createDefaultTrailer()
+
+    suspend fun updateTrailerToDb(trailer: Trailer)
 }

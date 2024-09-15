@@ -232,6 +232,7 @@ class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
             val newCustomer = Company(
                 customerId?:0,
                 companyName,
+                false,
                 atiNumber,
                 emptyList(),
                 telNumber,

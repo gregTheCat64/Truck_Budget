@@ -11,9 +11,10 @@ data class DbLocation(
     @PrimaryKey()
     val id: Long?,
     val name: String,
+    val isHidden: Boolean,
     val positionId: Long
 ) {
     fun toLocationModel() = Location(
-        id, name, positionId
+        id, name, isHidden, positionId
     )
 }

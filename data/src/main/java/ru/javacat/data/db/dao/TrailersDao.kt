@@ -11,13 +11,13 @@ import ru.javacat.data.db.entities.DbTruck
 @Dao
 interface TrailersDao {
 
-    @Query("SELECT * FROM trailers_table")
+    @Query("SELECT * FROM trailers_table WHERE isHidden = 0")
     fun getAll(): List<DbTrailer>
 
     @Query("SELECT * FROM trailers_table WHERE id =:id")
     suspend fun getById(id: Long): DbTrailer
 
-    @Query("SELECT * FROM trailers_table WHERE companyId =:id")
+    @Query("SELECT * FROM trailers_table WHERE companyId =:id AND isHidden = 0")
     suspend fun getByCompanyId(id: Long): List<DbTrailer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

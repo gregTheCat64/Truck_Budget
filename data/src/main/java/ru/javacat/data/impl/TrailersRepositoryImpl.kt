@@ -34,12 +34,17 @@ class TrailersRepositoryImpl @Inject constructor(
             Log.i("trailerRepo", "creating default trailer")
             val defaultTrailer = Trailer(
                 0,
+                false,
                 -1,
                 "АА0000",
                 regionCode = 0
             )
             dbQuery { dao.insert(defaultTrailer.toDb()) }
         }
+    }
+
+    override suspend fun updateTrailerToDb(trailer: Trailer) {
+        dbQuery { dao.update(trailer.toDb()) }
     }
 
     override suspend fun removeById(id: Long) {
@@ -57,6 +62,8 @@ class TrailersRepositoryImpl @Inject constructor(
     override suspend fun insert(t: Trailer): Long {
        return dbQuery { dao.insert(t.toDb()) }
     }
+
+
 
     override suspend fun setItem(t: Trailer) {
         _chosenTrailer.emit(t)

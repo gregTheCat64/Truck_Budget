@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_driver
+package ru.javacat.ui.TruckDriver
 
 import android.os.Bundle
 import android.util.Log
@@ -24,35 +24,27 @@ import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
-import ru.javacat.ui.databinding.FragmentNewDriverBinding
+import ru.javacat.ui.databinding.FragmentDriverInfoBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.utils.showCalendar
-import java.time.LocalDate
 
 @AndroidEntryPoint
-class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
+class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
+    private val viewModel: TruckDriverInfoViewModel by viewModels()
 
-
-    private val viewModel: NewDriverViewModel by viewModels()
-
-    private var isNeedToSet: Boolean = false
     private var truckDriverId: Long? = null
     private var companyId: Long = -1L
 
-    private var newPassWhen: LocalDate? = null
-
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentNewDriverBinding
-        get() = { inflater, container ->
-            FragmentNewDriverBinding.inflate(inflater, container, false)
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentDriverInfoBinding
+        get() = {inflater, container ->
+            FragmentDriverInfoBinding.inflate(inflater, container, false)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val args = arguments
+        truckDriverId = args?.getLong(FragConstants.DRIVER_ID)?:0L
         companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
-        isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET)?:false
-        truckDriverId = args?.getLong(FragConstants.DRIVER_ID)
     }
 
     override fun onCreateView(
@@ -61,16 +53,13 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-
-
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
+                menuInflater.inflate(R.menu.menu_edit_remove, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -80,8 +69,13 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                         return true
                     }
 
-                    R.id.save -> {
-                        saveNewDriver()
+                    R.id.edit_menu_item -> {
+                        editTruckDriver()
+                        return true
+                    }
+
+                    R.id.remove_menu_item -> {
+                        truckDriverId?.let { hideDriver(it) }
                         return true
                     }
 
@@ -96,17 +90,7 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        Log.i("NewDriverFrag", "companyId: $companyId")
-        Log.i("NewDriverFrag", "driverId: $truckDriverId")
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                if (truckDriverId != 0L) {
-                    viewModel.getTruckDriverById(truckDriverId!!)
-                }
-            }
-        }
+        truckDriverId?.let { viewModel.getTruckDriver(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -118,20 +102,9 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
             }
         }
 
-        binding.passWhen.setOnClickListener {
-            parentFragmentManager.showCalendar {
-                newPassWhen = it
-            }
-        }
-
-        binding.saveBtn.setOnClickListener {
-            saveNewDriver()
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
-
                     when (it) {
                         is LoadState.Success.Created -> {
                             findNavController().navigateUp()
@@ -152,55 +125,40 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         }
     }
 
-    private fun saveNewDriver(){
-        val firstName = binding.firstName.text.toString()
-        val middleName = binding.middleName.text.toString()
-        val surname = binding.surName.text.toString()
-        val passSerial = binding.passSerial.text.toString()
-        val passNumber = binding.passNumber.text.toString()
-        val passWhen = newPassWhen
-        val passWhere = binding.passWhere.text.toString()
-        val driveLicenseNumber = binding.driveLicenseNumber.text.toString()
-        val address = binding.address.text.toString()
-        val phoneNumber = binding.phoneNumber.text.toString()
+    private fun updateUi(td: TruckDriver){
+        (activity as AppCompatActivity).supportActionBar?.title = td.nameToShow
 
-        val passportData = "$passSerial $passNumber"
+        val name = "${td.surname} ${td.middleName?:""} ${td.firstName?:""}"
+        val passport = "${td.passportNumber?:""} ${td.passportReceivedPlace?:""} ${td.passportReceivedDate?:""}"
+        val driveLicense = td.driveLicenseNumber?:""
+        val address = td.placeOfRegistration?:""
+        val phone = td.phoneNumber?:""
+        val phone2 = td.secondNumber?:""
+        val comment = td.comment?:""
 
-        //val id = passSerial.toString()+passNumber.toString()
-
-        val newDriver = TruckDriver(
-            truckDriverId?:0,0,companyId,firstName, middleName, surname, passportData, passWhen,
-            passWhere, driveLicenseNumber, address, phoneNumber, "","",null
-        )
-
-        if (surname.isNotEmpty()){
-            viewModel.insertNewDriver(newDriver, isNeedToSet)
-        } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun updateUi(truckDriver: TruckDriver){
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = truckDriver.nameToShow
-            surName.setText(truckDriver.surname)
-            middleName.setText(truckDriver.middleName)
-            firstName.setText(truckDriver.firstName)
-            //TODO разделить серию и номер
-            //passSerial.setText(truckDriver.pa)
-            passNumber.setText(truckDriver.passportNumber)
-            passWhen.setText(truckDriver.passportReceivedDate?.toString())
-            passWhere.setText(truckDriver.passportReceivedPlace)
-            driveLicenseNumber.setText(truckDriver.driveLicenseNumber)
-            address.setText(truckDriver.placeOfRegistration)
-            phoneNumber.setText(truckDriver.phoneNumber)
-            phoneNumber2.setText(truckDriver.secondNumber)
-
+            driverFullNameValue.text = name
+            passportValue.text = passport
+            driverLicenseValue.text = driveLicense
+            addressValue.text = address
+            phoneValue.text = phone
+            phone2Value.text = phone2
+            commentValue.text = comment
         }
     }
 
-    private fun removeDriver(id: Long){
+    private fun editTruckDriver(){
+        if (truckDriverId!= null){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.COMPANY_ID, companyId)
+            bundle.putLong(FragConstants.DRIVER_ID, truckDriverId!!)
+            findNavController().navigate(R.id.action_truckDriverInfoFragment_to_newDriverFragment, bundle)
+        } else Toast.makeText(requireContext(), "Something wrong, td id: $truckDriverId", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideDriver(id: Long){
         Log.i("NewDriverFrag", "driverId: $id")
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.removeDriverById(id)
-        }
+        viewModel.hideDriver(id)
+
     }
 }

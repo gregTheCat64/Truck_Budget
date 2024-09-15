@@ -170,7 +170,7 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
         Log.i("EditExpenseFrag", "id = $expenseIdArg, name = $name, desc = $description, cost = $cost, date = $date")
 
         if (name!=null && cost!=null){
-            viewModel.saveExpense(Expense(expenseIdArg?:0, name!!,0, description, date, cost!!))
+            viewModel.saveExpense(Expense(expenseIdArg?:0, name!!,false,0, description, date, cost!!))
         } else Toast.makeText(requireContext(), R.string.fill_requested_fields, Toast.LENGTH_SHORT).show()
     }
 

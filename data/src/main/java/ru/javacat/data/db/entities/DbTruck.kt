@@ -8,6 +8,7 @@ import ru.javacat.domain.models.Truck
 data class DbTruck(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
+    val isHidden: Boolean,
     val companyId: Long,
     val regNumber: String,
     val regionCode: Int,
@@ -17,6 +18,6 @@ data class DbTruck(
     val yearOfManufacturing: String?,
 ){
     fun toTruck() = Truck(
-        id, companyId, regNumber,regionCode, vin, model,  yearOfManufacturing
+        id, isHidden, companyId, regNumber,regionCode, vin, model,  yearOfManufacturing
     )
 }

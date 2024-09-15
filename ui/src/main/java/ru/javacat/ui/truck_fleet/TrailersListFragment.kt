@@ -41,7 +41,7 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
             //bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRAILER")
-            findNavController().navigate(R.id.newTrailerFragment, bundle)
+            findNavController().navigate(R.id.trailerInfoFragment, bundle)
         }
 
         binding.trailerRecView.adapter = trailersAdapter

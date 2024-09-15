@@ -14,6 +14,7 @@ abstract class Vehicle(
 
 data class Truck(
     override val id: Long,
+    override val isHidden: Boolean,
     override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,
@@ -31,6 +32,7 @@ data class Truck(
 
 data class Trailer(
     override val id: Long,
+    override val isHidden: Boolean,
     override val companyId: Long,
     override val regNumber: String,
     override val regionCode: Int,

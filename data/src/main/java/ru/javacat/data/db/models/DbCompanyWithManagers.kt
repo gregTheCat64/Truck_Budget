@@ -7,6 +7,7 @@ import ru.javacat.domain.models.Company
 data class DbCompanyWithManagers(
     val id: Long,
     val companyName: String,
+    val isHidden: Boolean = false,
     val atiNumber: Int?,
     val companyPhone: String?,
     val formalAddress: String?,
@@ -23,6 +24,7 @@ data class DbCompanyWithManagers(
     fun toCompanyModel() = Company(
         id,
         companyName,
+        isHidden,
         atiNumber,
         managers.map { it.toManagerModel() },
         companyPhone,

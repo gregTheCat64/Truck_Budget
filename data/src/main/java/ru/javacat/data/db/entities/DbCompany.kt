@@ -8,6 +8,7 @@ data class DbCompany(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val companyName: String,
+    val isHidden: Boolean = false,
     val atiNumber: Int?,
     val companyPhone: String?,
     val formalAddress: String?,

@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_driver
+package ru.javacat.ui.TruckDriver
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TruckDriversRepository
+import ru.javacat.domain.use_case.GetTruckDriverUseCase
 import ru.javacat.domain.use_case.SetTruckDriverUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class NewDriverViewModel @Inject constructor(
     private val truckDriversRepository: TruckDriversRepository,
     private val routeRepository: RouteRepository,
+    private val getTruckDriverUseCase: GetTruckDriverUseCase,
     private val setTruckDriverUseCase: SetTruckDriverUseCase
 ):ViewModel() {
 
@@ -56,28 +58,17 @@ class NewDriverViewModel @Inject constructor(
         }
     }
 
-    suspend fun getTruckDriverById(id: Long){
-        viewModelScope.launch(Dispatchers.IO) {
-            _loadState.emit(LoadState.Loading)
-            try {
-                editedTruckDriver.emit(truckDriversRepository.getById(id))
-                _loadState.emit(LoadState.Success.OK)
-            }catch (e: Exception) {
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
-
-    suspend fun removeDriverById(id: Long){
+    fun getTruckDriver(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                 truckDriversRepository.removeById(id)
-                Log.i("NewDriverVM", "deleting driver: $id")
-                _loadState.emit(LoadState.Success.Removed)
-            }catch (e: Exception) {
+                editedTruckDriver.value = getTruckDriverUseCase.invoke(id)
+                _loadState.emit(LoadState.Success.OK)
+            } catch (e:Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
+
         }
     }
+
 }

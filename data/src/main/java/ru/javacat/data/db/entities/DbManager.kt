@@ -11,6 +11,7 @@ data class DbManager(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val positionId: Long,
+    val isHidden: Boolean,
     @ColumnInfo(index = true)
     val customerId: Long,
     val firstName: String,
@@ -28,6 +29,7 @@ data class DbManager(
     fun toManagerModel() = Manager(
         id,
         positionId,
+        isHidden,
         customerId,
         firstName,
         middleName,

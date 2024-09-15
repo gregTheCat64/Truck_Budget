@@ -163,7 +163,7 @@ class NewRouteViewModel @Inject constructor(
                     salaryParameters = SalaryParameters(),
                     prepayment = 0,
                     driverSalary = 0f,
-                    contractorsCost = 0,
+                    routeContractorsSum = 0,
                     totalExpenses = 0f,
                     moneyToPay = 0f,
                     revenue = 0,

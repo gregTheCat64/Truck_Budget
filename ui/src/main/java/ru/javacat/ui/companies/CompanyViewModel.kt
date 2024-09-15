@@ -14,7 +14,7 @@ import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomerViewModel @Inject constructor(
+class CompanyViewModel @Inject constructor(
     private val repository: CompaniesRepository
 ): ViewModel() {
 
@@ -27,6 +27,19 @@ class CustomerViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedCustomer.emit(repository.getById(id))
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    fun hideCompanyById(id: Long){
+        viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
+            try {
+                val company = repository.getById(id)
+                company?.copy(isHidden = true)?.let { repository.updateCompanyToDb(it) }
+                _loadState.emit(LoadState.Success.Removed)
             }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

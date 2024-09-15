@@ -38,13 +38,13 @@
         <item name="chipBackgroundColor">@color/chip_selector</item>
     </style>
 
-    <style name="TextAppearance.MyTitleSmall" parent="TextAppearance.Material3.TitleSmall">
-<!--        <item name="textFillColor">@color/onBackground</item>-->
-<!--        <item name="android:textColor">@color/onBackground</item>-->
-<!--        <item name="android:textStyle">bold</item>-->
+
+    <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.MainValues" parent="TextAppearance.Material3.BodyLarge">
+    <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:layout_marginStart">8dp</item>
     </style>
 

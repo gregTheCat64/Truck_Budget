@@ -25,21 +25,21 @@ import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ManagerAdapter
 import ru.javacat.ui.adapters.OnManagerListener
-import ru.javacat.ui.databinding.FragmentCustomerBinding
+import ru.javacat.ui.databinding.FragmentCompanyBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.makePhoneCall
 
 @AndroidEntryPoint
-class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
+class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
     override var bottomNavViewVisibility: Int = View.GONE
     private var customerId: Long? = null
     private lateinit var emplAdapter: ManagerAdapter
-    private val viewModel: CustomerViewModel by viewModels()
+    private val viewModel: CompanyViewModel by viewModels()
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCustomerBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCompanyBinding
         get() = { inflater, container ->
-            FragmentCustomerBinding.inflate(inflater, container, false)
+            FragmentCompanyBinding.inflate(inflater, container, false)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +75,11 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
                             bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
                             findNavController().navigate(R.id.newCustomerFragment, bundle)
                         }
+                        return true
+                    }
+                    R.id.remove_menu_item -> {
+                        customerId?.let { removeCompany(it) }
+                        findNavController().navigateUp()
                         return true
                     }
 
@@ -165,5 +170,9 @@ class CustomerFragment: BaseFragment<FragmentCustomerBinding>() {
             emplAdapter.submitList(it)
         }
 
+    }
+
+    private fun removeCompany(id: Long){
+        viewModel.hideCompanyById(id)
     }
 }

@@ -51,7 +51,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
         customersAdapter = CustomersAdapter(object : OnCustomerListener{
             override fun onCustomer(item: Company) {
                 bundle.putLong(FragConstants.CUSTOMER_ID, item.id)
-                findNavController().navigate(R.id.customerFragment, bundle)
+                findNavController().navigate(R.id.companyFragment, bundle)
             }
         })
         binding.customersRecView.adapter = customersAdapter

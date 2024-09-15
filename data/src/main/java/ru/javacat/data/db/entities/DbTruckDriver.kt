@@ -13,6 +13,7 @@ data class DbTruckDriver (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val positionId: Long,
+    val isHidden: Boolean,
     val companyId: Long,
     val firstName: String?,
     val middleName: String?,
@@ -31,6 +32,7 @@ data class DbTruckDriver (
     fun toTruckDriverModel() = TruckDriver(
         id,
         positionId,
+        isHidden,
         companyId,
         firstName,
         middleName,

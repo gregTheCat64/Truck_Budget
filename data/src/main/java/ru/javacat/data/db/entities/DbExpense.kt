@@ -13,12 +13,13 @@ data class DbExpense(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
+    val isHidden: Boolean,
     val position: Long,
     val description: String? = null,
     val date: String,
     val price: Int
 ) {
     fun toExpenseModel() = Expense(
-        id, name,position, description, date.toLocalDate(), price
+        id, name,isHidden, position, description, date.toLocalDate(), price
     )
 }

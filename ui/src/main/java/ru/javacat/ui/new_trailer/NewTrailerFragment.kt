@@ -118,6 +118,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
            saveNewTrailer()
         }
 
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loadState.collectLatest {
@@ -195,7 +196,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
         val type = binding.typeOfTransportEt.text.toString()
 
         val newVehicle = Trailer(
-            transportId, companyId, regNumber, regionCode, vin, model, year, type
+            transportId, false, companyId, regNumber, regionCode, vin, model, year, type
         )
         viewLifecycleOwner.lifecycleScope.launch {
             if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
@@ -211,7 +212,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
 
     private fun removeTransport(id: Long) {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.removeTrailerById(id)
+            viewModel.hideTrailerById(id)
         }
     }
 }

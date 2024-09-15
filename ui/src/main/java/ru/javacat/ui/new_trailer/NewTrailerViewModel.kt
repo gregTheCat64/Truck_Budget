@@ -67,11 +67,12 @@ class NewTrailerViewModel @Inject constructor(
     }
 
 
-    suspend fun removeTrailerById(id: Long){
+    suspend fun hideTrailerById(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                trailersRepository.removeById(id)
+                val trailer = trailersRepository.getById(id)
+                trailer?.copy(isHidden = true)?.let { trailersRepository.updateTrailerToDb(it) }
                 _loadState.emit(LoadState.Success.Removed)
             }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

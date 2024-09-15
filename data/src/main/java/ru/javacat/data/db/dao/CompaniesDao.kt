@@ -14,7 +14,7 @@ import ru.javacat.data.db.models.DbCompanyWithManagers
 interface CompaniesDao {
 
     @Transaction
-    @Query("SELECT * FROM companies_table")
+    @Query("SELECT * FROM companies_table WHERE isHidden = 0")
     fun getAll(): List<DbCompanyWithManagers>
 
     @Transaction
@@ -22,7 +22,7 @@ interface CompaniesDao {
     suspend fun getById(id: Long): DbCompanyWithManagers?
 
     @Transaction
-    @Query("SELECT * FROM companies_table")
+    @Query("SELECT * FROM companies_table WHERE isHidden = 0")
     suspend fun getCustomers(): List<DbCompanyWithManagers>
 
     @Transaction
@@ -35,10 +35,13 @@ interface CompaniesDao {
     ): Long
 
     @Update()
-    suspend fun updateCustomer(
+    suspend fun updateCustomerAndEmployees(
         customer: DbCompany,
         employee: List<DbManager>
     )
+
+    @Update
+    suspend fun updateCompany(dbCompany: DbCompany)
 
 
 

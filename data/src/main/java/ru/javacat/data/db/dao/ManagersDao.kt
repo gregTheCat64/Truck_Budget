@@ -10,7 +10,7 @@ import ru.javacat.data.db.entities.DbManager
 @Dao
 interface ManagersDao {
 
-    @Query("SELECT * FROM managers_table")
+    @Query("SELECT * FROM managers_table WHERE isHidden = 0")
     fun getAll(): List<DbManager>
 
     @Query("SELECT * FROM managers_table WHERE surName LIKE '%' || :search || '%'")
@@ -20,7 +20,7 @@ interface ManagersDao {
         employee: DbManager
     ): Long
 
-    @Query("SELECT * FROM managers_table WHERE customerId =:customerId")
+    @Query("SELECT * FROM managers_table WHERE customerId =:customerId AND isHidden = 0")
     fun getManagersByCustomerId(
         customerId: Long
     ): List<DbManager>

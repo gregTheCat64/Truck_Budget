@@ -9,6 +9,7 @@ abstract class BaseIdModel<T: Any?>: BaseModel() {
 abstract class BaseNameModel<T: Any?>: BaseIdModel<T>(){
     abstract val positionId: Long
     abstract val nameToShow: String
+    abstract val isHidden: Boolean
 }
 
 abstract class BaseNameLongIdModel: BaseNameModel<Long?>()

@@ -43,7 +43,7 @@ class TrucksListFragment: BaseFragment<FragmentTrucksListBinding>() {
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
             //bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRUCK")
-            findNavController().navigate(R.id.newTruckFragment, bundle)
+            findNavController().navigate(R.id.truckInfoFragment, bundle)
         }
         binding.trucksRecView.adapter = trucksAdapter
 

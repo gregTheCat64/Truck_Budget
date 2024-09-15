@@ -47,6 +47,7 @@ class TruckDriversRepositoryImpl @Inject constructor(
             val defaultDriver = TruckDriver(
                 0,
                 0,
+                false,
                 -1,
                 "Мой",
                 surname = "Водитель",
@@ -61,6 +62,7 @@ class TruckDriversRepositoryImpl @Inject constructor(
             val defaultDriver = TruckDriver(
                 -1,
                 0,
+                false,
                 -1,
                 "Сам",
                 surname = "Зарулем",

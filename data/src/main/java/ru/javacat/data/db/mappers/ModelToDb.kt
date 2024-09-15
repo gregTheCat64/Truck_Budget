@@ -36,7 +36,7 @@ fun Route.toDb() = DbRoute(
     salaryParameters,
     prepayment,
     driverSalary,
-    contractorsCost,
+    routeContractorsSum,
     totalExpenses,
     moneyToPay,
     isPaidToContractor,
@@ -77,16 +77,17 @@ fun Point.toDb() = DbPoint(
 )
 
 fun Truck.toDb() = DbTruck(
-    id,companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
+    id,isHidden, companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
 fun Trailer.toDb() = DbTrailer(
-    id, companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
+    id,isHidden, companyId, regNumber, regionCode, vin, model, type, yearOfManufacturing
 )
 
 fun TruckDriver.toDb() = DbTruckDriver(
     id,
     positionId,
+    isHidden,
     customerId,
     firstName,
     middleName,
@@ -103,16 +104,17 @@ fun TruckDriver.toDb() = DbTruckDriver(
 )
 
 fun Location.toDb() = DbLocation(
-    id, nameToShow, positionId
+    id, nameToShow, isHidden, positionId
 )
 
 fun Company.toDb() = DbCompany(
-    id, nameToShow, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
+    id, nameToShow, isHidden, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
 )
 
 fun Manager.toDb() = DbManager(
     id,
     positionId,
+    isHidden,
     customerId,
     firstName,
     middleName,
@@ -127,6 +129,6 @@ fun Manager.toDb() = DbManager(
     comment
 )
 
-fun CargoName.toDb() = DbCargo(id, nameToShow, positionId)
+fun CargoName.toDb() = DbCargo(id, nameToShow, isHidden, positionId)
 
-fun Expense.toDb() = DbExpense(id, nameToShow, positionId, description, date.toString(), price)
+fun Expense.toDb() = DbExpense(id, nameToShow, isHidden, positionId, description, date.toString(), price)

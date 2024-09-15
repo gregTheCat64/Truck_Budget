@@ -24,7 +24,7 @@ data class DbRoute (
 
     val prepayment: Int = 0,
     val driverSalary: Float = 0F,
-    val contractorsCost: Int = 0,
+    val routeContractorsSum: Int = 0,
     val totalExpenses: Float = 0F,
 
     val moneyToPay: Float? = 0F,

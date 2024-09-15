@@ -19,6 +19,7 @@ abstract class Employee(): BaseNameModel<Long>(){
 data class Manager(
     override val id: Long,
     override val positionId: Long,
+    override val isHidden: Boolean,
     override val customerId: Long,
     override val firstName: String,
     override val middleName: String?,
@@ -39,6 +40,7 @@ data class Manager(
 data class TruckDriver(
     override val id: Long,
     override val positionId: Long,
+    override val isHidden: Boolean,
     override val customerId: Long,
     override val firstName: String? = null,
     override val middleName: String? = null,
@@ -54,5 +56,5 @@ data class TruckDriver(
     val salaryParameters: SalaryParameters?
 ): Employee(){
     override val nameToShow: String
-        get() = "$surname $firstName"
+        get() = "$surname"
 }

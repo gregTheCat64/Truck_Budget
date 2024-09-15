@@ -72,7 +72,7 @@ data class DbRouteWithOrders (
             salaryParameters = route.salaryParameters?: SalaryParameters(),
             prepayment = route.prepayment,
             driverSalary = route.driverSalary,
-            contractorsCost = route.contractorsCost,
+            routeContractorsSum = route.routeContractorsSum,
             totalExpenses = route.totalExpenses,
             moneyToPay = route.moneyToPay,
             isPaidToContractor = route.isPaidToContractor,

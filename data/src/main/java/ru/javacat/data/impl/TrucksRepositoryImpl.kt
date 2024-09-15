@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.TrucksDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
 import ru.javacat.domain.repo.TrucksRepository
 import javax.inject.Inject
@@ -38,12 +39,17 @@ class TrucksRepositoryImpl @Inject constructor(
             Log.i("truckRepo", "creating default truck")
             val defaultTruck = Truck(
                 0,
+                false,
                 -1,
                 "А000АА",
                 regionCode = 0,
             )
             dbQuery { dao.insert(defaultTruck.toDb()) }
         }
+    }
+
+    override suspend fun updateDriverToDb(truck: Truck) {
+        dbQuery { dao.update(truck.toDb()) }
     }
 
     override suspend fun removeById(id: Long) {

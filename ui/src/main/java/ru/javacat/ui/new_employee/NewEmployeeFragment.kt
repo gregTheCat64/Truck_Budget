@@ -205,7 +205,7 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
 
     private fun saveManager(id: Long, isNeedToSet: Boolean) {
         val newEmployee = Manager(
-            id, 0, customerId, firstName, null,
+            id, 0, false, customerId, firstName, null,
             surName, null, null, null, null,
             phoneNumber, secondPhoneNumber, email, comment
         )

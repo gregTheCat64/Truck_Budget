@@ -33,7 +33,6 @@ import ru.javacat.ui.utils.FragConstants
 class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
 
     private val viewModel: NewTruckViewModel by viewModels()
-    private var typeOfTransport = ""
     private var transportId: Long = 0
     private var isNeedToSet: Boolean = false
     private var companyId: Long = -1L
@@ -47,7 +46,7 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
 
         val args = arguments
         companyId = args?.getLong(FragConstants.COMPANY_ID) ?: -1L
-        typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT) ?: "unknown"
+        //typeOfTransport = args?.getString(FragConstants.TYPE_OF_TRANSPORT) ?: "unknown"
         transportId = args?.getLong(FragConstants.TRANSPORT_ID) ?: 0
         isNeedToSet = arguments?.getBoolean(FragConstants.IS_NEED_TO_SET) ?: false
     }
@@ -72,6 +71,7 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
                         findNavController().navigateUp()
                         return true
                     }
+
                     R.id.save -> {
                         saveNewTruck()
                         return true
@@ -86,23 +86,16 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        binding.typeOfTransportLayout.visibility = View.GONE
+        binding.typeOfTransportChipGroup.visibility = View.GONE
 
-                if (transportId != 0L) {
-                    Log.i("newtransportFrag", "gettin truck by transportId: $transportId")
-                    viewModel.getTruckById(transportId)
-                }
-
-                binding.typeOfTransportLayout.visibility = View.GONE
-                binding.typeOfTransportChipGroup.visibility = View.GONE
-            }
+        if (transportId != 0L) {
+            Log.i("newtransportFrag", "gettin truck by transportId: $transportId")
+            viewModel.getTruckById(transportId)
         }
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -122,8 +115,9 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
         }
 
         binding.saveBtn.setOnClickListener {
-           saveNewTruck()
+            saveNewTruck()
         }
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -166,28 +160,28 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
     }
 
 
-private fun updateUi(transport: Vehicle) {
-    (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
-    Log.i("newTransportFragm", "vehicle: $transport")
+    private fun updateUi(transport: Vehicle) {
+        (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
+        Log.i("newTransportFragm", "vehicle: $transport")
 
-    transport.apply {
-        vin?.let {
-            binding.vin.setText(it)
+        transport.apply {
+            vin?.let {
+                binding.vin.setText(it)
+            }
+            model?.let {
+                binding.modelOfVehicle.setText(it)
+            }
+            yearOfManufacturing?.let {
+                binding.yearOfManufacturing.setText(it)
+            }
         }
-        model?.let {
-            binding.modelOfVehicle.setText(it)
-        }
-        yearOfManufacturing?.let {
-            binding.yearOfManufacturing.setText(it)
+        binding.apply {
+            regNumber.setText(transport.regNumber)
+            regCode.setText(transport.regionCode.toString())
         }
     }
-    binding.apply {
-        regNumber.setText(transport.regNumber)
-        regCode.setText(transport.regionCode.toString())
-    }
-}
 
-    private fun saveNewTruck(){
+    private fun saveNewTruck() {
         val regNumber = binding.regNumber.text.toString()
         val regionCode = if (binding.regCode.text?.isNotEmpty() == true) {
             binding.regCode.text?.toString()?.toInt() ?: 0
@@ -202,7 +196,7 @@ private fun updateUi(transport: Vehicle) {
 
 
         val newVehicle = Truck(
-            transportId, companyId, regNumber, regionCode, vin, model, year
+            transportId, false, companyId, regNumber, regionCode, vin, model, year
         )
 
         if (regNumber.isNotEmpty() && regionCode.toString().isNotEmpty()) {
@@ -214,10 +208,10 @@ private fun updateUi(transport: Vehicle) {
         ).show()
     }
 
-private fun removeTransport(id: Long) {
-    viewLifecycleOwner.lifecycleScope.launch {
-        viewModel.removeTruckById(id)
-    }
+    private fun removeTransport(id: Long) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            //viewModel.hideTruckById(id)
+        }
 
-}
+    }
 }

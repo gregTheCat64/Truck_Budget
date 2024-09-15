@@ -25,11 +25,11 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
     private val viewModel: FinishPartnerRouteViewModel by viewModels()
     private lateinit var binding: FragmentFinishPartnerRouteBinding
 
-    var revenue = 0
-    var contractorsCost = 0
-    var profit = 0
-    var moneyToPay = 0f
-    var prepayment = 0
+    private var revenue = 0
+    private var routeContractorsSum = 0
+    private var profit = 0
+    private var moneyToPay = 0f
+    private var prepayment = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +67,8 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
                     binding.profitEt.text.toString().toFloat(),
                     revenue,
                     moneyToPay,
-                    prepayment
+                    prepayment,
+                    routeContractorsSum
                     )
             } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
         }
@@ -94,13 +95,13 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
 
         for (i in route.orderList){
             revenue = revenue + i.price!!
-            contractorsCost = contractorsCost + i.contractorPrice!!
+            routeContractorsSum = routeContractorsSum + i.contractorPrice!!
         }
-        profit =  revenue - contractorsCost
-        moneyToPay = (revenue - contractorsCost-prepayment).toFloat()
+        profit =  revenue - routeContractorsSum
+        moneyToPay = (routeContractorsSum-prepayment).toFloat()
 
         binding.revenueTv.setText("$revenue ${getString(R.string.rub)}")
-        binding.contractorCostTv.setText("$contractorsCost ${getString(R.string.rub)}")
+        binding.contractorCostTv.setText("$routeContractorsSum ${getString(R.string.rub)}")
         binding.profitEt.setText("$profit")
     }
 }

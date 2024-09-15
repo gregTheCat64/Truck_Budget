@@ -41,6 +41,10 @@ class CompaniesRepositoryImpl @Inject constructor(
         return dbQuery { dao.getById(id)?.toCompanyModel()}
     }
 
+    override suspend fun updateCompanyToDb(company: Company) {
+        dbQuery { dao.updateCompany(company.toDb()) }
+    }
+
     override suspend fun removeById(id: Long) {
         TODO("Not yet implemented")
     }

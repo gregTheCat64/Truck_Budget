@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.domain.models.Trailer
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.TrailersItemBinding
+import ru.javacat.ui.databinding.TruckItemBinding
 
 class TrailersAdapter(
     val onItem: (Trailer) -> Unit
 ): ListAdapter<Trailer, TrailersAdapter.Holder>(Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.trailers_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.truck_item, parent, false)
         return Holder(view, onItem)
     }
 
@@ -24,7 +25,7 @@ class TrailersAdapter(
     }
 
     class Holder(view: View, private val onItem: (Trailer) -> Unit): RecyclerView.ViewHolder(view){
-        private val binding = TrailersItemBinding.bind(view)
+        private val binding = TruckItemBinding.bind(view)
 
         fun bind(item: Trailer){
             binding.regNumberTv.text = item.nameToShow

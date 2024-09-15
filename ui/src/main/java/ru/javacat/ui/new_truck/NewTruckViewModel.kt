@@ -33,7 +33,7 @@ class NewTruckViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    suspend fun getTruckById(id: Long){
+    fun getTruckById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
@@ -72,17 +72,7 @@ class NewTruckViewModel @Inject constructor(
         }
     }
 
-    suspend fun removeTruckById(id: Long){
-        viewModelScope.launch(Dispatchers.IO){
-            _loadState.emit(LoadState.Loading)
-            try {
-                trucksRepository.removeById(id)
-                _loadState.emit(LoadState.Success.Removed)
-            }catch (e: Exception) {
-                _loadState.emit(LoadState.Error(e.message.toString()))
-            }
-        }
-    }
+
 
 
 }

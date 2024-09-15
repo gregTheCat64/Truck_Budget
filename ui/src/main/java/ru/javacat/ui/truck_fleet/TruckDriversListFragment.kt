@@ -26,7 +26,6 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
 
     var companyId: Long = -1
 
-    private var currentRoute : Route? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentTruckDriversListBinding
         get() = {inflater, container ->
@@ -46,7 +45,8 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
             val bundle = Bundle()
             bundle.putLong(FragConstants.COMPANY_ID, it.customerId)
             bundle.putLong(FragConstants.DRIVER_ID, it.id)
-            findNavController().navigate(R.id.newDriverFragment, bundle)
+            val action = R.id.action_truckDriversListFragment_to_truckDriverInfoFragment
+            findNavController().navigate(R.id.truckDriverInfoFragment, bundle)
 
         }
         binding.driversRecView.adapter = truckDriversAdapter

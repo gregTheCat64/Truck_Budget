@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.LinearProgressIndicator"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="32dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Регистрационный номер"
+            style="@style/TextAppearance.MyValueDescription"
+            />
+        <TextView
+            android:id="@+id/regNumberValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValue"
+            android:text="F111F 64"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIN"
+            android:layout_marginTop="16dp"
+            />
+        <TextView
+            android:id="@+id/vinValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValue"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Модель"
+            style="@style/TextAppearance.MyValueDescription"
+            android:layout_marginTop="16dp"
+            />
+        <TextView
+            android:id="@+id/modelValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValue"
+            android:text="МАН"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Тип транспорта"
+            style="@style/TextAppearance.MyValueDescription"
+            android:layout_marginTop="16dp"
+            />
+        <TextView
+            android:id="@+id/typeOfTransportValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValue"
+            android:text="Тягач"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValueDescription"
+            android:text="Год производства"
+            android:layout_marginTop="16dp"
+            />
+
+        <TextView
+            android:id="@+id/yearOfManufacturingValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyValue"
+            android:text=""
+            />
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

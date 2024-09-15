@@ -9,6 +9,7 @@ import ru.javacat.domain.models.Truck
 data class DbTrailer  (
 @PrimaryKey(autoGenerate = true)
 val id: Long,
+val isHidden: Boolean,
 val companyId: Long,
 val regNumber: String,
 val regionCode: Int,
@@ -18,6 +19,6 @@ val type: String?,
 val yearOfManufacturing: String?,
 ){
     fun toTrailer() = Trailer(
-        id, companyId, regNumber,regionCode, vin, model,  yearOfManufacturing, type
+        id, isHidden, companyId,  regNumber,regionCode, vin, model,  yearOfManufacturing, type
     )
 }
