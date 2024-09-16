@@ -31,9 +31,6 @@
         android:name="ru.javacat.ui.route.RouteFragment"
         tools:layout="@layout/fragment_route"
         android:label="@string/route" >
-        <action
-            android:id="@+id/action_routeFragment_to_newOrderFragment"
-            app:destination="@id/editOrderFragment" />
 
         <action
             android:id="@+id/action_routeFragment_to_finishRouteFragment"
@@ -72,6 +69,10 @@
         android:label="@string/orders" >
         <action
             android:id="@+id/action_navigation_order_list_to_orderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/orderFragment" />
     </fragment>
 
@@ -80,9 +81,6 @@
         android:name="ru.javacat.ui.companies.NewCompanyFragment"
         tools:layout="@layout/fragment_new_customer"
         android:label="@string/create_new_partner" >
-        <action
-            android:id="@+id/action_newCustomerFragment_to_addEmployeeFragment"
-            app:destination="@id/newEmployeeFragment" />
         <argument
             android:name="ati_arg"
             app:argType="integer"
@@ -152,10 +150,11 @@
         tools:layout="@layout/fragment_company_list"
         android:label="@string/companies" >
         <action
-            android:id="@+id/action_customerListFragment_to_newCustomerFragment"
-            app:destination="@id/newCustomerFragment" />
-        <action
             android:id="@+id/action_navigation_company_list_to_companyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/companyFragment" />
     </fragment>
 
@@ -210,29 +209,74 @@
         android:label="@string/truck_fleet" >
         <action
             android:id="@+id/action_truckFleetViewPager_to_truckDriversListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/truckDriversListFragment" />
         <action
             android:id="@+id/action_truckFleetViewPager_to_trucksListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/trucksListFragment" />
         <action
             android:id="@+id/action_truckFleetViewPager_to_trailersListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/trailersListFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_truckDriverInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/truckDriverInfoFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_truckInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/truckInfoFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_trailerInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/trailerInfoFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_newDriverFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newDriverFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_newTruckFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newTruckFragment" />
+        <action
+            android:id="@+id/action_truckFleetViewPager_to_newTrailerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newTrailerFragment" />
     </fragment>
 
         <fragment
             android:id="@+id/truckDriversListFragment"
             android:name="ru.javacat.ui.truck_fleet.TruckDriversListFragment"
             tools:layout="@layout/fragment_truck_drivers_list"
-            android:label="@string/truck_drivers">
-            <action
-                android:id="@+id/action_truckDriversListFragment_to_truckDriverInfoFragment"
-                app:destination="@id/truckDriverInfoFragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"
-                />
-        </fragment>
+            android:label="@string/truck_drivers"/>
         <fragment
             android:id="@+id/newDriverFragment"
             android:name="ru.javacat.ui.TruckDriver.NewDriverFragment"
@@ -242,21 +286,13 @@
         android:id="@+id/trailersListFragment"
         android:name="ru.javacat.ui.truck_fleet.TrailersListFragment"
         tools:layout="@layout/fragment_trailers_list"
-        android:label="@string/trailers" >
-        <action
-            android:id="@+id/action_trailersListFragment_to_trailerInfoFragment"
-            app:destination="@id/trailerInfoFragment" />
-    </fragment>
+        android:label="@string/trailers" />
 
     <fragment
         android:id="@+id/trucksListFragment"
         android:name="ru.javacat.ui.truck_fleet.TrucksListFragment"
         tools:layout="@layout/fragment_trucks_list"
-        android:label="@string/trucks" >
-        <action
-            android:id="@+id/action_trucksListFragment_to_truckInfoFragment"
-            app:destination="@id/truckInfoFragment" />
-    </fragment>
+        android:label="@string/trucks" />
     <fragment
         android:id="@+id/orderFragment"
         android:name="ru.javacat.ui.order.OrderFragment"
@@ -305,7 +341,25 @@
         android:label="CompanyFragment" >
         <action
             android:id="@+id/action_companyFragment_to_truckFleetViewPager"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/truckFleetViewPager" />
+        <action
+            android:id="@+id/action_companyFragment_to_newEmployeeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newEmployeeFragment" />
+        <action
+            android:id="@+id/action_companyFragment_to_newCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newCustomerFragment" />
     </fragment>
     <fragment
         android:id="@+id/truckDriverInfoFragment"

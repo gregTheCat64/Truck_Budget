@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
-            android:padding="18dp"
+            android:padding="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -33,7 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+
                 android:text="@string/customer" />
 
 
@@ -43,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="ООО Монополия"
 
                 />
@@ -52,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+
                 style="@style/Widget.Material3.Button.TextButton"
                 app:icon="@drawable/baseline_local_phone_24"
                 android:text="Позвонить"
@@ -62,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:hint="@string/manager" />
 
             <TextView
@@ -70,7 +72,7 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="Екатерина Монопольная"
                 />
 
@@ -80,6 +82,7 @@
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.Button.TextButton"
                 app:icon="@drawable/baseline_local_phone_24"
+
                 android:text="Позвонить контакту"
                 android:layout_gravity="start"
                 />
@@ -97,7 +100,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="16dp"
                 android:text="@string/cargo" />
 
 
@@ -107,14 +111,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="20 т, 82 м3, Техника" />
 
             <TextView
                 android:id="@+id/cargoExtraTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="Зад/бок, палеты" />
 
 
@@ -130,7 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="@string/route"
                 />
 
@@ -139,7 +144,7 @@
                 android:id="@+id/pointsRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -157,14 +162,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="16dp"
                 android:text="@string/payment" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:hint="@string/cost" />
 
@@ -173,7 +178,7 @@
                     style="@style/TextAppearance.Material3.BodyLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:text="85000 руб" />
 
 
@@ -181,7 +186,7 @@
                 android:id="@+id/payDayTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:hint="@string/payment_date" />
 
@@ -190,14 +195,14 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                app:icon="@drawable/baseline_add_circle_outline_24"
                 android:text="@string/push_to_add" />
 
             <TextView
                 android:id="@+id/payStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:hint="@string/payment_status" />
 
@@ -207,7 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:text="@string/paid" />
 
@@ -222,13 +227,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:layout_marginTop="8dp"
                     android:hint="@string/contractor_s_cost" />
 
                 <TextView
                     android:id="@+id/contractorsPrice"
                     style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                      />
@@ -237,6 +243,7 @@
                     android:id="@+id/contractorPriceExtraTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:text=""
                     />
 
@@ -244,7 +251,7 @@
                     android:id="@+id/contractorPayStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:layout_marginTop="8dp"
                     android:hint="@string/payment_status" />
 
@@ -254,16 +261,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     style="@style/TextAppearance.Material3.BodyLarge"
                     android:text="@string/paid" />
 
-
-
             </LinearLayout>
-
-
-
-
 
 
 
@@ -271,6 +273,7 @@
                 android:id="@+id/contractorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
 
@@ -283,40 +286,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="16dp"
                 android:text="@string/documents" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:hint="@string/sending_documents_track_number" />
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/docsNumber"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                app:icon="@drawable/baseline_add_circle_outline_24"
                 android:text="@string/push_to_add" />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:hint="@string/receiving_date" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/docsReceivedDateTvValue"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                app:icon="@drawable/baseline_add_circle_outline_24"
                 android:text="@string/push_to_add" />
 
 

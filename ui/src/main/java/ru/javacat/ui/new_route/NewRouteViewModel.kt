@@ -159,17 +159,18 @@ class NewRouteViewModel @Inject constructor(
                     startDate = null,
                     endDate = null,
                     orderList = emptyList(),
-                    routeDetails = RouteDetails(),
-                    salaryParameters = SalaryParameters(),
+                    routeDetails = null,
+                    salaryParameters = null,
                     prepayment = 0,
-                    driverSalary = 0f,
-                    routeContractorsSum = 0,
-                    totalExpenses = 0f,
-                    moneyToPay = 0f,
-                    revenue = 0,
-                    profit = 0f,
+                    driverSalary = null,
+                    routeContractorsSum = null,
+                    totalExpenses = null,
+                    moneyToPay = null,
+                    revenue = null,
+                    profit = null,
                     isFinished = false
                 )
+            Log.i("NewRouteVM", "_new_route: ${_newRoute.value}")
             }
     }
 

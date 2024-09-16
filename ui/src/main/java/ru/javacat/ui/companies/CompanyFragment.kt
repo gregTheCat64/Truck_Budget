@@ -73,7 +73,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
                         val bundle = Bundle()
                         if (customerId != null) {
                             bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
-                            findNavController().navigate(R.id.newCustomerFragment, bundle)
+                            findNavController().navigate(R.id.action_companyFragment_to_newCustomerFragment, bundle)
                         }
                         return true
                     }
@@ -104,7 +104,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             if (customerId != null) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
-                findNavController().navigate(R.id.truckFleetViewPager, bundle)
+                findNavController().navigate(R.id.action_companyFragment_to_truckFleetViewPager, bundle)
             }
         }
 
@@ -112,7 +112,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             if (customerId != null) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.COMPANY_ID,customerId!!)
-                findNavController().navigate(R.id.newEmployeeFragment, bundle)
+                findNavController().navigate(R.id.action_companyFragment_to_newEmployeeFragment, bundle)
             }
         }
 
@@ -120,7 +120,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             override fun onManager(item: Manager) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.MANAGER_ID, item.id)
-                findNavController().navigate(R.id.newEmployeeFragment, bundle)
+                findNavController().navigate(R.id.action_companyFragment_to_newEmployeeFragment, bundle)
             }
 
             override fun onPhone(item: String?) {

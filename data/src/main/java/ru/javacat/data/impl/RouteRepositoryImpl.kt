@@ -36,7 +36,7 @@ class RouteRepositoryImpl @Inject constructor(
     override val items: Flow<List<Route>>
         get() = _routes
 
-    private val _editedRoute = MutableStateFlow(Route(salaryParameters = SalaryParameters()))
+    private val _editedRoute = MutableStateFlow(Route())
     override val editedItem: StateFlow<Route?>
         get() = _editedRoute.asStateFlow()
 
@@ -87,7 +87,7 @@ class RouteRepositoryImpl @Inject constructor(
 
     override suspend fun insert(route: Route): Long {
         println("inserting in repo $route")
-        _isEdited.emit(false)
+        //_isEdited.emit(false)
         var routeId = 0L
 
         db.withTransaction {

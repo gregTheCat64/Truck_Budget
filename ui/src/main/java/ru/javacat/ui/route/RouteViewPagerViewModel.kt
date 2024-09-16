@@ -1,5 +1,6 @@
 package ru.javacat.ui.route
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,7 @@ class RouteViewPagerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             try {
                 val editedRoute = routeRepository.getById(id)
+                Log.i("RouteVP_VM", "getRouteAndUpdateEditedRoute: $editedRoute")
                 if (editedRoute != null) {
                     routeRepository.updateEditedItem(editedRoute)
                 }

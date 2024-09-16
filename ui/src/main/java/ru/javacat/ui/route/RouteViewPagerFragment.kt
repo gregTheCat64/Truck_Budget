@@ -74,9 +74,7 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val title = "Рейс № ${routeId}"
 
-        (activity as AppCompatActivity).supportActionBar?.title = title
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -162,7 +160,6 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
                 }
             }
         }
-
     }
 
     private fun stateListener(){
@@ -177,6 +174,9 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
 
     private fun initUi(route: Route){
         Log.i("RouteViewPagerFrag", "init route: $route")
+        val title = "Рейс № ${route.id}"
+
+        (activity as AppCompatActivity).supportActionBar?.title = title
 
         val truckInfoList = mutableListOf<String>()
         val truckDriver = "${route.contractor?.driver?.surname} ${route.contractor?.driver?.firstName}"

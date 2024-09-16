@@ -23,14 +23,14 @@ data class DbRoute (
     val salaryParameters: SalaryParameters?,
 
     val prepayment: Int = 0,
-    val driverSalary: Float = 0F,
-    val routeContractorsSum: Int = 0,
-    val totalExpenses: Float = 0F,
+    val driverSalary: Float? = null,
+    val routeContractorsSum: Int? = null,
+    val totalExpenses: Float? = null,
 
-    val moneyToPay: Float? = 0F,
+    val moneyToPay: Float? = null,
     val isPaidToContractor: Boolean = false,
-    val revenue: Int,
-    val profit: Float,
+    val revenue: Int? = null,
+    val profit: Float? = null,
 
     val isFinished: Boolean
 )

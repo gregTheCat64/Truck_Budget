@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:padding="8dp"
+    android:layout_margin="12dp"
+
     >
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Заявка номер 1111 от 12 января"
-            style="@style/TextAppearance.MyTitleMedium"
+            style="@style/TextAppearance.Material3.TitleMedium"
             />
 
         <TextView
@@ -29,16 +29,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Миронов"
+            style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_apartment_24"
              />
 
         <TextView
+            android:id="@+id/contractorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Радаев (ИП Коноров)"
+            style="@style/TextAppearance.MyCardTextValue"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/baseline_directions_car_24"
+            />
+
+        <TextView
             android:id="@+id/points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Саратов - Ковылкино"
+            style="@style/TextAppearance.MyCardTextValue"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
@@ -58,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="35000 р."
-            style="@style/TextAppearance.MyTitleMedium"
+            style="@style/TextAppearance.Material3.TitleMedium"
              />
         <TextView
             android:id="@+id/paymentDeadLineTv"

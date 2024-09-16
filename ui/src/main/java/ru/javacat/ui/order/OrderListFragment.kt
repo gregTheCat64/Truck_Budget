@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -64,6 +65,8 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         super.onViewCreated(view, savedInstanceState)
         Log.i("orderListFrag", "onViewCreated")
 
+
+        //binding.ordersRV.itemAnimator = DefaultItemAnimator().animateAppearance()
 
         setFragmentResultListener(FragConstants.FILTER_ORDER){_, bundle ->
             val monthId = bundle.getInt(FragConstants.FILTER_MONTH, -1)
@@ -144,7 +147,7 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
                 bundle.putLong(FragConstants.ORDER_ID, it.id)
                 bundle.putLong(FragConstants.ROUTE_ID, it.routeId)
                 bundle.putBoolean(FragConstants.IS_NEW_ORDER, false)
-                findNavController().navigate(R.id.orderFragment, bundle)
+                findNavController().navigate(R.id.action_navigation_order_list_to_orderFragment, bundle)
             }
         }
 

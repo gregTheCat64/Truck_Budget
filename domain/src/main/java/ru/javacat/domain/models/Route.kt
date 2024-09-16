@@ -12,14 +12,14 @@ data class Route(
     val routeDetails: RouteDetails? = null,
     val salaryParameters: SalaryParameters? = null,
     val prepayment: Int = 0,
-    val driverSalary: Float = 0F,
-    val routeContractorsSum: Int = 0,
-    val totalExpenses: Float = 0F,
+    val driverSalary: Float? = null,
+    val routeContractorsSum: Int? = null,
+    val totalExpenses: Float? = null,
 
-    val moneyToPay: Float? = 0F,
+    val moneyToPay: Float? = null,
     val isPaidToContractor: Boolean = false,
-    val revenue: Int = 0,
-    val profit: Float = 0f,
+    val revenue: Int? = null,
+    val profit: Float? = null,
 
     val isFinished: Boolean = false
     )

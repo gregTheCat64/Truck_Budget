@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="АМ6329 64"
-        style="@style/TextAppearance.MyTitleMedium"
+        style="@style/TextAppearance.Material3.TitleMedium"
         />
 
     <TextView

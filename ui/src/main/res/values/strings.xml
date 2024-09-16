@@ -96,7 +96,6 @@
     <string name="contractor">Contractor:</string>
     <string name="truck_driver">Truck driver:</string>
     <string name="moneyToPay">Money to pay:</string>
-    <string name="qww">Заполните ставку!</string>
     <string name="contractor_s_cost">Contractor\'s cost</string>
     <string name="rub">"rub"</string>
     <string name="fuel_cost">Fuel cost</string>
@@ -141,4 +140,5 @@
     <string name="choose_year">Choose year</string>
     <string name="change_home_company_name_advise">This default home company. Can change home company name later. Also created default truck driver, truck and trailer. These can be changed later too.</string>
     <string name="success">Success</string>
+    <string name="frag_order_text_start_marging" translatable="false">16dp</string>
 </resources>

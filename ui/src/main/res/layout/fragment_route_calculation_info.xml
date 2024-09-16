@@ -38,23 +38,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+
                     android:orientation="vertical"
                     >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/advance"
                         />
 
 
                     <TextView
                         android:id="@+id/prepayTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        style="@style/TextAppearance.MyValue"
                         />
 
                 </LinearLayout>
@@ -82,15 +82,15 @@
                     android:orientation="vertical"
                     >
                     <TextView
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/fuel_cost"
                         />
                     <TextView
                         android:id="@+id/fuelCostTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -125,15 +125,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/subsistence"
                         />
 
                     <TextView
                         android:id="@+id/subsistence_expensesTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
 
                         />
 
@@ -165,16 +166,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/other_expenses"
                         />
 
                     <TextView
                         android:id="@+id/otherSpendingTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
                         />
 
                 </LinearLayout>
@@ -206,16 +207,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="Road fee"
                         />
 
                     <TextView
                         android:id="@+id/roadFee"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
                         />
 
                 </LinearLayout>
@@ -248,15 +249,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/driver_salary"
                         />
 
                     <TextView
                         android:id="@+id/salaryTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
 
                         />
                 </LinearLayout>
@@ -290,16 +292,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/moneyToPay"
                         />
 
 
                     <TextView
                         android:id="@+id/moneyToPayTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
                         />
 
                 </LinearLayout>
@@ -342,14 +345,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/income"
                         />
                     <TextView
                         android:id="@+id/revenueTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
 
                         />
                 </LinearLayout>
@@ -381,16 +385,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        style="@style/TextAppearance.MyValueDescription"
                         android:text="@string/net_income"
                         />
                     <TextView
                         android:id="@+id/profitTv"
-                        style="@style/TextAppearance.Material3.BodyLarge"
+                        style="@style/TextAppearance.MyValue"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+
 
                         />
                 </LinearLayout>

@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            style="@style/TextAppearance.MyTitleLarge"
+            style="@style/TextAppearance.Material3.TitleLarge"
 
             android:text="31.01.2024"
             />

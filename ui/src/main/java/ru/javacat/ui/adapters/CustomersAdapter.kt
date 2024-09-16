@@ -3,6 +3,7 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -25,6 +26,9 @@ class CustomersAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
+
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.card_appearing)
+        holder.itemView.startAnimation(animation)
     }
 
     class Holder(view: View, private val onCustomerListener: OnCustomerListener): RecyclerView.ViewHolder(view){

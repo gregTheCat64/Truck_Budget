@@ -39,25 +39,19 @@
     </style>
 
 
-    <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyMedium">
+    <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:layout_marginStart">0dp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:layout_marginStart">8dp</item>
-    </style>
-
-    <style name="TextAppearance.MyTitleMedium" parent="TextAppearance.Material3.TitleMedium">
-            <item name="textFillColor">@color/md_theme_primary</item>
-            <item name="android:textColor">@color/md_theme_primary</item>
 
     </style>
 
-    <style name="TextAppearance.MyTitleLarge" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textColor">@color/md_theme_primary</item>
-        <item name="android:textStyle">bold</item>
+    <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:layout_marginStart">0dp</item>
     </style>
+
+    <style name="TextAppearance.MyCardTextValue" parent="TextAppearance.Material3.BodyMedium">
+
+    </style>
+
 
     <style name="TextAppearance.StatsCardsDescription" parent="TextAppearance.Material3.TitleSmall">
 

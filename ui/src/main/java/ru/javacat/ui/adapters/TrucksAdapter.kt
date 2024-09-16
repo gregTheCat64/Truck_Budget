@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.domain.models.Truck
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.TruckItemBinding
@@ -21,6 +22,9 @@ class TrucksAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
+
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.card_appearing)
+        holder.itemView.startAnimation(animation)
     }
 
     class Holder(view: View, private val onItem: (Truck) -> Unit): RecyclerView.ViewHolder(view){

@@ -3,6 +3,7 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -24,6 +25,10 @@ class OrdersAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
+
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.card_appearing)
+        holder.itemView.startAnimation(animation)
+
     }
 
     class Holder(view: View, private val onItem: (Order) -> Unit): RecyclerView.ViewHolder(view){
@@ -48,11 +53,13 @@ class OrdersAdapter(
 //            val routeWord = Resources.getSystem().getString(R.string.route)
 
             val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
+            val contractorString = "${item.contractor?.driver?.nameToShow} (${item.contractor?.company?.nameToShow})"
 
             binding.orderId.text = orderIdString
             binding.customerName.text = item.customer?.nameToShow
+            binding.contractorName.text = contractorString
             binding.points.text = points.toString()
-            binding.income.text = item.price.toString()+"р."
+            binding.income.text = item.price.toString()+" р."
             binding.paymentDeadLineTv.text = if (item.paymentDeadline == null){
                 "Срок оплаты ${item.daysToPay.toString()} дней"
             } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly().toString()}"

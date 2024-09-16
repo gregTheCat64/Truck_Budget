@@ -45,8 +45,10 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
             val bundle = Bundle()
             bundle.putLong(FragConstants.COMPANY_ID, it.customerId)
             bundle.putLong(FragConstants.DRIVER_ID, it.id)
-            val action = R.id.action_truckDriversListFragment_to_truckDriverInfoFragment
-            findNavController().navigate(R.id.truckDriverInfoFragment, bundle)
+
+            //val parentFragment = requireParentFragment() as? TruckFleetViewPagerFragment
+            val action = R.id.action_truckFleetViewPager_to_truckDriverInfoFragment
+            findNavController().navigate(action, bundle)
 
         }
         binding.driversRecView.adapter = truckDriversAdapter
@@ -67,7 +69,7 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
         binding.addDriverBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(FragConstants.COMPANY_ID, companyId)
-            findNavController().navigate(R.id.newDriverFragment, bundle)
+            findNavController().navigate(R.id.action_truckFleetViewPager_to_newDriverFragment, bundle)
         }
     }
 

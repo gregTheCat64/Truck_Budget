@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="12dp"
     >
 
     <LinearLayout
@@ -19,8 +19,8 @@
             android:id="@+id/routeTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MyTitleMedium"
-            android:layout_gravity="start"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_gravity="center_horizontal"
             android:text="Рейс №4 от 15.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
+            style="@style/TextAppearance.MyCardTextValue"
             android:text="Водилкин А.М."
             app:drawableLeftCompat="@drawable/baseline_directions_car_24" />
 
@@ -39,7 +40,7 @@
             android:id="@+id/customersListTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            style="@style/TextAppearance.MyCardTextValue"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_apartment_24" />
 
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_gravity="end|bottom"
-        style="@style/TextAppearance.MyTitleMedium"
+        style="@style/TextAppearance.Material3.TitleMedium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

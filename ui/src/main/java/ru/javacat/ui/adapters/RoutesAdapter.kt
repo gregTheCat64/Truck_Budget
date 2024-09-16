@@ -6,8 +6,9 @@ import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.adapters.my_adapter.MyBaseAdapter
 import ru.javacat.ui.databinding.RouteItemBinding
+import kotlin.math.roundToInt
 
-    interface OnRouteListener {
+interface OnRouteListener {
         fun onItem(item: Route)
         fun onRemove(item: Route)
     }
@@ -27,11 +28,8 @@ class RoutesAdapter(
         binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthShortly()}"
 
         item.profit?.let {
-            binding.earnedMoneyTextView.text = it.toString() + " р."
+            binding.earnedMoneyTextView.text = it.roundToInt().toString() + " р."
         }
-//        item.contractor?.company?.shortName?.let {
-//            binding.contractorNameTv.text = it
-//        }
         val contractorString = "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})"
 
         binding.truckDriverName.text = contractorString

@@ -41,7 +41,7 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
             bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.TRANSPORT_ID, it.id)
             //bundle.putString(FragConstants.TYPE_OF_TRANSPORT, "TRAILER")
-            findNavController().navigate(R.id.trailerInfoFragment, bundle)
+            findNavController().navigate(R.id.action_truckFleetViewPager_to_trailerInfoFragment, bundle)
         }
 
         binding.trailerRecView.adapter = trailersAdapter
@@ -64,7 +64,7 @@ class TrailersListFragment: BaseFragment<FragmentTrailersListBinding>() {
         binding.addTrailerBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(FragConstants.COMPANY_ID, companyId)
-            findNavController().navigate(R.id.newTrailerFragment, bundle)
+            findNavController().navigate(R.id.action_truckFleetViewPager_to_newTrailerFragment, bundle)
         }
     }
 }

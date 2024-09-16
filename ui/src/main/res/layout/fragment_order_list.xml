@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.MyTitleLarge"
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:text="Здесь пока нет заявок!"
             android:layout_marginTop="8dp"
             android:textStyle="bold"
