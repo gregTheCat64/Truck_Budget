@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
    >
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topAppBar"
+        style="@style/Widget.MaterialComponents.ActionBar.Primary"
+        android:background="?android:colorBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:text="@string/companies"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold"
-            />
+        android:layout_height="?attr/actionBarSize"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:text="@string/companies"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                />
+
+        </FrameLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/customersRecView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -26,10 +42,12 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="4dp"
+            android:layout_marginBottom="48dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-    </LinearLayout>
+
 
 
 
@@ -41,4 +59,4 @@
         android:layout_margin="16dp"
         android:src="@drawable/baseline_add_circle_outline_24"
         />
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

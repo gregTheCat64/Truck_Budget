@@ -53,7 +53,7 @@ class OrdersAdapter(
 //            val routeWord = Resources.getSystem().getString(R.string.route)
 
             val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
-            val contractorString = "${item.contractor?.driver?.nameToShow} (${item.contractor?.company?.nameToShow})"
+            val contractorString = "${item.contractor?.driver?.nameToShow} (${item.contractor?.company?.shortName})"
 
             binding.orderId.text = orderIdString
             binding.customerName.text = item.customer?.nameToShow

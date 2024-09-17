@@ -15,6 +15,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,6 +39,8 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     private val viewModel: RouteListViewModel by viewModels()
     private lateinit var routesAdapter: RoutesAdapter
     //private var myCompany: Company? = null
+
+    private var isFabVisible = true
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
@@ -104,6 +107,18 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
         binding.routesList.adapter = routesAdapter
 
+        binding.routesList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy>0 && isFabVisible) {
+                    hideFab()
+                } else if (dy<0 && !isFabVisible){
+                    showFab()
+                }
+            }
+        })
+
         lifecycleScope.launch {
             viewModel.allRoutes.collectLatest {
                 binding.noRoutesLayout.isGone = it.isNotEmpty()
@@ -124,5 +139,15 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         //if (myCompany != null) {
         findNavController().navigate(R.id.action_routeListFragment_to_newRouteFragment)
 
+    }
+
+    private fun hideFab() {
+        binding.newRouteBtn.animate().translationY( binding.newRouteBtn.height.toFloat()+40).setDuration(300).start()
+        isFabVisible = false
+    }
+
+    private fun showFab() {
+        binding.newRouteBtn.animate().translationY(0f).setDuration(300).start()
+        isFabVisible = true
     }
 }

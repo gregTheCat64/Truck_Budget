@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,6 +35,7 @@ import ru.javacat.ui.databinding.FragmentOrderListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showYearCalendar
 import java.time.Month
+import kotlin.math.truncate
 
 
 @AndroidEntryPoint
@@ -42,6 +45,8 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
 
     private val viewModel: OrderListViewModel by viewModels()
     private lateinit var ordersAdapter: OrdersAdapter
+
+    private var isFabVisible = true
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentOrderListBinding
         get() = {inflater, container ->
@@ -56,8 +61,6 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         (activity as AppCompatActivity).supportActionBar?.hide()
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -65,7 +68,8 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         super.onViewCreated(view, savedInstanceState)
         Log.i("orderListFrag", "onViewCreated")
 
-
+        val mAnimator = binding.ordersRV.itemAnimator as SimpleItemAnimator
+        mAnimator.supportsChangeAnimations = true
         //binding.ordersRV.itemAnimator = DefaultItemAnimator().animateAppearance()
 
         setFragmentResultListener(FragConstants.FILTER_ORDER){_, bundle ->
@@ -153,6 +157,20 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
 
         binding.ordersRV.adapter = ordersAdapter
 
+        binding.ordersRV.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            private var previousScrollY = 0
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy>0 && isFabVisible) {
+                    hideFab()
+                } else if (dy<0 && !isFabVisible){
+                    showFab()
+                }
+            }
+        })
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.orders.collectLatest {
@@ -206,5 +224,15 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
         val year = YearHolder.selectedYear
         viewModel.setYearFilter(year)
         viewModel.filterOrders()
+    }
+
+    private fun hideFab() {
+        binding.debtsLayout.animate().translationY( binding.debtsLayout.height.toFloat()+42).setDuration(300).start()
+        isFabVisible = false
+    }
+
+    private fun showFab() {
+        binding.debtsLayout.animate().translationY(0f).setDuration(300).start()
+        isFabVisible = true
     }
 }

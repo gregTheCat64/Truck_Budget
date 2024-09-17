@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
@@ -107,6 +108,10 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         Log.i("RouteVPFrag", "onViewCreated")
 
         //viewModel.clearEditedOrder()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            findNavController().popBackStack(R.id.navigation_route_list, false)
+        }
 
         val routeFragment = RouteFragment()
         routeFragment.arguments = bundle

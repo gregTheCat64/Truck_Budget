@@ -377,9 +377,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 } else return false
             }
             SalaryCountMethod.BY_DISTANCE -> {
-                if (!binding.costPerKilometer.text.isNullOrEmpty()){
+                if (!binding.costPerKilometer.text.isNullOrEmpty() && !binding.routeDistance.text.isNullOrEmpty()){
                     costPerKilometer = binding.costPerKilometer.text.toString().toFloat()
-                    routeDistance = binding.routeDistance.text.toString().toInt()
+                    routeDistance = binding.routeDistance.text?.toString()?.toInt()
                 } else return false
             }
             SalaryCountMethod.BY_REVENUE -> {
