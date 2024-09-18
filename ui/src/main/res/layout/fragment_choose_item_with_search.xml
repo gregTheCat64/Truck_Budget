@@ -27,7 +27,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:inputType="textCapWords"
-            android:hint="@string/search"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
+        android:visibility="gone"
         android:layout_gravity="center"
         style="@style/Widget.Material3.Button.TextButton"
         />

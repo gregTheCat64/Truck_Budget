@@ -11,7 +11,7 @@ data class DbTruck(
     val isHidden: Boolean,
     val companyId: Long,
     val regNumber: String,
-    val regionCode: Int,
+    val regionCode: Int?,
     val vin: String?,
     val model: String?,
     val type: String?,

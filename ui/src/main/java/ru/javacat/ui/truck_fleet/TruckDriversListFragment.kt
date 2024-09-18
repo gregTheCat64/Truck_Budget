@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.TruckDriversAdapter
@@ -43,7 +42,7 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
 
         truckDriversAdapter = TruckDriversAdapter{
             val bundle = Bundle()
-            bundle.putLong(FragConstants.COMPANY_ID, it.customerId)
+            bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
             bundle.putLong(FragConstants.DRIVER_ID, it.id)
 
             //val parentFragment = requireParentFragment() as? TruckFleetViewPagerFragment

@@ -13,6 +13,7 @@ import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.use_case.ClearTrailerUseCase
 import ru.javacat.domain.use_case.ClearTruckDriverUseCase
 import ru.javacat.domain.use_case.ClearTruckUseCase
+import ru.javacat.domain.use_case.SaveNewCompanyUseCase
 import ru.javacat.domain.use_case.SetCompanyUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewCompanyViewModel @Inject constructor(
     private val repository: CompaniesRepository,
+    private val saveNewCompanyUseCase: SaveNewCompanyUseCase,
     private val setCompanyUseCase: SetCompanyUseCase,
     private val clearTruckDriverUseCase: ClearTruckDriverUseCase,
     private val clearTruckUseCase: ClearTruckUseCase,
@@ -46,18 +48,17 @@ class NewCompanyViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
-                repository.insert(company)
+               saveNewCompanyUseCase.invoke(company)
                 if (isNeedToSet){
-                    setCompanyUseCase.invoke(company)
-                    clearTruckUseCase.invoke()
-                    clearTrailerUseCase.invoke()
-                    clearTruckDriverUseCase.invoke()
+                    //setCompanyUseCase.invoke(company)
+                    //clearTruckUseCase.invoke()
+                    //clearTrailerUseCase.invoke()
+                    //clearTruckDriverUseCase.invoke()
                 }
                 _loadState.emit(LoadState.Success.GoBack)
             }catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
-
         }
     }
 

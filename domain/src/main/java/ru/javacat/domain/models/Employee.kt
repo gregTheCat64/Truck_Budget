@@ -3,7 +3,7 @@ package ru.javacat.domain.models
 import java.time.LocalDate
 
 abstract class Employee(): BaseNameModel<Long>(){
-    abstract val customerId: Long
+    abstract val companyId: Long
     abstract val firstName: String?
     abstract val middleName: String?
     abstract val surname: String?
@@ -18,20 +18,20 @@ abstract class Employee(): BaseNameModel<Long>(){
 
 data class Manager(
     override val id: Long,
-    override val positionId: Long,
-    override val isHidden: Boolean,
-    override val customerId: Long,
+    override val positionId: Long = 0,
+    override val isHidden: Boolean = false,
+    override val companyId: Long,
     override val firstName: String,
-    override val middleName: String?,
-    override val surname: String?,
-    override val passportNumber: String?,
-    override val passportReceivedDate: LocalDate?,
-    override val passportReceivedPlace: String?,
-    override val placeOfRegistration: String?,
-    override val phoneNumber: String?,
-    override val secondNumber: String?,
-    val email: String?,
-    override val comment: String?,
+    override val middleName: String? = null,
+    override val surname: String? = null,
+    override val passportNumber: String? = null,
+    override val passportReceivedDate: LocalDate? = null,
+    override val passportReceivedPlace: String? = null,
+    override val placeOfRegistration: String? = null,
+    override val phoneNumber: String? = null,
+    override val secondNumber: String? = null,
+    val email: String? = null,
+    override val comment: String? = null,
 ): Employee(){
     override val nameToShow: String
         get() = firstName
@@ -39,9 +39,9 @@ data class Manager(
 
 data class TruckDriver(
     override val id: Long,
-    override val positionId: Long,
-    override val isHidden: Boolean,
-    override val customerId: Long,
+    override val positionId: Long = 0L,
+    override val isHidden: Boolean = false,
+    override val companyId: Long,
     override val firstName: String? = null,
     override val middleName: String? = null,
     override val surname: String,
@@ -53,7 +53,7 @@ data class TruckDriver(
     override val phoneNumber: String? = null,
     override val secondNumber: String? = null,
     override val comment: String? = null,
-    val salaryParameters: SalaryParameters?
+    val salaryParameters: SalaryParameters? = null
 ): Employee() {
     override val nameToShow: String
         get() =

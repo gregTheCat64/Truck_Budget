@@ -6,27 +6,23 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.TruckDriver
-import ru.javacat.ui.R
 import ru.javacat.ui.adapters.ChooseDriverAdapter
-import ru.javacat.ui.databinding.FragmentChooseItemBinding
 import ru.javacat.ui.databinding.FragmentChooseItemWithSearchBinding
 import ru.javacat.ui.utils.FragConstants
 
 @AndroidEntryPoint
 class ChooseTruckDriverFragment: BottomSheetDialogFragment() {
-    private lateinit var binding: FragmentChooseItemBinding
+    private lateinit var binding: FragmentChooseItemWithSearchBinding
     private val viewModel: NewRouteViewModel by activityViewModels()
     private lateinit var driversAdapter: ChooseDriverAdapter
 
@@ -35,7 +31,7 @@ class ChooseTruckDriverFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentChooseItemBinding.inflate(layoutInflater)
+        binding = FragmentChooseItemWithSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -47,26 +43,32 @@ class ChooseTruckDriverFragment: BottomSheetDialogFragment() {
         val companyId = args?.getLong(FragConstants.COMPANY_ID)?:-1L
 
         initDriversCase(companyId)
+        addEditTextListener()
+
+        binding.saveBtn.setOnClickListener {
+            val tdName = binding.searchEditText.text.toString().trim()
+            if (tdName.isNotEmpty()){
+                viewModel.saveNewTruckDriver(
+                    TruckDriver(
+                    id = 0L,
+                    companyId = companyId,
+                    surname = tdName
+                )
+                )
+                this.dismiss()
+            }
+        }
     }
 
     private fun initDriversCase(companyId: Long){
-        binding.newItemBtn.text = getString(R.string.create_new_truck_driver)
-        binding.newItemBtn.setOnClickListener {
-            this.dismiss()
-            val bundle = Bundle()
-            bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
-            bundle.putLong(FragConstants.COMPANY_ID, companyId)
-            findNavController().navigate(R.id.newDriverFragment, bundle)
-        }
-
         viewModel.getDriver(companyId)
         driversAdapter = ChooseDriverAdapter {
             viewModel.setDriver(it)
             this.dismiss()
         }
-        binding.itemList.adapter = driversAdapter
-
-        binding.itemNameTextView.text = "Водители"
+        binding.itemRecView.adapter = driversAdapter
+        binding.labelTv.text = "Водители"
+        binding.searchEditText.hint = "Введите фамилию нового водителя"
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -76,6 +78,22 @@ class ChooseTruckDriverFragment: BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    private fun addEditTextListener() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //viewModel.sear(p0.toString())
+                binding.saveBtn.isVisible = !p0.isNullOrEmpty()
+                binding.saveBtn.text = "Создать водителя: $p0"
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
     }
 
 }

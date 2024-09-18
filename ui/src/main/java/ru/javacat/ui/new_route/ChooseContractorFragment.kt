@@ -1,29 +1,29 @@
 package ru.javacat.ui.new_route
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.ui.R
+import ru.javacat.common.utils.toShortCompanyName
+import ru.javacat.domain.models.Company
 import ru.javacat.ui.adapters.ChooseCompanyAdapter
-import ru.javacat.ui.databinding.FragmentChooseItemBinding
 import ru.javacat.ui.databinding.FragmentChooseItemWithSearchBinding
-import ru.javacat.ui.utils.FragConstants
 
 @AndroidEntryPoint
 class ChooseContractorFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentChooseItemBinding
+    private lateinit var binding: FragmentChooseItemWithSearchBinding
     private val viewModel: NewRouteViewModel by activityViewModels()
     private lateinit var companiesAdapter: ChooseCompanyAdapter
 
@@ -33,33 +33,39 @@ class ChooseContractorFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentChooseItemBinding.inflate(layoutInflater)
+        binding = FragmentChooseItemWithSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = arguments
         initContractorsCase()
+        addEditTextListener()
 
+        binding.saveBtn.setOnClickListener {
+            val newCompanyName = binding.searchEditText.text.toString().trim()
+            if (newCompanyName.isNotEmpty()){
+                viewModel.saveNewContractor(Company(0,
+                    nameToShow = newCompanyName,
+                    shortName = newCompanyName.toShortCompanyName()
+                    ))
+                this.dismiss()
+            }
+        }
     }
 
     private fun initContractorsCase(){
-        binding.itemNameTextView.text = "Компании"
-        binding.newItemBtn.text = getString(R.string.create_new_partner)
-        binding.newItemBtn.setOnClickListener {
-            this.dismiss()
-            val bundle = Bundle()
-            bundle.putBoolean(FragConstants.IS_NEED_TO_SET, true)
-            findNavController().navigate(R.id.newCustomerFragment, bundle)
-        }
+        binding.labelTv.text = "Компании"
+        binding.searchEditText.hint = "Введите название фирмы"
+
         viewModel.getContractors()
         companiesAdapter = ChooseCompanyAdapter {
             viewModel.setCompany(it)
             this.dismiss()
         }
-        binding.itemList.adapter = companiesAdapter
+
+        binding.itemRecView.adapter = companiesAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -68,6 +74,22 @@ class ChooseContractorFragment : BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    private fun addEditTextListener() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //viewModel.sear(p0.toString())
+                binding.saveBtn.isVisible = !p0.isNullOrEmpty()
+                binding.saveBtn.text = "Создать фирму: $p0"
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
     }
 
 }

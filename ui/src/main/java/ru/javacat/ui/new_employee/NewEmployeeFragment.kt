@@ -116,7 +116,7 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedManager.collectLatest {
                     if (it != null && managerId != null) {
-                        customerId = it.customerId
+                        customerId = it.companyId
                         updateUi(it)
                     }
                 }

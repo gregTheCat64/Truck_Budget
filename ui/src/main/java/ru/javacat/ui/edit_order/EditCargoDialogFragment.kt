@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -53,6 +54,7 @@ class EditCargoDialogFragment: BottomSheetDialogFragment() {
         }
         binding.itemRecView.adapter = cargoAdapter
         binding.labelTv.text = getString(R.string.cargo)
+        binding.searchEditText.hint = "Введите название груза"
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -65,7 +67,7 @@ class EditCargoDialogFragment: BottomSheetDialogFragment() {
 
         binding.saveBtn.setOnClickListener {
             val newCargo = binding.searchEditText.text.toString().trim()
-            if (!cargosFound && newCargo.isNotEmpty()) {
+            if (newCargo.isNotEmpty()) {
                 viewModel.insertNewCargo(CargoName(nameToShow = newCargo))
                 viewModel.addCargoToOrder(CargoName(nameToShow = newCargo))
                 this.dismiss()
@@ -81,6 +83,8 @@ class EditCargoDialogFragment: BottomSheetDialogFragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchCargos(p0.toString())
+                binding.saveBtn.isVisible = !p0.isNullOrEmpty()
+                binding.saveBtn.text = "Создать груз: $p0"
             }
 
             override fun afterTextChanged(p0: Editable?) {

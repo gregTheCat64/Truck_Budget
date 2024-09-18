@@ -14,8 +14,6 @@ import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Contractor
 import ru.javacat.domain.models.Route
-import ru.javacat.domain.models.RouteDetails
-import ru.javacat.domain.models.SalaryParameters
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.models.Truck
 import ru.javacat.domain.models.TruckDriver
@@ -24,6 +22,10 @@ import ru.javacat.domain.use_case.GetCompaniesUseCase
 import ru.javacat.domain.use_case.GetTrailersByCompanyIdUseCase
 import ru.javacat.domain.use_case.GetTruckDriversByCompanyIdUseCase
 import ru.javacat.domain.use_case.GetTrucksByCompanyIdUseCase
+import ru.javacat.domain.use_case.SaveNewCompanyUseCase
+import ru.javacat.domain.use_case.SaveNewTrailerUseCase
+import ru.javacat.domain.use_case.SaveNewTruckDriverUseCase
+import ru.javacat.domain.use_case.SaveNewTruckUseCase
 import ru.javacat.ui.LoadState
 import java.time.LocalDate
 import javax.inject.Inject
@@ -32,9 +34,13 @@ import javax.inject.Inject
 class NewRouteViewModel @Inject constructor(
     private val repo: RouteRepository,
     private val getCompaniesUseCase: GetCompaniesUseCase,
+    private val saveNewCompanyUseCase: SaveNewCompanyUseCase,
     private val getTrucksUseCase: GetTrucksByCompanyIdUseCase,
+    private val saveNewTruckUseCase: SaveNewTruckUseCase,
     private val getTrailersUseCase: GetTrailersByCompanyIdUseCase,
+    private val saveNewTrailerUseCase: SaveNewTrailerUseCase,
     private val getTruckDriversUseCase: GetTruckDriversByCompanyIdUseCase,
+    private val saveNewTruckDriverUseCase: SaveNewTruckDriverUseCase
 ) : ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -84,6 +90,20 @@ class NewRouteViewModel @Inject constructor(
         Log.i("NewRouteVM", "${_newRoute.value}")
     }
 
+    fun saveNewContractor(company: Company){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val newCompanyId = saveNewCompanyUseCase.invoke(company)
+                val newCompany = company.copy(id = newCompanyId)
+                setCompany(newCompany)
+                _loadState.emit(LoadState.Success.GoBack)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
     //TruckPart:
     fun getTrucks(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -99,6 +119,20 @@ class NewRouteViewModel @Inject constructor(
                 truck = t
             )
         )
+    }
+
+    fun saveNewTruck(t: Truck){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val newTruckId = saveNewTruckUseCase.invoke(t)
+                val newTruck = t.copy(id = newTruckId)
+                setTruck(newTruck)
+                _loadState.emit(LoadState.Success.GoBack)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
     }
 
     //TrailerPart:
@@ -117,6 +151,20 @@ class NewRouteViewModel @Inject constructor(
         )
     }
 
+    fun saveNewTrailer(t: Trailer){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val newTrailerId = saveNewTrailerUseCase.invoke(t)
+                val newTrailer = t.copy(id = newTrailerId)
+                setTrailer(newTrailer)
+                _loadState.emit(LoadState.Success.GoBack)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
     //TruckDriverPart:
     fun getDriver(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -131,6 +179,20 @@ class NewRouteViewModel @Inject constructor(
                 driver = t
             )
         )
+    }
+
+    fun saveNewTruckDriver(td: TruckDriver){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                val newTruckDriverId = saveNewTruckDriverUseCase.invoke(td)
+                val newTruckDriver = td.copy(id = newTruckDriverId)
+                setDriver(newTruckDriver)
+                _loadState.emit(LoadState.Success.GoBack)
+            }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
     }
 
     //NewRoutePart:

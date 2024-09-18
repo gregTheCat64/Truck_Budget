@@ -31,6 +31,7 @@ class EditManagerDialogViewModel @Inject constructor(
 
     private val _managers = MutableStateFlow<List<Manager>?>(null)
     val managers = _managers.asStateFlow()
+
     fun getEmployee(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             Log.i("EditManagerDialogVM", "customerId: $id")
@@ -43,6 +44,23 @@ class EditManagerDialogViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             val result = managersRepository.search(search)
             _managers.emit(result)
+        }
+    }
+
+    fun saveNewManager(manager: Manager, isNeedToSet: Boolean){
+        viewModelScope.launch(Dispatchers.IO) {
+            val newManagerId = managersRepository.insert(manager)
+            val newManager = manager.copy(id = newManagerId)
+
+            if (isNeedToSet) {
+                editedOrder.value?.copy(
+                    manager = newManager
+                )?.let {
+                    orderRepository.updateEditedItem(
+                        it
+                    )
+                }
+            }
         }
     }
 

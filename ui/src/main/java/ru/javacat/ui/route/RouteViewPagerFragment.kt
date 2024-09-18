@@ -181,11 +181,10 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
 
         val truckInfoList = mutableListOf<String>()
         val truckDriver = "${route.contractor?.driver?.nameToShow}"
-        val truck = "${route.contractor?.truck?.regNumber} ${route.contractor?.truck?.regionCode}"
+        val truck = "${route.contractor?.truck?.regNumber} ${route.contractor?.truck?.regionCode?:""}"
 
-        val trailer = if (route.contractor?.trailer?.regNumber != null && route.contractor?.trailer?.regionCode != null){
-            "${route.contractor?.trailer?.regNumber} ${route.contractor?.trailer?.regionCode}"
-        } else ""
+        val trailer = "${route.contractor?.trailer?.regNumber?:""} ${route.contractor?.trailer?.regionCode?:""}"
+
 
         if (truckDriver.isNotEmpty()) truckInfoList.add(truckDriver)
         if (truck.isNotEmpty())truckInfoList.add(truck)

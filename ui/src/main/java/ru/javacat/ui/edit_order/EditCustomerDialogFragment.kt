@@ -51,8 +51,10 @@ class EditCustomerDialogFragment: BottomSheetDialogFragment() {
             viewModel.addCustomerToOrder(it)
             this.dismiss()
         }
+
         binding.itemRecView.adapter = customersAdapter
         binding.labelTv.text = getString(R.string.companies)
+        binding.searchEditText.hint = "Введите название компании"
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -75,23 +77,20 @@ class EditCustomerDialogFragment: BottomSheetDialogFragment() {
                 this.dismiss()
             } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
     private fun addEditTextListener() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchCustomers(p0.toString())
                 binding.saveBtn.isVisible = !p0.isNullOrEmpty()
+                binding.saveBtn.text = "Создать фирму: $p0"
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
     }
