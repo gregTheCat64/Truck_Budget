@@ -54,7 +54,11 @@ data class TruckDriver(
     override val secondNumber: String? = null,
     override val comment: String? = null,
     val salaryParameters: SalaryParameters?
-): Employee(){
+): Employee() {
     override val nameToShow: String
-        get() = "$surname"
+        get() =
+            "$surname ${firstName?:""}"
+
 }
+
+

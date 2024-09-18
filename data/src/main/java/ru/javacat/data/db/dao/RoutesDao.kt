@@ -19,7 +19,7 @@ interface RoutesDao {
     fun getAllRoutes(): List<DbRouteWithOrders>
 
     @Transaction
-    @Query("SELECT * FROM routes_table WHERE strftime('%Y', startDate) = :year")
+    @Query("SELECT * FROM routes_table WHERE strftime('%Y', startDate) = :year ORDER BY id DESC")
     fun getAllRoutesByYear(year: String): List<DbRouteWithOrders>
 
     @Query(

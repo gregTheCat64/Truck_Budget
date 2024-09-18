@@ -176,7 +176,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="@color/blue"
+                style="@style/CardView.BlueCard"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -237,7 +237,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/green"
+                style="@style/CardView.GreenCard"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -283,7 +283,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/red"
+                style="@style/CardView.RedCard"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -398,7 +398,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="@color/blue"
+                style="@style/CardView.BlueCard"
                 >
 
                 <LinearLayout
@@ -461,7 +461,7 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardBackgroundColor="@color/green"
+                style="@style/CardView.GreenCard"
                 >
 
                 <LinearLayout

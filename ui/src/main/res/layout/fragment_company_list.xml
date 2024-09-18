@@ -39,16 +39,11 @@
             android:id="@+id/customersRecView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/customer_item"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="4dp"
-            android:layout_marginBottom="48dp"
+
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-
-
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

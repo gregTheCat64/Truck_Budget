@@ -15,7 +15,7 @@ interface OrdersDao {
     fun getAllOrders(): List<DbOrderWithCustomer>
 
     @Transaction
-    @Query("SELECT * FROM orders_table WHERE strftime('%Y', date) = :year")
+    @Query("SELECT * FROM orders_table WHERE strftime('%Y', date) = :year ORDER BY id DESC")
     fun getAllOrdersByYear(year: String): List<DbOrderWithCustomer>
 
     @Transaction

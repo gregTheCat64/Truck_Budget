@@ -63,8 +63,8 @@ abstract class MyBaseAdapter<M : Any, VB: ViewBinding>(
     override fun onBindViewHolder(holder: VH<M, VB>, position: Int) {
         holder.bind(getItem(position))
 
-        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.card_appearing)
-        holder.itemView.startAnimation(animation)
+        //val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.card_appearing)
+        //holder.itemView.startAnimation(animation)
     }
 
 }

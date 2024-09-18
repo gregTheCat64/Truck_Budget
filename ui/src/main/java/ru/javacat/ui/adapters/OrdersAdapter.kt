@@ -42,7 +42,7 @@ class OrdersAdapter(
 
             if (item.isPaidByCustomer){
                 binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_primary))
-            } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_error))
+            } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
 
             val startDate = item.date.asDayAndMonthFully()
 
@@ -53,7 +53,7 @@ class OrdersAdapter(
 //            val routeWord = Resources.getSystem().getString(R.string.route)
 
             val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
-            val contractorString = "${item.contractor?.driver?.nameToShow} (${item.contractor?.company?.shortName})"
+            val contractorString = "${item.contractor?.driver?.surname} (${item.contractor?.company?.shortName})"
 
             binding.orderId.text = orderIdString
             binding.customerName.text = item.customer?.nameToShow

@@ -18,7 +18,8 @@ interface OnPointListener {
 class PointsAdapter(
     private val onPointListener: OnPointListener
 ): ListAdapter<Point, PointsAdapter.Holder>(Comparator()) {
-        class Holder(view: View, private val onPointListener: OnPointListener): RecyclerView.ViewHolder(view){
+
+    class Holder(view: View, private val onPointListener: OnPointListener): RecyclerView.ViewHolder(view){
         private val binding = PointItemBinding.bind(view)
 
         fun bind(item: Point){

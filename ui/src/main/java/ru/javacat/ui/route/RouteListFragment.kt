@@ -3,14 +3,9 @@ package ru.javacat.ui.route
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
@@ -28,7 +22,6 @@ import ru.javacat.ui.adapters.OnRouteListener
 import ru.javacat.ui.adapters.RoutesAdapter
 import ru.javacat.ui.databinding.FragmentRouteListBinding
 import ru.javacat.ui.utils.FragConstants
-import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showYearCalendar
 
 @AndroidEntryPoint

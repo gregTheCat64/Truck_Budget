@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_corner_radius"
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
     android:layout_marginTop="6dp"
@@ -25,7 +26,16 @@
             android:text="Заявка номер 1111 от 12 января"
             style="@style/TextAppearance.Material3.TitleMedium"
             />
-
+        <TextView
+            android:id="@+id/contractorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Радаев (ИП Коноров)"
+            android:layout_marginTop="4dp"
+            style="@style/TextAppearance.MyCardTextValue"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/baseline_directions_car_24"
+            />
         <TextView
             android:id="@+id/customerName"
             android:layout_width="wrap_content"
@@ -37,15 +47,7 @@
             app:drawableStartCompat="@drawable/baseline_apartment_24"
              />
 
-        <TextView
-            android:id="@+id/contractorName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Радаев (ИП Коноров)"
-            style="@style/TextAppearance.MyCardTextValue"
-            android:drawablePadding="8dp"
-            app:drawableStartCompat="@drawable/baseline_directions_car_24"
-            />
+
 
         <TextView
             android:id="@+id/points"
@@ -53,9 +55,11 @@
             android:layout_height="wrap_content"
             android:text="Саратов - Ковылкино"
             style="@style/TextAppearance.MyCardTextValue"
+            android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
+
 
     </LinearLayout>
 
@@ -71,7 +75,7 @@
             android:layout_gravity="end|bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="35000 р."
+
             style="@style/TextAppearance.Material3.TitleMedium"
              />
         <TextView
@@ -79,6 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Оплата до 3 января"
+            android:layout_gravity=""
             style="@style/TextAppearance.Material3.BodySmall"
             />
     </LinearLayout>

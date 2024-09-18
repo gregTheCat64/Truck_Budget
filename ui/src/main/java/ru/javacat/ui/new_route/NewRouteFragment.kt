@@ -138,8 +138,10 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
             binding.companyNameAdvise.isGone = !it.nameToShow.contains("Моя Компания", true)
             binding.addContractorEditText.setText(it.nameToShow)
         }
-        route.contractor?.driver?.let {
-            binding.addDriverEditText.setText(it.nameToShow)
+
+        route.contractor?.driver?.let { td ->
+            //val driverName = "${td.surname} ${td.firstName.takeIf { it!=null }}"
+                binding.addDriverEditText.setText(td.nameToShow)
         }?:binding.addDriverEditText.setText("")
         route.contractor?.truck?.let {
             binding.addTruckEditText.setText(it.nameToShow)

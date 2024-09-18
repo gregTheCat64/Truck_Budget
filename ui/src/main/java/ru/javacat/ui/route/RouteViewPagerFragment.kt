@@ -59,10 +59,6 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
 
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (item.itemId == android.R.id.home) findNavController().navigateUp()
-//        return true
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -184,7 +180,7 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         (activity as AppCompatActivity).supportActionBar?.title = title
 
         val truckInfoList = mutableListOf<String>()
-        val truckDriver = "${route.contractor?.driver?.surname} ${route.contractor?.driver?.firstName}"
+        val truckDriver = "${route.contractor?.driver?.nameToShow}"
         val truck = "${route.contractor?.truck?.regNumber} ${route.contractor?.truck?.regionCode}"
 
         val trailer = if (route.contractor?.trailer?.regNumber != null && route.contractor?.trailer?.regionCode != null){
