@@ -23,10 +23,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
+import ru.javacat.domain.models.BaseNameModel
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Point
@@ -35,16 +37,18 @@ import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.LocationAdapter
+import ru.javacat.ui.adapters.my_adapter.OnModelWithRemoveBtnListener
 import ru.javacat.ui.databinding.FragmentEditPointsBinding
 import ru.javacat.ui.utils.showCalendar
 
 @AndroidEntryPoint
-class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
+class EditPointsFragment: BottomSheetDialogFragment() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentEditPointsBinding
-        get() = {inflater, container ->
-            FragmentEditPointsBinding.inflate(inflater, container, false)
-        }
+    private lateinit var binding: FragmentEditPointsBinding
+//    override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentEditPointsBinding
+//        get() = {inflater, container ->
+//            FragmentEditPointsBinding.inflate(inflater, container, false)
+//        }
 
     private val viewModel: EditPointsViewModel by viewModels()
     private lateinit var locationAdapter: LocationAdapter
@@ -58,26 +62,28 @@ class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+//
+//        requireActivity().addMenuProvider(object : MenuProvider{
+//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//                menuInflater.inflate(R.menu.menu_empty, menu)
+//            }
+//
+//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+//               when (menuItem.itemId) {
+//                   android.R.id.home -> {
+//                       findNavController().navigateUp()
+//                       return true
+//                   }
+//                   else -> return false
+//               }
+//            }
+//        }, viewLifecycleOwner)
+        binding = FragmentEditPointsBinding.inflate(layoutInflater)
 
-        requireActivity().addMenuProvider(object : MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-               when (menuItem.itemId) {
-                   android.R.id.home -> {
-                       findNavController().navigateUp()
-                       return true
-                   }
-                   else -> return false
-               }
-            }
-        }, viewLifecycleOwner)
-
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
+        //return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,7 +96,8 @@ class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
                     when {
-                        it is LoadState.Success.GoBack -> findNavController().navigateUp()
+                        it is LoadState.Success.GoBack -> dismiss()
+                    //findNavController().navigateUp()
                     }
                 }
             }
@@ -160,9 +167,17 @@ class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
 
     private fun initUi(){
         viewModel.getLocations()
-        locationAdapter = LocationAdapter {
-            addPoint(it.nameToShow)
-        }
+        locationAdapter = LocationAdapter(object : OnModelWithRemoveBtnListener{
+            override fun onItem(model: BaseNameModel<Long>) {
+                addPoint(model.nameToShow)
+            }
+
+            override fun onRemove(model: BaseNameModel<Long>) {
+                model.id?.let { viewModel.removeLocation(it) }
+
+            }
+        })
+
         binding.locationsRecView.adapter = locationAdapter
 
         val locationsLayoutManager = FlexboxLayoutManager(requireContext())
@@ -175,7 +190,6 @@ class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
                 println("OrderFragment: $it")
                 locationAdapter.submitList(it)
                 locationsFound = it?.size != 0
-
             }
         }
     }
@@ -193,6 +207,8 @@ class EditPointsFragment: BaseFragment<FragmentEditPointsBinding>() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchLocations(p0.toString())
+                binding.okBtn.isVisible = !p0.isNullOrEmpty()
+                binding.okBtn.text = "Cоздать место: $p0"
 //                if (!locationsFound){
 //                    binding.addPointBtn.isVisible = true
 //                    binding.addPointBtn.text = "Сохранить $p0"

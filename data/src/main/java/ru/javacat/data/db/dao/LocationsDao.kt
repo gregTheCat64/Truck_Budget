@@ -19,4 +19,7 @@ interface LocationsDao {
         location: DbLocation
     )
 
+    @Query("DELETE FROM locations_table WHERE id = :id")
+    suspend fun remove(id: Long)
+
 }

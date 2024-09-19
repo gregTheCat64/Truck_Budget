@@ -29,6 +29,7 @@ abstract class BaseNameLongIdAdapter<M: BaseNameModel<Long>>(
         private val binding = NameItemBinding.bind(view)
         fun bind(item: M) {
             binding.name.text = item.nameToShow
+
             binding.root.setOnClickListener {
                 onItem(item)
             }

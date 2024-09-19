@@ -99,11 +99,25 @@ class EditPointsViewModel @Inject constructor(
         }
     }
 
-
-
     fun insertNewLocation(location: Location) {
         viewModelScope.launch(Dispatchers.IO) {
             locationRepository.insertLocation(location)
+        }
+    }
+
+    fun removeLocation(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            _loadState.emit(LoadState.Loading)
+            try {
+                locationRepository.removeLocation(id)
+                val result = locationRepository.getLocations()
+                println("locations: $result")
+                _locations.emit(result)
+                _loadState.emit(LoadState.Success.Removed)
+            }catch (e: Exception){
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+
         }
     }
 }

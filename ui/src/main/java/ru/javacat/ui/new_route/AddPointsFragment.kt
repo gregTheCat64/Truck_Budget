@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.common.utils.asDayAndMonthFully
+import ru.javacat.domain.models.BaseNameModel
 import ru.javacat.domain.models.Location
 import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
@@ -29,6 +30,7 @@ import ru.javacat.ui.R
 import ru.javacat.ui.adapters.LocationAdapter
 import ru.javacat.ui.adapters.OnPointListener
 import ru.javacat.ui.adapters.PointsAdapter
+import ru.javacat.ui.adapters.my_adapter.OnModelWithRemoveBtnListener
 import ru.javacat.ui.databinding.FragmentAddPointsBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import ru.javacat.ui.utils.showCalendar
@@ -171,12 +173,22 @@ class AddPointsFragment : BaseFragment<FragmentAddPointsBinding>() {
 
     private fun initLocationAdapter() {
         viewModel.getLocations()
-        locationAdapter = LocationAdapter {
-            addPoint(it.nameToShow)
-            viewModel.increaseDay()
-            //binding.locationsRecView.isGone = true
-            //AndroidUtils.hideKeyboard(requireView())
-        }
+        locationAdapter = LocationAdapter(object : OnModelWithRemoveBtnListener{
+            override fun onItem(model: BaseNameModel<Long>) {
+                addPoint(model.nameToShow)
+                viewModel.increaseDay()
+            }
+
+            override fun onRemove(model: BaseNameModel<Long>) {
+                TODO("Not yet implemented")
+            }
+        })
+//        locationAdapter = LocationAdapter {
+//            addPoint(it.nameToShow)
+//            viewModel.increaseDay()
+//            //binding.locationsRecView.isGone = true
+//            //AndroidUtils.hideKeyboard(requireView())
+//        }
 
         binding.locationsRecView.adapter = locationAdapter
 

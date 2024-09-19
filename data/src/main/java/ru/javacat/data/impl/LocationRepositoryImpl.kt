@@ -24,4 +24,8 @@ class LocationRepositoryImpl @Inject constructor(
     override suspend fun insertLocation(location: Location) {
         dbQuery { locationsDao.insertLocation(location.toDb()) }
     }
+
+    override suspend fun removeLocation(id: Long) {
+        dbQuery { locationsDao.remove(id) }
+    }
 }

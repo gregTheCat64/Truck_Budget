@@ -22,4 +22,7 @@ interface CargoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCargo(cargo: DbCargo): Long
+
+    @Query("DELETE FROM cargo_table WHERE id = :id")
+    suspend fun remove(id: Long)
 }

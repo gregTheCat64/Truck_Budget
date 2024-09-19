@@ -45,6 +45,6 @@ class CargoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeById(id: Long) {
-        TODO("Not yet implemented")
+        return dbQuery { dao.remove(id) }
     }
 }

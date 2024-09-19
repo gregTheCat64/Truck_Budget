@@ -606,7 +606,9 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     }
 
     private fun changingPoints() {
-        findNavController().navigate(R.id.editPointsFragment)
+        //findNavController().navigate(R.id.editPointsFragment)
+        val dialogFragment = EditPointsFragment()
+        dialogFragment.show(parentFragmentManager, "")
     }
 
     private fun addEditTextListeners() {

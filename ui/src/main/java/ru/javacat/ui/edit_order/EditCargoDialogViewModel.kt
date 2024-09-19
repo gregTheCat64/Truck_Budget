@@ -50,7 +50,15 @@ class EditCargoDialogViewModel @Inject constructor(
         }
     }
 
-    fun addCargoToOrder(cargoName: CargoName) {
+    fun removeCargo(cargoId: Long){
+        viewModelScope.launch(Dispatchers.IO){
+            cargoRepository.removeById(id = cargoId)
+            val result = cargoRepository.getAll()
+            _cargoList.emit(result)
+        }
+    }
+
+    fun addCargoToOrder(cargoName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {
@@ -58,9 +66,9 @@ class EditCargoDialogViewModel @Inject constructor(
                         orderRepository.updateEditedItem(
                             it.copy(
                                 cargo = it.cargo?.copy(
-                                    cargoName = cargoName.nameToShow
+                                    cargoName = cargoName
                                 )?:Cargo(
-                                    cargoName = cargoName.nameToShow,
+                                    cargoName = cargoName,
                                     cargoWeight = null,
                                     cargoVolume = null,
                                     isBackLoad = true,
@@ -69,7 +77,6 @@ class EditCargoDialogViewModel @Inject constructor(
                                     )
                             )
                         )
-
                 }
                 _loadState.emit(LoadState.Success.GoForward)
             } catch (e: Exception){

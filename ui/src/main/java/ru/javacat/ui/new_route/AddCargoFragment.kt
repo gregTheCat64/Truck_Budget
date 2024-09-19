@@ -18,9 +18,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.BaseNameModel
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.models.Order
@@ -28,6 +32,7 @@ import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.CargoChipAdapter
+import ru.javacat.ui.adapters.my_adapter.OnModelWithRemoveBtnListener
 import ru.javacat.ui.databinding.FragmentAddCargoBinding
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 
@@ -156,12 +161,25 @@ class AddCargoFragment : BaseFragment<FragmentAddCargoBinding>() {
     private fun initAdapter() {
         viewModel.getCargos()
 
-        cargoAdapter = CargoChipAdapter {
-            binding.cargoEditText.setText(it.nameToShow)
-            binding.cargoRecView.isGone = true
+        cargoAdapter = CargoChipAdapter(object : OnModelWithRemoveBtnListener {
+            override fun onItem(model: BaseNameModel<Long>) {
+                binding.cargoEditText.setText(model.nameToShow)
+                binding.cargoRecView.isGone = true
+            }
+
+            override fun onRemove(model: BaseNameModel<Long>) {
+                TODO("Not yet implemented")
+            }
+
         }
+        )
 
         binding.cargoRecView.adapter = cargoAdapter
+
+        val cargosLayoutManager = FlexboxLayoutManager(requireContext())
+        cargosLayoutManager.flexDirection = FlexDirection.ROW
+        cargosLayoutManager.justifyContent = JustifyContent.FLEX_START
+        binding.cargoRecView.layoutManager = cargosLayoutManager
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

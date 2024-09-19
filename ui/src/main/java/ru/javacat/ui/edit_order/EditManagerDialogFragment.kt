@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Manager
 import ru.javacat.ui.R
-import ru.javacat.ui.adapters.my_adapter.ChooseManagerAdapter
+import ru.javacat.ui.adapters.ChooseManagerAdapter
 import ru.javacat.ui.databinding.FragmentChooseItemWithSearchBinding
 import ru.javacat.ui.utils.FragConstants
 

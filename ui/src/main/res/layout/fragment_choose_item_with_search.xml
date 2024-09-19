@@ -30,13 +30,6 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
@@ -46,6 +39,12 @@
         android:layout_gravity="center"
         style="@style/Widget.Material3.Button.TextButton"
         />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemRecView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

@@ -12,15 +12,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.BaseNameModel
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.CargoName
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.CargoAdapter
 import ru.javacat.ui.adapters.CargoChipAdapter
+import ru.javacat.ui.adapters.my_adapter.OnModelWithRemoveBtnListener
 import ru.javacat.ui.databinding.FragmentChooseItemBinding
 import ru.javacat.ui.databinding.FragmentChooseItemWithSearchBinding
 
@@ -48,10 +53,23 @@ class EditCargoDialogFragment: BottomSheetDialogFragment() {
         viewModel.getCargos()
         addEditTextListener()
 
-        cargoAdapter = CargoAdapter {
-            viewModel.addCargoToOrder(it)
-            this.dismiss()
-        }
+        cargoAdapter = CargoAdapter(object : OnModelWithRemoveBtnListener{
+            override fun onItem(model: BaseNameModel<Long>) {
+                viewModel.addCargoToOrder(model.nameToShow)
+                dismiss()
+            }
+
+            override fun onRemove(model: BaseNameModel<Long>) {
+                model.id?.let { viewModel.removeCargo(it) }
+                //dismiss()
+            }
+        })
+
+        val cargosLayoutManager = FlexboxLayoutManager(requireContext())
+        cargosLayoutManager.flexDirection = FlexDirection.ROW
+        cargosLayoutManager.justifyContent = JustifyContent.FLEX_START
+        binding.itemRecView.layoutManager = cargosLayoutManager
+
         binding.itemRecView.adapter = cargoAdapter
         binding.labelTv.text = getString(R.string.cargo)
         binding.searchEditText.hint = "Введите название груза"
@@ -69,7 +87,7 @@ class EditCargoDialogFragment: BottomSheetDialogFragment() {
             val newCargo = binding.searchEditText.text.toString().trim()
             if (newCargo.isNotEmpty()) {
                 viewModel.insertNewCargo(CargoName(nameToShow = newCargo))
-                viewModel.addCargoToOrder(CargoName(nameToShow = newCargo))
+                viewModel.addCargoToOrder(newCargo)
                 this.dismiss()
             } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
         }

@@ -10,5 +10,7 @@ interface LocationRepository {
 
     suspend fun searchLocations(search: String): List<Location>
 
+    suspend fun removeLocation(id: Long)
+
 
 }
