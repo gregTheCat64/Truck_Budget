@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.R
@@ -36,21 +38,26 @@ class RoutesAdapter(
         private val binding = RouteItemBinding.bind(view)
 
         fun bind(item: Route){
-            val customersList = item.orderList.map {
-                it.customer?.shortName
+            val customerList = mutableListOf<String>()
+            item.orderList.forEach {
+                it.customer?.shortName?.let { it1 -> customerList.add(it1) }
             }
+            val customersListString = customerList.joinToString(separator = ", ")
 
-            binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthShortly()}"
+            //binding.customersListTextView.isGone = customerList.isEmpty()
+            //binding.earnedMoneyTextView.isGone = item.profit == null
+
+            binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthFully()}"
 
             item.profit?.let {
-                binding.earnedMoneyTextView.text = it.roundToInt().toString() + " р."
+                binding.earnedMoneyTextView.text = it.roundToInt().toString() + " рублей"
             }
             val contractorString = "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})"
 
             binding.truckDriverName.text = contractorString
 
-            if (customersList.isNotEmpty()){
-                binding.customersListTextView.text = customersList.toString()
+            if (customersListString.isNotEmpty()){
+                binding.customersListTextView.text = customersListString.toString()
             }
 
             binding.root.setOnClickListener {

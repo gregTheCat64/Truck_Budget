@@ -32,7 +32,9 @@ class TrailersAdapter(
         private val binding = TruckItemBinding.bind(view)
 
         fun bind(item: Trailer){
-            binding.regNumberTv.text = item.nameToShow
+            val name = "${item.regNumber} ${item.regionCode?:""}"
+            binding.regNumberTv.text = name
+
             val trailerModel = item.model?:""
             val trailerYear = item.yearOfManufacturing?:""
             val trailerInfo = "$trailerModel $trailerYear"

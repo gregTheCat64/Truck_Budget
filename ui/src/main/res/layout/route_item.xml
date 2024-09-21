@@ -1,62 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp"
     android:layout_marginStart="12dp"
+    android:layout_marginTop="6dp"
     android:layout_marginEnd="12dp"
-    >
+    android:layout_marginBottom="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
         android:orientation="vertical"
-        >
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/routeTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:text="Номер рейса"
             android:layout_gravity="center_horizontal"
-            android:text="Рейс №4 от 15.08"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            />
 
 
         <TextView
             android:id="@+id/truckDriverName"
+            style="@style/TextAppearance.MyCardTextValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
-            style="@style/TextAppearance.MyCardTextValue"
-            android:text="Водилкин А.М."
+            android:text="Водитель(Фирма исполнитель)"
+
             app:drawableLeftCompat="@drawable/baseline_directions_car_24" />
 
         <TextView
             android:id="@+id/customersListTextView"
+            style="@style/TextAppearance.MyCardTextValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.MyCardTextValue"
             android:drawablePadding="8dp"
+            android:text="Заказчики"
             app:drawableStartCompat="@drawable/baseline_apartment_24" />
 
+        <TextView
+            android:id="@+id/earnedMoneyTextView"
+            style="@style/TextAppearance.MyCardTextValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:text="Доход с рейса"
+            app:drawableStartCompat="@drawable/baseline_attach_money_24" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/earnedMoneyTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_gravity="end|bottom"
-        style="@style/TextAppearance.Material3.TitleMedium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+    <!--    <TextView-->
+    <!--        android:id="@+id/earnedMoneyTextView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="8dp"-->
+    <!--        android:layout_gravity="end|bottom"-->
+    <!--        style="@style/TextAppearance.Material3.TitleMedium"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        />-->
 </androidx.cardview.widget.CardView>

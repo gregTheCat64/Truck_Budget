@@ -14,7 +14,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:paddingTop="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
         android:orientation="vertical"
         >
 
@@ -23,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Заявка номер 1111 от 12 января"
+            android:text="Заявка номер"
             style="@style/TextAppearance.Material3.TitleMedium"
             />
         <TextView
             android:id="@+id/contractorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Радаев (ИП Коноров)"
+            android:text="Водитель (Фирма исполнителя)"
             android:layout_marginTop="4dp"
             style="@style/TextAppearance.MyCardTextValue"
             android:drawablePadding="8dp"
@@ -40,7 +43,7 @@
             android:id="@+id/customerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Миронов"
+            android:text="Заказчик"
             style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
@@ -53,40 +56,35 @@
             android:id="@+id/points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Саратов - Ковылкино"
+            android:text="Города маршрута"
             style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
-
+        <TextView
+            android:id="@+id/paymentDeadLineTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Срок оплаты"
+            android:layout_gravity="end"
+            style="@style/TextAppearance.Material3.BodySmall"
+            />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="8dp"
-        >
+
         <TextView
             android:id="@+id/income"
             android:layout_gravity="end|bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:text="Сумма оплаты"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="8dp"
             style="@style/TextAppearance.Material3.TitleMedium"
              />
-        <TextView
-            android:id="@+id/paymentDeadLineTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Оплата до 3 января"
-            android:layout_gravity=""
-            style="@style/TextAppearance.Material3.BodySmall"
-            />
-    </LinearLayout>
+
 
 
 

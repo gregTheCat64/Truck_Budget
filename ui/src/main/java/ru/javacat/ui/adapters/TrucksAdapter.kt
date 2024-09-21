@@ -31,11 +31,10 @@ class TrucksAdapter(
         private val binding = TruckItemBinding.bind(view)
 
         fun bind(item: Truck){
-            binding.regNumberTv.text = item.nameToShow
-            val truckModel = item.model?:""
-            val truckYear = item.yearOfManufacturing?:""
-            val truckInfo = "$truckModel $truckYear"
+            val name = "${item.regNumber} ${item.regionCode?:""}"
+            binding.regNumberTv.text = name
 
+            val truckInfo = "${item.model?:""} ${item.yearOfManufacturing?:""}"
             binding.infoTv.text = truckInfo
             binding.root.setOnClickListener {
                 onItem(item)
