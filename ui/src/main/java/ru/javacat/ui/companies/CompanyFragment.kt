@@ -28,6 +28,7 @@ import ru.javacat.ui.adapters.OnManagerListener
 import ru.javacat.ui.databinding.FragmentCompanyBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.makePhoneCall
+import ru.javacat.ui.utils.sendMessageToWhatsApp
 
 @AndroidEntryPoint
 class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
@@ -94,9 +95,15 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.callBtn.setOnClickListener {
+        binding.callCompanyPhoneBtn.setOnClickListener {
             binding.phoneNumberTv.text?.let {
                 if (it.isNotEmpty()) makePhoneCall(it.toString())
+            }
+        }
+
+        binding.whatsappCompanyMsgBtn.setOnClickListener {
+            binding.phoneNumberTv.text?.let {
+                if (it.isNotEmpty()) sendMessageToWhatsApp(requireContext(), it.toString(), "")
             }
         }
 
@@ -128,6 +135,12 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
                     makePhoneCall(item)
                 } else Toast.makeText(requireContext(), "Номер не найден", Toast.LENGTH_SHORT).show()
             }
+
+            override fun onWhatsapp(item: String?) {
+                if (item != null) {
+                    sendMessageToWhatsApp(requireContext(), item, "")
+                } else Toast.makeText(requireContext(), "Номер не найден", Toast.LENGTH_SHORT).show()
+            }
         })
 
         binding.employeesRV.adapter = emplAdapter
@@ -157,7 +170,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             customer.atiNumber?.let {
                 atiNumberTv.text = it.toString()
             }
-            callBtn.isGone = customer.companyPhone==null
+            companyPhoneLayout.isGone = customer.companyPhone==null
             customer.companyPhone?.let {
                 phoneNumberTv.text = it
             }

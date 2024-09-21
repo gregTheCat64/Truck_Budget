@@ -3,6 +3,7 @@ package ru.javacat.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import ru.javacat.ui.databinding.EmployeeItemBinding
 interface OnManagerListener {
     fun onManager(item: Manager)
     fun onPhone(item: String?)
+    fun onWhatsapp(item: String?)
 }
 class ManagerAdapter(
     private val onManagerListener: OnManagerListener
@@ -34,11 +36,15 @@ class ManagerAdapter(
             binding.apply {
                 name.text = item.nameToShow
                 phoneNumber.text = item.phoneNumber
+                driverPhoneLayout.isGone = item.phoneNumber == null
                 root.setOnClickListener {
                     onManagerListener.onManager(item)
                 }
                 phoneNumber.setOnClickListener {
                     onManagerListener.onPhone(phoneNumber.text.toString())
+                }
+                whatsappMsgBtn.setOnClickListener {
+                    onManagerListener.onWhatsapp(phoneNumber.text.toString())
                 }
             }
         }

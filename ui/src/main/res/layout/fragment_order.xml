@@ -48,16 +48,37 @@
                 android:text="ООО Монополия"
 
                 />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/callCompanyPhoneBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
 
-                style="@style/Widget.Material3.Button.TextButton"
-                app:icon="@drawable/baseline_local_phone_24"
-                android:text="Позвонить"
-                />
+            <LinearLayout
+                android:id="@+id/phoneCompanyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/callCompanyPhoneBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+
+                    style="@style/Widget.Material3.Button.TextButton"
+                    app:icon="@drawable/baseline_local_phone_24"
+                    android:text="Позвонить"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sendWhatsAppBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+
+                    style="@style/Widget.Material3.Button.TextButton"
+                    app:icon="@drawable/brown_whatsapp_icon"
+                    android:text="Написать"
+                    />
+
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/managerLabelTv"
@@ -76,16 +97,33 @@
                 android:text="Екатерина Монопольная"
                 />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/callToManagerBtn"
+            <LinearLayout
+                android:id="@+id/phoneManagerLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.TextButton"
-                app:icon="@drawable/baseline_local_phone_24"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/callToManagerBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    app:icon="@drawable/baseline_local_phone_24"
+                    android:text="Позвонить контакту"
+                    android:layout_gravity="start"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sendWhatsToManagerAppBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    app:icon="@drawable/brown_whatsapp_icon"
+                    android:text="Написать"
+                    />
+            </LinearLayout>
 
-                android:text="Позвонить контакту"
-                android:layout_gravity="start"
-                />
+
 
             <include layout="@layout/horizon_line"
                 android:layout_width="match_parent"

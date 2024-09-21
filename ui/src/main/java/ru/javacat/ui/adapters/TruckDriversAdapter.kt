@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class TruckDriversAdapter(
 
                 val fullName = "$firstName $middleName $surname"
 
+                driverPhoneLayout.isGone = item.phoneNumber == null
                 name.text = fullName
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {

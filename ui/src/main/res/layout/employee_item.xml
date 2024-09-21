@@ -9,27 +9,64 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:padding="4dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_gravity="start|center"
-            android:textStyle="bold"
-            />
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:text="@string/employee"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="call"
+                android:layout_marginEnd="16dp"
+                />
+
+        </LinearLayout>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/phoneNumber"
+        <LinearLayout
+            android:id="@+id/driverPhoneLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.TextButton"
-            app:icon="@drawable/baseline_local_phone_24"
+            android:orientation="horizontal"
+            android:padding="8dp"
             android:layout_gravity="end"
-            />
+            >
+
+            <ImageView
+                android:id="@+id/phoneNumberBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp"
+                android:src="@drawable/baseline_local_phone_24"
+                app:tint="?attr/colorPrimary"
+                />
+
+            <ImageView
+                android:id="@+id/whatsappMsgBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/green_whatsapp_icon"
+
+                />
+        </LinearLayout>
+
+
+
 
 
 </FrameLayout>

@@ -42,6 +42,7 @@ import ru.javacat.ui.utils.showOneInputDialog
 import java.time.LocalDate
 import android.Manifest
 import ru.javacat.ui.utils.makePhoneCall
+import ru.javacat.ui.utils.sendMessageToWhatsApp
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>() {
@@ -203,10 +204,22 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             } else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
         }
 
+        binding.sendWhatsAppBtn.setOnClickListener {
+            if (companyPhoneNumber!= null){
+                sendMessageToWhatsApp(requireContext(), companyPhoneNumber.toString(), "")
+            }else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
+        }
+
         binding.callToManagerBtn.setOnClickListener {
             if (managerPhoneNumber!=null){
                 makePhoneCall(managerPhoneNumber!!)
             } else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.sendWhatsToManagerAppBtn.setOnClickListener {
+            if (managerPhoneNumber!= null){
+                sendMessageToWhatsApp(requireContext(), managerPhoneNumber.toString(), "")
+            }else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -249,8 +262,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
 
         binding.apply {
-            callCompanyPhoneBtn.isGone = order.customer?.companyPhone == null
-            callToManagerBtn.isGone = order.manager?.phoneNumber == null
+            phoneCompanyLayout.isGone = order.customer?.companyPhone == null
+            phoneManagerLayout.isGone = order.manager?.phoneNumber == null
             managerLabelTv.isGone = order.manager == null
             managerTv.isGone = order.manager == null
 

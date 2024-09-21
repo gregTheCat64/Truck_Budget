@@ -135,11 +135,13 @@
             android:layout_gravity="start|center"
             android:src="@drawable/baseline_local_phone_24"
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="40dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,26 +152,43 @@
                     android:id="@+id/phoneNumberTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     style="@style/TextAppearance.Material3.BodyLarge"
                     />
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/companyPhoneLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="end|bottom"
+            >
+
+            <TextView
+                android:id="@+id/callCompanyPhoneBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="22dp"
+                app:drawableStartCompat="@drawable/baseline_local_phone_24"
+                android:drawableTint="@color/brown"
+                />
+
+            <ImageView
+                android:id="@+id/whatsappCompanyMsgBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/green_whatsapp_icon"
+
+                />
+        </LinearLayout>
+
 
     </FrameLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/callBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_gravity="center|bottom"
-            android:layout_marginTop="8dp"
-            android:text="Позвонить"
-            app:icon="@drawable/baseline_local_phone_24"
-            />
 
 
     <FrameLayout
