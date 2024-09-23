@@ -35,7 +35,7 @@
     <string name="driver_salary">Зарплата водителя</string>
     <string name="net_income">Чистая прибыль</string>
     <string name="close">Закрыть</string>
-    <string name="ok">Ок</string>
+    <string name="ok">ОK</string>
     <string name="documents">Документы</string>
     <string name="cargo_name">Наименование</string>
     <string name="payment_status">Статус оплаты</string>
@@ -44,7 +44,7 @@
     <string name="company_name_with_asterisk">Название*</string>
     <string name="ati_number">Номер АТИ</string>
     <string name="phone_number">Номер телефона</string>
-    <string name="edit">Редактировать</string>
+    <string name="edit">Изменить</string>
     <string name="add_employee">Добавить сотрудника</string>
     <string name="from">от</string>
     <string name="sign_in">Войти</string>
@@ -141,4 +141,25 @@
     <string name="choose_year">Выбор года</string>
     <string name="change_home_company_name_advise">Это название вашей компании по умолчанию. Его можно изменить позже. Также по умолчанию создан водитель, тягач и прицеп, которые также могут быть изменены позже.</string>
     <string name="success">Успешно</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="call">Позвонить</string>
+    <string name="cargo_description">cargo description</string>
+    <string name="order_price">Order price</string>
+    <string name="add_phone_number">добавьте номер телефона</string>
+    <string name="route_profit">Доход с рейса</string>
+    <string name="customers">Заказчики</string>
+    <string name="truck_driver_company_contractor">Водитель (Компания исполнитель)</string>
+    <string name="route_number">Номер рейса</string>
+    <string name="expenseDescription">Описание расхода</string>
+    <string name="expense_name">Имя расхода</string>
+    <string name="expense_price">Стоимость</string>
+    <string name="date">Дата</string>
+    <string name="expense">Расход</string>
+    <string name="price">Цена*</string>
+    <string name="name">Название*</string>
+    <string name="company_transport">Транспорт компании</string>
+    <string name="not_company_transport">Привлеченный транспорт</string>
+    <string name="average_profit">Ср. доход в мес.</string>
+    <string name="year_profit">Доход за год</string>
+    <string name="year_expense">Расход за год</string>
 </resources>

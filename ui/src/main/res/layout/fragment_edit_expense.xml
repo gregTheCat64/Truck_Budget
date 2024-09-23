@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:hint="Name*"
+            android:hint="@string/name"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="Description"
+            android:hint="@string/expenseDescription"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Price*"
+            android:hint="@string/price"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -75,8 +75,8 @@
             android:id="@+id/expenseDateTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:hint="Date"
+            android:focusable="false"
+            android:hint="@string/date"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

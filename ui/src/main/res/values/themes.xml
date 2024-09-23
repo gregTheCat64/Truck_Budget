@@ -20,17 +20,17 @@
         <item name="android:colorBackground">@color/background</item>
         <item name="colorOnBackground">@color/onBackground</item>
         <!-- Status bar color. -->
-<!--        <item name="android:statusBarColor">@color/status_bar</item>-->
+        <item name="android:statusBarColor">@color/status_bar</item>
 <!--        <item name="chipStyle">@style/ChipStyle.Base</item>-->
 
-<!--        <item name="actionBarStyle">@style/MyActionBar</item>-->
+        <item name="actionBarStyle">@style/MyActionBar</item>
 
 <!--        <item name="bottomNavigationStyle">@color/primary</item>-->
 
     </style>
 
     <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
-<!--        <item name="background">@color/status_bar</item>-->
+        <item name="background">@color/md_theme_background</item>
 
     </style>
 
@@ -39,22 +39,8 @@
     </style>
 
 
-    <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:layout_marginStart">0dp</item>
-
-    </style>
-
-    <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.LabelMedium">
-        <item name="android:layout_marginStart">0dp</item>
-    </style>
-
-    <style name="TextAppearance.MyCardTextValue" parent="TextAppearance.Material3.BodyMedium">
-
-    </style>
-
-
     <style name="TextAppearance.StatsCardsDescription" parent="TextAppearance.Material3.TitleSmall">
-
+        <item name="android:textColor">@color/md_theme_onBackground</item>
     </style>
 
     <style name="AppTheme" parent="Theme.Material3.DayNight">
@@ -110,8 +96,32 @@
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
 
         <item name="cardViewStyle">@style/CardView.MyCard</item>
+
+        <item name="actionBarStyle">@style/MyActionBar</item>
+
+
     </style>
 
+    <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_marginStart">0dp</item>
+
+    </style>
+
+    <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:layout_marginStart">0dp</item>
+    </style>
+
+    <style name="TextAppearance.MyCardTextValue" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+    </style>
+
+    <style name="TextAppearance.MyCardTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+    </style>
+
+    <style name="TextAppearance.MyStatsCardTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+    </style>
 
     <style name="CardView.MyCard" parent="CardView.Dark">
         <item name="cardBackgroundColor">@color/md_theme_surfaceContainer</item>
@@ -139,6 +149,10 @@
         <item name="cardCornerRadius">8dp</item>
         <item name="strokeColor">@color/green</item>
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="TextAppearance.MyFragmentTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

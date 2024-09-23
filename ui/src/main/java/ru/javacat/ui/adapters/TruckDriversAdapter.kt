@@ -8,18 +8,24 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.EmployeeItemBinding
 
+interface OnTruckDriverListener {
+    fun onItem(item: TruckDriver)
+    fun onPhone(item: String?)
+    fun onWhatsapp(item: String?)
+}
 
 class TruckDriversAdapter(
-    val onItem: (TruckDriver) -> Unit
+    private val onTruckDriverListener: OnTruckDriverListener
 ): ListAdapter<TruckDriver, TruckDriversAdapter.Holder>(Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.employee_item, parent, false)
-        return Holder(view, onItem)
+        return Holder(view, onTruckDriverListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -29,7 +35,7 @@ class TruckDriversAdapter(
         holder.itemView.startAnimation(animation)
     }
 
-    class Holder(view: View, private val onItem: (TruckDriver) -> Unit): RecyclerView.ViewHolder(view){
+    class Holder(view: View, private val onTruckDriverListener: OnTruckDriverListener): RecyclerView.ViewHolder(view){
         private val binding = EmployeeItemBinding.bind(view)
 
         fun bind(item: TruckDriver){
@@ -44,7 +50,13 @@ class TruckDriversAdapter(
                 name.text = fullName
                 phoneNumber.text = item.phoneNumber
                 root.setOnClickListener {
-                    onItem(item)
+                    onTruckDriverListener.onItem(item)
+                }
+                phoneNumberBtn.setOnClickListener {
+                    onTruckDriverListener.onPhone(phoneNumber.text.toString())
+                }
+                whatsappMsgBtn.setOnClickListener {
+                    onTruckDriverListener.onWhatsapp(phoneNumber.text.toString())
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -27,7 +28,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
         get() = {inflater, container->
             FragmentCompanyListBinding.inflate(inflater, container, false)
         }
-    private val  viewModel: CustomerListViewModel by viewModels()
+    private val  viewModel: CompanyListViewModel by viewModels()
     private lateinit var customersAdapter: CustomersAdapter
 
     override fun onCreateView(
@@ -63,6 +64,22 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
                 }
             }
         }
+
+        binding.searchBtn.maxWidth = 500
+
+        binding.searchBtn.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.searchCustomers(newText.toString())
+                }
+                return true
+            }
+        })
+
 
         binding.addCustomerBtn.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_company_list_to_companyFragment)

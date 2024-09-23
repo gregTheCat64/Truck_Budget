@@ -12,7 +12,7 @@ import ru.javacat.domain.repo.CompaniesRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomerListViewModel @Inject constructor(
+class CompanyListViewModel @Inject constructor(
     private val customerRepository: CompaniesRepository
 ): ViewModel() {
     private var _customers = MutableStateFlow(emptyList<Company>())
@@ -22,6 +22,12 @@ class CustomerListViewModel @Inject constructor(
     fun getAllCustomers(){
         viewModelScope.launch(Dispatchers.IO) {
            _customers.emit(customerRepository.getAll())
+        }
+    }
+
+    fun searchCustomers(s: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            _customers.emit(customerRepository.search(s))
         }
     }
 }

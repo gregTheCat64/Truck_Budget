@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -31,7 +32,8 @@
                 android:id="@+id/phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="call"
+
+                android:hint="@string/add_phone_number"
                 android:layout_marginEnd="16dp"
                 />
 
@@ -43,30 +45,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
+
             android:layout_gravity="end"
             >
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/phoneNumberBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="22dp"
+                android:layout_marginEnd="0dp"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:icon="@drawable/baseline_local_phone_24"
                 android:src="@drawable/baseline_local_phone_24"
                 app:tint="?attr/colorPrimary"
                 />
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/whatsappMsgBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:icon="@drawable/green_whatsapp_icon"
                 android:src="@drawable/green_whatsapp_icon"
-
+                app:iconTint="@color/green"
                 />
         </LinearLayout>
-
-
-
 
 
 </FrameLayout>

@@ -104,30 +104,9 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         Log.i("EditOrderFrag", "onCreateView")
         Log.i("EditOrderFrag", "needToRestore>: $needToRestore")
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        saveOrder()
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -198,6 +177,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                         currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
                 }
             }
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
         }
         binding.customerTv.setOnClickListener {
             changingCustomer()

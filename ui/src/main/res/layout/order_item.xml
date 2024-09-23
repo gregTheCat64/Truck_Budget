@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Заявка номер"
-            style="@style/TextAppearance.Material3.TitleMedium"
+            style="@style/TextAppearance.MyCardTitle"
             />
         <TextView
             android:id="@+id/contractorName"
@@ -66,7 +66,7 @@
             android:id="@+id/paymentDeadLineTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Срок оплаты"
+            android:text="@string/days_to_pay"
             android:layout_gravity="end"
             style="@style/TextAppearance.Material3.BodySmall"
             />

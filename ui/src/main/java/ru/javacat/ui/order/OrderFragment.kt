@@ -41,6 +41,7 @@ import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import java.time.LocalDate
 import android.Manifest
+import ru.javacat.ui.OneInputValueDialogFragment
 import ru.javacat.ui.utils.makePhoneCall
 import ru.javacat.ui.utils.sendMessageToWhatsApp
 
@@ -77,6 +78,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
             docsNumber?.let {
+                println("НОМЕР ПРИШЕЛ: $docsNumber")
                 sentDocsNumber = it
                 updateOrderToDb()
                 binding.docsNumber.text = it
@@ -89,43 +91,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_edit_remove, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        if (isNewOrder == true) {
-                            findNavController().popBackStack(R.id.routeViewPagerFragment, false)
-                        } else {
-                            findNavController().navigateUp()
-                        }
-                        return true
-                    }
-
-                    R.id.edit_menu_item -> {
-                        val bundle = Bundle()
-                        bundle.putLong(FragConstants.ORDER_ID, orderIdArg ?: 0)
-                        bundle.putLong(FragConstants.ROUTE_ID, routeId ?:0)
-                        bundle.putBoolean(FragConstants.EDITING_ORDER, true)
-                        findNavController().navigate(R.id.editOrderFragment, bundle)
-
-                        return true
-                    }
-
-                    R.id.remove_menu_item -> {
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -152,8 +120,33 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             }
         }
 
+        binding.backBtn.setOnClickListener {
+            if (isNewOrder == true) {
+                findNavController().popBackStack(R.id.routeViewPagerFragment, false)
+            } else {
+            findNavController().navigateUp()
+        }
+        }
+
+        binding.editBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ORDER_ID, orderIdArg ?: 0)
+            bundle.putLong(FragConstants.ROUTE_ID, routeId ?:0)
+            bundle.putBoolean(FragConstants.EDITING_ORDER, true)
+
+            findNavController().navigate(R.id.action_orderFragment_to_editOrderFragment, bundle)
+        }
+
+
+
         binding.docsNumber.setOnClickListener {
-            parentFragmentManager.showOneInputDialog(0, FragConstants.DOCS_NUMBER)
+            val oldValue = sentDocsNumber
+            //parentFragmentManager.showOneInputDialog(oldValue, FragConstants.DOCS_NUMBER)
+            val bundle = Bundle()
+            bundle.putString(FragConstants.DOCS_NUMBER, oldValue)
+            val dialogFragment = OneInputValueDialogFragment()
+            dialogFragment.arguments = bundle
+            dialogFragment.show(parentFragmentManager, "")
         }
 
         binding.docsReceivedDateTvValue.setOnClickListener {
@@ -231,6 +224,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         routeId = order.routeId
         companyPhoneNumber = order.customer?.companyPhone
         managerPhoneNumber = order.manager?.phoneNumber
+        sentDocsNumber = order.sentDocsNumber
 
         //тайтл
         val title = if (order.id == 0L) {
@@ -239,7 +233,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             "Заявка № ${order.id}"
         }
 
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        //(activity as AppCompatActivity).supportActionBar?.title = title
+        binding.title.text = title
 
         //надпись с типом погрузки
         val typeOfUploadList = mutableListOf<String>()

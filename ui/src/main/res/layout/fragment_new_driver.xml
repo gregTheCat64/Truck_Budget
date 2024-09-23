@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сотрудник"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        style="@style/TextAppearance.MyCardTitle"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         />
@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Паспорт"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        style="@style/TextAppearance.MyCardTitle"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         />
@@ -171,7 +171,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Водительское удостоверение"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        style="@style/TextAppearance.MyCardTitle"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         />
@@ -195,7 +195,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/legal_address"
-        style="@style/TextAppearance.Material3.BodyLarge"
+        style="@style/TextAppearance.MyCardTitle"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         />
@@ -219,7 +219,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/contact_information"
-            style="@style/TextAppearance.Material3.BodyLarge"
+            style="@style/TextAppearance.MyCardTitle"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             />
@@ -259,7 +259,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Дополнительно"
-            style="@style/TextAppearance.Material3.BodyLarge"
+            style="@style/TextAppearance.MyCardTitle"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             />

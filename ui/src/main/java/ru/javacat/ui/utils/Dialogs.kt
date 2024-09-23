@@ -59,11 +59,11 @@ fun Fragment.showYearCalendar(onYearSelected: (Int) -> Unit) {
 
 }
 
-fun FragmentManager.showOneInputDialog(oldValue: Int?, typeOfValue: String){
+fun FragmentManager.showOneInputDialog(oldValue: String?, typeOfValue: String){
     val dialogFragment = OneInputValueDialogFragment()
     val dialogBundle = Bundle()
     if (oldValue != null) {
-        dialogBundle.putInt(FragConstants.OLD_VALUE, oldValue)
+        dialogBundle.putString(FragConstants.OLD_VALUE, oldValue)
     }
     dialogBundle.putString(FragConstants.TYPE_OF_VALUE, typeOfValue)
     dialogFragment.arguments = dialogBundle

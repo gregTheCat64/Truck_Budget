@@ -36,11 +36,12 @@ class ManagerAdapter(
             binding.apply {
                 name.text = item.nameToShow
                 phoneNumber.text = item.phoneNumber
+                println("PHONE NUMBER: ${item.phoneNumber}")
                 driverPhoneLayout.isGone = item.phoneNumber == null
                 root.setOnClickListener {
                     onManagerListener.onManager(item)
                 }
-                phoneNumber.setOnClickListener {
+                phoneNumberBtn.setOnClickListener {
                     onManagerListener.onPhone(phoneNumber.text.toString())
                 }
                 whatsappMsgBtn.setOnClickListener {

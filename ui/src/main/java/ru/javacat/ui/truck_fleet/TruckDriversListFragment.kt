@@ -11,11 +11,15 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
+import ru.javacat.ui.adapters.OnTruckDriverListener
 import ru.javacat.ui.adapters.TruckDriversAdapter
 import ru.javacat.ui.databinding.FragmentTruckDriversListBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.makePhoneCall
+import ru.javacat.ui.utils.sendMessageToWhatsApp
 
 @AndroidEntryPoint
 class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() {
@@ -40,16 +44,29 @@ class TruckDriversListFragment: BaseFragment<FragmentTruckDriversListBinding>() 
         super.onViewCreated(view, savedInstanceState)
         Log.i("DriverListFrag", "onViewCreated")
 
-        truckDriversAdapter = TruckDriversAdapter{
-            val bundle = Bundle()
-            bundle.putLong(FragConstants.COMPANY_ID, it.companyId)
-            bundle.putLong(FragConstants.DRIVER_ID, it.id)
+        truckDriversAdapter = TruckDriversAdapter(object : OnTruckDriverListener{
+            override fun onItem(item: TruckDriver) {
+                val bundle = Bundle()
+                bundle.putLong(FragConstants.COMPANY_ID, item.companyId)
+                bundle.putLong(FragConstants.DRIVER_ID, item.id)
 
-            //val parentFragment = requireParentFragment() as? TruckFleetViewPagerFragment
-            val action = R.id.action_truckFleetViewPager_to_truckDriverInfoFragment
-            findNavController().navigate(action, bundle)
+                val action = R.id.action_truckFleetViewPager_to_truckDriverInfoFragment
+                findNavController().navigate(action, bundle)
+            }
 
-        }
+            override fun onPhone(item: String?) {
+                if (item != null) {
+                    makePhoneCall(item)
+                }
+            }
+
+            override fun onWhatsapp(item: String?) {
+                if (item != null) {
+                    sendMessageToWhatsApp(requireContext(), item, "")
+                }
+            }
+        })
+
         binding.driversRecView.adapter = truckDriversAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {

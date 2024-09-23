@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:text="@string/expenses"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
@@ -40,7 +40,7 @@
                     android:id="@+id/monthsFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:visibility="gone"
                     android:checkable="true"
                     android:ellipsize="end"
                     android:text="@string/month"
@@ -52,7 +52,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:chipBackgroundColor="@color/green"
                     app:layout_constraintStart_toEndOf="@id/unpaidBtn" />
 
             </LinearLayout>

@@ -141,4 +141,25 @@
     <string name="change_home_company_name_advise">This default home company. Can change home company name later. Also created default truck driver, truck and trailer. These can be changed later too.</string>
     <string name="success">Success</string>
     <string name="frag_order_text_start_marging" translatable="false">16dp</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="call">Call</string>
+    <string name="cargo_description">cargo description</string>
+    <string name="order_price">Order price</string>
+    <string name="add_phone_number">add phone number</string>
+    <string name="route_profit">Route profit</string>
+    <string name="customers">Customers</string>
+    <string name="truck_driver_company_contractor">Truck driver (Company contractor)</string>
+    <string name="route_number">Route number</string>
+    <string name="expenseDescription">Expense description</string>
+    <string name="expense_name">Expense name</string>
+    <string name="expense_price">Expense price</string>
+    <string name="date">Date</string>
+    <string name="expense">Expense</string>
+    <string name="price">Price*</string>
+    <string name="name">Name*</string>
+    <string name="company_transport">Company transport</string>
+    <string name="not_company_transport">Not company transport</string>
+    <string name="average_profit">Average profit</string>
+    <string name="year_profit">Year profit</string>
+    <string name="year_expense">Year expense</string>
 </resources>

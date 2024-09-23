@@ -23,12 +23,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:text="@string/routes"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                app:layout_scrollFlags="scroll|enterAlways"
                 />
 
             <com.google.android.material.chip.Chip
@@ -40,7 +38,6 @@
                 android:checked="true"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="end"
-                app:layout_scrollFlags="scroll|enterAlways"
                 />
         </FrameLayout>
 
@@ -82,7 +79,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/route_item"/>
 

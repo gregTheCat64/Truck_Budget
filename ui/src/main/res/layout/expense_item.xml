@@ -23,8 +23,8 @@
             android:id="@+id/expenseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Масло"
-            style="@style/TextAppearance.Material3.TitleMedium"
+            android:text="@string/expense_name"
+            style="@style/TextAppearance.MyCardTextValue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
             android:id="@+id/expenseDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Замена, 40л"
+            android:hint="@string/expenseDescription"
             app:layout_constraintStart_toStartOf="@+id/expenseName"
             app:layout_constraintTop_toBottomOf="@+id/expenseName" />
 
@@ -47,10 +47,10 @@
 
         <TextView
             android:id="@+id/expenseCost"
-            style="@style/TextAppearance.Material3.TitleMedium"
+            style="@style/TextAppearance.MyCardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2000 руб."
+            android:text="@string/expense_price"
             android:layout_gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
             android:id="@+id/expenseDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="29 июля"
+            android:text="@string/date"
             android:layout_gravity="end" />
 
     </LinearLayout>

@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -52,6 +53,7 @@ class EditCustomerDialogFragment: BottomSheetDialogFragment() {
             this.dismiss()
         }
 
+        binding.itemRecView.layoutManager = LinearLayoutManager(requireContext())
         binding.itemRecView.adapter = customersAdapter
         binding.labelTv.text = getString(R.string.companies)
         binding.searchEditText.hint = "Введите название компании"

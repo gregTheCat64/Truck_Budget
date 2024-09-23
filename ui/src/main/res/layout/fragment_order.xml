@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:orientation="vertical">
+>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
@@ -15,7 +14,75 @@
         android:layout_height="wrap_content"
         />
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?android:colorBackground"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+
+                    app:icon="@drawable/baseline_chevron_left_24"
+                    />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/order"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end|center_vertical"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/baseline_edit_24"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/moreBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/baseline_more_vert_24"
+
+                    />
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -29,7 +96,7 @@
 
             <TextView
                 android:id="@+id/editCustomerTv"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -40,13 +107,11 @@
 
             <TextView
                 android:id="@+id/customerTv"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/TextAppearance.MyCardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:text="ООО Монополия"
-
                 />
 
             <LinearLayout
@@ -60,10 +125,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-
                     style="@style/Widget.Material3.Button.TextButton"
                     app:icon="@drawable/baseline_local_phone_24"
-                    android:text="Позвонить"
+                    android:text="@string/call"
                     />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sendWhatsAppBtn"
@@ -73,7 +137,7 @@
 
                     style="@style/Widget.Material3.Button.TextButton"
                     app:icon="@drawable/brown_whatsapp_icon"
-                    android:text="Написать"
+                    android:text="@string/whatsapp"
                     />
 
 
@@ -90,11 +154,11 @@
 
             <TextView
                 android:id="@+id/managerTv"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/TextAppearance.MyCardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:text="Екатерина Монопольная"
+
                 />
 
             <LinearLayout
@@ -109,7 +173,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.Material3.Button.TextButton"
                     app:icon="@drawable/baseline_local_phone_24"
-                    android:text="Позвонить контакту"
+                    android:text="@string/call"
                     android:layout_gravity="start"
                     />
                 <com.google.android.material.button.MaterialButton
@@ -119,7 +183,7 @@
                     android:layout_gravity="start"
                     style="@style/Widget.Material3.Button.TextButton"
                     app:icon="@drawable/brown_whatsapp_icon"
-                    android:text="Написать"
+                    android:text="@string/whatsapp"
                     />
             </LinearLayout>
 
@@ -134,7 +198,7 @@
 
             <TextView
                 android:id="@+id/editCargoTv"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -145,19 +209,20 @@
 
             <TextView
                 android:id="@+id/cargoTv"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/TextAppearance.MyCardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:text="20 т, 82 м3, Техника" />
+                android:text="@string/cargo_name" />
 
             <TextView
                 android:id="@+id/cargoExtraTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:text="Зад/бок, палеты" />
+                android:layout_marginBottom="8dp"
+                android:text="@string/cargo_description" />
 
 
             <include layout="@layout/horizon_line"
@@ -168,7 +233,7 @@
 
             <TextView
                 android:id="@+id/editPointsTv"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -183,6 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -196,7 +262,7 @@
 
             <TextView
                 android:id="@+id/editPaymentTv"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -213,11 +279,11 @@
 
                 <TextView
                     android:id="@+id/priceTv"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.MyCardTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                    android:text="85000 руб" />
+                    android:text="@string/order_price" />
 
 
             <TextView
@@ -228,12 +294,13 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/payment_date" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/payDayValueTv"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/baseline_add_circle_outline_24"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/baseline_edit_24"
                 android:text="@string/push_to_add" />
 
             <TextView
@@ -251,6 +318,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginBottom="8dp"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:text="@string/paid" />
 
@@ -320,7 +388,7 @@
             <include layout="@layout/horizon_line" />
 
             <TextView
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.MyFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -336,12 +404,13 @@
                 android:hint="@string/sending_documents_track_number" />
 
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/docsNumber"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/baseline_add_circle_outline_24"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/baseline_edit_24"
                 android:text="@string/push_to_add" />
 
 
@@ -352,12 +421,13 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/receiving_date" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/docsReceivedDateTvValue"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/baseline_add_circle_outline_24"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/baseline_edit_24"
                 android:text="@string/push_to_add" />
 
 
@@ -367,4 +437,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

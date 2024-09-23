@@ -67,6 +67,7 @@
         android:name="ru.javacat.ui.order.OrderListFragment"
         tools:layout="@layout/fragment_order_list"
         android:label="@string/orders" >
+
         <action
             android:id="@+id/action_navigation_order_list_to_orderFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -299,10 +300,18 @@
         tools:layout="@layout/fragment_order"
         >
         <action
-            android:id="@+id/action_orderFragment_to_orderDetailsFragment"
+            android:id="@+id/action_orderFragment_to_editOrderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/editOrderFragment" />
         <action
             android:id="@+id/action_orderFragment_to_editPointsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/editPointsFragment" />
     </fragment>
     <fragment
@@ -328,7 +337,7 @@
         android:id="@+id/editExpenseFragment"
         android:name="ru.javacat.ui.expense.EditExpenseFragment"
         tools:layout="@layout/fragment_edit_expense"
-        android:label="EditExpenseFragment" />
+        android:label="@string/expense" />
     <fragment
         android:id="@+id/finishRouteWithoutDriverFragment"
         android:name="ru.javacat.ui.finish_route.FinishRouteWithoutDriverFragment"

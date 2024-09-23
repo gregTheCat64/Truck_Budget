@@ -25,18 +25,18 @@
         android:padding="8dp"
         >
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/companyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ООО Удача"
+        android:text="@string/company_name"
         android:layout_marginStart="8dp"
-        style="@style/TextAppearance.Material3.TitleMedium"
+        style="@style/TextAppearance.MyCardTitle"
         />
 
     <TextView
         android:id="@+id/phoneNumber"
-        android:drawableStart="@drawable/baseline_local_phone_24"
+        app:drawableStartCompat="@drawable/baseline_local_phone_24"
         android:drawablePadding="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginStart="8dp"
@@ -53,12 +53,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
 
-        android:drawableStart="@drawable/ati_icon"
         android:drawablePadding="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="Ati number"
-        />
+        app:drawableStartCompat="@drawable/ati_icon" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

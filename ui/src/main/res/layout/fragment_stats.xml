@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <FrameLayout
@@ -13,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/TextAppearance.MyFragmentTitle"
             android:text="@string/statistics"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
@@ -58,9 +57,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Транспорт компании"
+            android:text="@string/company_transport"
             android:layout_gravity="center"
-            style="@style/TextAppearance.Material3.TitleMedium"
+            style="@style/TextAppearance.MyCardTitle"
             />
 
         <LinearLayout
@@ -90,10 +89,12 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/routes"
                             android:src="@drawable/baseline_route_24"
                             />
 
@@ -102,8 +103,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:text="24"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             />
 
                     </FrameLayout>
@@ -114,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         style="@style/TextAppearance.StatsCardsDescription"
-                        android:text="Рейсов"
+                        android:text="@string/routes"
                         />
 
                 </LinearLayout>
@@ -144,14 +145,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/orders"
                             android:src="@drawable/baseline_article_24"/>
                         <TextView
                             android:id="@+id/companyOrdersCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+
                             android:layout_gravity="end"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             />
 
                     </FrameLayout>
@@ -160,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="Заявок"
+                        android:text="@string/orders"
                         style="@style/TextAppearance.StatsCardsDescription"
                         />
 
@@ -193,15 +195,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/average_profit"
                             android:src="@drawable/baseline_money_24"/>
 
                         <TextView
                             android:id="@+id/averageProfit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+
                             android:layout_gravity="end"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             />
 
                     </FrameLayout>
@@ -210,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="Ср. доход в месяц"
+                        android:text="@string/average_profit"
                         style="@style/TextAppearance.StatsCardsDescription"
                         android:lines="1"
                         android:ellipsize="end"
@@ -253,14 +256,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/year_profit"
                             android:src="@drawable/baseline_attach_money_24"/>
                         <TextView
                             android:id="@+id/totalYearProfit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:contentDescription="@string/year_profit"
                             android:layout_gravity="end"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             />
                     </FrameLayout>
 
@@ -270,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextAppearance.StatsCardsDescription"
-                        android:text="Доход за год" />
+                        android:text="@string/year_profit" />
 
                 </LinearLayout>
 
@@ -299,15 +303,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/year_expense"
                             android:src="@drawable/baseline_precision_manufacturing_24"
                             />
                         <TextView
                             android:id="@+id/yearExpense"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
                             android:layout_gravity="end"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             />
                     </FrameLayout>
 
@@ -319,7 +323,7 @@
                         android:lines="1"
                         style="@style/TextAppearance.StatsCardsDescription"
                         android:ellipsize="end"
-                        android:text="Расход за год"
+                        android:text="@string/year_expense"
                         />
 
                 </LinearLayout>
@@ -334,8 +338,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
-            android:text="Привлеченный транспорт"
-            style="@style/TextAppearance.Material3.TitleMedium"
+            android:text="@string/not_company_transport"
+            style="@style/TextAppearance.MyCardTitle"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -365,14 +369,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/orders"
                             android:src="@drawable/baseline_article_24"/>
 
                         <TextView
                             android:id="@+id/notCompanyOrdersCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             android:layout_gravity="end"
                             />
 
@@ -384,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         style="@style/TextAppearance.StatsCardsDescription"
-                        android:text="Заявок"
+                        android:text="@string/orders"
                         />
 
                 </LinearLayout>
@@ -415,14 +420,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/average_profit"
                             android:src="@drawable/baseline_money_24"/>
 
                         <TextView
                             android:id="@+id/notCompanyTransportAverageProfit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             android:layout_gravity="end"
                             />
 
@@ -435,7 +440,7 @@
                         style="@style/TextAppearance.StatsCardsDescription"
                         android:ellipsize="end"
                         android:lines="1"
-                        android:text="Ср.доход в месяц"
+                        android:text="@string/average_profit"
                         />
 
                 </LinearLayout>
@@ -477,13 +482,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/year_profit"
                             android:src="@drawable/baseline_attach_money_24"/>
                         <TextView
                             android:id="@+id/notCompanyTotalProfit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            style="@style/TextAppearance.Material3.TitleLarge"
+
+                            style="@style/TextAppearance.MyStatsCardTitle"
                             android:layout_gravity="end"
                             />
                     </FrameLayout>
@@ -493,7 +499,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextAppearance.StatsCardsDescription"
-                        android:text="Доход за год"
+                        android:text="@string/year_profit"
                         />
 
                 </LinearLayout>
@@ -505,10 +511,6 @@
                 android:layout_weight="1"
                 />
         </LinearLayout>
-
-
-
-
 
 
         <com.github.mikephil.charting.charts.BarChart
