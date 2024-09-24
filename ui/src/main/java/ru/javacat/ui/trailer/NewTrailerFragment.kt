@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_trailer
+package ru.javacat.ui.trailer
 
 import android.os.Bundle
 import android.util.Log
@@ -56,9 +56,9 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -114,8 +114,12 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
             binding.typeOfTransportEt.setText(chip.text?.toString())
         }
 
-        binding.saveBtn.setOnClickListener {
+        binding.actionBar.saveBtn.setOnClickListener {
            saveNewTrailer()
+        }
+
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
         }
 
 
@@ -150,8 +154,7 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
                         }
 
                         else -> {
-                            Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT)
-                                .show()
+
                         }
                     }
                 }
@@ -160,7 +163,8 @@ class NewTrailerFragment : BaseFragment<FragmentNewTransportBinding>() {
     }
 
     private fun updateUi(transport: Vehicle) {
-        (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
+        //(activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
+        binding.actionBar.title.text = getString(R.string.edit)
         Log.i("newTransportFragm", "vehicle: $transport")
         transport.apply {
             vin?.let {

@@ -26,7 +26,7 @@ class NewEmployeeViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    suspend fun getManagerById(id: Long){
+    fun getManagerById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {

@@ -143,7 +143,7 @@
     <string name="success">Успешно</string>
     <string name="whatsapp">Whatsapp</string>
     <string name="call">Позвонить</string>
-    <string name="cargo_description">cargo description</string>
+    <string name="cargo_description">Описание груза</string>
     <string name="order_price">Order price</string>
     <string name="add_phone_number">добавьте номер телефона</string>
     <string name="route_profit">Доход с рейса</string>
@@ -156,10 +156,13 @@
     <string name="date">Дата</string>
     <string name="expense">Расход</string>
     <string name="price">Цена*</string>
-    <string name="name">Название*</string>
+    <string name="name">Название</string>
     <string name="company_transport">Транспорт компании</string>
     <string name="not_company_transport">Привлеченный транспорт</string>
     <string name="average_profit">Ср. доход в мес.</string>
     <string name="year_profit">Доход за год</string>
     <string name="year_expense">Расход за год</string>
+    <string name="general">Главное</string>
+    <string name="new_company">Новая компания</string>
+    <string name="share">Share</string>
 </resources>

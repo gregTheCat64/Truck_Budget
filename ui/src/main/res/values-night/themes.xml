@@ -55,8 +55,4 @@
 
     </style>
 
-    <style name="TextAppearance.MyFragmentTitle" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textColor">@color/onBackground</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 </resources>

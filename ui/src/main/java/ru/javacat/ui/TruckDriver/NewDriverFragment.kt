@@ -59,31 +59,10 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        saveNewDriver()
-                        return true
-                    }
-
-                    else ->  return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -137,6 +116,14 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
                 }
             }
         }
+
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.actionBar.saveBtn.setOnClickListener {
+            saveNewDriver()
+        }
     }
 
     private fun saveNewDriver(){
@@ -167,8 +154,8 @@ class NewDriverFragment : BaseFragment<FragmentNewDriverBinding>() {
     }
 
     private fun updateUi(truckDriver: TruckDriver){
-        (activity as AppCompatActivity).supportActionBar?.title = truckDriver.nameToShow
-
+        //(activity as AppCompatActivity).supportActionBar?.title = truckDriver.nameToShow
+        binding.actionBar.title.text = getString(R.string.edit)
         newPassWhen = truckDriver.passportReceivedDate
 
         binding.apply {

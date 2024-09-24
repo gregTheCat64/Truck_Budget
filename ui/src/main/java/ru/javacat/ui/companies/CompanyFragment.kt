@@ -1,12 +1,14 @@
 package ru.javacat.ui.companies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -54,9 +56,9 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
 
         requireActivity().addMenuProvider(object : MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -94,6 +96,22 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.editBtn.setOnClickListener {
+            val bundle = Bundle()
+            if (customerId != null) {
+                bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
+                findNavController().navigate(R.id.action_companyFragment_to_newCustomerFragment, bundle)
+            }
+        }
+
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.moreBtn.setOnClickListener {
+            showMenu(it)
+        }
 
         binding.callCompanyPhoneBtn.setOnClickListener {
             binding.phoneNumberTv.text?.let {
@@ -164,7 +182,8 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
     private fun updateUi(customer: Company){
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = customer.shortName
+            //(activity as AppCompatActivity).supportActionBar?.title = customer.shortName
+            title.text = customer.shortName
             customerNameTv.text = customer.nameToShow
             shortNameTv.text = customer.shortName
             customer.atiNumber?.let {
@@ -187,5 +206,23 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
     private fun removeCompany(id: Long){
         viewModel.hideCompanyById(id)
+    }
+
+    private fun showMenu(view: View) {
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.menu_remove)
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
+            when (item.itemId) {
+                R.id.remove_menu_item -> {
+                    customerId?.let { removeCompany(it) }
+                    findNavController().navigateUp()
+
+                }
+
+                else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()
+            }
+            true
+        })
+        menu.show()
     }
 }

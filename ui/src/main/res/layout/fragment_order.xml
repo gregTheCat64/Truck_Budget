@@ -14,72 +14,10 @@
         android:layout_height="wrap_content"
         />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?android:colorBackground"
-        >
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal"
-                >
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/backBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton"
-
-                    app:icon="@drawable/baseline_chevron_left_24"
-                    />
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/order"
-                    style="@style/TextAppearance.Material3.TitleLarge"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="end|center_vertical"
-                >
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/editBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:icon="@drawable/baseline_edit_24"
-                    />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/moreBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:icon="@drawable/baseline_more_vert_24"
-
-                    />
-
-
-            </LinearLayout>
-
-
-        </FrameLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/general_info_bar"
+        />
 
     <androidx.core.widget.NestedScrollView
         android:layout_marginTop="?attr/actionBarSize"
@@ -96,7 +34,7 @@
 
             <TextView
                 android:id="@+id/editCustomerTv"
-                style="@style/TextAppearance.MyFragmentTitle"
+                style="@style/TextAppearance.InfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -104,10 +42,20 @@
 
                 android:text="@string/customer" />
 
+            <TextView
+                android:id="@+id/generalLabelTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/general"
+                style="@style/TextAppearance.InfoDescription"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                />
+
 
             <TextView
                 android:id="@+id/customerTv"
-                style="@style/TextAppearance.MyCardTitle"
+                style="@style/TextAppearance.InfoValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -149,12 +97,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="@string/manager"
+                style="@style/TextAppearance.InfoDescription"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:hint="@string/manager" />
 
             <TextView
                 android:id="@+id/managerTv"
-                style="@style/TextAppearance.MyCardTitle"
+                style="@style/TextAppearance.InfoValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
@@ -198,7 +148,7 @@
 
             <TextView
                 android:id="@+id/editCargoTv"
-                style="@style/TextAppearance.MyFragmentTitle"
+                style="@style/TextAppearance.InfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -208,20 +158,38 @@
 
 
             <TextView
-                android:id="@+id/cargoTv"
-                style="@style/TextAppearance.MyCardTitle"
+                android:id="@+id/cargoNameLabelTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="@string/name"
+                style="@style/TextAppearance.InfoDescription"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                 />
+            <TextView
+                android:id="@+id/cargoTv"
+                style="@style/TextAppearance.InfoValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="@string/cargo_name" />
 
+            <TextView
+                android:id="@+id/cargoExtraLabelTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/cargo_description"
+                style="@style/TextAppearance.InfoDescription"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                />
             <TextView
                 android:id="@+id/cargoExtraTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginBottom="8dp"
+                style="@style/TextAppearance.InfoValue"
                 android:text="@string/cargo_description" />
 
 
@@ -233,7 +201,7 @@
 
             <TextView
                 android:id="@+id/editPointsTv"
-                style="@style/TextAppearance.MyFragmentTitle"
+                style="@style/TextAppearance.InfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -262,7 +230,7 @@
 
             <TextView
                 android:id="@+id/editPaymentTv"
-                style="@style/TextAppearance.MyFragmentTitle"
+                style="@style/TextAppearance.InfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -275,11 +243,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
+                android:text="@string/cost"
+
+                style="@style/TextAppearance.InfoDescription"
                 android:hint="@string/cost" />
 
                 <TextView
                     android:id="@+id/priceTv"
-                    style="@style/TextAppearance.MyCardTitle"
+                    style="@style/TextAppearance.InfoValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/frag_company_text_start_margin"
@@ -292,6 +263,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoDescription"
+                android:text="@string/payment_date"
                 android:hint="@string/payment_date" />
 
             <TextView
@@ -309,6 +282,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoDescription"
+                android:text="@string/payment_status"
                 android:hint="@string/payment_status" />
 
 
@@ -388,7 +363,7 @@
             <include layout="@layout/horizon_line" />
 
             <TextView
-                style="@style/TextAppearance.MyFragmentTitle"
+                style="@style/TextAppearance.InfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -401,6 +376,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoDescription"
+                android:text="@string/sending_documents_track_number"
                 android:hint="@string/sending_documents_track_number" />
 
 
@@ -419,6 +396,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoDescription"
+                android:text="@string/receiving_date"
                 android:hint="@string/receiving_date" />
 
             <TextView

@@ -42,8 +42,8 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
     private var isNeedToSet: Boolean = false
 
     private var firstName: String = ""
-    private var surName: String = ""
-    private var phoneNumber: String = ""
+    private var surName: String? = null
+    private var phoneNumber: String? = null
     private var secondPhoneNumber: String? = null
     private var email: String? = null
     private var comment: String? = null
@@ -70,50 +70,20 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        getFieldsData()
-                        saveManager(managerId ?: 0L, isNeedToSet)
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Log.i("NewEmployeeFrag", "emplID: ${managerId.toString()}")
-                if (managerId != null) {
-                    viewModel.getManagerById(managerId!!)
-                }
-
-            }
-        }
+        managerId?.let { viewModel.getManagerById(it)}
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.editedManager.collectLatest {
                     if (it != null && managerId != null) {
                         customerId = it.companyId
@@ -123,8 +93,7 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
             }
         }
 
-
-        binding.saveBtn.setOnClickListener {
+        binding.actionBar.saveBtn.setOnClickListener {
             if (getFieldsData() && customerId != 0L) {
                 saveManager(managerId ?: 0L, isNeedToSet)
             } else Toast.makeText(
@@ -134,39 +103,21 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
             ).show()
         }
 
-        binding.firstName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (!p0.isNullOrEmpty()) {
-                    binding.firstNameLayout.error = null
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-        })
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun getFieldsData(): Boolean {
-        val requestField = "Обязательное поле"
-
-//        if (binding.phoneNumber.text.isNullOrEmpty()){
-//            binding.phoneLayout.error = requestField
-//            binding.phoneNumber.requestFocus()
-//            return false
-//        } else {
-//            phoneNumber = binding.phoneNumber.text.toString()
-//        }
+        //val requestField = "Обязательное поле"
 
         binding.surName.text?.let {
-            surName = it.toString()
+            if (it.isNotEmpty()) surName = it.toString()
         }
 
-        phoneNumber = binding.phoneNumber.text.toString()
+        binding.phoneNumber.text?.let {
+            if (it.isNotEmpty()) phoneNumber = it.toString()
+        }
 
         secondPhoneNumber = binding.phoneNumber2.text?.let {
             if (it.isBlank()) null else it.toString()
@@ -181,7 +132,7 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
         }
 
         if (binding.firstName.text.isNullOrEmpty()) {
-            binding.firstNameLayout.error = requestField
+            //binding.firstNameLayout.error = requestField
             binding.firstName.requestFocus()
             return false
         } else {
@@ -193,13 +144,26 @@ class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
 
     private fun updateUi(manager: Manager) {
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = manager.nameToShow
-            firstName.setText(manager.firstName)
-            surName.setText(manager.surname)
-            phoneNumber.setText(manager.phoneNumber)
-            phoneNumber2.setText(manager.secondNumber)
-            email.setText(manager.email)
-            comment.setText(manager.comment)
+            //(activity as AppCompatActivity).supportActionBar?.title = manager.nameToShow
+            actionBar.title.text = getString(R.string.edit)
+            manager.firstName.let {
+                firstName.setText(it)
+            }
+            manager.surname?.let {
+                surName.setText(it)
+            }
+            manager.phoneNumber?.let {
+                phoneNumber.setText(it)
+            }
+            manager.secondNumber?.let {
+                phoneNumber2.setText(it)
+            }
+            manager.email?.let {
+                email.setText(it)
+            }
+            manager.comment?.let {
+                comment.setText(it)
+            }
         }
     }
 

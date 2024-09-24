@@ -63,38 +63,16 @@ class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        saveCustomer()
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.actionBar.title.text = getString(R.string.create)
         customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -128,8 +106,7 @@ class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
                         }
 
                         else -> {
-                            Toast.makeText(requireContext(), "Something wrong", Toast.LENGTH_SHORT)
-                                .show()
+
                         }
                     }
                 }
@@ -137,14 +114,19 @@ class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.editedCustomer.collectLatest {
                     it?.let { updateUi(it) }
                 }
             }
         }
 
-        binding.saveBtn.setOnClickListener {
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+
+        binding.actionBar.saveBtn.setOnClickListener {
             saveCustomer()
 
         }
@@ -170,7 +152,10 @@ class NewCompanyFragment : BaseFragment<FragmentNewCustomerBinding>() {
 
     private fun updateUi(customer: Company) {
         binding.apply {
-            (activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
+            //(activity as AppCompatActivity).supportActionBar?.title = "Редактирование"
+            customer.shortName?.let {
+                actionBar.title.text = getString(R.string.edit)
+            }
             name.setText(customer.nameToShow)
             customer.atiNumber?.let {
                 atiNumber.setText(it.toString())

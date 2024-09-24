@@ -51,24 +51,8 @@ class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBindi
     ): View? {
         Log.i("TruckeFleetVPFragment", "onCreateView")
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
-        requireActivity().addMenuProvider(object : MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -134,6 +118,10 @@ class TruckFleetViewPagerFragment: BaseFragment<FragmentTruckFleetViewPagerBindi
                 Log.i("DriverListFrag", "getting trucks list at companyId: $companyId")
                 companyId?.let { viewModel.getTruckList(it) }
             }
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

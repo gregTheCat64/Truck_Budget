@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="?attr/actionBarSize"
     >
 
     <ProgressBar
@@ -15,16 +14,24 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         />
 
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/edit_bar"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+
         android:layout_marginBottom="16dp"
         >
 

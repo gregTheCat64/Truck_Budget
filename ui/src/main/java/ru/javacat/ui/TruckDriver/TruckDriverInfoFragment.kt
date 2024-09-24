@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -20,12 +21,14 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Truck
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentDriverInfoBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.shareMessage
 
 @AndroidEntryPoint
 class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
@@ -33,6 +36,7 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
 
     private var truckDriverId: Long? = null
     private var companyId: Long = -1L
+    private var currentTruckDriver: TruckDriver? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentDriverInfoBinding
         get() = {inflater, container ->
@@ -53,9 +57,9 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -96,6 +100,7 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedTruckDriver.collectLatest {
                     if (it != null) {
+                        currentTruckDriver = it
                         updateUi(it)
                     }
                 }
@@ -123,10 +128,24 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
                 }
             }
         }
+
+        binding.actionBar.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.actionBar.editBtn.setOnClickListener {
+            editTruckDriver()
+        }
+
+        binding.actionBar.moreBtn.setOnClickListener {
+            showMenu(it)
+        }
+
     }
 
     private fun updateUi(td: TruckDriver){
-        (activity as AppCompatActivity).supportActionBar?.title = td.nameToShow
+        //(activity as AppCompatActivity).supportActionBar?.title = td.nameToShow
+        binding.actionBar.title.text = td.nameToShow
 
         val name = "${td.surname} ${td.middleName?:""} ${td.firstName?:""}"
         val passport = "${td.passportNumber?:""} ${td.passportReceivedPlace?:""} ${td.passportReceivedDate?:""}"
@@ -160,5 +179,38 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
         Log.i("NewDriverFrag", "driverId: $id")
         viewModel.hideDriver(id)
 
+    }
+
+    private fun share(td: TruckDriver){
+        val fullName = "${td.surname.takeIf { it.isNotEmpty() }} ${td.middleName?.takeIf { it.isNotEmpty() }} ${td.firstName}"
+        val passport = if (!td.passportNumber.isNullOrEmpty()) "${td.passportNumber} выдан ${td.passportReceivedPlace} ${td.passportReceivedDate}" else null
+        val place = if (!td.placeOfRegistration.isNullOrEmpty()) "${td.placeOfRegistration}" else null
+        val driveLicense = if (!td.driveLicenseNumber.isNullOrEmpty()) "Права: ${td.driveLicenseNumber}" else null
+        val phoneNumber = if (!td.phoneNumber.isNullOrEmpty()) td.phoneNumber else null
+
+        val infoToShare = listOfNotNull(fullName, passport, place, driveLicense, phoneNumber).joinToString(", ")
+
+        requireContext().shareMessage(infoToShare)
+    }
+
+    private fun showMenu(view: View) {
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.menu_remove)
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
+            when (item.itemId) {
+                R.id.remove_menu_item -> {
+                    truckDriverId?.let { hideDriver(it) }
+                    //findNavController().navigateUp()
+
+                }
+                R.id.share_menu_item -> {
+                    currentTruckDriver?.let { share(it) }
+                }
+
+                else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()
+            }
+            true
+        })
+        menu.show()
     }
 }

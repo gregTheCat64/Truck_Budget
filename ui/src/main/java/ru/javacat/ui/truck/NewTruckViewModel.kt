@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_truck
+package ru.javacat.ui.truck
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

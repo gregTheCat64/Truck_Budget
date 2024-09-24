@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -139,7 +140,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                         Log.i("EditOrderFrag", "collecting Order: $order")
                         currentOrder = order
                         initUi(order)
-                        paintOrder(R.drawable.unfilled_circle)
+
                         //в режиме редактирования восстанавливаем Рейс во флоу
                         if (needToRestore) {
                             Log.i(
@@ -179,7 +180,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
         }
 
-        binding.cancelBtn.setOnClickListener {
+        binding.actionBar.cancelBtn.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.customerTv.setOnClickListener {
@@ -294,7 +295,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         //Сохранение заявки
-        binding.saveBtn.setOnClickListener {
+        binding.actionBar.saveBtn.setOnClickListener {
             saveOrder()
         }
 
@@ -326,23 +327,26 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     }
 
     private fun initUi(order: Order) {
-        val title = if (order.id == 0L) {
-            "Новая заявка"
-        } else {
-            "Заявка № ${order.id}"
-        }
+//        val title = if (order.id == 0L) {
+//            "Новая заявка"
+//        } else {
+//            "Заявка № ${order.id}"
+//        }
         //binding.orderTitle.text = title
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        //(activity as AppCompatActivity).supportActionBar?.title = title
+        binding.actionBar.title.text = getString(R.string.edit)
         currentOrder = order
 
         order.daysToPay?.let {
             val value = "$it"
             binding.daysToPayTv.setText(value)
+            Log.i("EditOrderFrag", "setting daysToPay to field")
         }
 
         order.price?.let {
             val value = "$it"
             binding.priceTv.setText(value)
+            Log.i("EditOrderFrag", "setting price to field")
         }
 
         order.cargo?.cargoVolume?.let {
@@ -416,13 +420,18 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         binding.upCheck.isChecked =  order.cargo?.isTopLoad == true
 
         pointsAdapter.submitList(order.points)
+
+        paintOrder(R.drawable.unfilled_circle)
     }
 
     private fun checkPayment(): Boolean {
+        val unfilledCircle =  AppCompatResources.getDrawable(requireContext(), R.drawable.unfilled_circle)
+        val filledCircle = AppCompatResources.getDrawable(requireContext(), R.drawable.filled_circle)
         if (binding.priceTv.text.isNullOrEmpty() ||
             binding.daysToPayTv.text.isNullOrEmpty()
             ) {
-            binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+            Log.i("EditOrderFrag", "priceTV: ${binding.priceTv.text.isNullOrEmpty()} or daysToPayTv: ${binding.daysToPayTv.text.isNullOrEmpty()}")
+            binding.paymentCheck.setImageDrawable(unfilledCircle)
             return false
         } else {
             newPrice = binding.priceTv.text.toString().toInt()
@@ -434,7 +443,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             if ( binding.contractorsPrice.text.isNullOrEmpty() ||
                 binding.daysToPaytoContractorEditText.text.isNullOrEmpty()
                 ){
-                binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.unfilled_circle))
+                binding.paymentCheck.setImageDrawable(unfilledCircle)
                 return false
             } else {
                 newContractorPrice = binding.contractorsPrice.text?.toString()?.toInt()
@@ -442,7 +451,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
         }
 
-        binding.paymentCheck.setImageDrawable(requireActivity().getDrawable(R.drawable.filled_circle))
+        binding.paymentCheck.setImageDrawable(filledCircle)
         return true
     }
 
@@ -486,8 +495,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 //    }
 
     private fun paintOrder(unCheckedImage: Int) {
-        val checkedCircle = requireContext().getDrawable(R.drawable.filled_circle)
-        val unCheckedCircle = requireActivity().getDrawable(unCheckedImage)
+        val checkedCircle = AppCompatResources.getDrawable(requireContext(),R.drawable.filled_circle)
+        val unCheckedCircle = AppCompatResources.getDrawable(requireContext(), unCheckedImage)
 
         if (checkCustomer()) {
             binding.customerCheck.setImageDrawable(checkedCircle)

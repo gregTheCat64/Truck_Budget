@@ -65,7 +65,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
             }
         }
 
-        binding.searchBtn.maxWidth = 500
+        binding.searchBtn.maxWidth = 600
 
         binding.searchBtn.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -82,7 +82,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
 
 
         binding.addCustomerBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_company_list_to_companyFragment)
+            findNavController().navigate(R.id.action_navigation_company_list_to_newCustomerFragment)
         }
     }
 }

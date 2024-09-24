@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_trailer
+package ru.javacat.ui.trailer
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

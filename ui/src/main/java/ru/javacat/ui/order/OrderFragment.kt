@@ -120,7 +120,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             }
         }
 
-        binding.backBtn.setOnClickListener {
+        binding.actionBar.backBtn.setOnClickListener {
             if (isNewOrder == true) {
                 findNavController().popBackStack(R.id.routeViewPagerFragment, false)
             } else {
@@ -128,7 +128,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         }
         }
 
-        binding.editBtn.setOnClickListener {
+        binding.actionBar.editBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong(FragConstants.ORDER_ID, orderIdArg ?: 0)
             bundle.putLong(FragConstants.ROUTE_ID, routeId ?:0)
@@ -234,25 +234,26 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         }
 
         //(activity as AppCompatActivity).supportActionBar?.title = title
-        binding.title.text = title
+        binding.actionBar.title.text = title
 
         //надпись с типом погрузки
         val typeOfUploadList = mutableListOf<String>()
         if (order.cargo?.isBackLoad == true) {
-            typeOfUploadList.add("зад")
+            typeOfUploadList.add("Задняя")
         }
         if (order.cargo?.isSideLoad == true) {
-            typeOfUploadList.add("бок")
+            typeOfUploadList.add("Боковая")
         }
         if (order.cargo?.isTopLoad == true) {
-            typeOfUploadList.add("верх")
+            typeOfUploadList.add("Верх")
         }
         val typeOfUploadString = typeOfUploadList.joinToString(separator = "/")
 
 
         //TODO добавить в груз - способ погрузки - палеты, валом и тд
 
-        val cargoText =  "${order.cargo?.cargoName}, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3 "
+        val cargoText =  "${order.cargo?.cargoName} "
+        val extraCargoInfoText = "$typeOfUploadString, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3"
         val priceText = "${order.price} руб., ${order.payType.toRussian()}, ${order.daysToPay} б.дней"
 
 
@@ -268,7 +269,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             managerTv.text = order.manager?.nameToShow
             cargoTv.text = cargoText
 
-            cargoExtraTv.text = typeOfUploadString
+            cargoExtraTv.text = extraCargoInfoText
             priceTv.text =  priceText
 
 

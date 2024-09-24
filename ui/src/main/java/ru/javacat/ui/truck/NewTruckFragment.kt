@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_truck
+package ru.javacat.ui.truck
 
 import android.os.Bundle
 import android.util.Log
@@ -56,31 +56,10 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        saveNewTruck()
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -114,8 +93,12 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
             binding.typeOfTransportEt.setText(chip.text?.toString())
         }
 
-        binding.saveBtn.setOnClickListener {
+        binding.actionBar.saveBtn.setOnClickListener {
             saveNewTruck()
+        }
+
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
         }
 
 
@@ -161,7 +144,8 @@ class NewTruckFragment : BaseFragment<FragmentNewTransportBinding>() {
 
 
     private fun updateUi(transport: Vehicle) {
-        (activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
+        //(activity as AppCompatActivity).supportActionBar?.title = transport.nameToShow
+        binding.actionBar.title.text = getString(R.string.edit)
         Log.i("newTransportFragm", "vehicle: $transport")
 
         transport.apply {

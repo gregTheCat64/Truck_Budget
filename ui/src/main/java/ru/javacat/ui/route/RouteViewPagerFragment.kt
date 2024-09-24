@@ -8,9 +8,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -55,10 +58,7 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         Log.i("RouteVPfrag", "routeId: $routeId")
 
         bundle.putLong(FragConstants.ROUTE_ID, routeId?:0)
-
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,32 +68,8 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
 
         Log.i("RouteVPFrag", "onCreateView")
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
-
-        requireActivity().addMenuProvider(object : MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_remove, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.remove_menu_item -> {
-                        //TODO добавить диалог!
-                        routeId?.let { removeRoute(it) }
-                        //findNavController().navigateUp()
-                        return true
-                    }
-                    android.R.id.home -> {
-                        findNavController().popBackStack(R.id.navigation_route_list,false)
-                        return true
-                    }
-                    else ->  return false
-                }
-            }
-        }, viewLifecycleOwner)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -161,6 +137,14 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
                 }
             }
         }
+
+        binding.actionBar.backBtn.setOnClickListener {
+            findNavController().popBackStack(R.id.navigation_route_list,false)
+        }
+
+        binding.actionBar.moreBtn.setOnClickListener {
+            showMenu(it)
+        }
     }
 
     private fun stateListener(){
@@ -177,7 +161,9 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         Log.i("RouteViewPagerFrag", "init route: $route")
         val title = "Рейс № ${route.id}"
 
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        //(activity as AppCompatActivity).supportActionBar?.title = title
+        binding.actionBar.title.text = title
+        binding.actionBar.editBtn.isGone = true
 
         val truckInfoList = mutableListOf<String>()
         val truckDriver = "${route.contractor?.driver?.nameToShow}".trim()
@@ -198,5 +184,20 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.removeRoute(routeId)
         }
+    }
+
+    private fun showMenu(view: View) {
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.menu_remove)
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
+            when (item.itemId) {
+                R.id.remove_menu_item -> {
+                    routeId?.let { removeRoute(it) }
+                }
+                else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()
+            }
+            true
+        })
+        menu.show()
     }
 }
