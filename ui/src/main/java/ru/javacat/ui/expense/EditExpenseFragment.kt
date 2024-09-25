@@ -3,14 +3,10 @@ package ru.javacat.ui.expense
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -21,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Expense
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
@@ -29,6 +24,7 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentEditExpenseBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showCalendar
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 import java.lang.NumberFormatException
 import java.time.LocalDate
 
@@ -43,6 +39,7 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
     private val viewModel: EditExpenseViewModel by viewModels()
 
     private var expenseIdArg: Long? = null
+    private var currentExpense: Expense? = null
     private var needToRestore: Boolean = false
 
     private var name: String? = null
@@ -72,30 +69,9 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_save, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.save -> {
-                        saveOrder()
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -110,7 +86,9 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedExpense.collectLatest {
-                    it?.let { updateUi(it)}
+                    it?.let {
+                        currentExpense = it
+                        updateUi(it)}
                 }
             }
         }
@@ -143,9 +121,21 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
         }
 
         binding.removeBtn.setOnClickListener {
-            expenseIdArg?.let { id -> viewModel.removeExpense(id) }
-            Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
+            showDeleteConfirmationDialog("расход ${currentExpense?.nameToShow}"){
+                expenseIdArg?.let { id -> viewModel.removeExpense(id) }
+                Toast.makeText(requireContext(), getString(R.string.removed), Toast.LENGTH_SHORT).show()
+            }
+
         }
+
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.actionBar.saveBtn.setOnClickListener {
+            saveOrder()
+        }
+
     }
 
     private fun changeName(){
@@ -175,6 +165,7 @@ class EditExpenseFragment: BaseFragment<FragmentEditExpenseBinding>() {
     }
 
     private fun updateUi(expense: Expense){
+        binding.actionBar.title.text = getString(R.string.edit)
         expense.apply {
             nameToShow.let {
                 binding.expenseTv.setText(it)

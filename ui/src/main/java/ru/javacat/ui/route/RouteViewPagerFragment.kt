@@ -32,6 +32,7 @@ import ru.javacat.ui.adapters.RouteViewPagerAdapter
 import ru.javacat.ui.databinding.FragmentRouteViewPagerBinding
 
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
@@ -192,9 +193,15 @@ class RouteViewPagerFragment: BaseFragment<FragmentRouteViewPagerBinding>() {
         menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
             when (item.itemId) {
                 R.id.remove_menu_item -> {
+                    showDeleteConfirmationDialog("рейс $routeId"){
+                        routeId?.let { viewModel.removeRoute(it) }
+                    }
                     routeId?.let { removeRoute(it) }
                 }
-                else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()
+                R.id.share_menu_item -> {
+                    Toast.makeText(requireContext(), "Пока не реализовано", Toast.LENGTH_SHORT).show()
+                }
+                else -> Toast.makeText(context, "Пока не реализовано", Toast.LENGTH_SHORT).show()
             }
             true
         })

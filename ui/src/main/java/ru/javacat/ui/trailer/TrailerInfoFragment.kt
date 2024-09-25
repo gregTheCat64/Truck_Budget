@@ -28,6 +28,7 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentTransportInfoBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.shareMessage
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class TrailerInfoFragment: BaseFragment<FragmentTransportInfoBinding>() {
@@ -167,10 +168,10 @@ class TrailerInfoFragment: BaseFragment<FragmentTransportInfoBinding>() {
     }
 
     private fun share(tr: Trailer){
-        val plateInfo = if (tr.regNumber.isNotEmpty()) "Полуприцеп рег. номер: ${tr.regNumber} ${tr.regionCode.takeIf { it != null }}" else null
-        val typeInfo = if (!tr.type.isNullOrEmpty()) tr.type else null
-        val modelInfo = if (!tr.model.isNullOrEmpty()) tr.model else null
-        val year = if (!tr.yearOfManufacturing.isNullOrEmpty()) tr.yearOfManufacturing else null
+        val plateInfo = tr.regNumber.let { "Полуприцеп рег. номер: ${tr.regNumber} ${tr.regionCode}"}
+        val typeInfo = tr.type?.let { tr.type }
+        val modelInfo = tr.model?.let { tr.model }
+        val year = tr.yearOfManufacturing?.let {  tr.yearOfManufacturing }
 
         val infoToShare = listOfNotNull(plateInfo, typeInfo, modelInfo, year).joinToString(", ")
 
@@ -183,8 +184,9 @@ class TrailerInfoFragment: BaseFragment<FragmentTransportInfoBinding>() {
         menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
             when (item.itemId) {
                 R.id.remove_menu_item -> {
-                    transportId?.let { hideTrailer(it) }
-                    //findNavController().navigateUp()
+                    showDeleteConfirmationDialog("прицеп ${currentTrailer?.nameToShow}"){
+                        transportId?.let { hideTrailer(it) }
+                    }
 
                 }
                 R.id.share_menu_item -> {

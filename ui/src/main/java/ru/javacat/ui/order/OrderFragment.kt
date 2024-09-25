@@ -41,9 +41,13 @@ import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import java.time.LocalDate
 import android.Manifest
+import android.widget.PopupMenu
+import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.ui.OneInputValueDialogFragment
 import ru.javacat.ui.utils.makePhoneCall
 import ru.javacat.ui.utils.sendMessageToWhatsApp
+import ru.javacat.ui.utils.shareMessage
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>() {
@@ -58,6 +62,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     private var orderIdArg: Long? = null
     private var routeId: Long? = null
     private var isNewOrder: Boolean? = false
+    private var currentOrder: Order? = null
+
     private var isPaid: Boolean = false
     private var isPaidToContractor: Boolean = false
     private var sentDocsNumber: String? = null
@@ -78,7 +84,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         setFragmentResultListener(FragConstants.NEW_VALUE) { _, bundle ->
             val docsNumber = bundle.getString(FragConstants.DOCS_NUMBER)
             docsNumber?.let {
-                println("НОМЕР ПРИШЕЛ: $docsNumber")
+                //println("НОМЕР ПРИШЕЛ: $docsNumber")
                 sentDocsNumber = it
                 updateOrderToDb()
                 binding.docsNumber.text = it
@@ -100,12 +106,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         orderIdArg?.let { viewModel.getOrderById(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedOrder.collectLatest {
+                    currentOrder = it
                     //обновили текущий Рейс:
                     //it?.routeId?.let { it1 -> viewModel.updateEditedRoute(it1) }
                     //обновили экран:
@@ -115,9 +121,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadState.collectLatest {
-                binding.progressBar.isVisible = it == LoadState.Loading
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loadState.collectLatest {
+                    binding.progressBar.isVisible = it == LoadState.Loading
+                    if (it is LoadState.Success.Removed){
+                        findNavController().navigateUp()
+                    }
+                }
             }
+
         }
 
         binding.actionBar.backBtn.setOnClickListener {
@@ -135,6 +147,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             bundle.putBoolean(FragConstants.EDITING_ORDER, true)
 
             findNavController().navigate(R.id.action_orderFragment_to_editOrderFragment, bundle)
+        }
+
+        binding.actionBar.moreBtn.setOnClickListener {
+            showMenu(it)
         }
 
 
@@ -329,6 +345,56 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
     private fun updateOrderToDb(){
         viewModel.updateOrderToDb(paymentDeadline, sentDocsNumber, docsReceived, isPaid, isPaidToContractor)
+    }
+
+    private fun share(order: Order){
+
+        val idInfo = "Заявка № ${order.id} Рейс № ${order.routeId}"
+        val pointsInfo = StringBuilder()
+        order.points.forEach {
+            pointsInfo.append("${it.arrivalDate.asDayAndMonthShortly()} ${it.location} ")
+
+        }
+        val isPaidInfo = if (order.isPaidByCustomer) "Оплачен" else "Неоплачен"
+        val priceInfo = order.price?.let { "Ставка: $it р. ${order.payType} $isPaidInfo" }
+        val isPaidToContractorInfo = if (order.isPaidToContractor) "Оплачен" else "Неоплачен"
+        val contractorPriceInfo = order.contractorPrice?.let { "Ставка перевозчика: $it р. ${order.payTypeToContractor} $isPaidToContractorInfo" }
+        val commissionInfo = order.commission?.let { "Комиссия: $it р." }
+        val customerInfo = order.customer?.let { "Заказчик: ${it.shortName} ${it.companyPhone}"}
+        val managerInfo = order.manager?.let { "Логист: ${it.nameToShow} ${it.phoneNumber}" }
+        val contractorInfo = order.contractor?.let { "Исполнитель: ${it.company?.shortName} ${it.company?.companyPhone}, Перевозчик: ${it.driver?.nameToShow} ${it.truck?.nameToShow} ${it.trailer?.nameToShow}" }
+        val cargoInfo = order.cargo?.let { "Груз ${it.cargoName} ${it.cargoWeight}т/${it.cargoVolume}м3 ${order.extraConditions}" }
+        val daysToPayInfo = order.daysToPay?.let { "Срок оплаты $it дней" }
+
+
+        val infoToShare = listOfNotNull(idInfo, customerInfo, managerInfo, contractorInfo,  cargoInfo, pointsInfo, priceInfo, contractorPriceInfo,
+             commissionInfo,  daysToPayInfo).joinToString(", ")
+
+        requireContext().shareMessage(infoToShare)
+
+    }
+
+    private fun showMenu(view: View) {
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.menu_remove)
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
+            when (item.itemId) {
+                R.id.remove_menu_item -> {
+                    showDeleteConfirmationDialog("заявку ${currentOrder?.id}") {
+                        currentOrder?.id?.let { viewModel.removeById(it) }
+                    }
+                    //findNavController().navigateUp()
+
+                }
+                R.id.share_menu_item -> {
+                    currentOrder?.let { share(it) }
+                }
+
+                else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()
+            }
+            true
+        })
+        menu.show()
     }
 
 

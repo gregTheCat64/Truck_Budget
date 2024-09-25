@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-
         viewModel.createDefaultCompany()
 
         val navView: BottomNavigationView = binding.bottomNav

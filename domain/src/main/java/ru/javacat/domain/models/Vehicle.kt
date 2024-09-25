@@ -25,7 +25,7 @@ data class Truck(
     override val positionId: Long
         get() = 0L
     override val nameToShow: String
-        get() = "$regNumber"
+        get() = "$regNumber ${regionCode?:""}"
     override val type: String
         get() = "Тягач"
 }
@@ -44,5 +44,5 @@ data class Trailer(
     override val positionId: Long
         get() = 0L
     override val nameToShow: String
-        get() = "$regNumber"
+        get() = "$regNumber ${regionCode?:""}"
 }

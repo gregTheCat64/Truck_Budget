@@ -1,17 +1,12 @@
 package ru.javacat.ui.companies
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -31,12 +26,15 @@ import ru.javacat.ui.databinding.FragmentCompanyBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.makePhoneCall
 import ru.javacat.ui.utils.sendMessageToWhatsApp
+import ru.javacat.ui.utils.shareMessage
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
     override var bottomNavViewVisibility: Int = View.GONE
-    private var customerId: Long? = null
+    private var currentCompanyId: Long? = null
+    private var currentCompany: Company? = null
     private lateinit var emplAdapter: ManagerAdapter
     private val viewModel: CompanyViewModel by viewModels()
 
@@ -48,7 +46,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        customerId = arguments?.getLong(FragConstants.CUSTOMER_ID)
+        currentCompanyId = arguments?.getLong(FragConstants.CUSTOMER_ID)
     }
 
     override fun onCreateView(
@@ -60,36 +58,6 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_edit_remove, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    R.id.edit_menu_item -> {
-                        val bundle = Bundle()
-                        if (customerId != null) {
-                            bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
-                            findNavController().navigate(R.id.action_companyFragment_to_newCustomerFragment, bundle)
-                        }
-                        return true
-                    }
-                    R.id.remove_menu_item -> {
-                        customerId?.let { removeCompany(it) }
-                        findNavController().navigateUp()
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -99,8 +67,8 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
         binding.editBtn.setOnClickListener {
             val bundle = Bundle()
-            if (customerId != null) {
-                bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
+            if (currentCompanyId != null) {
+                bundle.putLong(FragConstants.CUSTOMER_ID, currentCompanyId!!)
                 findNavController().navigate(R.id.action_companyFragment_to_newCustomerFragment, bundle)
             }
         }
@@ -126,17 +94,17 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
         }
 
         binding.toTruckFleet.setOnClickListener {
-            if (customerId != null) {
+            if (currentCompanyId != null) {
                 val bundle = Bundle()
-                bundle.putLong(FragConstants.CUSTOMER_ID, customerId!!)
+                bundle.putLong(FragConstants.CUSTOMER_ID, currentCompanyId!!)
                 findNavController().navigate(R.id.action_companyFragment_to_truckFleetViewPager, bundle)
             }
         }
 
         binding.addEmployeeBtn.setOnClickListener {
-            if (customerId != null) {
+            if (currentCompanyId != null) {
                 val bundle = Bundle()
-                bundle.putLong(FragConstants.COMPANY_ID,customerId!!)
+                bundle.putLong(FragConstants.COMPANY_ID,currentCompanyId!!)
                 findNavController().navigate(R.id.action_companyFragment_to_newEmployeeFragment, bundle)
             }
         }
@@ -165,7 +133,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                customerId?.let { viewModel.getCustomerById(it) }
+                currentCompanyId?.let { viewModel.getCustomerById(it) }
             }
         }
 
@@ -173,6 +141,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editedCustomer.collectLatest {customer->
                     customer?.let {
+                        currentCompany = it
                         updateUi(it)
                     }
                 }
@@ -208,15 +177,35 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
         viewModel.hideCompanyById(id)
     }
 
+    private fun share(c: Company){
+        val name = c.nameToShow
+        val ati = c.atiNumber?.let { "АТИ: $it" }
+            //"ati: ${c.atiNumber}"
+        val phone = c.companyPhone?.let { "телефон: $it" }
+        val address =  c.postAddress?.let { "почтовый адрес: $it" }
+        val formalAddress = c.formalAddress?.let{"юр. адрес: $it"}
+
+        val infoToShare = listOfNotNull(name,ati, phone, address, formalAddress).joinToString(", ")
+
+        requireContext().shareMessage(infoToShare)
+    }
+
     private fun showMenu(view: View) {
         val menu = PopupMenu(requireContext(), view)
         menu.inflate(R.menu.menu_remove)
         menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
             when (item.itemId) {
                 R.id.remove_menu_item -> {
-                    customerId?.let { removeCompany(it) }
-                    findNavController().navigateUp()
+                    showDeleteConfirmationDialog(currentCompany?.nameToShow.toString()){
+                        currentCompanyId?.let { removeCompany(it) }
+                        findNavController().navigateUp()
+                    }
 
+
+
+                }
+                R.id.share_menu_item -> {
+                    currentCompany?.let { share(it) }
                 }
 
                 else -> Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show()

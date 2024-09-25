@@ -33,17 +33,19 @@ class OrderViewModel @Inject constructor(
             _loadState.emit(LoadState.Loading)
             try {
                 editedOrder.emit(orderRepository.getById(id))
+                _loadState.emit(LoadState.Success.OK)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }
     }
 
-    fun updateEditedRoute(id: Long){
+    fun removeById(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                routeRepository.getById(id)?.let { routeRepository.updateEditedItem(it) }
+                orderRepository.removeById(id)
+                _loadState.emit(LoadState.Success.Removed)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }

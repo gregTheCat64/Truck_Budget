@@ -44,7 +44,7 @@ class RouteViewPagerViewModel @Inject constructor(
         }
     }
 
-    suspend fun removeRoute(id: Long){
+    fun removeRoute(id: Long){
         viewModelScope.launch(Dispatchers.IO){
             try {
                 _loadState.emit(LoadState.Loading)

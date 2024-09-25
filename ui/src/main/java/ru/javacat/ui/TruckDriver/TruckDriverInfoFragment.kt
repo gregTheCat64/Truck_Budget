@@ -29,6 +29,7 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentDriverInfoBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.shareMessage
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
@@ -182,11 +183,11 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
     }
 
     private fun share(td: TruckDriver){
-        val fullName = "${td.surname.takeIf { it.isNotEmpty() }} ${td.middleName?.takeIf { it.isNotEmpty() }} ${td.firstName}"
-        val passport = if (!td.passportNumber.isNullOrEmpty()) "${td.passportNumber} выдан ${td.passportReceivedPlace} ${td.passportReceivedDate}" else null
-        val place = if (!td.placeOfRegistration.isNullOrEmpty()) "${td.placeOfRegistration}" else null
-        val driveLicense = if (!td.driveLicenseNumber.isNullOrEmpty()) "Права: ${td.driveLicenseNumber}" else null
-        val phoneNumber = if (!td.phoneNumber.isNullOrEmpty()) td.phoneNumber else null
+        val fullName =  listOfNotNull(td.surname, td.middleName, td.firstName).joinToString (" ")
+        val passport = td.passportNumber?.let { "выдан ${td.passportReceivedPlace} ${td.passportReceivedDate}" }
+        val place = td.placeOfRegistration?.let { "адрес: ${td.placeOfRegistration}" }
+        val driveLicense = td.driveLicenseNumber?.let { "права: ${td.driveLicenseNumber}" }
+        val phoneNumber = td.phoneNumber?.let { "тел.: ${td.phoneNumber}" }
 
         val infoToShare = listOfNotNull(fullName, passport, place, driveLicense, phoneNumber).joinToString(", ")
 
@@ -199,9 +200,9 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
         menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
             when (item.itemId) {
                 R.id.remove_menu_item -> {
-                    truckDriverId?.let { hideDriver(it) }
-                    //findNavController().navigateUp()
-
+                    showDeleteConfirmationDialog("водителя ${currentTruckDriver?.nameToShow}"){
+                        truckDriverId?.let { hideDriver(it) }
+                    }
                 }
                 R.id.share_menu_item -> {
                     currentTruckDriver?.let { share(it) }
