@@ -37,10 +37,9 @@ import ru.javacat.data.db.entities.PointConverter
         DbTrailer::class,
         DbLocation::class,
         DbCargo::class,
-//        DbCountRoute::class,
         DbExpense::class
     ],
-    version = 1, exportSchema = false
+    version = 2, exportSchema = false
 )
 @TypeConverters(PointConverter::class)
 abstract class AppDb : RoomDatabase() {

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompanyListViewModel @Inject constructor(
-    private val customerRepository: CompaniesRepository
+    private val repo: CompaniesRepository
 ): ViewModel() {
     private var _customers = MutableStateFlow(emptyList<Company>())
     val customers: Flow<List<Company>>
@@ -21,13 +21,13 @@ class CompanyListViewModel @Inject constructor(
 
     fun getAllCustomers(){
         viewModelScope.launch(Dispatchers.IO) {
-           _customers.emit(customerRepository.getAll())
+           _customers.emit(repo.getAll())
         }
     }
 
     fun searchCustomers(s: String){
         viewModelScope.launch(Dispatchers.IO) {
-            _customers.emit(customerRepository.search(s))
+            _customers.emit(repo.search(s))
         }
     }
 }

@@ -165,4 +165,6 @@
     <string name="general">General</string>
     <string name="new_company">New company</string>
     <string name="share">Share</string>
+    <string name="home_company_sign">Home Company Sign</string>
+    <string name="fav_company_sign">fav company sign</string>
 </resources>

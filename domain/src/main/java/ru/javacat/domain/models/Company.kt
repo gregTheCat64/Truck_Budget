@@ -11,4 +11,5 @@ data class Company (
     val postAddress: String? = null,
     val shortName: String? = nameToShow,
     override val positionId: Long = 0L,
+    val isFavorite: Boolean = false,
 ): BaseNameModel<Long>()

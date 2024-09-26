@@ -1,6 +1,7 @@
 package ru.javacat.ui.companies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.customers.collectLatest {
+                    Log.i("CompanyListFrag","companiesList: $it")
                     customersAdapter.submitList(it)
                 }
             }

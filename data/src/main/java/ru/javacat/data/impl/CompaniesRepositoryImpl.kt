@@ -23,15 +23,16 @@ class CompaniesRepositoryImpl @Inject constructor(
 //    private val _chosenCustomer = MutableStateFlow<Company?>(null)
 
     override suspend fun getAll(): List<Company> {
-        return dbQuery { dao.getCustomers().map { it.toCompanyModel() } }
+        return dbQuery { dao.getAll().map { it.toCompanyModel() } }
     }
 
     override suspend fun createDefaultCompany() {
         if (getAll().isEmpty()){
             Log.i("companiesRepo", "creating default Company")
             val defaultCompany = Company(
-                -1,
-                "Моя Компания"
+                id = -1,
+                nameToShow = "Моя Компания",
+                isFavorite = true
             )
             dbQuery { dao.insertCustomer(defaultCompany.toDb()) }
         }

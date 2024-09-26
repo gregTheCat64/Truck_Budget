@@ -1,5 +1,8 @@
 package ru.javacat.ui.companies
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -36,6 +40,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
     private var currentCompanyId: Long? = null
     private var currentCompany: Company? = null
     private lateinit var emplAdapter: ManagerAdapter
+    private var isFavorite = false
     private val viewModel: CompanyViewModel by viewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCompanyBinding
@@ -142,39 +147,46 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
                 viewModel.editedCustomer.collectLatest {customer->
                     customer?.let {
                         currentCompany = it
+                        isFavorite = currentCompany!!.isFavorite
                         updateUi(it)
                     }
                 }
             }
         }
+
+        binding.favBtn.setOnClickListener {
+            toggleFavorite()
+        }
     }
 
-    private fun updateUi(customer: Company){
+    private fun updateUi(company: Company){
+        binding.favBtn.icon = (if (isFavorite) ResourcesCompat.getDrawable(resources, R.drawable.baseline_favorite_24, null) else ResourcesCompat.getDrawable(resources, R.drawable.baseline_favorite_border_24, null))
+
         binding.apply {
             //(activity as AppCompatActivity).supportActionBar?.title = customer.shortName
-            title.text = customer.shortName
-            customerNameTv.text = customer.nameToShow
-            shortNameTv.text = customer.shortName
-            customer.atiNumber?.let {
+            title.text = company.shortName
+            customerNameTv.text = company.nameToShow
+            shortNameTv.text = company.shortName
+            company.atiNumber?.let {
                 atiNumberTv.text = it.toString()
             }
-            companyPhoneLayout.isGone = customer.companyPhone==null
-            customer.companyPhone?.let {
+            companyPhoneLayout.isGone = company.companyPhone==null
+            company.companyPhone?.let {
                 phoneNumberTv.text = it
             }
 
-            formalAddressTv.text = customer.formalAddress
-            postAddressTv.text = customer.postAddress
+            formalAddressTv.text = company.formalAddress
+            postAddressTv.text = company.postAddress
         }
 
-        customer.managers.let {
+        company.managers.let {
             emplAdapter.submitList(it)
         }
 
     }
 
-    private fun removeCompany(id: Long){
-        viewModel.hideCompanyById(id)
+    private fun removeCompany(){
+        viewModel.hideCompanyById()
     }
 
     private fun share(c: Company){
@@ -197,11 +209,9 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             when (item.itemId) {
                 R.id.remove_menu_item -> {
                     showDeleteConfirmationDialog(currentCompany?.nameToShow.toString()){
-                        currentCompanyId?.let { removeCompany(it) }
+                        currentCompanyId?.let { removeCompany() }
                         findNavController().navigateUp()
                     }
-
-
 
                 }
                 R.id.share_menu_item -> {
@@ -213,5 +223,32 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             true
         })
         menu.show()
+    }
+
+    private fun toggleFavorite() {
+        val heartImageView = binding.favBtn
+        // Выполнение анимации
+        val scaleDownX = ObjectAnimator.ofFloat(heartImageView, "scaleX", 0.8f).apply {
+            duration = 150
+            repeatCount = 1
+            repeatMode = ValueAnimator.REVERSE
+        }
+
+        val scaleDownY = ObjectAnimator.ofFloat(heartImageView, "scaleY", 0.8f).apply {
+            duration = 150
+            repeatCount = 1
+            repeatMode = ValueAnimator.REVERSE
+        }
+
+        // Запуск анимации
+        AnimatorSet().apply {
+            play(scaleDownX).with(scaleDownY)
+            start()
+        }
+
+        // Изменение состояния и изображения сердца
+        isFavorite = !isFavorite
+        heartImageView.icon = (if (isFavorite) ResourcesCompat.getDrawable(resources, R.drawable.baseline_favorite_24, null) else ResourcesCompat.getDrawable(resources, R.drawable.baseline_favorite_border_24, null))
+        viewModel.toggleFav(isFavorite)
     }
 }

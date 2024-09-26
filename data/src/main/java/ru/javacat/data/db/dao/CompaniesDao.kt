@@ -14,19 +14,16 @@ import ru.javacat.data.db.models.DbCompanyWithManagers
 interface CompaniesDao {
 
     @Transaction
-    @Query("SELECT * FROM companies_table WHERE isHidden = 0")
+    @Query("SELECT * FROM companies_table  WHERE isHidden = 0 ORDER BY isFavorite DESC,id ASC")
     fun getAll(): List<DbCompanyWithManagers>
 
     @Transaction
     @Query("SELECT * FROM companies_table WHERE id =:id")
     suspend fun getById(id: Long): DbCompanyWithManagers?
 
-    @Transaction
-    @Query("SELECT * FROM companies_table WHERE isHidden = 0")
-    suspend fun getCustomers(): List<DbCompanyWithManagers>
 
     @Transaction
-    @Query("SELECT * FROM companies_table WHERE companyName LIKE '%' || :search || '%'")
+    @Query("SELECT * FROM companies_table WHERE companyName LIKE '%' || :search || '%' ORDER BY isFavorite DESC,id ASC")
     suspend fun searchCustomers(search: String): List<DbCompanyWithManagers>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

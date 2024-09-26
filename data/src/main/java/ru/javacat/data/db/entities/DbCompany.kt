@@ -15,6 +15,7 @@ data class DbCompany(
     val postAddress: String?,
     val shortName: String?,
     val positionId: Long,
+    val isFavorite: Boolean = false
 ) {
 //    fun toCustomerModel() = Partner(
 //        id, companyName, atiNumber, companyPhone,formalAddress, postAddress, shortName, positionId

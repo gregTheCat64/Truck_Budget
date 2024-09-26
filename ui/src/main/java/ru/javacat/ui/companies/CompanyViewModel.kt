@@ -22,6 +22,7 @@ class CompanyViewModel @Inject constructor(
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
+
     suspend fun getCustomerById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
@@ -33,14 +34,25 @@ class CompanyViewModel @Inject constructor(
         }
     }
 
-    fun hideCompanyById(id: Long){
+    fun hideCompanyById(){
         viewModelScope.launch(Dispatchers.IO){
             _loadState.emit(LoadState.Loading)
             try {
-                val company = repository.getById(id)
-                company?.copy(isHidden = true)?.let { repository.updateCompanyToDb(it) }
+                editedCustomer.value?.copy(isHidden = true)?.let { repository.updateCompanyToDb(it) }
                 _loadState.emit(LoadState.Success.Removed)
             }catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    fun toggleFav(isFavorite: Boolean){
+        viewModelScope.launch(Dispatchers.IO){
+            _loadState.emit(LoadState.Loading)
+            try {
+                editedCustomer.value?.copy(isFavorite = isFavorite)?.let { repository.updateCompanyToDb(it) }
+                _loadState.emit(LoadState.Success.OK)
+            }catch (e: Exception){
                 _loadState.emit(LoadState.Error(e.message.toString()))
             }
         }

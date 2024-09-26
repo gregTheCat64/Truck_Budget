@@ -108,7 +108,7 @@ fun Location.toDb() = DbLocation(
 )
 
 fun Company.toDb() = DbCompany(
-    id, nameToShow, isHidden, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,
+    id, nameToShow, isHidden, atiNumber, companyPhone, formalAddress, postAddress, shortName,positionId,isFavorite
 )
 
 fun Manager.toDb() = DbManager(

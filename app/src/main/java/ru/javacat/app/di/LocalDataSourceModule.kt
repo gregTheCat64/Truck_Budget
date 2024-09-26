@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.javacat.data.db.AppDb
+import ru.javacat.data.db.MIGRATION_1_2
 import javax.inject.Singleton
 
 @Module
@@ -17,6 +18,7 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideDb(@ApplicationContext context: Context): AppDb {
-        return Room.databaseBuilder(context, AppDb::class.java, "app.db").build()
+        return Room.databaseBuilder(context, AppDb::class.java, "app.db").addMigrations(
+            MIGRATION_1_2).build()
     }
 }

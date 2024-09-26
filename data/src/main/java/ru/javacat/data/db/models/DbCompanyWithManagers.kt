@@ -13,7 +13,8 @@ data class DbCompanyWithManagers(
     val formalAddress: String?,
     val postAddress: String?,
     val shortName: String?,
-    val positionId: Int,
+    val positionId: Long,
+    val isFavorite: Boolean,
 
     @Relation(
         parentColumn = "id",
@@ -28,6 +29,10 @@ data class DbCompanyWithManagers(
         atiNumber,
         managers.map { it.toManagerModel() },
         companyPhone,
-        formalAddress, postAddress, shortName
+        formalAddress,
+        postAddress,
+        shortName,
+        positionId,
+        isFavorite
     )
 }
