@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RouteViewPagerViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
-    private val clearEditedOrderUseCase: ClearEditedOrderUseCase
 ): ViewModel() {
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -40,7 +39,7 @@ class RouteViewPagerViewModel @Inject constructor(
 
     fun clearEditedOrder(){
         viewModelScope.launch(Dispatchers.IO){
-            clearEditedOrderUseCase.invoke()
+            //clearEditedOrderUseCase.invoke()
         }
     }
 

@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textCapWords"
-            android:hint="Фамилия"
+            android:hint="@string/last_name"
             />
 
 
@@ -91,7 +91,7 @@
             android:id="@+id/phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Телефонный номер"
+            android:hint="@string/phone_number"
             android:inputType="phone"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -107,7 +107,7 @@
             android:id="@+id/phoneNumber2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Еще телефонный номер"
+            android:hint="@string/extra_phone_number"
             android:inputType="phone"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -122,7 +122,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="e-mail"
+            android:hint="@string/e_mail"
             android:inputType="textEmailAddress"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,7 +139,7 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="комментарий"
+            android:hint="@string/comment"
             android:inputType="textCapSentences"
             />
     </com.google.android.material.textfield.TextInputLayout>

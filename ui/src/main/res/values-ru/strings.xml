@@ -145,7 +145,7 @@
     <string name="call">Позвонить</string>
     <string name="cargo_description">Описание груза</string>
     <string name="order_price">Order price</string>
-    <string name="add_phone_number">добавьте номер телефона</string>
+    <string name="add_phone_number">Добавьте номер телефона</string>
     <string name="route_profit">Доход с рейса</string>
     <string name="customers">Заказчики</string>
     <string name="truck_driver_company_contractor">Водитель (Компания исполнитель)</string>
@@ -167,4 +167,12 @@
     <string name="share">Share</string>
     <string name="home_company_sign">Home Company Sign</string>
     <string name="fav_company_sign">fav company sign</string>
+    <string name="extra_phone_number">Дополнительный номер</string>
+    <string name="last_name">Фамилия</string>
+    <string name="e_mail">e-mail</string>
+    <string name="comment">Коментарий</string>
+    <string name="employee_name">Имя сотрудника</string>
+    <string name="add_employee_name">Add employee name</string>
+    <string name="add_extra_phone_number">Добавьте доп. номер</string>
+    <string name="make_it_main_number">Сделать главным</string>
 </resources>

@@ -1,4 +1,4 @@
-package ru.javacat.ui.new_employee
+package ru.javacat.ui.employee
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +20,7 @@ class NewEmployeeViewModel @Inject constructor(
     private val orderRepository: OrderRepository
 ): ViewModel() {
 
-    var editedManager = MutableStateFlow<Manager?>(null)
+    val editedManager = MutableStateFlow<Manager?>(null)
     val editedOrder = orderRepository.editedItem
 
     private val _loadState = MutableSharedFlow<LoadState>()

@@ -145,7 +145,7 @@
     <string name="call">Call</string>
     <string name="cargo_description">Cargo description</string>
     <string name="order_price">Order price</string>
-    <string name="add_phone_number">add phone number</string>
+    <string name="add_phone_number">Add phone number</string>
     <string name="route_profit">Route profit</string>
     <string name="customers">Customers</string>
     <string name="truck_driver_company_contractor">Truck driver (Company contractor)</string>
@@ -167,4 +167,12 @@
     <string name="share">Share</string>
     <string name="home_company_sign">Home Company Sign</string>
     <string name="fav_company_sign">fav company sign</string>
+    <string name="extra_phone_number">Extra phone number</string>
+    <string name="last_name">Last Name</string>
+    <string name="e_mail">e-mail</string>
+    <string name="comment">Comment</string>
+    <string name="employee_name">Employee name</string>
+    <string name="add_employee_name">Add employee name</string>
+    <string name="add_extra_phone_number">Add extra phone number</string>
+    <string name="make_it_main_number">Make it main</string>
 </resources>

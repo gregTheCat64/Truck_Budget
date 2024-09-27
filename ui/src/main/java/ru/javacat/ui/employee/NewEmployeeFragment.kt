@@ -1,18 +1,12 @@
-package ru.javacat.ui.new_employee
+package ru.javacat.ui.employee
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +24,7 @@ import ru.javacat.ui.utils.FragConstants
 @AndroidEntryPoint
 class NewEmployeeFragment : BaseFragment<FragmentNewEmployeeBinding>() {
 
-    override var bottomNavViewVisibility: Int = View.GONE
+    //override var bottomNavViewVisibility: Int = View.GONE
 
     private val viewModel: NewEmployeeViewModel by viewModels()
 

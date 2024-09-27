@@ -13,18 +13,13 @@ import ru.javacat.domain.models.Truck
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TrucksRepository
-import ru.javacat.domain.use_case.SetTrailerUseCase
-import ru.javacat.domain.use_case.SetTruckUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
 @HiltViewModel
 class NewTruckViewModel @Inject constructor(
     private val trucksRepository: TrucksRepository,
-    private val routeRepository: RouteRepository,
-    private val trailersRepository: TrailersRepository,
-    private val setTruckUseCase: SetTruckUseCase,
-    private val setTrailerUseCase: SetTrailerUseCase,
+    private val routeRepository: RouteRepository
 ): ViewModel() {
 
     val editedRoute = routeRepository.editedItem

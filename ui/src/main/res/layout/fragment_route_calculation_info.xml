@@ -305,20 +305,22 @@
 
                         />
 
+
+
                 </LinearLayout>
 
-
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/paymentChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paid"
+                    android:checkable="true"
+                    android:layout_marginStart="32dp"
+                    />
 
             </LinearLayout>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/paymentChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/paid"
-            android:checkable="true"
-            android:layout_marginStart="64dp"
-            />
+
 
 
 

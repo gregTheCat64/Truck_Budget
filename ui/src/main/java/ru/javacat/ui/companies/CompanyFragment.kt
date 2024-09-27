@@ -118,7 +118,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             override fun onManager(item: Manager) {
                 val bundle = Bundle()
                 bundle.putLong(FragConstants.MANAGER_ID, item.id)
-                findNavController().navigate(R.id.action_companyFragment_to_newEmployeeFragment, bundle)
+                findNavController().navigate(R.id.action_companyFragment_to_employeeInfoFragment, bundle)
             }
 
             override fun onPhone(item: String?) {

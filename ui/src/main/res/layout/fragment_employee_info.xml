@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/general_info_bar"/>
+
+    <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:contentDescription="@string/employee_name"
+                android:src="@drawable/baseline_assignment_ind_24"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/employee_name"
+                    style="@style/TextAppearance.InfoDescription"
+                    />
+                <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+                <TextView
+                    android:id="@+id/employeeNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_employee_name"
+                    style="@style/TextAppearance.MyCardTitle"
+                    />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:contentDescription="@string/phone_number"
+                android:src="@drawable/baseline_local_phone_24"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    style="@style/TextAppearance.InfoDescription"
+                    />
+                <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+                <TextView
+                    android:id="@+id/phoneNumberTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_phone_number"
+                    style="@style/TextAppearance.MyCardTitle"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mainPhoneLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/phoneNumberBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/baseline_local_phone_24"
+                    android:src="@drawable/baseline_local_phone_24"
+                    app:tint="?attr/colorPrimary"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/whatsappMsgBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/green_whatsapp_icon"
+                    android:src="@drawable/green_whatsapp_icon"
+                    app:iconTint="@color/green"
+                    />
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/extra_phone_number"
+                    style="@style/TextAppearance.InfoDescription"
+                    />
+                <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+                <TextView
+                    android:id="@+id/extraPhoneTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_extra_phone_number"
+                    style="@style/TextAppearance.MyCardTitle"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/makeItMainNumberBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:text="@string/make_it_main_number"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/extraPhoneLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/extraPhoneNumberBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/baseline_local_phone_24"
+                    android:src="@drawable/baseline_local_phone_24"
+                    app:tint="?attr/colorPrimary"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/extraPhoneWhatsappMsgBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/green_whatsapp_icon"
+                    android:src="@drawable/green_whatsapp_icon"
+                    app:iconTint="@color/green"
+                    />
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:contentDescription="@string/employee_name"
+                android:src="@drawable/baseline_email_24"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/e_mail"
+                    style="@style/TextAppearance.InfoDescription"
+                    />
+                <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+                <TextView
+                    android:id="@+id/emailTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Add email"
+                    style="@style/TextAppearance.MyCardTitle"
+                    />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:contentDescription="@string/comment"
+                android:src="@drawable/baseline_comment_24"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comment"
+                    style="@style/TextAppearance.InfoDescription"
+                    />
+                <!--            app:drawableStartCompat="@drawable/baseline_assignment_ind_24" />-->
+                <TextView
+                    android:id="@+id/commentTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Add commentary"
+                    style="@style/TextAppearance.MyCardTitle"
+                    />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -39,9 +39,6 @@
             android:id="@+id/action_routeFragment_to_finishPartnerRouteFragment"
             app:destination="@id/finishPartnerRouteFragment" />
         <action
-            android:id="@+id/action_routeFragment_to_addCustomerFragment"
-            app:destination="@id/addCustomerFragment" />
-        <action
             android:id="@+id/action_routeFragment_to_finishRouteWithoutDriverFragment"
             app:destination="@id/finishRouteWithoutDriverFragment" />
 
@@ -58,7 +55,7 @@
         android:label="@string/vehicles" />
     <fragment
         android:id="@+id/newEmployeeFragment"
-        android:name="ru.javacat.ui.new_employee.NewEmployeeFragment"
+        android:name="ru.javacat.ui.employee.NewEmployeeFragment"
         tools:layout="@layout/fragment_new_employee"
         android:label="@string/add_employee" />
 
@@ -95,10 +92,6 @@
         tools:layout="@layout/fragment_choose_item"
         android:label="@string/choose_the_item" />
     <fragment
-        android:id="@+id/testFragment"
-        android:name="ru.javacat.ui.TestFragment"
-        android:label="TestFragment" />
-    <fragment
         android:id="@+id/newRouteFragment"
         android:name="ru.javacat.ui.new_route.NewRouteFragment"
         tools:layout="@layout/fragment_create_route"
@@ -112,11 +105,6 @@
         android:name="ru.javacat.ui.finish_route.FinishRouteFragment"
         tools:layout="@layout/fragment_finish_route"
         android:label="@string/finish_route" />
-    <fragment
-        android:id="@+id/addDocumentsFragment"
-        android:name="ru.javacat.ui.new_route.AddDocumentsFragment"
-        tools:layout="@layout/fragment_add_documents"
-        android:label="@string/add_documents" />
     <fragment
         android:id="@+id/routeViewPagerFragment"
         android:name="ru.javacat.ui.route.RouteViewPagerFragment"
@@ -167,39 +155,6 @@
     </fragment>
 
 
-    <fragment
-            android:id="@+id/addCargoFragment"
-            android:name="ru.javacat.ui.new_route.AddCargoFragment"
-            android:label="@string/add_cargo"
-            tools:layout="@layout/fragment_add_cargo">
-
-            <action
-                android:id="@+id/action_addCargoFragment_to_addPointsFragment"
-                app:destination="@id/addPointsFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/addPaymentFragment"
-            android:name="ru.javacat.ui.new_route.AddPaymentFragment"
-            android:label="@string/add_payment"
-            tools:layout="@layout/fragment_add_payment" />
-        <fragment
-            android:id="@+id/addCustomerFragment"
-            android:name="ru.javacat.ui.new_route.AddCustomerFragment"
-            android:label="@string/add_company"
-            tools:layout="@layout/fragment_add_customer">
-            <action
-                android:id="@+id/action_addCustomerFragment_to_addCargoFragment"
-                app:destination="@id/addCargoFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/addPointsFragment"
-            android:name="ru.javacat.ui.new_route.AddPointsFragment"
-            android:label="@string/add_points"
-            tools:layout="@layout/fragment_add_points">
-            <action
-                android:id="@+id/action_addPointsFragment_to_addPaymentFragment"
-                app:destination="@id/addPaymentFragment" />
-        </fragment>
     <fragment
         android:id="@+id/navigation_stats"
         android:name="ru.javacat.ui.stats_fragment.StatsFragment"
@@ -363,19 +318,26 @@
             app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/truckFleetViewPager" />
         <action
-            android:id="@+id/action_companyFragment_to_newEmployeeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/newEmployeeFragment" />
-        <action
             android:id="@+id/action_companyFragment_to_newCustomerFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/newCustomerFragment" />
+        <action
+            android:id="@+id/action_companyFragment_to_employeeInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/employeeInfoFragment" />
+        <action
+            android:id="@+id/action_companyFragment_to_newEmployeeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newEmployeeFragment" />
     </fragment>
     <fragment
         android:id="@+id/truckDriverInfoFragment"
@@ -408,6 +370,19 @@
         <action
             android:id="@+id/action_trailerInfoFragment_to_newTrailerFragment"
             app:destination="@id/newTrailerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeeInfoFragment"
+        android:name="ru.javacat.ui.employee.EmployeeInfoFragment"
+        tools:layout="@layout/fragment_employee_info"
+        android:label="EmployeeInfoFragment" >
+        <action
+            android:id="@+id/action_employeeInfoFragment_to_newEmployeeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/newEmployeeFragment" />
     </fragment>
 
 

@@ -13,7 +13,6 @@ import ru.javacat.domain.models.TruckDriver
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.use_case.GetTruckDriverUseCase
-import ru.javacat.domain.use_case.SetTruckDriverUseCase
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
 
@@ -21,8 +20,7 @@ import javax.inject.Inject
 class NewDriverViewModel @Inject constructor(
     private val truckDriversRepository: TruckDriversRepository,
     private val routeRepository: RouteRepository,
-    private val getTruckDriverUseCase: GetTruckDriverUseCase,
-    private val setTruckDriverUseCase: SetTruckDriverUseCase
+    private val getTruckDriverUseCase: GetTruckDriverUseCase
 ):ViewModel() {
 
     val editedTruckDriver = MutableStateFlow<TruckDriver?>(null)
