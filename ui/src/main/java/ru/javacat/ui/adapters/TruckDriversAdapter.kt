@@ -8,6 +8,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.common.utils.toPrettyNumber
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.ui.R
@@ -48,7 +49,7 @@ class TruckDriversAdapter(
 
                 driverPhoneLayout.isGone = item.phoneNumber == null
                 name.text = fullName
-                phoneNumber.text = item.phoneNumber
+                phoneNumber.text = item.phoneNumber?.toPrettyNumber()
                 root.setOnClickListener {
                     onTruckDriverListener.onItem(item)
                 }

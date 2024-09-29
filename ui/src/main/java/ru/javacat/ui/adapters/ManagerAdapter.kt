@@ -7,6 +7,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.common.utils.toPrettyNumber
 import ru.javacat.domain.models.Manager
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.EmployeeItemBinding
@@ -35,7 +36,7 @@ class ManagerAdapter(
         fun bind(item: Manager){
             binding.apply {
                 name.text = item.nameToShow
-                phoneNumber.text = item.phoneNumber
+                phoneNumber.text = item.phoneNumber?.toPrettyNumber()
                 println("PHONE NUMBER: ${item.phoneNumber}")
                 driverPhoneLayout.isGone = item.phoneNumber == null
                 root.setOnClickListener {

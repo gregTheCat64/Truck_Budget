@@ -9,6 +9,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.javacat.common.utils.toPrettyNumber
 import ru.javacat.domain.models.Company
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.CustomerItemBinding
@@ -39,7 +40,7 @@ class CustomersAdapter(
             binding.apply {
                 companyName.text = item.nameToShow
                 item.companyPhone?.let {
-                    phoneNumber.text = it
+                    phoneNumber.text = it.toPrettyNumber()
                 }
                 item.atiNumber?.let {
                     atiNumber.text = it.toString()

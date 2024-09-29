@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.toPrettyNumber
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.models.Manager
 import ru.javacat.ui.BaseFragment
@@ -172,7 +173,7 @@ class CompanyFragment: BaseFragment<FragmentCompanyBinding>() {
             }
             companyPhoneLayout.isGone = company.companyPhone==null
             company.companyPhone?.let {
-                phoneNumberTv.text = it
+                phoneNumberTv.text = it.toPrettyNumber()
             }
 
             formalAddressTv.text = company.formalAddress

@@ -43,6 +43,8 @@ import java.time.LocalDate
 import android.Manifest
 import android.widget.PopupMenu
 import ru.javacat.common.utils.asDayAndMonthShortly
+import ru.javacat.common.utils.toPrettyNumber
+import ru.javacat.common.utils.toPrettyPrice
 import ru.javacat.ui.OneInputValueDialogFragment
 import ru.javacat.ui.utils.makePhoneCall
 import ru.javacat.ui.utils.sendMessageToWhatsApp
@@ -270,7 +272,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
         val cargoText =  "${order.cargo?.cargoName} "
         val extraCargoInfoText = "$typeOfUploadString, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3"
-        val priceText = "${order.price} руб., ${order.payType.toRussian()}, ${order.daysToPay} б.дней"
+        val priceText = "${order.price?.toPrettyPrice()} руб., ${order.payType.toRussian()}, ${order.daysToPay} б.дней"
 
 
         binding.apply {
@@ -279,8 +281,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             managerLabelTv.isGone = order.manager == null
             managerTv.isGone = order.manager == null
 
-            callCompanyPhoneBtn.text = order.customer?.companyPhone
-            callToManagerBtn.text = order.manager?.phoneNumber
+            callCompanyPhoneBtn.text = order.customer?.companyPhone?.toPrettyNumber()
+            callToManagerBtn.text = order.manager?.phoneNumber?.toPrettyNumber()
             customerTv.text = order.customer?.nameToShow
             managerTv.text = order.manager?.nameToShow
             cargoTv.text = cargoText
@@ -309,7 +311,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
             if (order.contractor?.company?.id != -1L){
                 contractorsPriceLayout.isGone = false
-                val contractorsPriceText = "${order.contractorPrice.toString()}, ${getString(R.string.rub)}"
+                val contractorsPriceText = "${order.contractorPrice?.toPrettyPrice()}, ${getString(R.string.rub)}"
                 val contractorPriceExtraText =  "${order.payTypeToContractor?.toRussian()}, ${order.daysToPayToContractor} б. дней"
 
                 binding.contractorsPrice.text = contractorsPriceText

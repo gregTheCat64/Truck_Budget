@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.common.utils.asDayAndMonthShortly
+import ru.javacat.common.utils.toPrettyPrice
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.RouteItemBinding
@@ -50,7 +51,7 @@ class RoutesAdapter(
             binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthFully()}"
 
             item.profit?.let {
-                binding.earnedMoneyTextView.text = it.roundToInt().toString() + " рублей"
+                binding.earnedMoneyTextView.text = it.roundToInt().toPrettyPrice() + " рублей"
             }
             val contractorString = "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})"
 
