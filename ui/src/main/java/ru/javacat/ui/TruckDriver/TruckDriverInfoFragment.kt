@@ -149,7 +149,7 @@ class TruckDriverInfoFragment: BaseFragment<FragmentDriverInfoBinding>() {
         binding.actionBar.title.text = td.nameToShow
 
         val name = "${td.surname} ${td.middleName?:""} ${td.firstName?:""}"
-        val passport = "${td.passportNumber?:""} ${td.passportReceivedPlace?:""} ${td.passportReceivedDate?:""}"
+        val passport = if (!td.passportNumber.isNullOrEmpty()) {"${td.passportNumber?:""} ${td.passportReceivedPlace?:""} ${td.passportReceivedDate?:""}"} else null
         val driveLicense = td.driveLicenseNumber?:""
         val address = td.placeOfRegistration?:""
         val phone = td.phoneNumber?:""

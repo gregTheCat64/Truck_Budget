@@ -175,4 +175,23 @@
     <string name="add_employee_name">Add employee name</string>
     <string name="add_extra_phone_number">Add extra phone number</string>
     <string name="make_it_main_number">Make it main</string>
+    <string name="add_driver_s_name">Add driver\'s name</string>
+    <string name="truck_driver_s_name">Truck driver\'s name</string>
+    <string name="passport">Passport</string>
+    <string name="add_passport_s_data">Add passport\'s data</string>
+    <string name="driver_license">Driver license</string>
+    <string name="add_driver_license_data">Add driver license data</string>
+    <string name="address">Address</string>
+    <string name="add_address">Add address</string>
+    <string name="add_commentary">Add commentary</string>
+    <string name="plate">Plate</string>
+    <string name="add_plate">Add plate</string>
+    <string name="vin">VIN</string>
+    <string name="add_vin">Add VIN</string>
+    <string name="model">Model</string>
+    <string name="manufacture_year">Manufacture year</string>
+    <string name="add_manufacture_year">Add manufacture year</string>
+    <string name="add_transport_type">Add transport type</string>
+    <string name="transport_type">Transport type</string>
+    <string name="add_model_of_transport">Add model of transport</string>
 </resources>

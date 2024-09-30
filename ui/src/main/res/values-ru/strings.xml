@@ -175,4 +175,23 @@
     <string name="add_employee_name">Add employee name</string>
     <string name="add_extra_phone_number">Добавьте доп. номер</string>
     <string name="make_it_main_number">Сделать главным</string>
+    <string name="add_driver_s_name">Добавьте имя водителя</string>
+    <string name="truck_driver_s_name">Имя водителя</string>
+    <string name="passport">Паспорт</string>
+    <string name="add_passport_s_data">Добавьте паспортные данные</string>
+    <string name="driver_license">Водительские права</string>
+    <string name="add_driver_license_data">Добавьте водительские права</string>
+    <string name="address">Адрес</string>
+    <string name="add_address">Добавьте адрес прописки</string>
+    <string name="add_commentary">Добавьте комментарий</string>
+    <string name="plate">Регистрационный номер</string>
+    <string name="add_plate">Добавьте рег. номер</string>
+    <string name="vin">VIN</string>
+    <string name="add_vin">Добавьте VIN</string>
+    <string name="model">Модель</string>
+    <string name="manufacture_year">Год производства</string>
+    <string name="add_manufacture_year">Добавьте год производства</string>
+    <string name="add_transport_type">Добавьте тип транспорта</string>
+    <string name="transport_type">Тип транспорта</string>
+    <string name="add_model_of_transport">Добавьте наименование модели</string>
 </resources>

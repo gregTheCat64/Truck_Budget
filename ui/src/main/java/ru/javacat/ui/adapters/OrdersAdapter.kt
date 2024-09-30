@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -61,9 +62,12 @@ class OrdersAdapter(
             binding.contractorName.text = contractorString
             binding.points.text = points.toString()
             binding.income.text = item.price?.toPrettyPrice()+" р."
-            binding.paymentDeadLineTv.text = if (item.paymentDeadline == null){
-                "Срок оплаты ${item.daysToPay.toString()} дней"
-            } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly().toString()}"
+            if (item.isPaidByCustomer) binding.paymentDeadLineTv.isGone = true else {
+                binding.paymentDeadLineTv.text = if (item.paymentDeadline == null){
+                    "Срок оплаты ${item.daysToPay.toString()} дней"
+                } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly().toString()}"
+            }
+
 
             binding.root.setOnClickListener {
                 onItem(item)

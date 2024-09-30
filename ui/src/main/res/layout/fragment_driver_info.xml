@@ -29,14 +29,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValueDescription"
-            android:text="Имя водителя"
+            android:text="@string/truck_driver_s_name"
             />
         <TextView
             android:id="@+id/driverFullNameValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="Радаев Олег Михайлович"
+            android:hint="@string/add_driver_s_name"
             />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValueDescription"
-            android:text="Паспорт"
+            android:text="@string/passport"
             android:layout_marginTop="16dp"
             />
         <TextView
@@ -52,13 +52,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="6304 682781 Выдан Окт. ОВД Саратовского районай гор. Саратова 27.07.2005"
+            android:hint="@string/add_passport_s_data"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Водительское удостоверение"
+            android:text="@string/driver_license"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -67,13 +67,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="6600 151165 выд. 7.05.2003"
+            android:hint="@string/add_driver_license_data"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Адрес прописки"
+            android:text="@string/address"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -82,13 +82,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="Саратов, ул. Вишневая, 22 кв. 77"
+            android:hint="@string/add_address"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Телефон"
+            android:text="@string/phone_number"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -97,13 +97,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="8900-111-22-33"
+            android:hint="@string/add_phone_number"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Еще телефон"
+            android:text="@string/extra_phone_number"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -112,13 +112,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="8900-111-22-33"
+            android:hint="@string/add_extra_phone_number"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Комментарий"
+            android:text="@string/comment"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -127,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="Характер скверный"
+            android:hint="@string/add_commentary"
             />
 
     </LinearLayout>

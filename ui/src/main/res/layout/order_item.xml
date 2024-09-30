@@ -33,7 +33,7 @@
             android:id="@+id/contractorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Водитель (Фирма исполнителя)"
+            android:hint="Водитель (Фирма исполнителя)"
             android:layout_marginTop="4dp"
             style="@style/TextAppearance.MyCardTextValue"
             android:drawablePadding="8dp"
@@ -43,7 +43,7 @@
             android:id="@+id/customerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Заказчик"
+            android:hint="Заказчик"
             style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
@@ -56,34 +56,40 @@
             android:id="@+id/points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Города маршрута"
+            android:hint="Города маршрута"
             style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
-        <TextView
-            android:id="@+id/paymentDeadLineTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/days_to_pay"
-            android:layout_gravity="end"
-            style="@style/TextAppearance.Material3.BodySmall"
-            />
+
+
+            <TextView
+                android:id="@+id/paymentDeadLineTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/days_to_pay"
+                android:layout_gravity="center_horizontal|bottom"
+                style="@style/TextAppearance.Material3.BodySmall"
+                />
+
+
+
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/income"
+        android:layout_gravity="end|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Сумма оплаты"
 
-        <TextView
-            android:id="@+id/income"
-            android:layout_gravity="end|bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Сумма оплаты"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="8dp"
-            style="@style/TextAppearance.Material3.TitleMedium"
-             />
+        style="@style/TextAppearance.Material3.TitleMedium"
+        />
+
 
 
 

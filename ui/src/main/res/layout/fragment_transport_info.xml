@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Регистрационный номер"
+            android:text="@string/plate"
             style="@style/TextAppearance.MyValueDescription"
             />
         <TextView
@@ -38,26 +38,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="F111F 64"
+            android:hint="@string/add_plate"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VIN"
+            android:text="@string/vin"
+            style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
         <TextView
             android:id="@+id/vinValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="@string/add_vin"
             style="@style/TextAppearance.MyValue"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Модель"
+            android:text="@string/model"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -66,13 +68,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="МАН"
+            android:hint="@string/add_model_of_transport"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Тип транспорта"
+            android:text="@string/transport_type"
             style="@style/TextAppearance.MyValueDescription"
             android:layout_marginTop="16dp"
             />
@@ -81,14 +83,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValue"
-            android:text="Тягач"
+            android:hint="@string/add_transport_type"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MyValueDescription"
-            android:text="Год производства"
+            android:text="@string/manufacture_year"
             android:layout_marginTop="16dp"
             />
 
@@ -96,6 +98,7 @@
             android:id="@+id/yearOfManufacturingValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="@string/add_manufacture_year"
             style="@style/TextAppearance.MyValue"
             android:text=""
             />
