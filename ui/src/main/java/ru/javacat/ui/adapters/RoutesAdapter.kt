@@ -10,13 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.common.utils.toPrettyPrice
+import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.R
+import ru.javacat.ui.databinding.OrderMiniItemBinding
 import ru.javacat.ui.databinding.RouteItemBinding
+import ru.javacat.ui.databinding.RouteNestedOrdersItemBinding
 import kotlin.math.roundToInt
 
 interface OnRouteListener {
-        fun onItem(item: Route)
+        fun onRoute(item: Route)
+        fun newOrder(item: Route)
+        fun onOrder(item: Order)
         fun onRemove(item: Route)
     }
 class RoutesAdapter(
@@ -24,8 +29,10 @@ class RoutesAdapter(
 ): androidx.recyclerview.widget.ListAdapter<Route, RoutesAdapter.Holder>(Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.route_item, parent, false)
-        return Holder(view, onItemListener)
+        //val view = LayoutInflater.from(parent.context).inflate(R.layout.route_nested_orders_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = RouteNestedOrdersItemBinding.inflate(inflater, parent, false)
+        return Holder(binding)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -35,34 +42,36 @@ class RoutesAdapter(
         holder.itemView.startAnimation(animation)
     }
 
-    class Holder(view: View, private val onItemListener: OnRouteListener): RecyclerView.ViewHolder(view){
-        private val binding = RouteItemBinding.bind(view)
+    inner class Holder(val binding: RouteNestedOrdersItemBinding): RecyclerView.ViewHolder(binding.root){
+        //private val binding = RouteNestedOrdersItemBinding.bind(view)
 
         fun bind(item: Route){
-            val customerList = mutableListOf<String>()
-            item.orderList.forEach {
-                it.customer?.shortName?.let { it1 -> customerList.add(it1) }
+            val orderViews = item.orderList.toListView(binding.ordersLayout){
+                onItemListener.onOrder(it)
             }
-            val customersListString = customerList.joinToString(separator = ", ")
 
-            //binding.customersListTextView.isGone = customerList.isEmpty()
-            //binding.earnedMoneyTextView.isGone = item.profit == null
+            orderViews.forEach {
+                binding.ordersLayout.addView(it)
+            }
 
-            binding.routeTitleTextView.text = "Рейс №${item.id} от ${item.startDate?.asDayAndMonthFully()}"
+            binding.routeTitleTextView.text = "Рейс №${item.id}"
 
             item.profit?.let {
-                binding.earnedMoneyTextView.text = it.roundToInt().toPrettyPrice() + " рублей"
+                binding.earnedMoneyTextView.text = it.roundToInt().toPrettyPrice() + " р."
             }
             val contractorString = "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})"
 
             binding.truckDriverName.text = contractorString
 
-            if (customersListString.isNotEmpty()){
-                binding.customersListTextView.text = customersListString.toString()
-            }
+            binding.addOrderBtn.isGone = item.isFinished
 
+            binding.earnedMoneyTextView.isGone = item.orderList.isEmpty()
+
+            binding.addOrderBtn.setOnClickListener {
+                onItemListener.newOrder(item)
+            }
             binding.root.setOnClickListener {
-                onItemListener.onItem(item)
+                onItemListener.onRoute(item)
             }
         }
     }
@@ -76,4 +85,25 @@ class RoutesAdapter(
             return oldItem == newItem
         }
     }
+}
+
+fun List<Order>.toListView(parent: ViewGroup, onOrderClick: (Order) -> Unit): List<View> = this.map { order->
+    val inflater = LayoutInflater.from(parent.context)
+    //val green = inflater.context.resources.getColor(R.color.green, null)
+    val binding = OrderMiniItemBinding.inflate(inflater, parent, false)
+    val red = inflater.context.resources.getColor(R.color.red, null)
+    binding.customerName.text = order.customer?.nameToShow
+    val pointsList = mutableListOf<String>()
+    var pointsText = ""
+    order.points.forEach {
+        pointsList.add("${it.location} ${it.arrivalDate.asDayAndMonthShortly()}")
+    }
+    pointsText = pointsList.joinToString (separator = " - ")
+    if (!order.isPaidByCustomer) binding.income.setTextColor(red)
+    binding.points.text = pointsText
+    binding.income.text = order.price?.toPrettyPrice()
+
+    binding.root.setOnClickListener { _ -> onOrderClick(order)}
+
+    binding.root
 }

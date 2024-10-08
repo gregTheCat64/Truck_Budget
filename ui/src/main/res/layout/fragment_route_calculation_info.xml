@@ -1,17 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/general_info_bar"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="16dp"
         android:orientation="vertical"
         >
 
+        <LinearLayout
+            android:id="@+id/contractorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_assignment_ind_24"
+                app:tint="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MyValueDescription"
+                    android:text="@string/contractor"
+                    />
+
+
+                <TextView
+                    android:id="@+id/contractorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.MyValue"
+                    android:hint="Перевозчик(водитель)"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/myTransportLayout"
@@ -25,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="16dp"
                 >
 
                 <ImageView
@@ -38,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-
                     android:orientation="vertical"
                     >
 
@@ -55,6 +101,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextAppearance.MyValue"
+                        android:hint="Предоплата в рейс"
                         />
 
                 </LinearLayout>
@@ -65,7 +112,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -94,6 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:hint="Затраты на топливо"
                         />
                 </LinearLayout>
 
@@ -134,7 +181,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Расходы на суточные"
 
                         />
 
@@ -175,7 +222,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Прочие расходы"
                         />
 
                 </LinearLayout>
@@ -216,7 +263,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Платон, платные дороги"
                         />
 
                 </LinearLayout>
@@ -258,8 +305,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-
+                        android:hint="Зарплата водителю"
                         />
                 </LinearLayout>
 
@@ -302,7 +348,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Долг к оплате"
                         />
 
 
@@ -315,12 +361,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/paid"
                     android:checkable="true"
+                    android:visibility="gone"
                     android:layout_marginStart="32dp"
                     />
 
             </LinearLayout>
-
-
 
 
 
@@ -355,7 +400,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Выручка с рейса"
 
                         />
                 </LinearLayout>
@@ -396,7 +441,7 @@
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:hint="Чистый доход с рейса"
 
                         />
                 </LinearLayout>
@@ -405,17 +450,17 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/editCountBtn"
+        android:id="@+id/calculateBtn"
         style="@style/ThemeOverlay.Material3.Button.TextButton"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:text="Изменить"
+        android:layout_marginTop="16dp"
+        android:text="@string/calculate_and_finish"
         app:icon="@drawable/baseline_edit_24"
         />
 
     </LinearLayout>
-    </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

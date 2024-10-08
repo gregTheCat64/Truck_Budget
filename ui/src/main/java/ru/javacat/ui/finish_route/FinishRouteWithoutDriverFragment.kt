@@ -112,7 +112,7 @@ class FinishRouteWithoutDriverFragment: BaseFragment<FragmentFinishRouteWithoutD
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.routeViewPagerFragment)
+                if (it is LoadState.Success.GoBack) findNavController().navigateUp()
             }
         }
 

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.YearHolder
 import ru.javacat.ui.BaseFragment
@@ -34,11 +36,13 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     //private var myCompany: Company? = null
 
     private var isFabVisible = true
+    private var routeId: Long? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
             FragmentRouteListBinding.inflate(inflater, container, false)
         }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,10 +89,20 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         //Adapter
         routesAdapter = RoutesAdapter(object : OnRouteListener {
             val bundle = Bundle()
-            override fun onItem(item: Route) {
+            override fun onRoute(item: Route) {
                 bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
-                findNavController().navigate(R.id.action_routeListFragment_to_viewPagerFragment, bundle)
+                findNavController().navigate(R.id.action_navigation_route_list_to_routeCountFragment, bundle)
+            }
 
+            override fun newOrder(item: Route) {
+                val bundle = Bundle()
+                bundle.putLong(FragConstants.ROUTE_ID, item.id)
+                findNavController().navigate(R.id.action_navigation_route_list_to_editOrderFragment, bundle)
+            }
+
+            override fun onOrder(item: Order) {
+                bundle.putLong(FragConstants.ORDER_ID, item.id)
+                findNavController().navigate(R.id.action_navigation_route_list_to_orderFragment, bundle)
             }
 
             override fun onRemove(item: Route) {
@@ -97,6 +111,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
                 }
             }
         })
+
 
         binding.routesList.adapter = routesAdapter
 
@@ -128,19 +143,48 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     }
 
     private fun toNewRoute() {
-        //val bundle = Bundle()
-        //if (myCompany != null) {
         findNavController().navigate(R.id.action_routeListFragment_to_newRouteFragment)
 
     }
 
     private fun hideFab() {
-        binding.newRouteBtn.animate().translationY( binding.newRouteBtn.height.toFloat()+40).setDuration(300).start()
+        binding.newRouteBtn.animate().translationY( binding.newRouteBtn.height.toFloat()+50).setDuration(300).start()
         isFabVisible = false
     }
 
     private fun showFab() {
         binding.newRouteBtn.animate().translationY(0f).setDuration(300).start()
         isFabVisible = true
+    }
+
+    private fun toFinishRouteFragment(currentRoute: Route){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishRouteFragment, bundle)
+        } else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun toFinishRouteWithOutDriverFragment(currentRoute: Route){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishRouteWithoutDriverFragment, bundle)
+        } else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun toFinishPartnerRouteFragment(currentRoute: Route){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishPartnerRouteFragment, bundle)
+        }else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 }

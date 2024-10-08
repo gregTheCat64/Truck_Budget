@@ -59,36 +59,45 @@
             android:hint="Города маршрута"
             style="@style/TextAppearance.MyCardTextValue"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
 
 
-            <TextView
-                android:id="@+id/paymentDeadLineTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="@string/days_to_pay"
-                android:layout_gravity="center_horizontal|bottom"
-                style="@style/TextAppearance.Material3.BodySmall"
-                />
-
-
-
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/income"
-        android:layout_gravity="end|bottom"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Сумма оплаты"
+        android:orientation="vertical"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        >
+        <TextView
+            android:id="@+id/income"
+            android:layout_gravity="end|bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сумма оплаты"
 
-        style="@style/TextAppearance.Material3.TitleMedium"
-        />
+            style="@style/TextAppearance.Material3.TitleMedium"
+            />
+        <TextView
+            android:id="@+id/paymentDeadLineTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/days_to_pay"
+            android:layout_gravity="end"
+            style="@style/TextAppearance.Material3.BodySmall"
+            />
+
+    </LinearLayout>
+
+
 
 
 

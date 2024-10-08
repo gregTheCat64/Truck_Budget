@@ -94,8 +94,8 @@
     <string name="create_new_truck_driver">Новый водитель</string>
     <string name="create_new_partner">Новый партнер</string>
     <string name="my_company">Моя компания</string>
-    <string name="contractor">Исполнитель:</string>
-    <string name="truck_driver">Водитель:</string>
+    <string name="contractor">Перевозчик</string>
+    <string name="truck_driver">Водитель</string>
     <string name="moneyToPay">К оплате:</string>
     <string name="contractor_s_cost">Перевозчику</string>
     <string name="rub">"руб"</string>
@@ -194,4 +194,7 @@
     <string name="add_transport_type">Добавьте тип транспорта</string>
     <string name="transport_type">Тип транспорта</string>
     <string name="add_model_of_transport">Добавьте наименование модели</string>
+    <string name="profit">Прибыль</string>
+    <string name="finish">Завершить</string>
+    <string name="calculate_and_finish">Calculate and finish</string>
 </resources>

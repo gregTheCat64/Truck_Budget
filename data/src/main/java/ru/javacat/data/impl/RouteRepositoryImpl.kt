@@ -29,6 +29,7 @@ class RouteRepositoryImpl @Inject constructor(
 //    override val allRoutes: Flow<List<Route?>>
 //        get() = routesDao.getAllRoutes().map { list -> list.map { it.toRouteModel() } }
 
+    private val TAG = "RouteRepoImpl"
     override val lastRoute: Route?
         get() = routesDao.getLastRoute()?.toRouteModel()
 
@@ -98,6 +99,7 @@ class RouteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateRouteToDb(route: Route){
+        Log.i(TAG, "saving route: ${route.id}")
         dbQuery { routesDao.updateRoute(route.toDb()) }
     }
 }

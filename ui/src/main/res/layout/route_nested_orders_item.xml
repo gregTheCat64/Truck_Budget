@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="6dp">
+
+    <TextView
+        android:id="@+id/earnedMoneyTextView"
+        style="@style/TextAppearance.MyCardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="8dp"
+        android:hint="@string/profit"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/routeTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/route_number"
+            android:layout_gravity="center"
+
+            style="@style/TextAppearance.MyCardTextValue"
+            />
+
+
+        <TextView
+            android:id="@+id/truckDriverName"
+            style="@style/TextAppearance.MyCardTextValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:text="@string/truck_driver_company_contractor"
+
+            app:drawableLeftCompat="@drawable/baseline_directions_car_24" />
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ordersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="32dp"
+            android:orientation="vertical"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="Finish"
+                android:visibility="gone"
+                app:icon="@drawable/baseline_outlined_flag_24"
+                android:layout_gravity="start"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addOrderBtn"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/baseline_add_circle_outline_24"
+                    android:drawablePadding="8dp"
+                    android:text="@string/add_order_button"
+                    app:icon="@drawable/baseline_add_circle_outline_24"
+                    android:layout_gravity="center"
+                    />
+            </androidx.cardview.widget.CardView>
+
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/earnedMoneyTextView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="8dp"-->
+    <!--        android:layout_gravity="end|bottom"-->
+    <!--        style="@style/TextAppearance.Material3.TitleMedium"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        />-->
+</androidx.cardview.widget.CardView>

@@ -3,17 +3,12 @@ package ru.javacat.ui.new_route
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -36,36 +31,45 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     private var isLastRouteLoaded = false
     private var companyId: Long? = null
     private var currentRoute: Route? = null
+    private var routeId: Long? = null
+
+    private val TAG = "NewRouteFrag"
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentCreateRouteBinding
         get() = {inflater, container ->
             FragmentCreateRouteBinding.inflate(inflater, container, false)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        routeId = arguments?.getLong(FragConstants.ROUTE_ID)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
-        requireActivity().addMenuProvider(object : MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_empty, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    android.R.id.home -> {
-                        findNavController().navigateUp()
-                        return true
-                    }
-                    else -> return false
-                }
-            }
-        }, viewLifecycleOwner)
+//        requireActivity().addMenuProvider(object : MenuProvider{
+//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//                menuInflater.inflate(R.menu.menu_empty, menu)
+//            }
+//
+//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+//                when (menuItem.itemId) {
+//                    android.R.id.home -> {
+//                        findNavController().navigateUp()
+//                        return true
+//                    }
+//                    else -> return false
+//                }
+//            }
+//        }, viewLifecycleOwner)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -75,9 +79,19 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
 
         Log.i("NewRouteFrag", "lastRouteLoaded: $isLastRouteLoaded")
 
-        if (!isLastRouteLoaded){
+        Log.i(TAG, "routeID: $routeId")
+
+        if (routeId == null && !isLastRouteLoaded){
             setLastRouteToCurrent()
             isLastRouteLoaded = true
+        } else restoreCurrentRoute(routeId!!)
+
+        binding.actionBar.cancelBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.actionBar.saveBtn.setOnClickListener {
+            currentRoute?.let { it1 -> saveRoute(it1) }
         }
 
         binding.addContractorEditText.setOnClickListener {
@@ -107,7 +121,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         //Инициализация ui
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.newRoute.collectLatest {
+                viewModel.currentRoute.collectLatest {
                     Log.i("NewRouteFrag", "collecting newRoute: $it")
                     companyId = it?.contractor?.company?.id
                     currentRoute = it
@@ -121,12 +135,11 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.routeId.collectLatest {
-                    Log.i("NewRouteFrag", "routeID: $it")
-                    val bundle = Bundle()
+                    Log.i(TAG, "newRouteID: $it")
                     if (it != null) {
-                        bundle.putLong(FragConstants.ROUTE_ID, it)
+                        //bundle.putLong(FragConstants.ROUTE_ID, it)
                         viewModel.clearRouteId()
-                        findNavController().navigate(R.id.routeViewPagerFragment, bundle)
+                        findNavController().navigate(R.id.navigation_route_list)
                     }
                 }
             }
@@ -134,6 +147,7 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
     }
 
     private fun initUi(route: Route){
+        binding.actionBar.title.text = getString(R.string.edit)
         route.contractor?.company?.let {
             binding.companyNameAdvise.isGone = !it.nameToShow.contains("Моя Компания", true)
             binding.addContractorEditText.setText(it.nameToShow)
@@ -142,18 +156,28 @@ class NewRouteFragment: BaseFragment<FragmentCreateRouteBinding>() {
         route.contractor?.driver?.let { td ->
             //val driverName = "${td.surname} ${td.firstName.takeIf { it!=null }}"
                 binding.addDriverEditText.setText(td.nameToShow)
-        }?:binding.addDriverEditText.setText("")
+        }?:binding.addDriverEditText.text?.clear()
+
         route.contractor?.truck?.let {
             binding.addTruckEditText.setText(it.nameToShow)
-        }?:binding.addTruckEditText.setText("")
+        }?:binding.addTruckEditText.text?.clear()
+
         route.contractor?.trailer?.let {
             binding.addTrailerEditText.setText(it.regNumber)
-        }?:binding.addTrailerEditText.setText("")
+        }?:binding.addTrailerEditText.text?.clear()
+
+        route.prepayment.let {
+            if (it != 0) binding.prepayEditText.setText(it.toString()) else binding.prepayEditText.text?.clear()
+        }
     }
 
     private fun setLastRouteToCurrent(){
-        Log.i("NewRouteFrag", "settingLastRoute")
+        Log.i(TAG, "settingLastRoute")
         viewModel.setLastRouteToEditedRoute()
+    }
+
+    private fun restoreCurrentRoute(id: Long){
+        viewModel.restoreCurrentRoute(id)
     }
 
     private fun addContractorToRoute(){

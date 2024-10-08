@@ -112,13 +112,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         //Salary count
         binding.profitSalaryChip.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                binding.percentOfProfit.isGone = false
+                binding.percentOfProfitLayout.isGone = false
                 binding.distanceLayout.isGone = true
-                binding.percentOfRevenue.isGone = true
-
-                binding.distanceSalaryChip.isChecked = false
-                binding.revenueSalaryChip.isChecked = false
-
+                binding.percentOfRevenueLayout.isGone = true
 
                 salaryCountMethod = SalaryCountMethod.BY_PROFIT
             }
@@ -126,13 +122,9 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         binding.distanceSalaryChip.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                binding.percentOfProfit.isGone = true
+                binding.percentOfProfitLayout.isGone = true
                 binding.distanceLayout.isGone = false
-                binding.percentOfRevenue.isGone = true
-
-                binding.profitSalaryChip.isChecked = false
-                binding.revenueSalaryChip.isChecked = false
-
+                binding.percentOfRevenueLayout.isGone = true
 
                 salaryCountMethod = SalaryCountMethod.BY_DISTANCE
             }
@@ -140,12 +132,12 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
 
         binding.revenueSalaryChip.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                binding.percentOfProfit.isGone = true
+                binding.percentOfProfitLayout.isGone = true
                 binding.distanceLayout.isGone = true
-                binding.percentOfRevenue.isGone = false
+                binding.percentOfRevenueLayout.isGone = false
 
-                binding.profitSalaryChip.isChecked = false
-                binding.distanceSalaryChip.isChecked = false
+                //binding.profitSalaryChip.isChecked = false
+                //binding.distanceSalaryChip.isChecked = false
 
                 salaryCountMethod = SalaryCountMethod.BY_REVENUE
             }
@@ -193,7 +185,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         //Навигация
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadState.collectLatest {
-                if (it is LoadState.Success.GoBack) findNavController().navigate(R.id.routeViewPagerFragment)
+                if (it is LoadState.Success.GoBack) findNavController().navigateUp()
             }
         }
 
@@ -304,18 +296,16 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
         when (salaryCountMethod) {
             SalaryCountMethod.BY_DISTANCE -> {
                 binding.distanceSalaryChip.isChecked = true
-                binding.profitSalaryChip.isChecked = false
-                binding.revenueSalaryChip.isChecked = false
+                binding.distanceLayout.isGone = false
             }
             SalaryCountMethod.BY_PROFIT -> {
-                binding.distanceSalaryChip.isChecked = false
                 binding.profitSalaryChip.isChecked = true
-                binding.revenueSalaryChip.isChecked = false
+                binding.percentOfProfitLayout.isGone = false
             }
             else -> {
-                binding.distanceSalaryChip.isChecked = false
-                binding.profitSalaryChip.isChecked = false
                 binding.revenueSalaryChip.isChecked = true
+                binding.percentOfRevenueLayout.isGone = false
+
             }
         }
         profitPercentage?.let {

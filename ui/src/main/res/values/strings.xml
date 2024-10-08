@@ -194,4 +194,7 @@
     <string name="add_transport_type">Add transport type</string>
     <string name="transport_type">Transport type</string>
     <string name="add_model_of_transport">Add model of transport</string>
+    <string name="profit">Profit</string>
+    <string name="finish">Finish</string>
+    <string name="calculate_and_finish">Calculate and finish</string>
 </resources>

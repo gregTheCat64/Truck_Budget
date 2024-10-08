@@ -39,7 +39,12 @@ class FinishRouteViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val editedRoute = routeRepository.editedItem
+    private val TAG = "FinishRouteVM"
+
+    private val _editedRoute = MutableStateFlow<Route?>(null)
+    val editedRoute:MutableStateFlow<Route?>
+        get() = _editedRoute
+
     private val _lastRoute = MutableStateFlow(Route(startDate = LocalDate.now(), salaryParameters = SalaryParameters()))
     val lastRoute: StateFlow<Route>
         get() = _lastRoute.asStateFlow()
@@ -89,10 +94,8 @@ class FinishRouteViewModel @Inject constructor(
     fun getEditedRoute(routeId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             Log.i("FinishRouteVM", "getEditedRoute routeId: $routeId")
-            val route = routeRepository.getById(routeId)
-            if (route != null) {
-                routeRepository.updateEditedItem(route)
-            }
+            _editedRoute.value = routeRepository.getById(routeId)
+
         }
     }
 
@@ -127,6 +130,7 @@ class FinishRouteViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
+            Log.i(TAG, "saving route")
             try {
                 val salaryParameters = SalaryParameters(
                     salaryCountMethod, payPerDiem,profitPercentage?:0,revenuePercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
@@ -134,6 +138,7 @@ class FinishRouteViewModel @Inject constructor(
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance
                 )
+
                 //обновляем водителя:
                 var truckDriver = editedRoute.value?.contractor?.driver?.id?.let {
                     truckDriversRepository.getById(
@@ -147,7 +152,7 @@ class FinishRouteViewModel @Inject constructor(
                     truckDriversRepository.updateDriverToDb(truckDriver)
                 }
 
-                editedRoute.value?.copy(
+                _editedRoute.value = editedRoute.value?.copy(
                     prepayment = prepay,
                     routeDetails = routeDetails,
                     driverSalary = salary,
@@ -158,8 +163,9 @@ class FinishRouteViewModel @Inject constructor(
                     profit = profit,
                     endDate = endDate,
                     totalExpenses = totalExpenses
-                )?.let { routeRepository.updateEditedItem(it) }
-                editedRoute.value?.let { routeRepository.updateRouteToDb(it) }
+                )
+
+                _editedRoute.value?.let { routeRepository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception) {
                 _loadState.emit(LoadState.Error(e.message.toString()))

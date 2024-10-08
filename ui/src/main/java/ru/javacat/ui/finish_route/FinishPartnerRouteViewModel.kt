@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.Route
 import ru.javacat.domain.repo.RouteRepository
 import ru.javacat.ui.LoadState
 import javax.inject.Inject
@@ -15,7 +17,10 @@ import javax.inject.Inject
 class FinishPartnerRouteViewModel @Inject constructor(
     private val repository: RouteRepository
 ): ViewModel() {
-    val editedRoute = repository.editedItem
+
+    private val _editedRoute = MutableStateFlow<Route?>(null)
+    val editedRoute: MutableStateFlow<Route?>
+        get() = _editedRoute
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -24,7 +29,7 @@ class FinishPartnerRouteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val route = repository.getById(routeId)
             if (route != null) {
-                repository.updateEditedItem(route)
+                _editedRoute.value = route
             }
         }
     }
@@ -32,7 +37,7 @@ class FinishPartnerRouteViewModel @Inject constructor(
     fun saveRoute(profit: Float, revenue: Int, moneyToPay: Float, prepayment: Int, contractorsCost: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                editedRoute.value?.copy(
+                _editedRoute.value = editedRoute.value?.copy(
                     routeContractorsSum = contractorsCost,
                     isFinished = true,
                     profit = profit,
@@ -40,7 +45,7 @@ class FinishPartnerRouteViewModel @Inject constructor(
                     prepayment = prepayment,
                     moneyToPay = moneyToPay,
                     isPaidToContractor = false
-                )?.let { repository.updateEditedItem(it) }
+                )
                 editedRoute.value?.let { repository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception) {

@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -18,24 +20,27 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
+import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentRouteCalculationInfoBinding
 import ru.javacat.ui.utils.FragConstants
+import ru.javacat.ui.utils.showDeleteConfirmationDialog
 
 @AndroidEntryPoint
 class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBinding>() {
 
-    private val viewModel: RouteCountViewModel by viewModels()
+    private val viewModel: RouteCalculationInfoViewModel by viewModels()
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteCalculationInfoBinding
         get() = { inflater, container ->
             FragmentRouteCalculationInfoBinding.inflate(inflater, container, false)
         }
 
     private var currentRoute: Route? = null
+    var routeId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val args = arguments
-        val routeId = args?.getLong(FragConstants.ROUTE_ID)
+        routeId = args?.getLong(FragConstants.ROUTE_ID)
 
         Log.i("RouteCalcInfo", "routeId: $routeId")
 
@@ -44,9 +49,17 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
         var isPaid = false
 
+        //чекаем стейты
+        stateListener()
+
+        //получаем текущий рейс
+        routeId?.let { viewModel.updateCurrentRoute(it) }
+
+        //инициализация UI
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest {
@@ -59,10 +72,27 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             }
         }
 
-        binding.editCountBtn.setOnClickListener {
-            edit()
+        //редактирование рейса
+        binding.actionBar.editBtn.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, routeId?:0)
+            findNavController().navigate(R.id.newRouteFragment, bundle)
         }
 
+        binding.actionBar.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.actionBar.moreBtn.setOnClickListener {
+            showMenu(it)
+        }
+
+        //рассчет рейса и финиш
+        binding.calculateBtn.setOnClickListener {
+            toCalculation()
+        }
+
+        //статус оплаты
         binding.paymentChip.setOnClickListener {
             if (isPaid) {
                 viewModel.setPaid(isPaid = false)
@@ -75,8 +105,19 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         }
     }
 
+    private fun stateListener(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loadState.collectLatest {
+                    if (it == LoadState.Success.GoBack) findNavController().navigateUp()
+                }
+            }
+        }
+    }
+
     private fun initUi(route: Route) {
-        //TODO перенести этот блок на основнюу страницу:
+        val title = "Рейс № ${route.id}"
+        binding.actionBar.title.text = title
         val currentIncome = (route.orderList.map { it.price!! }).sum()
 
         if (route.isPaidToContractor) {
@@ -91,10 +132,18 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             ).show()
         }
 
+        if (route.isFinished){
+            binding.calculateBtn.text = "Пересчитать"
+            binding.paymentChip.isGone = false
+        }
+
         //TODO привезти этот блок в порядок
+            //Моя компания
         if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID) {
             if (route.contractor?.driver?.id != -1L) {
+                //Мой водитель
                 binding.myTransportLayout.isVisible = true
+                binding.contractorName.text = route.contractor!!.driver?.nameToShow
 
                 val subsistenceExp = route.salaryParameters?.costPerDiem?.let {
                     route.routeDetails?.routeDuration?.times(it)
@@ -121,6 +170,8 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
                     binding.salaryTv.text = "$it ${getString(R.string.rub)}"
                 }
             } else {
+                //сам зарулем
+                binding.contractorName.text = route.contractor!!.driver?.nameToShow
                 binding.prepayLayout.isGone = true
                 binding.salaryLayout.isGone = true
                 binding.subsistenceLayout.isGone = true
@@ -144,12 +195,14 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
                 }
             }
         } else {
+            //привлеченный транспорт
             binding.myTransportLayout.isGone = true
+            binding.contractorName.text = "${route.contractor!!.company?.nameToShow} (${route.contractor!!.driver?.nameToShow})"
         }
 
 
         //кнопка редактирования видима если рейс не пустой или рейс завершен
-        binding.editCountBtn.isGone = route.orderList.isEmpty() || !route.isFinished
+        binding.calculateBtn.isGone = route.orderList.isEmpty()
 
         route.profit?.let {
             binding.profitTv.text = "$it ${getString(R.string.rub)}"
@@ -164,14 +217,14 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
 
     }
 
-    private fun edit() {
+    private fun toCalculation() {
         if (currentRoute?.contractor?.company?.id == -1L){
             if (currentRoute?.contractor?.driver?.id == -1L){
-                findNavController().navigate(R.id.finishRouteWithoutDriverFragment)
+                toFinishRouteWithOutDriverFragment()
             } else {
-                findNavController().navigate(R.id.finishRouteFragment)
+                toFinishRouteFragment()
             }
-        } else findNavController().navigate(R.id.finishPartnerRouteFragment)
+        } else toFinishPartnerRouteFragment()
     }
 
     private fun setPaid() {
@@ -186,6 +239,57 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             isChecked = false
             text = getString(R.string.unpaid_order)
         }
+    }
+
+    private fun toFinishRouteFragment(){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishRouteFragment, bundle)
+        } else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun toFinishRouteWithOutDriverFragment(){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishRouteWithoutDriverFragment, bundle)
+        } else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun toFinishPartnerRouteFragment(){
+        if (currentRoute?.orderList?.isNotEmpty() == true){
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
+            findNavController().navigate(R.id.finishPartnerRouteFragment, bundle)
+        }else {
+            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun showMenu(view: View) {
+        val menu = PopupMenu(requireContext(), view)
+        menu.inflate(R.menu.menu_remove)
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item->
+            when (item.itemId) {
+                R.id.remove_menu_item -> {
+                    showDeleteConfirmationDialog("рейс $routeId"){
+                        routeId?.let { viewModel.removeRoute(it) }
+                    }
+                }
+                R.id.share_menu_item -> {
+                    Toast.makeText(requireContext(), "Пока не реализовано", Toast.LENGTH_SHORT).show()
+                }
+                else -> Toast.makeText(context, "Пока не реализовано", Toast.LENGTH_SHORT).show()
+            }
+            true
+        })
+        menu.show()
     }
 
 }

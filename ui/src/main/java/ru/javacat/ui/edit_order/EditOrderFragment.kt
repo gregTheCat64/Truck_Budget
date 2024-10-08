@@ -105,7 +105,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         Log.i("EditOrderFrag", "onCreateView")
         Log.i("EditOrderFrag", "needToRestore>: $needToRestore")
 
-        (activity as AppCompatActivity).supportActionBar?.hide()
+        //(activity as AppCompatActivity).supportActionBar?.hide()
         //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
 
 
@@ -181,6 +181,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         binding.actionBar.cancelBtn.setOnClickListener {
+            viewModel.clearOrder()
             findNavController().navigateUp()
         }
         binding.customerTv.setOnClickListener {
@@ -310,7 +311,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                         if (orderIdArg!= 0L) {
                             Log.i("EditOrderFrag", "isEditing: $needToRestore")
                             findNavController().navigateUp()
-                        } else {findNavController().popBackStack(R.id.routeViewPagerFragment, false)}
+                        } else {findNavController().navigateUp()}
                         Toast.makeText(requireContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show()
                     }
 

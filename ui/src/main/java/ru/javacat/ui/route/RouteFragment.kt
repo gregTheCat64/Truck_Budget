@@ -107,7 +107,6 @@ class RouteFragment : BaseFragment<FragmentRouteBinding>() {
             //viewModel.addRouteIdToOrder(routeId = currentRoute?.id?:0)
             val bundle = Bundle()
             bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-            //bundle.putBoolean(FragConstants.IS_NEW_ORDER, true)
             findNavController().navigate(R.id.editOrderFragment, bundle)
         }
 

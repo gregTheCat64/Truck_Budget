@@ -34,7 +34,9 @@ class FinishRouteWithoutDriverViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    val editedRoute = routeRepository.editedItem
+    private val _editedRoute = MutableStateFlow<Route?>(null)
+    val editedRoute:MutableStateFlow<Route?>
+        get() = _editedRoute
 
     private val _lastRoute = MutableStateFlow(Route(startDate = LocalDate.now(), salaryParameters = SalaryParameters()))
     val lastRoute: StateFlow<Route>
@@ -44,7 +46,7 @@ class FinishRouteWithoutDriverViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val route = routeRepository.getById(routeId)
             if (route != null) {
-                routeRepository.updateEditedItem(route)
+                _editedRoute.value = route
             }
         }
     }
@@ -76,7 +78,7 @@ class FinishRouteWithoutDriverViewModel @Inject constructor(
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance
                 )
-                editedRoute.value?.copy(
+                _editedRoute.value = editedRoute.value?.copy(
                     prepayment = prepay,
                     routeDetails = routeDetails,
                     driverSalary = 0f,
@@ -87,7 +89,7 @@ class FinishRouteWithoutDriverViewModel @Inject constructor(
                     profit = profit,
                     endDate = endDate,
                     totalExpenses = totalExpenses
-                )?.let { routeRepository.updateEditedItem(it) }
+                )
                 editedRoute.value?.let { routeRepository.updateRouteToDb(it) }
                 _loadState.emit(LoadState.Success.GoBack)
             } catch (e: Exception) {

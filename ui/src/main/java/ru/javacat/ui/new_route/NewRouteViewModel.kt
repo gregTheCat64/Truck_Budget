@@ -49,9 +49,9 @@ class NewRouteViewModel @Inject constructor(
 
 //    val editedRoute = repo.editedItem
 
-    private var _newRoute = MutableStateFlow<Route?>(Route())
-    val newRoute: StateFlow<Route?>
-        get() = _newRoute.asStateFlow()
+    private var _currentRoute = MutableStateFlow<Route?>(Route())
+    val currentRoute: StateFlow<Route?>
+        get() = _currentRoute.asStateFlow()
 
     private val _contractors = MutableStateFlow<List<Company>?>(null)
     val contractors = _contractors.asStateFlow()
@@ -79,7 +79,7 @@ class NewRouteViewModel @Inject constructor(
 
     fun setCompany(t: Company) {
         Log.i("NewRouteVM", "setCompany")
-        _newRoute.value = newRoute.value?.copy(
+        _currentRoute.value = currentRoute.value?.copy(
             contractor = Contractor(
                 company = t,
                 driver = null,
@@ -87,7 +87,7 @@ class NewRouteViewModel @Inject constructor(
                 trailer = null
             )
         )
-        Log.i("NewRouteVM", "${_newRoute.value}")
+        Log.i("NewRouteVM", "${_currentRoute.value}")
     }
 
     fun saveNewContractor(company: Company){
@@ -114,8 +114,8 @@ class NewRouteViewModel @Inject constructor(
     }
 
     fun setTruck(t: Truck) {
-        _newRoute.value = _newRoute.value?.copy(
-            contractor = _newRoute.value?.contractor?.copy(
+        _currentRoute.value = _currentRoute.value?.copy(
+            contractor = _currentRoute.value?.contractor?.copy(
                 truck = t
             )
         )
@@ -144,8 +144,8 @@ class NewRouteViewModel @Inject constructor(
     }
 
     fun setTrailer(t: Trailer) {
-        _newRoute.value = _newRoute.value?.copy(
-            contractor = _newRoute.value?.contractor?.copy(
+        _currentRoute.value = _currentRoute.value?.copy(
+            contractor = _currentRoute.value?.contractor?.copy(
                 trailer = t
             )
         )
@@ -174,8 +174,8 @@ class NewRouteViewModel @Inject constructor(
     }
 
     fun setDriver(t: TruckDriver) {
-        _newRoute.value = _newRoute.value?.copy(
-            contractor = _newRoute.value?.contractor?.copy(
+        _currentRoute.value = _currentRoute.value?.copy(
+            contractor = _currentRoute.value?.contractor?.copy(
                 driver = t
             )
         )
@@ -211,11 +211,17 @@ class NewRouteViewModel @Inject constructor(
         }
     }
 
+    fun restoreCurrentRoute(id: Long){
+        viewModelScope.launch(Dispatchers.IO){
+            _currentRoute.value = repo.getById(id)
+        }
+    }
+
     fun setLastRouteToEditedRoute() {
         viewModelScope.launch(Dispatchers.IO) {
             val lastRoute = repo.lastRoute
             Log.i("NewRouteVM", "lastRoute: $lastRoute")
-                _newRoute.value = newRoute.value?.copy(
+                _currentRoute.value = currentRoute.value?.copy(
                     id = 0,
                     contractor = lastRoute?.contractor,
                     startDate = null,
@@ -232,7 +238,7 @@ class NewRouteViewModel @Inject constructor(
                     profit = null,
                     isFinished = false
                 )
-            Log.i("NewRouteVM", "_new_route: ${_newRoute.value}")
+            Log.i("NewRouteVM", "_new_route: ${_currentRoute.value}")
             }
     }
 

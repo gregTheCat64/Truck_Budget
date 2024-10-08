@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    android:layout_margin="4dp"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/customerName"
+            style="@style/TextAppearance.MyCardTextValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:hint="Заказчик"
+             />
+
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:hint="Города маршрута"
+             />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/income"
+        android:textSize="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Cost"
+        android:layout_margin="4dp"
+        android:layout_gravity="end"
+        android:textAlignment="viewEnd"
+        />
+
+
+</androidx.cardview.widget.CardView>
