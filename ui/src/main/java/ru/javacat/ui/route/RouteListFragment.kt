@@ -85,6 +85,12 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
             toNewRoute()
         }
 
+        val orderClickListener: (Order) -> Unit = {order ->
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.ORDER_ID, order.id)
+            //Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_navigation_route_list_to_orderFragment, bundle)
+        }
 
         //Adapter
         routesAdapter = RoutesAdapter(object : OnRouteListener {
@@ -100,17 +106,14 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
                 findNavController().navigate(R.id.action_navigation_route_list_to_editOrderFragment, bundle)
             }
 
-            override fun onOrder(item: Order) {
-                bundle.putLong(FragConstants.ORDER_ID, item.id)
-                findNavController().navigate(R.id.action_navigation_route_list_to_orderFragment, bundle)
-            }
 
             override fun onRemove(item: Route) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     item.id?.let { viewModel.removeRoute(it) }
                 }
             }
-        })
+        }, orderClickListener)
+
 
 
         binding.routesList.adapter = routesAdapter
