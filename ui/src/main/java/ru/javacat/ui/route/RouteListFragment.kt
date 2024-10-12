@@ -52,7 +52,6 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         (activity as AppCompatActivity).supportActionBar?.hide()
         //(activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -88,7 +87,6 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         val orderClickListener: (Order) -> Unit = {order ->
             val bundle = Bundle()
             bundle.putLong(FragConstants.ORDER_ID, order.id)
-            //Toast.makeText(requireContext(), "Click", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_navigation_route_list_to_orderFragment, bundle)
         }
 
@@ -160,34 +158,4 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         isFabVisible = true
     }
 
-    private fun toFinishRouteFragment(currentRoute: Route){
-        if (currentRoute?.orderList?.isNotEmpty() == true){
-            val bundle = Bundle()
-            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-            findNavController().navigate(R.id.finishRouteFragment, bundle)
-        } else {
-            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun toFinishRouteWithOutDriverFragment(currentRoute: Route){
-        if (currentRoute?.orderList?.isNotEmpty() == true){
-            val bundle = Bundle()
-            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-            findNavController().navigate(R.id.finishRouteWithoutDriverFragment, bundle)
-        } else {
-            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun toFinishPartnerRouteFragment(currentRoute: Route){
-        if (currentRoute?.orderList?.isNotEmpty() == true){
-            val bundle = Bundle()
-            bundle.putLong(FragConstants.ROUTE_ID, currentRoute?.id?:0)
-            findNavController().navigate(R.id.finishPartnerRouteFragment, bundle)
-        }else {
-            Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
-        }
-
-    }
 }

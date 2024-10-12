@@ -197,4 +197,6 @@
     <string name="profit">Прибыль</string>
     <string name="finish">Завершить</string>
     <string name="calculate_and_finish">Calculate and finish</string>
+    <string name="add_order">Добавить заявку</string>
+    <string name="debt_to_us">Нам должны</string>
 </resources>

@@ -37,10 +37,14 @@ class OrdersAdapter(
         private val binding = OrderItemBinding.bind(view)
 
         fun bind(item: Order) {
-            val points = mutableListOf<String>()
-            for (i in item.points){
-                points.add(i.location)
+
+            val pointsList = mutableListOf<String>()
+            var pointsText = ""
+
+            item.points.forEach {
+                pointsList.add("${it.location} ${it.arrivalDate.asDayAndMonthShortly()}")
             }
+            pointsText = pointsList.joinToString (separator = " - ")
 
             if (item.isPaidByCustomer){
                 binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_primary))
@@ -55,17 +59,18 @@ class OrdersAdapter(
 //            val routeWord = Resources.getSystem().getString(R.string.route)
 
             val orderIdString = "Заявка № $orderId от $startDate / Рейс № ${item.routeId} "
-            val contractorString = "${item.contractor?.driver?.surname} (${item.contractor?.company?.shortName})"
+            val contractorString = if (item.contractor?.company?.id != -1L) "${item.contractor?.driver?.surname} (${item.contractor?.company?.shortName})" else item.contractor?.driver?.nameToShow
+            val incomeString = item.price?.toPrettyPrice()+" р."
 
             binding.orderId.text = orderIdString
             binding.customerName.text = item.customer?.nameToShow
             binding.contractorName.text = contractorString
-            binding.points.text = points.toString()
-            binding.income.text = item.price?.toPrettyPrice()+" р."
+            binding.points.text = pointsText
+            binding.income.text = incomeString
             if (item.isPaidByCustomer) binding.paymentDeadLineTv.isGone = true else {
                 binding.paymentDeadLineTv.text = if (item.paymentDeadline == null){
                     "Срок оплаты ${item.daysToPay.toString()} дней"
-                } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly().toString()}"
+                } else "Оплата до ${item.paymentDeadline!!.asDayAndMonthShortly()}"
             }
 
 

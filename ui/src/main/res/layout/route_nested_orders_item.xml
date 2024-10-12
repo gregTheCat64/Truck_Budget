@@ -30,8 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/route_number"
-            android:layout_gravity="center"
-
+            android:layout_gravity="start"
+            app:drawableLeftCompat="@drawable/baseline_assignment_24"
+            android:drawablePadding="8dp"
             style="@style/TextAppearance.MyCardTextValue"
             />
 
@@ -50,13 +51,13 @@
 
 
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:id="@+id/ordersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginStart="32dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
             android:orientation="vertical"
             />
 
@@ -87,9 +88,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/baseline_add_circle_outline_24"
+                    android:drawableStart="@drawable/baseline_assignment_add_24"
                     android:drawablePadding="8dp"
-                    android:text="@string/add_order_button"
+                    android:text="@string/add_order"
                     app:icon="@drawable/baseline_add_circle_outline_24"
                     android:layout_gravity="center"
                     />

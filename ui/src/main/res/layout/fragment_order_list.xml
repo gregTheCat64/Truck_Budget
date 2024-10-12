@@ -139,6 +139,7 @@
         android:orientation="horizontal"
         >
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/theirDebtLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -148,9 +149,11 @@
             >
 
             <FrameLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+
                 android:orientation="horizontal">
 
                 <TextView
@@ -159,7 +162,7 @@
                     android:layout_marginStart="4dp"
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_gravity="center_vertical"
-                    android:text="Должны нам"
+                    android:text="@string/debt_to_us"
                     />
 
                 <TextView
@@ -167,6 +170,7 @@
                     android:layout_marginStart="16dp"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_gravity="end"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
@@ -186,9 +190,11 @@
             >
 
             <FrameLayout
+                android:id="@+id/myDebtLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView

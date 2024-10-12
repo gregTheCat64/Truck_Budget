@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Заявка номер"
-            style="@style/TextAppearance.MyCardTitle"
+            style="@style/TextAppearance.MyCardTextValue"
             />
         <TextView
             android:id="@+id/contractorName"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:hint="Заказчик"
             style="@style/TextAppearance.MyCardTextValue"
-            android:layout_marginTop="4dp"
+
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_apartment_24"
              />
@@ -58,49 +58,38 @@
             android:layout_height="wrap_content"
             android:hint="Города маршрута"
             style="@style/TextAppearance.MyCardTextValue"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/baseline_route_24"
            />
 
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="end|bottom"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        >
-        <TextView
-            android:id="@+id/income"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="end|bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Сумма оплаты"
 
-            style="@style/TextAppearance.Material3.TitleMedium"
-            />
-        <TextView
-            android:id="@+id/paymentDeadLineTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            >
 
-            android:text="@string/days_to_pay"
-            android:layout_gravity="end"
-            style="@style/TextAppearance.Material3.BodySmall"
-            />
+            <TextView
+                android:id="@+id/paymentDeadLineTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/days_to_pay"
+                android:layout_gravity="center|bottom"
+                style="@style/TextAppearance.Material3.BodySmall"
+                />
 
+            <TextView
+                android:id="@+id/income"
+                android:layout_gravity="end|bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сумма оплаты"
+                android:gravity="end"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                />
+
+        </FrameLayout>
     </LinearLayout>
-
-
-
-
-
-
 
 </androidx.cardview.widget.CardView>

@@ -192,9 +192,12 @@ class OrderListFragment: BaseFragment<FragmentOrderListBinding>() {
                 myDebt += it.contractorPrice?:0
             }
         }
+        if (theirDebt > 0) binding.theirDebtLayout.isGone = false
         binding.theirDebtValue.text = theirDebt.toString()
+
+        if (myDebt > 0) binding.myDebtLayout.isGone = false
         binding.myDebtValue.text = myDebt.toString()
-        //Toast.makeText(requireContext(), "$debt", Toast.LENGTH_SHORT).show()
+
         ordersAdapter.submitList(orderList)
     }
 
