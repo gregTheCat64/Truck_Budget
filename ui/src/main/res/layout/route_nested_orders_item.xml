@@ -65,15 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:text="Finish"
-                android:visibility="gone"
-                app:icon="@drawable/baseline_outlined_flag_24"
-                android:layout_gravity="start"
-                />
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/addOrderBtn"
@@ -88,10 +80,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/baseline_assignment_add_24"
                     android:drawablePadding="8dp"
                     android:text="@string/add_order"
-                    app:icon="@drawable/baseline_add_circle_outline_24"
+                    app:drawableStartCompat="@drawable/baseline_assignment_add_24"
                     android:layout_gravity="center"
                     />
             </androidx.cardview.widget.CardView>
