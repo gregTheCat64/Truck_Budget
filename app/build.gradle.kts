@@ -16,13 +16,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        //resValue ("string", "YandexClientId", "4e2906c578da49febf2dbf62eb3081ba")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            manifestPlaceholders["YANDEX_CLIENT_ID"] = "4e2906c578da49febf2dbf62eb3081ba"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -44,7 +45,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":ui"))
 
-
+    implementation (libs.authsdk)
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
     implementation(libs.bundles.nav)

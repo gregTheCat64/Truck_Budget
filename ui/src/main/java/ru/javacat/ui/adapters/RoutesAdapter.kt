@@ -98,11 +98,10 @@ fun List<Order>.toListView(parent: ViewGroup, onOrderClick: (Order) -> Unit): Li
     val red = inflater.context.resources.getColor(R.color.red, null)
     binding.customerName.text = order.customer?.nameToShow
     val pointsList = mutableListOf<String>()
-    var pointsText = ""
     order.points.forEach {
         pointsList.add("${it.location} ${it.arrivalDate.asDayAndMonthShortly()}")
     }
-    pointsText = pointsList.joinToString (separator = " - ")
+    val pointsText: String = pointsList.joinToString (separator = " - ")
     if (!order.isPaidByCustomer) binding.income.setTextColor(red)
     binding.points.text = pointsText
     binding.income.text = order.price?.toPrettyPrice()

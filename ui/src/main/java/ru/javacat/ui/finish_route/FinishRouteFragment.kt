@@ -170,7 +170,7 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 Log.i("FinishRouteFrag", "route: $it")
                 if (it != null){
                     currentRoute = it
-                    prepay = it.prepayment ?: 0
+                    prepay = it.prepayment
                     extraPoints = calculateExtraPoints()
                     routeDuration = countRouteDuration(it)
 

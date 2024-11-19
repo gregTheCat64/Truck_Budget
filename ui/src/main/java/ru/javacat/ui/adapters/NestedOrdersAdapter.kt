@@ -22,11 +22,10 @@ class NestedOrdersAdapter(
             val red = inflater.context.resources.getColor(R.color.red, null)
             binding.customerName.text = item.customer?.nameToShow
             val pointsList = mutableListOf<String>()
-            var pointsText = ""
             item.points.forEach {
                 pointsList.add("${it.location} ${it.arrivalDate.asDayAndMonthShortly()}")
             }
-            pointsText = pointsList.joinToString (separator = " - ")
+            val pointsText: String = pointsList.joinToString (separator = " - ")
             if (!item.isPaidByCustomer) binding.income.setTextColor(red)
             binding.points.text = pointsText
             binding.income.text = item.price?.toPrettyPrice()

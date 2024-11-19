@@ -133,7 +133,8 @@ class FinishRouteViewModel @Inject constructor(
             Log.i(TAG, "saving route")
             try {
                 val salaryParameters = SalaryParameters(
-                    salaryCountMethod, payPerDiem,profitPercentage?:0,revenuePercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
+                    salaryCountMethod, payPerDiem,
+                    profitPercentage,revenuePercentage?:0,  costPerKilometer?:0f, extraPointsCost?:0
                 )
                 val routeDetails = RouteDetails(
                     fuelUsedUp, fuelPrice, extraExpenses, roadFee, extraPoints, routeDuration, routeDistance

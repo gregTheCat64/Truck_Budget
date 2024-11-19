@@ -1,6 +1,6 @@
 package ru.javacat.data
 
-import java.util.Base64
+
 
 suspend fun <T>dbQuery(query: suspend () -> T): T {
     return try {

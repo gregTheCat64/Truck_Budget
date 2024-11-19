@@ -94,7 +94,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         routesAdapter = RoutesAdapter(object : OnRouteListener {
             val bundle = Bundle()
             override fun onRoute(item: Route) {
-                bundle.putLong(FragConstants.ROUTE_ID, item.id ?: 0L)
+                bundle.putLong(FragConstants.ROUTE_ID, item.id)
                 findNavController().navigate(R.id.action_navigation_route_list_to_routeCountFragment, bundle)
             }
 
@@ -107,7 +107,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
             override fun onRemove(item: Route) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    item.id?.let { viewModel.removeRoute(it) }
+                    item.id.let { viewModel.removeRoute(it) }
                 }
             }
         }, orderClickListener)

@@ -39,16 +39,15 @@ class OrdersAdapter(
         fun bind(item: Order) {
 
             val pointsList = mutableListOf<String>()
-            var pointsText = ""
 
             item.points.forEach {
                 pointsList.add("${it.location} ${it.arrivalDate.asDayAndMonthShortly()}")
             }
-            pointsText = pointsList.joinToString (separator = " - ")
+            val pointsText: String = pointsList.joinToString (separator = " - ")
 
             if (item.isPaidByCustomer){
-                binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_primary))
-            } else binding.income.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
+                binding.income.setTextColor(ContextCompat.getColor(itemView.context, R.color.md_theme_primary))
+            } else binding.income.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
 
             val startDate = item.date.asDayAndMonthFully()
 

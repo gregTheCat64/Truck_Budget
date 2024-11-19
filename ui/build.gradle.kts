@@ -12,13 +12,14 @@ android {
 
     defaultConfig {
         minSdk = 28
-
+        //resValue ("string", "YandexClientId", "4e2906c578da49febf2dbf62eb3081ba")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
+            //manifestPlaceholders["YandexClientId"] = "4e2906c578da49febf2dbf62eb3081ba"
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +44,8 @@ dependencies {
 
     implementation(project(":domain"))
     implementation(project(":common"))
+
+    //implementation (libs.authsdk)
 
     implementation(libs.bundles.coroutines)
     implementation(libs.hilt)

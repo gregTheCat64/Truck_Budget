@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
+import androidx.activity.result.registerForActivityResult
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
@@ -14,6 +15,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+//import com.yandex.authsdk.YandexAuthLoginOptions
+//import com.yandex.authsdk.YandexAuthOptions
+//import com.yandex.authsdk.YandexAuthResult
+//import com.yandex.authsdk.YandexAuthSdk
 import dagger.hilt.android.AndroidEntryPoint
 import ru.javacat.ui.databinding.ActivityMainBinding
 import java.util.Calendar
@@ -27,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+//        val sdk = YandexAuthSdk.create(YandexAuthOptions(this))
+//        val launcher = registerForActivityResult(sdk.contract) { result -> handleResult(result) }
+//        val loginOptions = YandexAuthLoginOptions()
+//        launcher.launch(loginOptions)
 
         setContentView(binding.root)
 
@@ -74,6 +84,11 @@ class MainActivity : AppCompatActivity() {
 //        supportActionBar?.title = "TruckBudget"
 
     }
+
+//    private fun handleResult(result: YandexAuthResult?) {
+//
+//    }
+
     private fun replaceFragment(fragment: Fragment){
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()

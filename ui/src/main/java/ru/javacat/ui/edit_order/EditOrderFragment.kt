@@ -255,7 +255,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 //            //viewModel.editOrder(daysToPay = chip?.tag?.toString()?.toInt())
 //        }
 
-        binding.paymentTypeChipGroup.setOnCheckedStateChangeListener { chipGroup, list ->
+        binding.paymentTypeChipGroup.setOnCheckedStateChangeListener { chipGroup, _ ->
             val checkedId = chipGroup.checkedChipId
             val chip = chipGroup.findViewById<Chip>(checkedId)
 
@@ -275,7 +275,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
         }
 
-        binding.paymentTypeChipToContractorGroup.setOnCheckedStateChangeListener { chipGroup, list ->
+        binding.paymentTypeChipToContractorGroup.setOnCheckedStateChangeListener { chipGroup, _ ->
             val checkedId = chipGroup.checkedChipId
             val chip = chipGroup.findViewById<Chip>(checkedId)
 

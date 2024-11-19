@@ -91,7 +91,7 @@ class FinishPartnerRouteFragment: BottomSheetDialogFragment() {
 
 
     private fun initUi(route: Route) {
-        prepayment = route.prepayment?:0
+        prepayment = route.prepayment
 
         for (i in route.orderList){
             revenue = revenue + i.price!!

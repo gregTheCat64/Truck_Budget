@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -5,15 +7,30 @@ plugins {
     id ("kotlin-kapt")
 }
 
+val configProps = Properties()
+val YANDEX_CLIENT_ID = "4e2906c578da49febf2dbf62eb3081ba"
+
+project.rootProject.file("config.properties").let {
+    if (it.exists()) configProps.load(it.reader())
+}
+
 android {
     namespace = "ru.javacat.data"
     compileSdk = 34
 
+    buildFeatures{
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 28
-
+        //manifestPlaceholders.put("YANDEX_CLIENT_ID", "4e2906c578da49febf2dbf62eb3081ba")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "YANDEX_CLIENT_ID",
+            configProps.getProperty("YANDEX_CLIENT_ID", "")
+        )
     }
 
     buildTypes {
@@ -39,6 +56,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
+    //implementation (libs.authsdk)
     implementation(libs.bundles.room)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.coroutines)
@@ -47,8 +65,4 @@ dependencies {
 
     ksp(libs.room.compiler)
 
-
-//    implementation("androidx.core:core-ktx:1.9.0")
-//    implementation("androidx.appcompat:appcompat:1.6.1")
-//    implementation("com.google.android.material:material:1.10.0")
 }

@@ -136,7 +136,7 @@ class EmployeeInfoFragment: BaseFragment<FragmentEmployeeInfoBinding>() {
     private fun changeNumbers(manager: Manager){
         var mainNumber = manager.phoneNumber?:""
         var extraNumber = manager.secondNumber?:""
-        var bufferNumber: String? = null
+        val bufferNumber: String?
 
         bufferNumber = mainNumber
         mainNumber = extraNumber
