@@ -155,7 +155,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             showMenu(it)
         }
 
-
+        binding.customerTv.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putLong(FragConstants.CUSTOMER_ID, currentOrder?.customer?.id?:0L)
+            findNavController().navigate(R.id.action_orderFragment_to_companyFragment, bundle)
+        }
 
         binding.docsNumber.setOnClickListener {
             val oldValue = sentDocsNumber

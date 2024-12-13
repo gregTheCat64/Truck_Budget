@@ -23,7 +23,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            manifestPlaceholders["YANDEX_CLIENT_ID"] = "4e2906c578da49febf2dbf62eb3081ba"
+            //manifestPlaceholders["YANDEX_CLIENT_ID"] = "4e2906c578da49febf2dbf62eb3081ba"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":ui"))
 
-    implementation (libs.authsdk)
+    //implementation (libs.authsdk)
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
     implementation(libs.bundles.nav)

@@ -23,7 +23,7 @@ class CompanyViewModel @Inject constructor(
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
 
-    suspend fun getCustomerById(id: Long){
+    fun getCustomerById(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)
             try {

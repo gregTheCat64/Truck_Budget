@@ -199,4 +199,5 @@
     <string name="calculate_and_finish">Calculate and finish</string>
     <string name="add_order">Add order</string>
     <string name="debt_to_us">Debt to us</string>
+    <string name="YandexClientId" translatable="false">4e2906c578da49febf2dbf62eb3081ba</string>
 </resources>

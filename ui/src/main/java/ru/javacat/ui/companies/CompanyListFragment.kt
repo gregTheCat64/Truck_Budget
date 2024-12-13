@@ -31,6 +31,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
         }
     private val  viewModel: CompanyListViewModel by viewModels()
     private lateinit var customersAdapter: CustomersAdapter
+    private val TAG = "CompanyListFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +48,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i(TAG, "onViewCreated")
         viewModel.getAllCustomers()
         val bundle = Bundle()
 
@@ -61,7 +63,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.customers.collectLatest {
-                    Log.i("CompanyListFrag","companiesList: $it")
+                    Log.i(TAG,"companiesList: $it")
                     customersAdapter.submitList(it)
                 }
             }
@@ -76,6 +78,7 @@ class CompanyListFragment: BaseFragment<FragmentCompanyListBinding>() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewLifecycleOwner.lifecycleScope.launch {
+                    Log.i(TAG, "searchCustomers")
                     viewModel.searchCustomers(newText.toString())
                 }
                 return true

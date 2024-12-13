@@ -14,16 +14,19 @@ import ru.javacat.data.db.models.DbCompanyWithManagers
 interface CompaniesDao {
 
     @Transaction
-    @Query("SELECT * FROM companies_table  WHERE isHidden = 0 ORDER BY isFavorite DESC,id ASC")
+    @Query("SELECT * FROM companies_table  WHERE isHidden != 1 ORDER BY isFavorite DESC,id ASC")
     fun getAll(): List<DbCompanyWithManagers>
+
+    @Transaction
+    @Query("SELECT * FROM companies_table  ORDER BY isFavorite DESC,id ASC")
+    fun showWithHidden(): List<DbCompanyWithManagers>
 
     @Transaction
     @Query("SELECT * FROM companies_table WHERE id =:id")
     suspend fun getById(id: Long): DbCompanyWithManagers?
 
-
     @Transaction
-    @Query("SELECT * FROM companies_table WHERE companyName LIKE '%' || :search || '%' ORDER BY isFavorite DESC,id ASC")
+    @Query("SELECT * FROM companies_table WHERE isHidden != 1 AND companyName LIKE '%' || :search || '%' ORDER BY isFavorite DESC,id ASC")
     suspend fun searchCustomers(search: String): List<DbCompanyWithManagers>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -41,12 +44,8 @@ interface CompaniesDao {
     suspend fun updateCompany(dbCompany: DbCompany)
 
 
-
     @Query("DELETE FROM companies_table WHERE atiNumber =:id")
     suspend fun removeCustomer(id: Int)
-
-
-
 
 
     //TODO: ИЗМЕНИТЬ вставку работников отдельно от клиента

@@ -8,7 +8,6 @@
         android:theme="@style/AppTheme"
         >
 
-
         <activity
             android:name="ru.javacat.ui.MainActivity"
             android:exported="true">

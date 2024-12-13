@@ -7,12 +7,12 @@ plugins {
     id ("kotlin-kapt")
 }
 
-val configProps = Properties()
-val YANDEX_CLIENT_ID = "4e2906c578da49febf2dbf62eb3081ba"
+//val configProps = Properties()
+//val YANDEX_CLIENT_ID = "4e2906c578da49febf2dbf62eb3081ba"
 
-project.rootProject.file("config.properties").let {
-    if (it.exists()) configProps.load(it.reader())
-}
+//project.rootProject.file("config.properties").let {
+//    if (it.exists()) configProps.load(it.reader())
+//}
 
 android {
     namespace = "ru.javacat.data"
@@ -28,9 +28,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "YANDEX_CLIENT_ID",
-            configProps.getProperty("YANDEX_CLIENT_ID", "")
-        )
+//        buildConfigField("String", "YANDEX_CLIENT_ID",
+//            configProps.getProperty("YANDEX_CLIENT_ID", "")
+//        )
     }
 
     buildTypes {

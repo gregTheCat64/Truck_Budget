@@ -18,12 +18,17 @@ class CompaniesRepositoryImpl @Inject constructor(
     private val dao: CompaniesDao
 ): CompaniesRepository {
 
+    private val TAG = "CompaniesRepoImpl"
+
 //    override val chosenItem: StateFlow<Company?>
 //        get() = _chosenCustomer.asStateFlow()
 //    private val _chosenCustomer = MutableStateFlow<Company?>(null)
 
     override suspend fun getAll(): List<Company> {
-        return dbQuery { dao.getAll().map { it.toCompanyModel() } }
+        Log.i(TAG, "getAll")
+        val result = dbQuery { dao.getAll().map { it.toCompanyModel() } }
+        Log.i(TAG, "result is $result")
+        return result
     }
 
     override suspend fun createDefaultCompany() {
