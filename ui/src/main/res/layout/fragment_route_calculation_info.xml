@@ -255,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextAppearance.MyValueDescription"
-                        android:text="Road fee"
+                        android:text="@string/road_fee"
                         />
 
                     <TextView
@@ -263,7 +263,7 @@
                         style="@style/TextAppearance.MyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Платон, платные дороги"
+                        android:hint="@string/road_taxes_and_other"
                         />
 
                 </LinearLayout>

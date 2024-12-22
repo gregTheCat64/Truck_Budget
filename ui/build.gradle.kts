@@ -12,15 +12,15 @@ android {
 
     defaultConfig {
         minSdk = 28
-        //resValue ("string", "YandexClientId", "4e2906c578da49febf2dbf62eb3081ba")
+        manifestPlaceholders["YANDEX_CLIENT_ID"] = "4e2906c578da49febf2dbf62eb3081ba"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
-            //manifestPlaceholders["YandexClientId"] = "4e2906c578da49febf2dbf62eb3081ba"
             isMinifyEnabled = false
+            manifestPlaceholders["YANDEX_CLIENT_ID"] = "4e2906c578da49febf2dbf62eb3081ba"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,8 +45,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    //implementation (libs.authsdk)
-
+    implementation (libs.authsdk)
     implementation(libs.bundles.coroutines)
     implementation(libs.hilt)
     implementation(libs.androidx.appcompat)
@@ -58,13 +57,9 @@ dependencies {
     implementation(libs.bundles.nav)
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+
 
     kapt(libs.hilt.compiler)
 
-//    implementation("androidx.core:core-ktx:1.12.0")
-//    implementation("androidx.appcompat:appcompat:1.6.1")
-//    implementation("com.google.android.material:material:1.10.0")
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-//    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
-//    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 }

@@ -4,6 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.javacat.data.impl.ApiRepositoryImpl
 import ru.javacat.data.impl.CargoRepositoryImpl
 import ru.javacat.data.impl.CompaniesRepositoryImpl
 import ru.javacat.data.impl.ExpenseRepositoryImpl
@@ -14,6 +15,7 @@ import ru.javacat.data.impl.RouteRepositoryImpl
 import ru.javacat.data.impl.TruckDriversRepositoryImpl
 import ru.javacat.data.impl.TrailersRepositoryImpl
 import ru.javacat.data.impl.TrucksRepositoryImpl
+import ru.javacat.domain.repo.ApiRepository
 import ru.javacat.domain.repo.CargoRepository
 import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.ExpenseRepository
@@ -70,4 +72,8 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindsExpenseRepository(impl: ExpenseRepositoryImpl): ExpenseRepository
+
+    @Singleton
+    @Binds
+    fun bindsApiRepository(impl: ApiRepositoryImpl): ApiRepository
 }
