@@ -36,7 +36,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     //private var myCompany: Company? = null
 
     private var isFabVisible = true
-    private var routeId: Long? = null
+    //private var routeId: Long? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->

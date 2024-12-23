@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_route_list">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_route_list"
@@ -413,6 +413,21 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/newEmployeeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.javacat.ui.login.LoginFragment"
+        tools:layout="@layout/fragment_login"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_route_list"
+            app:destination="@id/navigation_route_list" />
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_route_list2"
+            app:destination="@id/navigation_route_list" />
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_route_list3"
+            app:destination="@id/navigation_route_list" />
     </fragment>
 
 
