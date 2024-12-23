@@ -1,8 +1,16 @@
 package ru.javacat.ui.login
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,6 +22,9 @@ import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrucksRepository
+import ru.javacat.ui.R
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,4 +62,5 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 }

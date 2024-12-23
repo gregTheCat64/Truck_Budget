@@ -32,8 +32,7 @@ import com.yandex.authsdk.YandexAuthToken
 //import com.yandex.authsdk.YandexAuthResult
 //import com.yandex.authsdk.YandexAuthSdk
 import dagger.hilt.android.AndroidEntryPoint
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

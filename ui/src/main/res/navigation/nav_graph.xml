@@ -422,12 +422,7 @@
         <action
             android:id="@+id/action_loginFragment_to_navigation_route_list"
             app:destination="@id/navigation_route_list" />
-        <action
-            android:id="@+id/action_loginFragment_to_navigation_route_list2"
-            app:destination="@id/navigation_route_list" />
-        <action
-            android:id="@+id/action_loginFragment_to_navigation_route_list3"
-            app:destination="@id/navigation_route_list" />
+
     </fragment>
 
 

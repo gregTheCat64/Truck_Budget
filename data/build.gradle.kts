@@ -56,7 +56,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
 
-    //implementation (libs.authsdk)
+    implementation (libs.glide)
     implementation(libs.bundles.room)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.coroutines)

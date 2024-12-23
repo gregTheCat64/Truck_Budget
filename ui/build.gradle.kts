@@ -57,8 +57,7 @@ dependencies {
     implementation(libs.bundles.nav)
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
-
+    implementation (libs.glide)
 
     kapt(libs.hilt.compiler)
 
