@@ -1,12 +1,15 @@
 package ru.javacat.data.impl
 
+import android.content.Context
 import android.util.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.TrailersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.Trailer
 import ru.javacat.domain.repo.TrailersRepository
 import javax.inject.Inject
@@ -14,6 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TrailersRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     val dao: TrailersDao
 ): TrailersRepository {
 
@@ -44,11 +48,15 @@ class TrailersRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateTrailerToDb(trailer: Trailer) {
-        dbQuery { dao.update(trailer.toDb()) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            dao.update(trailer.toDb()) }
     }
 
     override suspend fun removeById(id: Long) {
-        dbQuery { dao.remove(id) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            dao.remove(id) }
     }
 
     override suspend fun getByCompanyId(companyId: Long): List<Trailer> {
@@ -60,7 +68,9 @@ class TrailersRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: Trailer): Long {
-       return dbQuery { dao.insert(t.toDb()) }
+       return dbQuery {
+           switchDatabaseModified(context, true)
+           dao.insert(t.toDb()) }
     }
 
 

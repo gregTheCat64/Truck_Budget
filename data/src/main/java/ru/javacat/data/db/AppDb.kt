@@ -3,6 +3,7 @@ package ru.javacat.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.dao.CompaniesDao
 import ru.javacat.data.db.dao.ExpenseDao

@@ -1,11 +1,14 @@
 package ru.javacat.data.impl
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.ManagersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.Manager
 import ru.javacat.domain.repo.ManagersRepository
 import javax.inject.Inject
@@ -13,12 +16,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ManagersRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dao: ManagersDao
 ): ManagersRepository {
-
-//    private val _chosenManager = MutableStateFlow<Manager?>(null)
-//    override val chosenItem: StateFlow<Manager?>
-//        get() = _chosenManager.asStateFlow()
 
     override suspend fun getAll(): List<Manager> {
         return dbQuery { dao.getAll().map {
@@ -31,7 +31,9 @@ class ManagersRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: Manager): Long {
-        return dbQuery { dao.insertManager(t.toDb()) }
+        return dbQuery {
+            switchDatabaseModified(context, true)
+            dao.insertManager(t.toDb()) }
     }
 
     override suspend fun setItem(t: Manager) {

@@ -1,9 +1,12 @@
 package ru.javacat.data.impl
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.StateFlow
 import ru.javacat.data.db.dao.ExpenseDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.Expense
 import ru.javacat.domain.models.MonthlyProfit
 import ru.javacat.domain.repo.ExpenseRepository
@@ -12,10 +15,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ExpenseRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dao: ExpenseDao
 ): ExpenseRepository {
-//    override val chosenItem: StateFlow<Expense?>
-//        get() = TODO("Not yet implemented")
 
     override suspend fun getAll(): List<Expense> {
         return dbQuery { dao.getExpenses().map { it.toExpenseModel() } }
@@ -36,7 +38,9 @@ class ExpenseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeById(id: Long) {
-        dbQuery { dao.remove(id) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            dao.remove(id) }
     }
 
     override suspend fun search(s: String): List<Expense> {
@@ -44,7 +48,9 @@ class ExpenseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: Expense): Long {
-       return dbQuery { dao.insertExpense(t.toDb()) }
+       return dbQuery {
+           switchDatabaseModified(context, true)
+           dao.insertExpense(t.toDb()) }
     }
 
     override suspend fun setItem(t: Expense) {

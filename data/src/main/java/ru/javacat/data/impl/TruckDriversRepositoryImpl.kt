@@ -1,12 +1,15 @@
 package ru.javacat.data.impl
 
+import android.content.Context
 import android.util.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.javacat.data.db.dao.TruckDriversDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.TruckDriver
 import ru.javacat.domain.repo.TruckDriversRepository
 import javax.inject.Inject
@@ -14,6 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TruckDriversRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dao: TruckDriversDao
 ): TruckDriversRepository {
 
@@ -79,14 +83,19 @@ class TruckDriversRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: TruckDriver): Long {
-        return dbQuery { dao.insert(t.toDb()) }
+        return dbQuery {
+            switchDatabaseModified(context, true)
+            dao.insert(t.toDb()) }
     }
 
     override suspend fun updateDriverToDb(truckDriver: TruckDriver) {
         dao.update(truckDriver.toDb())
+        switchDatabaseModified(context, true)
     }
 
     override suspend fun removeById(id: Long) {
-        dbQuery { dao.removeStaff(id) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            dao.removeStaff(id) }
     }
 }

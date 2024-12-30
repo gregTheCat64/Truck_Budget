@@ -1,10 +1,13 @@
 package ru.javacat.data.impl
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.javacat.data.db.dao.CargoDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.CargoName
 import ru.javacat.domain.repo.CargoRepository
 import javax.inject.Inject
@@ -37,7 +40,8 @@ class CargoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: CargoName):Long {
-        return dbQuery { dao.insertCargo(t.toDb()) }
+        return dbQuery {
+            dao.insertCargo(t.toDb()) }
     }
 
     override suspend fun getById(id: Long): CargoName {

@@ -202,4 +202,5 @@
     <string name="YandexClientId" translatable="false">4e2906c578da49febf2dbf62eb3081ba</string>
     <string name="road_fee">Road fee</string>
     <string name="road_taxes_and_other">Road taxes and other</string>
+    <string name="uploaded_to_yandex_disk_successfully">All data uploaded to Yandex Disk successfully</string>
 </resources>

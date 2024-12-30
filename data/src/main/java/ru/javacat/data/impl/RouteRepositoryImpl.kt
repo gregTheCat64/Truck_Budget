@@ -1,7 +1,9 @@
 package ru.javacat.data.impl
 
+import android.content.Context
 import android.util.Log
 import androidx.room.withTransaction
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,6 +13,7 @@ import ru.javacat.data.db.dao.RoutesDao
 
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.MonthlyProfit
 
 import ru.javacat.domain.models.Route
@@ -23,6 +26,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RouteRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val routesDao: RoutesDao,
     private val db: AppDb
 ):RouteRepository {
@@ -83,7 +87,9 @@ class RouteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeById(id: Long) {
-        dbQuery { routesDao.removeRoute(id) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            routesDao.removeRoute(id) }
     }
 
     override suspend fun insert(route: Route): Long {
@@ -92,14 +98,19 @@ class RouteRepositoryImpl @Inject constructor(
         var routeId = 0L
 
         db.withTransaction {
-            routeId = dbQuery { routesDao.insertRoute(route.toDb()) }
+            routeId = dbQuery {
+                routesDao.insertRoute(route.toDb())
+            }
             Log.i("RouteRepo", "routeId : $routeId")
         }
+        switchDatabaseModified(context, true)
         return routeId
     }
 
     override suspend fun updateRouteToDb(route: Route){
         Log.i(TAG, "saving route: ${route.id}")
-        dbQuery { routesDao.updateRoute(route.toDb()) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            routesDao.updateRoute(route.toDb()) }
     }
 }

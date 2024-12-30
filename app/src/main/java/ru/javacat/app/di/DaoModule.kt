@@ -59,4 +59,5 @@ object DaoModule {
     @Provides
     @Singleton
     fun providesExpenseDao(db: AppDb): ExpenseDao = db.expenseDao
+
 }

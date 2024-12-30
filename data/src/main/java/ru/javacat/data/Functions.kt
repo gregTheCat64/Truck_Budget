@@ -1,5 +1,6 @@
 package ru.javacat.data
 
+import android.content.Context
 import retrofit2.Response
 import java.net.SocketException
 
@@ -20,7 +21,6 @@ object UnknownError : AppError()
 object NetworkError : AppError()
 
 suspend fun <T> apiRequest(request: suspend () -> Response<T>): T {
-
     val response = try {
         request()
     } catch (e: SocketException) {
@@ -31,4 +31,12 @@ suspend fun <T> apiRequest(request: suspend () -> Response<T>): T {
     if (!response.isSuccessful) throw ApiError(response.code(), response.message())
     return response.body() ?: throw ApiError(0, "null body")
 }
+
+fun switchDatabaseModified(context: Context, boolean: Boolean){
+    val sharedPreferences = context.getSharedPreferences("Prefs", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putBoolean("db_modified", boolean)
+    editor.apply()
+}
+
 

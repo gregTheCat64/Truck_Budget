@@ -5,5 +5,5 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class App: Application() {
-     //val sdk = YandexAuthSdk.create(YandexAuthOptions(this))
+
 }

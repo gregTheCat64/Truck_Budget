@@ -201,4 +201,5 @@
     <string name="debt_to_us">Нам должны</string>
     <string name="road_fee">Road fee</string>
     <string name="road_taxes_and_other">Платон, платные дороги и т.д.</string>
+    <string name="uploaded_to_yandex_disk_successfully">Данные синхронизированы</string>
 </resources>

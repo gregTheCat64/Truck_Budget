@@ -13,7 +13,17 @@ import com.yandex.authsdk.YandexAuthResult
 import com.yandex.authsdk.YandexAuthSdk
 import com.yandex.authsdk.YandexAuthToken
 
-class YandexAuthManager(private val activity: AppCompatActivity) {
+interface YandexAuthResultHandler{
+    fun onSuccess(tokenValue: String)
+    fun onFailure(exception: YandexAuthException)
+    fun onCancel()
+}
+
+class YandexAuthManager(
+    private val activity: AppCompatActivity,
+    private val handler: YandexAuthResultHandler
+)
+{
     private lateinit var yandexSdk: YandexAuthSdk
     private lateinit var authLauncher: ActivityResultLauncher<Intent>
     private val TAG = "YandexAuthManager"
@@ -21,7 +31,7 @@ class YandexAuthManager(private val activity: AppCompatActivity) {
     init {
         Log.i(TAG, "init")
         authLauncher = activity.registerForActivityResult(ActivityResultContracts
-            .StartActivityForResult()){result->
+            .StartActivityForResult()){ result->
             println("resultCode is ${result.resultCode}")
             handleResult(result.resultCode, result.data)
         }
@@ -44,22 +54,25 @@ class YandexAuthManager(private val activity: AppCompatActivity) {
         Log.i(TAG, "handleResult")
         try {
             val result = yandexSdk.contract.parseResult(resultCode, data)
+
             when (result ) {
                 is YandexAuthResult.Success -> {
                     val token:YandexAuthToken = result.token
                     val tokenValue = token.value
-                    println("success: ${tokenValue}")
-                    Toast.makeText(activity, "Authorization is successful", Toast.LENGTH_SHORT).show()
+                    handler.onSuccess(tokenValue)
+                    println("success: ${token}")
+
                 }
                 is YandexAuthResult.Failure -> {
                     val error = result.exception
+                    handler.onFailure(error)
                     println("error: ${error}")
-                    Toast.makeText(activity, "Authorization is failed, try again", Toast.LENGTH_SHORT).show()
+
                 }
                 is YandexAuthResult.Cancelled -> {
+                    handler.onCancel()
                     println("Canceled")
-                    Toast.makeText(activity, "Authorization is cancelled, be sure the App is " +
-                            "authorized to have all your data saved remotely", Toast.LENGTH_LONG).show()
+
                 }
             }
         }catch (e: YandexAuthException){

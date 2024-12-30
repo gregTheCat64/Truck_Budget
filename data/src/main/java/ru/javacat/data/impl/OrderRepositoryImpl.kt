@@ -1,6 +1,8 @@
 package ru.javacat.data.impl
 
+import android.content.Context
 import android.util.Log
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import ru.javacat.data.db.dao.OrdersDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.repo.OrderRepository
@@ -25,6 +28,7 @@ var emptyOrder: Order = Order(
 
 @Singleton
 class OrderRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val ordersDao: OrdersDao
 ): OrderRepository {
 
@@ -106,14 +110,18 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun insert(order: Order): Long {
         Log.i("orderRepo", "inserting order: $order")
-        val result = dbQuery { ordersDao.insertOrder(order.toDb())
+        val result = dbQuery {
+            switchDatabaseModified(context, true)
+            ordersDao.insertOrder(order.toDb())
         }
         _isOrderEdited.emit(false)
         return result
     }
 
     override suspend fun updateOrderToDb(order: Order) {
-        dbQuery { ordersDao.updateOrder(order.toDb()) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            ordersDao.updateOrder(order.toDb()) }
     }
 
     override suspend fun getById(orderId: Long): Order {
@@ -123,7 +131,9 @@ class OrderRepositoryImpl @Inject constructor(
 
 
     override suspend fun removeById(orderId: Long) {
-        dbQuery { ordersDao.removeOrder(orderId) }
+        dbQuery {
+            switchDatabaseModified(context, true)
+            ordersDao.removeOrder(orderId) }
     }
 
     override suspend fun createEmptyOrder() {

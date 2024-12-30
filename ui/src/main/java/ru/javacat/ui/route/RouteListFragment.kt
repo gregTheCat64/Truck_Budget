@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -58,12 +59,30 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPreferences = activity?.getSharedPreferences("Prefs", MODE_PRIVATE)!!
+        val isDbModified = sharedPreferences.getBoolean("db_modified", false)
+        val tokenValue = sharedPreferences.getString("yandex_token", null)
+        val isAuthorized = sharedPreferences.getBoolean("authorized", false)
+
         Log.i("routeListFrag", "onViewCreated")
         binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
         updateList()
 
-        viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
+        //если бд изменена, отправляем на яндекс
+        if (isDbModified && isAuthorized){
+            viewModel.uploadBdToYandexDisk(tokenValue!!){
+                    success ->
+                if (success) {
+                    Toast.makeText(requireContext(),
+                        getString(R.string.uploaded_to_yandex_disk_successfully), Toast.LENGTH_SHORT).show()
+                } else
+                //вот тут сделать обработку, если токен истек!
+                    Toast.makeText(requireContext(), "Failed to upload some files, try to repeat", Toast.LENGTH_SHORT).show()
 
+            }
+        }
+
+        viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
 
         binding.chooseYearBtn.setOnClickListener {
             showYearCalendar {
@@ -111,8 +130,6 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
                 }
             }
         }, orderClickListener)
-
-
 
         binding.routesList.adapter = routesAdapter
 

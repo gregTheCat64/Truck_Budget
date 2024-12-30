@@ -1,13 +1,12 @@
 package ru.javacat.data.impl
 
+import android.content.Context
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
 import ru.javacat.data.db.dao.CompaniesDao
 import ru.javacat.data.db.mappers.toDb
 import ru.javacat.data.dbQuery
+import ru.javacat.data.switchDatabaseModified
 import ru.javacat.domain.models.Company
 import ru.javacat.domain.repo.CompaniesRepository
 import javax.inject.Inject
@@ -15,14 +14,11 @@ import javax.inject.Singleton
 
 @Singleton
 class CompaniesRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dao: CompaniesDao
 ): CompaniesRepository {
 
     private val TAG = "CompaniesRepoImpl"
-
-//    override val chosenItem: StateFlow<Company?>
-//        get() = _chosenCustomer.asStateFlow()
-//    private val _chosenCustomer = MutableStateFlow<Company?>(null)
 
     override suspend fun getAll(): List<Company> {
         Log.i(TAG, "getAll")
@@ -48,6 +44,7 @@ class CompaniesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateCompanyToDb(company: Company) {
+        switchDatabaseModified(context, true)
         dbQuery { dao.updateCompany(company.toDb()) }
     }
 
@@ -60,7 +57,9 @@ class CompaniesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insert(t: Company): Long {
-        return dbQuery { dao.insertCustomer(t.toDb()) }
+        return dbQuery {
+            switchDatabaseModified(context, true)
+            dao.insertCustomer(t.toDb()) }
     }
 
     override suspend fun setItem(t: Company) {

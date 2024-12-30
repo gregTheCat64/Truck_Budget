@@ -17,24 +17,38 @@
             android:text="Please, login via Yandex."
             />
 
-        <Button
-            android:id="@+id/authBtn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+                android:orientation="vertical"
             android:layout_gravity="bottom"
-            android:layout_marginTop="16dp"
-            android:text="Continue with Yandex"
-            />
+                >
 
-        <Button
-            android:id="@+id/startBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            android:text="Start"
-            />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/authBtn"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="16dp"
+                    app:icon="@drawable/yandex_icon"
+                    android:text="Continue with Yandex"
+                    />
+
+
+                <Button
+                    android:id="@+id/startBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:text="Start"
+                    />
+        </LinearLayout>
+
+
 
         <ImageView
             android:id="@+id/userPicIv"

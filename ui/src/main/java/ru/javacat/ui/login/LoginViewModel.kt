@@ -1,16 +1,9 @@
 package ru.javacat.ui.login
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+
 import android.util.Log
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,9 +15,7 @@ import ru.javacat.domain.repo.CompaniesRepository
 import ru.javacat.domain.repo.TrailersRepository
 import ru.javacat.domain.repo.TruckDriversRepository
 import ru.javacat.domain.repo.TrucksRepository
-import ru.javacat.ui.R
-import java.io.File
-import java.io.FileOutputStream
+
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,13 +25,13 @@ class LoginViewModel @Inject constructor(
     private val trailersRepository: TrailersRepository,
     private val truckDriversRepository: TruckDriversRepository,
     private val apiRepository: ApiRepository
-): ViewModel() {
+) : ViewModel() {
     private val TAG = "LoginVM"
 
     private val _user = MutableSharedFlow<User>()
     val user = _user.asSharedFlow()
 
-    fun createDefaultCompany(){
+    fun createDefaultCompany() {
         Log.i(TAG, "createDefaultCompany")
         viewModelScope.launch(Dispatchers.IO) {
             companyRepository.createDefaultCompany()
@@ -51,16 +42,29 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun getUserInfo(token: String){
+    fun getUserInfo(token: String) {
         Log.i(TAG, "getUserInfo")
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val result = apiRepository.getUserInfo(token)
                 _user.emit(result)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
+
+
+    fun downloadBdFromYandexDisk(
+        token: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        Log.i(TAG, "downLoading")
+        viewModelScope.launch {
+            val result = apiRepository.downLoadDatabaseFiles(token)
+            onComplete(result)
+        }
+    }
+
 
 }
