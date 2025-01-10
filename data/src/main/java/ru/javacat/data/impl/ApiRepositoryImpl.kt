@@ -166,7 +166,10 @@ class ApiRepositoryImpl @Inject constructor(
         if (dbFileResult.exists() && walFileResult.exists() && shmFileResult.exists()) {
             println("Backup files were made successfully")
             return true
-        } else return false
+        } else {
+            println("Error making backup files")
+            return false
+        }
     }
 
         //перенес функционал

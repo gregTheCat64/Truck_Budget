@@ -4,58 +4,128 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="64dp"
-    >
+    android:padding="64dp">
 
 
-        <TextView
-            android:id="@+id/loginTv"
+    <TextView
+        android:id="@+id/loginTv"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+
+    <LinearLayout
+        android:id="@+id/loginLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:text="Please, login via Yandex."
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"
             />
 
         <LinearLayout
+            android:id="@+id/authLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                android:orientation="vertical"
-            android:layout_gravity="bottom"
-                >
+            android:orientation="vertical"
+            android:visibility="visible">
 
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/authBtn"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="16dp"
-                    app:icon="@drawable/yandex_icon"
-                    android:text="Continue with Yandex"
-                    />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/yandexAuthBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/continue_with_yandex"
+                app:icon="@drawable/black_ya_icon"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/TextAppearance.MyCardTitle"
+                android:text="@string/or"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/localBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:icon="@drawable/baseline_people_24"
+                android:text="@string/continue_localy" />
 
 
-                <Button
-                    android:id="@+id/startBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    android:text="Start"
-                    />
+
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/dbLayout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/downloadDbBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/download_data_from_yandex" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/will_replace_local_data_base"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or"
+                style="@style/TextAppearance.MyCardTitle"
+                android:layout_gravity="center"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/useDeviceDbBtn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+
+                android:text="@string/continue_with_local_data" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/will_replace_data_on_yandex_disk"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/userPicIv"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:layout_gravity="center|top"
-            tools:srcCompat="@tools:sample/avatars" />
+    <ImageView
+        android:id="@+id/userPicIv"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_gravity="center|top"
+        android:contentDescription="@string/user_s_image"
+       />
 
 
 </FrameLayout>

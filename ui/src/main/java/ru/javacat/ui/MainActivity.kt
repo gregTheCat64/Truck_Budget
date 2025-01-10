@@ -1,44 +1,23 @@
 package ru.javacat.ui
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
+//import com.yandex.authsdk.YandexAuthLoginOptions
+//import com.yandex.authsdk.YandexAuthOptions
+//import com.yandex.authsdk.YandexAuthResult
+//import com.yandex.authsdk.YandexAuthSdk
+
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Toast
-import androidx.activity.result.registerForActivityResult
-import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.yandex.authsdk.YandexAuthException
-import com.yandex.authsdk.YandexAuthLoginOptions
-import com.yandex.authsdk.YandexAuthOptions
-import com.yandex.authsdk.YandexAuthResult
-import com.yandex.authsdk.YandexAuthSdk
-import com.yandex.authsdk.YandexAuthToken
-//import com.yandex.authsdk.YandexAuthLoginOptions
-//import com.yandex.authsdk.YandexAuthOptions
-//import com.yandex.authsdk.YandexAuthResult
-//import com.yandex.authsdk.YandexAuthSdk
 import dagger.hilt.android.AndroidEntryPoint
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import ru.javacat.ui.databinding.ActivityMainBinding
-import ru.javacat.ui.utils.YandexAuthManager
-import java.util.Calendar
+import ru.javacat.ui.utils.load
 
 
 @AndroidEntryPoint
@@ -47,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     //val viewModel: MainActivityViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private val TAG = "MainActivity"
+
+    private val avatarFileName = "user_avatar.png"
+
 //    private var tokenValue: String? = null
 //    private lateinit var sdk: YandexAuthSdk
 //    private lateinit var sharedPreferences: SharedPreferences
@@ -57,6 +39,15 @@ class MainActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //val sharedPreferences = getSharedPreferences("Prefs", MODE_PRIVATE)!!
+        //val userName = sharedPreferences.getString("user_name", null)
+
+//        if (!userName.isNullOrEmpty()){
+//            binding.userPicIv.load(this, avatarFileName)
+//            binding.userNameTv.text = userName
+//        }
+
 
 
                         //навигация
@@ -83,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                 ) navView.visibility = View.VISIBLE
             else navView.visibility = View.GONE
         }
-
     }
 
     

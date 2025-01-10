@@ -203,4 +203,13 @@
     <string name="road_fee">Road fee</string>
     <string name="road_taxes_and_other">Road taxes and other</string>
     <string name="uploaded_to_yandex_disk_successfully">All data uploaded to Yandex Disk successfully</string>
+    <string name="user_s_image">user\'s image</string>
+    <string name="authorize">Get authorized</string>
+    <string name="continue_localy">Continue localy</string>
+    <string name="continue_with_yandex">Continue with Yandex</string>
+    <string name="or">or</string>
+    <string name="download_data_from_yandex">Download data from Yandex</string>
+    <string name="will_replace_local_data_base">will replace local data base</string>
+    <string name="continue_with_local_data">Continue with local data</string>
+    <string name="will_replace_data_on_yandex_disk">will replace data on Yandex Disk</string>
 </resources>
