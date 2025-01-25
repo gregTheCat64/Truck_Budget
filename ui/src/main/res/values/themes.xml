@@ -104,7 +104,10 @@
 
     <style name="TextAppearance.MyValue" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:layout_marginStart">0dp</item>
+    </style>
 
+    <style name="TextAppearance.MyComment" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/green</item>
     </style>
 
     <style name="TextAppearance.MyValueDescription" parent="TextAppearance.Material3.LabelMedium">

@@ -6,14 +6,32 @@
     android:layout_height="match_parent"
     android:padding="64dp">
 
-
-    <TextView
-        android:id="@+id/loginTv"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
+        android:orientation="horizontal"
+        android:layout_gravity="top"
+        >
+        <ImageView
+            android:id="@+id/userPicIv"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/user_s_image"
+            />
+
+        <TextView
+            android:id="@+id/loginTv"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_marginStart="16dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/loginLayout"
@@ -37,7 +55,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible">
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/yandexAuthBtn"
@@ -76,18 +93,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/which_data_base_we_use"
+                android:layout_gravity="center"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/downloadDbBtn"
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginTop="16dp"
                 android:text="@string/download_data_from_yandex" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/will_replace_local_data_base"
+                android:text="@string/old_user"
+                style="@style/TextAppearance.MyComment"
                 android:layout_gravity="center"
                 />
 
@@ -110,7 +137,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/will_replace_data_on_yandex_disk"
+                style="@style/TextAppearance.MyComment"
+                android:text="@string/will_replace_data_on_yandex_disk"
                 android:layout_gravity="center"
                 />
 
@@ -118,14 +146,6 @@
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/userPicIv"
-        android:layout_width="112dp"
-        android:layout_height="112dp"
-        android:layout_gravity="center|top"
-        android:contentDescription="@string/user_s_image"
-       />
 
 
 </FrameLayout>

@@ -206,8 +206,10 @@
     <string name="continue_localy">Продолжить локально</string>
     <string name="continue_with_yandex">Войти через яндекс</string>
     <string name="or">или</string>
-    <string name="download_data_from_yandex">Скачать данные с Я.диска</string>
-    <string name="will_replace_local_data_base">Рекомендуется, если ранее пользовались приложением. Локальные данные будут заменены данными с Яндекс диска</string>
-    <string name="continue_with_local_data">Продолжить с локальными данными</string>
-    <string name="will_replace_data_on_yandex_disk">Рекомендуется, если ранее НЕ пользовались приложением. На Яндекс диске будет создана резервная копия локальных данных.</string>
+    <string name="download_data_from_yandex">Скачать данные с Яндекс диска</string>
+    <string name="will_replace_local_data_base">Заменит локальную базу данных</string>
+    <string name="continue_with_local_data">База данных на устройстве</string>
+    <string name="will_replace_data_on_yandex_disk">Новый пользователь. На Яндекс диске будет создана резервная копия локальных данных.</string>
+    <string name="which_data_base_we_use">Какую базу данных использовать?</string>
+    <string name="old_user">Старый пользователь</string>
 </resources>

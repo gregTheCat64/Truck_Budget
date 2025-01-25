@@ -208,8 +208,10 @@
     <string name="continue_localy">Continue localy</string>
     <string name="continue_with_yandex">Continue with Yandex</string>
     <string name="or">or</string>
-    <string name="download_data_from_yandex">Download data from Yandex</string>
+    <string name="download_data_from_yandex">Download from Yandex Disk</string>
     <string name="will_replace_local_data_base">will replace local data base</string>
-    <string name="continue_with_local_data">Continue with local data</string>
-    <string name="will_replace_data_on_yandex_disk">will replace data on Yandex Disk</string>
+    <string name="continue_with_local_data">Database from this device</string>
+    <string name="will_replace_data_on_yandex_disk">New user. This will replace data on Yandex Disk</string>
+    <string name="which_data_base_we_use">Which data base we use?</string>
+    <string name="old_user">Old user</string>
 </resources>

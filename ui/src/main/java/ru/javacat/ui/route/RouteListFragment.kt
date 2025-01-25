@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.ApiResult
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.Route
 import ru.javacat.domain.models.YearHolder
@@ -26,6 +27,7 @@ import ru.javacat.ui.adapters.RoutesAdapter
 import ru.javacat.ui.databinding.FragmentRouteListBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showYearCalendar
+import java.io.File
 
 @AndroidEntryPoint
 class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
@@ -38,6 +40,7 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
 
     private var isFabVisible = true
     //private var routeId: Long? = null
+    private val TAG = "RouteListFrag"
 
     override val bindingInflater: (LayoutInflater, ViewGroup?) -> FragmentRouteListBinding
         get() = { inflater, container ->
@@ -64,25 +67,49 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         val tokenValue = sharedPreferences.getString("yandex_token", null)
         val isAuthorized = sharedPreferences.getBoolean("authorized", false)
 
-        Log.i("routeListFrag", "onViewCreated")
+        Log.i(TAG, "isModified: $isDbModified")
+        Log.i(TAG, "isAuthorized: $isAuthorized")
+
+        Log.i(TAG, "onViewCreated")
         binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
         updateList()
 
         //если бд изменена, отправляем на яндекс
         if (isDbModified && isAuthorized){
-            viewModel.uploadBdToYandexDisk(tokenValue!!){
-                    success ->
-                if (success) {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.uploaded_to_yandex_disk_successfully), Toast.LENGTH_SHORT).show()
-                } else
-                //вот тут сделать обработку, если токен истек!
-                    Toast.makeText(requireContext(), "Failed to upload some files, try to repeat", Toast.LENGTH_SHORT).show()
+            Log.i(TAG, "ismodified: $isDbModified isAuthorized: $isAuthorized")
 
+            viewModel.uploadBdToYandexDisk(tokenValue!!){ result ->
+                when (result) {
+                    is ApiResult.Success -> Toast.makeText(requireContext(),
+                        getString(R.string.uploaded_to_yandex_disk_successfully), Toast.LENGTH_SHORT).show()
+                    is ApiResult.Error -> {
+                        when (result) {
+                            is ApiResult.Error.Unauthorized -> {
+                                sharedPreferences.edit().putBoolean("authorized", false).apply()
+                                Toast.makeText(requireContext(), "Not authorized", Toast.LENGTH_SHORT).show()
+                            }
+                            is ApiResult.Error.ServerError -> Toast.makeText(
+                                requireContext(),
+                                "Server Error",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            is ApiResult.Error.InsufficientStorage -> Toast.makeText(
+                                requireContext(),
+                                "Not enough place at remote disk",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            is ApiResult.Error.UnknownError -> Toast.makeText(
+                                requireContext(),
+                                "Error: ${result.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
             }
         }
 
-        viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
+        //viewModel.getCustomerById(FragConstants.MY_COMPANY_ID)
 
         binding.chooseYearBtn.setOnClickListener {
             showYearCalendar {

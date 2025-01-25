@@ -1,6 +1,8 @@
 package ru.javacat.domain.repo
 
+import ru.javacat.domain.models.ApiResult
 import ru.javacat.domain.models.User
+import java.io.File
 
 
 interface ApiRepository {
@@ -9,8 +11,9 @@ interface ApiRepository {
 
 
     suspend fun uploadDatabaseFiles(
+
         token: String
-    ): Boolean
+    ): ApiResult<String>
 
     suspend fun downLoadDatabaseFiles(
         token: String

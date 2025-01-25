@@ -45,15 +45,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val TAG = "LoginFragment"
     private val avatarFileName = "user_avatar.png"
 
-    //val path = "app:/backup.db"
-    //private val newFilePath = "data/data/ru.javacat.truckbudget/databases/backup.db"
-    //private val filePath = "data/data/ru.javacat.truckbudget/databases/app.db"
-
-    //private var tokenValue: String? = null
-    //private lateinit var sdk: YandexAuthSdk
     private lateinit var sharedPreferences: SharedPreferences
-    private var isNewDevice = true
+
     private var isAuthorized = false
+    private var isDbCreated = false
+    private var hasImportedDb = false
     private var token: String? = null
 
     override fun onCreateView(
@@ -69,25 +65,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPreferences = activity?.getSharedPreferences("Prefs", MODE_PRIVATE)!!
-        //val isNewUser = sharedPreferences.getBoolean("is_new_user", true)
-        isNewDevice = sharedPreferences.getBoolean("is_new_device", true)
-        //val isLocalAccount = sharedPreferences.getBoolean("is_local_account", true)
 
         val userName = sharedPreferences.getString("user_name", null)
-        isAuthorized = sharedPreferences.getBoolean("authorized", false)
-        //val isDbModified = sharedPreferences.getBoolean("db_modified", false)
 
+        isDbCreated = sharedPreferences.getBoolean("is_db_created", false)
+        isAuthorized = sharedPreferences.getBoolean("authorized", false)
+        hasImportedDb = sharedPreferences.getBoolean("hasImportedDb", false)
         val tokenValue = sharedPreferences.getString("yandex_token", null)
         token = tokenValue?:""
 
 
         if (isAuthorized) {
             Log.i(TAG, "it's an authorized user, starting app")
-            binding.loginTv.setText("Welcomen back, $userName!")
-            binding.userPicIv.load(requireContext(), avatarFileName)
+            //binding.loginTv.setText("Welcomen back, $userName!")
+            //binding.userPicIv.load(requireContext(), avatarFileName)
 
-            binding.authLayout.isGone = true
-            binding.dbLayout.isGone = true
+            //binding.authLayout.isGone = true
+            //binding.dbLayout.isGone = true
             //Каждый вход проверяем, авторизован ли юзер, если авторизован, идем дальше.
             //Если нет - даем выбор - авторизоваться или идти локально
             startApp()
@@ -97,33 +91,33 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             Log.i(TAG, "it's not authorized user, wait here")
         }
 
-
-
         val yandexAuthManager = YandexAuthManager(
             requireActivity() as AppCompatActivity,
             object : YandexAuthResultHandler {
                 override fun onSuccess(tokenValue: String) {
                     if (tokenValue.isNotEmpty()) {
+                        Log.i(TAG, "saving token to sharedPrefs")
                         //заносим в префы
                         sharedPreferences.edit().putString("yandex_token", tokenValue).apply()
                         sharedPreferences.edit().putBoolean("authorized", true).apply()
+                        sharedPreferences.edit().putBoolean("hasImportedDb", true).apply()
+                        sharedPreferences.edit().putBoolean("db_modified", false).apply()
 
                         //обновляем токен:
                         token = tokenValue
-                        viewModel.getUserInfo(tokenValue)
+                        Toast.makeText(requireContext(), "Authorization successfull", Toast.LENGTH_SHORT).show()
 
-                        //После авторизации - открывается выбор:
-                        //скачать БД с я.Диска или использовать локальные данные для работы
-                        binding.authLayout.isGone = true
-                        binding.dbLayout.isGone = false
-                        //Toast.makeText(requireContext(), "Welcome, $userName", Toast.LENGTH_SHORT).show()
+                        if (!hasImportedDb){
+                            //если это первый вход качаем инфу о юзере
+                            viewModel.getUserInfo(tokenValue)
+                            //а затем предлагаем
+                            //скачать БД с я.Диска или использовать локальные данные для работы
+                            binding.authLayout.isGone = true
+                            binding.dbLayout.isGone = false
+                        } else {
+                            startApp()
+                        }
 
-                        Log.i(TAG, "saving token to sharedPrefs")
-                        Toast.makeText(
-                            requireContext(),
-                            "Authorization is successful",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
 
@@ -151,9 +145,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 //Чтобы не путаться с поиском путей для БД и тд:
                 //создаем компанию по умолчанию, чтобы создать на устройстве БД
                 //а затем эту БД заменим новой скачавшейся с яндекса
-                if (isNewDevice){
-                    viewModel.createDefaultCompany()
-                    sharedPreferences.edit().putBoolean("is_new_device", false).apply()
+                if (!isDbCreated){
+                    createDb()
                 }
 
                 viewModel.downloadBdFromYandexDisk(
@@ -165,6 +158,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                             "All files downloaded successfully",
                             Toast.LENGTH_SHORT
                         ).show()
+                        sharedPreferences.edit().putBoolean("is_db_created", true).apply()
                         findNavController().navigate(R.id.action_loginFragment_to_navigation_route_list)
                     } else {
                         Toast.makeText(
@@ -251,14 +245,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             )
     }
 
+    private fun createDb(){
+        viewModel.createDefaultCompany()
+        sharedPreferences.edit().putBoolean("is_db_created", true).apply()
+    }
+
     private fun startApp(){
-        if (isNewDevice){
+        if (!isDbCreated){
+            println("isdbcreated : $isDbCreated")
             //создаем дефолтную фирму только если устройство - новое!
-            viewModel.createDefaultCompany()
-            sharedPreferences.edit().putBoolean("is_new_device", false).apply()
+           createDb()
         }
         findNavController().navigate(R.id.action_loginFragment_to_navigation_route_list)
     }
-
-
 }
