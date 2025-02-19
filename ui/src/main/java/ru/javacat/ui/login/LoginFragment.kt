@@ -25,6 +25,7 @@ import com.yandex.authsdk.YandexAuthSdk
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.ApiResult
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentLoginBinding
@@ -74,7 +75,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         val tokenValue = sharedPreferences.getString("yandex_token", null)
         token = tokenValue?:""
 
+        //при первом входе создаем БД
+        if (!isDbCreated){
+            createDb()
+        }
 
+        //если авторизован, проходим дальше, если нет - выбираем
         if (isAuthorized) {
             Log.i(TAG, "it's an authorized user, starting app")
             //binding.loginTv.setText("Welcomen back, $userName!")
@@ -82,8 +88,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
             //binding.authLayout.isGone = true
             //binding.dbLayout.isGone = true
-            //Каждый вход проверяем, авторизован ли юзер, если авторизован, идем дальше.
-            //Если нет - даем выбор - авторизоваться или идти локально
             startApp()
         } else {
             //если не авторизован - виден выбор - продолжить локально или авторизоваться:
@@ -145,27 +149,42 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 //Чтобы не путаться с поиском путей для БД и тд:
                 //создаем компанию по умолчанию, чтобы создать на устройстве БД
                 //а затем эту БД заменим новой скачавшейся с яндекса
-                if (!isDbCreated){
-                    createDb()
-                }
 
                 viewModel.downloadBdFromYandexDisk(
                     token!!
-                ) { success ->
-                    if (success) {
-                        Toast.makeText(
-                            requireContext(),
-                            "All files downloaded successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        sharedPreferences.edit().putBoolean("is_db_created", true).apply()
-                        findNavController().navigate(R.id.action_loginFragment_to_navigation_route_list)
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Failed to download some files, try to repeat",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                ) { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.download_data_from_yandex),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startApp()
+                        }
+
+                        is ApiResult.Error -> {
+                            when (result) {
+                                is ApiResult.Error.Unauthorized -> {
+                                    Toast.makeText(requireContext(), "Not authorized", Toast.LENGTH_SHORT).show()
+                                }
+                                is ApiResult.Error.ServerError -> Toast.makeText(
+                                    requireContext(),
+                                    "Server Error",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                is ApiResult.Error.InsufficientStorage -> Toast.makeText(
+                                    requireContext(),
+                                    "Not enough place at remote disk",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                is ApiResult.Error.UnknownError -> Toast.makeText(
+                                    requireContext(),
+                                    "Error: ${result.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
             }
@@ -248,11 +267,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun createDb(){
         viewModel.createDefaultCompany()
         sharedPreferences.edit().putBoolean("is_db_created", true).apply()
+        println("isdbcreated : $isDbCreated")
     }
 
     private fun startApp(){
         if (!isDbCreated){
-            println("isdbcreated : $isDbCreated")
             //создаем дефолтную фирму только если устройство - новое!
            createDb()
         }

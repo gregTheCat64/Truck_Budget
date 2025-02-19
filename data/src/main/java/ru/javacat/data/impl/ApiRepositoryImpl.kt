@@ -31,13 +31,17 @@ class ApiRepositoryImpl @Inject constructor(
     private val dbName = "app.db"
     private val dbPath = "app:/backup.db"
 
- //   private val localDbFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db"
+    //   private val localDbFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db"
 //    private val localWalFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-wal"
 //    private val localShmFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-shm"
 
     val dbFile = context.getDatabasePath("app.db")
     val walFile = File(dbFile.parentFile, "app.db-wal")
     val shmFile = File(dbFile.parentFile, "app.db-shm")
+
+    private val dbFiles = listOf(
+        dbFile, walFile, shmFile
+    )
 
     override suspend fun getUserInfo(token: String): User {
         val result = apiRequest {
@@ -47,82 +51,43 @@ class ApiRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun uploadDatabaseFiles(
-        token: String
-    ): ApiResult<String> = withContext(Dispatchers.IO) {
-
-        val dbFiles = listOf(
-            dbFile, walFile, shmFile
-        )
-
-        dbFiles.forEach { file ->
-            val urlResult = getUploadUrl(token, "app:/backup-${file.name}")
-            if (urlResult is ApiResult.Error){
-                return@withContext urlResult
-            }
-            if (urlResult is ApiResult.Success) {
-                val uploadResult = uploadFile(urlResult.data, file)
-                if (uploadResult is ApiResult.Error){
-                    return@withContext uploadResult
+    override suspend fun uploadDatabaseFiles(token: String): ApiResult<String> =
+        withContext(Dispatchers.IO) {
+            dbFiles.forEach { file ->
+                val urlResult = getUploadUrl(token, "app:/backup-${file.name}")
+                if (urlResult is ApiResult.Error) {
+                    return@withContext urlResult
+                }
+                if (urlResult is ApiResult.Success) {
+                    val uploadResult = uploadFile(urlResult.data, file)
+                    if (uploadResult is ApiResult.Error) {
+                        return@withContext uploadResult
+                    }
                 }
             }
+            switchDatabaseModified(context, false)
+            return@withContext ApiResult.Success("All files uploaded successfully")
         }
 
-//        withContext(Dispatchers.IO) {
-//            val dbUploadUrlResult = getUploadUrl(token, dbPath)
-//            if (dbUploadUrlResult is ApiResult.Error) return@withContext  dbUploadUrlResult
-//
-//            val walUploadUrlResult = getUploadUrl(token, "$dbPath-wal")
-//            if (walUploadUrlResult is ApiResult.Error) return@withContext  walUploadUrlResult
-//
-//            val shmUploadUrlResult = getUploadUrl(token, "$dbPath-shm")
-//            if (shmUploadUrlResult is ApiResult.Error) return@withContext  shmUploadUrlResult
-//
-//            if (dbUploadUrlResult is ApiResult.Success
-//                && walUploadUrlResult is ApiResult.Success
-//                && shmUploadUrlResult is ApiResult.Success) {
-//                val dbUploadSuccess = uploadFile(dbUploadUrlResult.data, localDbFilePath)
-//                val walUploadSuccess = uploadFile(walUploadUrlResult.data, localWalFilePath)
-//                val shmUploadSuccess = uploadFile(shmUploadUrlResult.data, localShmFilePath)
-//
-//                if (dbUploadSuccess && walUploadSuccess && shmUploadSuccess) {
-//                    switchDatabaseModified(context, false)
-//                } else{
-//
-//                }
-//            } else {
-//
-//            }
+    override suspend fun downLoadDatabaseFiles(token: String): ApiResult<String> =
+        withContext(Dispatchers.IO) {
+            if (makeBackupFiles()) {
+                dbFiles.forEach { file ->
+                    val urlResult = getDownloadUrl(token, "app:/backup-${file.name}")
+                    if (urlResult is ApiResult.Error) {
+                        return@withContext urlResult
+                    }
+                    if (urlResult is ApiResult.Success) {
+                        val downloadResult = downloadFile(urlResult.data, file)
+                        if (downloadResult is ApiResult.Error) {
+                            return@withContext downloadResult
+                        }
+                    }
+                }
 
-            //try {
-//                val dbUploadUrlResult = getUploadUrl(token, dbPath)
-//                val walUploadUrlResult = getUploadUrl(token, "$dbPath-wal")
-//                val shmUploadUrlResult = getUploadUrl(token, "$dbPath-shm")
-//
-//                if (dbUploadUrlResult is ApiResult.Success
-//                    && walUploadUrlResult is ApiResult.Success
-//                    && shmUploadUrlResult is ApiResult.Success){
-//                    val dbUploadSuccess = uploadFile(dbUploadUrlResult.data, localDbFilePath)
-//                    val walUploadSuccess = uploadFile(walUploadUrlResult.data, localWalFilePath)
-//                    val shmUploadSuccess = uploadFile(shmUploadUrlResult.data, localShmFilePath)
-
-//                    if (dbUploadSuccess && walUploadSuccess && shmUploadSuccess) {
-//                        switchDatabaseModified(context, false)
-//                        return@withContext ApiResult.Success("")
-//                    } else return@withContext  dbUploadUrlResult
-//                } else{
-//                    return@withContext dbUploadUrlResult
-//                }
-
-                //dbUploadSuccess && walUploadSuccess && shmUploadSuccess
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                false
-//            }
-        //}
-        switchDatabaseModified(context, false)
-        return@withContext ApiResult.Success("All files uploaded successfully")
-    }
+            }
+            return@withContext ApiResult.Success("All files downloaded successfully")
+        }
 
     private suspend fun getUploadUrl(token: String, path: String): ApiResult<String> {
         Log.i(TAG, "getting uploadUrl, token is $token, path is $path")
@@ -140,37 +105,33 @@ class ApiRepositoryImpl @Inject constructor(
                     else -> ApiResult.Error.UnknownError(response.message())
                 }
             }
-        } catch (e: Exception){
-            ApiResult.Error.UnknownError(e.message?:"Unknown error")
+        } catch (e: Exception) {
+            ApiResult.Error.UnknownError(e.message ?: "Unknown error")
         }
     }
 
-    override suspend fun downLoadDatabaseFiles(
-        token: String
-    ): Boolean {
-        return withContext(Dispatchers.IO) {
-            try {
-                val dbDownloadUrl = getDownloadUrl(token, "app:/backup-app.db")
-                val walDownloadUrl = getDownloadUrl(token, "app:/backup-app.db-wal")
-                val shmDownloadUrl = getDownloadUrl(token, "app:/backup-app.db-shm")
-
-                //если бекапы сделаны, качаем и заменяем файлы
-                if (makeBackupFiles()){
-                    val dbDownloadSuccess = downloadFile(dbDownloadUrl, dbFile)
-                    val walDownloadSuccess = downloadFile(walDownloadUrl, walFile)
-                    val shmDownloadSuccess = downloadFile(shmDownloadUrl, shmFile)
-                    return@withContext  dbDownloadSuccess && walDownloadSuccess && shmDownloadSuccess
-                } else {
-                    false
+    private suspend fun getDownloadUrl(token: String, path: String): ApiResult<String> {
+        return try {
+            val response = apiService.getDownloadUrl("OAuth $token", path)
+            Log.i(TAG, "getting uploadUrl")
+            Log.i(TAG, "response code: ${response.code()}")
+            if (response.isSuccessful) {
+                return ApiResult.Success(
+                    response.body()?.href ?: throw Exception("Empty download URL")
+                )
+            } else {
+                when (response.code()) {
+                    401 -> ApiResult.Error.Unauthorized
+                    500, 503 -> ApiResult.Error.ServerError
+                    507 -> ApiResult.Error.InsufficientStorage
+                    else -> ApiResult.Error.UnknownError(response.message())
                 }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                false
             }
+        } catch (e: Exception) {
+            ApiResult.Error.UnknownError(e.message ?: "Unknown error")
         }
-    }
 
+    }
 
     private suspend fun uploadFile(uploadUrl: String, file: File): ApiResult<String> {
         Log.i(TAG, "uploading file")
@@ -192,31 +153,27 @@ class ApiRepositoryImpl @Inject constructor(
         }
     }
 
-
-    private suspend fun getDownloadUrl(token: String, path: String): String {
-        val response =
-            apiService.getDownloadUrl("OAuth $token", path)
-        Log.i(TAG, "getting uploadUrl")
-        Log.i(TAG, "response code: ${response.code()}")
-        if (response.isSuccessful) {
-            return response.body()?.href ?: throw Exception("Empty download URL")
-        } else {
-            throw Exception("Failed to get download URL")
+    private suspend fun downloadFile(downLoadUrl: String, localFile: File): ApiResult<String> {
+        Log.i(TAG, "downloading $downLoadUrl")
+        return try {
+            val response = apiService.downloadFile(downLoadUrl)
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    saveToFile(body, localFile)
+                }
+                ApiResult.Success("$downLoadUrl downloaded successfully")
+            } else {
+                when (response.code()) {
+                    401 -> ApiResult.Error.Unauthorized
+                    500, 503 -> ApiResult.Error.ServerError
+                    507 -> ApiResult.Error.InsufficientStorage
+                    else -> ApiResult.Error.UnknownError(response.message())
+                }
+            }
+        } catch (e: Exception) {
+            ApiResult.Error.UnknownError(e.message ?: "Unknown error")
         }
-    }
 
-    private suspend fun downloadFile(downLoadUrl: String, localFile: File): Boolean {
-        Log.i(TAG, "uploading")
-
-        val response = apiService.downloadFile(downLoadUrl)
-        return if (response.isSuccessful) {
-            response.body()?.let { responseBody ->
-                saveToFile(responseBody, localFile)
-                true
-            } ?: false
-        } else {
-            false
-        }
     }
 
     private fun saveToFile(responseBody: ResponseBody, file: File) {
@@ -227,31 +184,55 @@ class ApiRepositoryImpl @Inject constructor(
     }
 
     private fun makeBackupFiles(
-    ): Boolean{
+    ): Boolean {
         Log.i(TAG, "создаем бекап файлы на всякий случай")
-        val dbFile = context.getDatabasePath("app.db")
-        val walFile = File(dbFile.parentFile, "app.db-wal")
-        val shmFile = File(dbFile.parentFile, "app.db-shm")
 
-        val backupLocalDbFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-old"
-        val backupLocalWalFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-wal-old"
-        val backupLocalShmFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-shm-old"
-
-        val dbFileResult = dbFile.copyTo(File(backupLocalDbFilePath), overwrite = true)
-        val walFileResult = walFile.copyTo(File(backupLocalWalFilePath), overwrite = true)
-        val shmFileResult = shmFile.copyTo(File(backupLocalShmFilePath), overwrite = true)
-
-        if (dbFileResult.exists() && walFileResult.exists() && shmFileResult.exists()) {
-            println("Backup files were made successfully")
-            return true
-        } else {
-            println("Error making backup files")
-            return false
+        dbFiles.forEach {file ->
+            val backupResult = file.copyTo(File("${context.getDatabasePath("app.db")?.parent}/local_backup_${file.name}"), true)
+            if (!backupResult.exists()) {
+                Log.i(TAG, "Error making backup files")
+                return false
+            }
         }
+        Log.i(TAG, "Backup files were made successfully")
+        return true
+
+//        val backupLocalDbFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-old"
+//        val backupLocalWalFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-wal-old"
+//        val backupLocalShmFilePath = "${context.getDatabasePath("app.db")?.parent}/app.db-shm-old"
+//
+//        val dbFileResult = dbFile.copyTo(File(backupLocalDbFilePath), overwrite = true)
+//        val walFileResult = walFile.copyTo(File(backupLocalWalFilePath), overwrite = true)
+//        val shmFileResult = shmFile.copyTo(File(backupLocalShmFilePath), overwrite = true)
+//
+//        if (dbFileResult.exists() && walFileResult.exists() && shmFileResult.exists()) {
+//            println("Backup files were made successfully")
+//            return true
+//        } else {
+//            println("Error making backup files")
+//            return false
+//        }
     }
 
-        //перенес функционал
-    suspend fun replaceDatabaseFile(localDbPath: String, localWalPath: String, localShmPath: String) {
+    private fun restoreDb(): Boolean{
+        //Функция для восстановления файлов(если случился факап)
+        dbFiles.forEach {file ->
+            val restoreResult = File("${context.getDatabasePath("app.db")?.parent}/local_backup_${file.name}").copyTo(file, true)
+            if (!restoreResult.exists()) {
+                Log.i(TAG, "Error restoring")
+                return false
+            }
+        }
+        return true
+
+    }
+
+    //перенес функционал
+    suspend fun replaceDatabaseFile(
+        localDbPath: String,
+        localWalPath: String,
+        localShmPath: String
+    ) {
         //закрываем текущую БД
 
         db.close()
@@ -291,7 +272,6 @@ class ApiRepositoryImpl @Inject constructor(
             return true
         } else return false
     }
-
 
 
     private fun reopenDatabase() {

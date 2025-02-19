@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.toPrettyPrice
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
@@ -25,6 +26,7 @@ import ru.javacat.ui.R
 import ru.javacat.ui.databinding.FragmentRouteCalculationInfoBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.showDeleteConfirmationDialog
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBinding>() {
@@ -90,6 +92,10 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         //рассчет рейса и финиш
         binding.calculateBtn.setOnClickListener {
             toCalculation()
+        }
+
+        binding.contractorName.setOnClickListener {
+            toCompanyFragment()
         }
 
         //статус оплаты
@@ -207,8 +213,16 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         route.profit?.let {
             binding.profitTv.text = "$it ${getString(R.string.rub)}"
         }
+
+
         route.moneyToPay?.let {
-            binding.moneyToPayTv.text = "$it ${getString(R.string.rub)}"
+            if (route.moneyToPay!! > 0F ){
+                binding.moneyToPayLabel.text = "Остаток с рейса"
+                binding.moneyToPayTv.text = "$it ${getString(R.string.rub)}"
+            } else {
+                binding.moneyToPayTv.text = "${it*-1} ${getString(R.string.rub)}"
+            }
+
         }
 
         route.revenue?.let {
@@ -270,6 +284,12 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             Toast.makeText(requireContext(), "Список заявок пуст!", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    private fun toCompanyFragment(){
+        val bundle = Bundle()
+        bundle.putLong(FragConstants.CUSTOMER_ID, currentRoute?.contractor?.company?.id?:-1)
+        findNavController().navigate(R.id.action_routeCountFragment_to_companyFragment, bundle)
     }
 
     private fun showMenu(view: View) {

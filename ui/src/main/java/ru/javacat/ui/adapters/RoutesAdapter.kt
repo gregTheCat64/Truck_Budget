@@ -60,9 +60,13 @@ class RoutesAdapter(
 
             binding.routeTitleTextView.text = "Рейс №${item.id}"
 
-            item.profit?.let {
-                binding.earnedMoneyTextView.text = it.roundToInt().toPrettyPrice() + " р."
-            }
+//            item.profit?.let {
+//                binding.earnedMoneyTextView.text = it.roundToInt().toPrettyPrice() + "доллАров!"
+//            }
+            binding.earnedMoneyTextView.text = if (item.profit != null) {
+                item.profit!!.roundToInt().toPrettyPrice() + " р."
+            } else ""
+
             val contractorString =  if (item.contractor?.company?.id != -1L) "${item.contractor?.driver?.surname.toString()} (${item.contractor?.company?.shortName})" else item.contractor?.driver?.nameToShow.toString()
 
             binding.truckDriverName.text = contractorString

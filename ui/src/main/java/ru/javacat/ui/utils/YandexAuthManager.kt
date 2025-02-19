@@ -61,6 +61,7 @@ class YandexAuthManager(
                     val tokenValue = token.value
                     handler.onSuccess(tokenValue)
                     println("success: ${token}")
+                    println("expiresIn: ${token.expiresIn}")
 
                 }
                 is YandexAuthResult.Failure -> {

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.javacat.domain.models.ApiResult
 import ru.javacat.domain.models.User
 import ru.javacat.domain.repo.ApiRepository
 import ru.javacat.domain.repo.CompaniesRepository
@@ -68,7 +69,7 @@ class LoginViewModel @Inject constructor(
 
     fun downloadBdFromYandexDisk(
         token: String,
-        onComplete: (Boolean) -> Unit
+        onComplete: (ApiResult<String>) -> Unit
     ) {
         Log.i(TAG, "downLoading")
         viewModelScope.launch {

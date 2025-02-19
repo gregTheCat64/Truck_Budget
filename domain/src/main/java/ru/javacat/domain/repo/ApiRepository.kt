@@ -17,6 +17,6 @@ interface ApiRepository {
 
     suspend fun downLoadDatabaseFiles(
         token: String
-    ): Boolean
+    ): ApiResult<String>
 
 }
