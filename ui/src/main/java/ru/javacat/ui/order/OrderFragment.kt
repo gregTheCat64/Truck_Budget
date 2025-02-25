@@ -256,13 +256,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
     private fun initUi(order: Order) {
         Log.i("OrderFrag", "init ui in order: $order")
+        binding.pointsListLayout.removeAllViews()
+
         isPaid = order.isPaidByCustomer
         routeId = order.routeId
         companyPhoneNumber = order.customer?.companyPhone
         managerPhoneNumber = order.manager?.phoneNumber
         sentDocsNumber = order.sentDocsNumber
 
-        binding.copyBtn.isGone = sentDocsNumber == null
+        println("docnymber is $sentDocsNumber")
+        if (sentDocsNumber.isNullOrEmpty()){
+            binding.copyBtn.isGone = true
+            binding.docsNumber.text = getString(R.string.push_to_add)
+        } else  binding.copyBtn.isGone = false
 
         //тайтл
         val title = if (order.id == 0L) {
