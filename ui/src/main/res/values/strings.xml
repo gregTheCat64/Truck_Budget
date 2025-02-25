@@ -214,4 +214,5 @@
     <string name="will_replace_data_on_yandex_disk">New user. This will replace data on Yandex Disk</string>
     <string name="which_data_base_we_use">Which data base we use?</string>
     <string name="old_user">Old user</string>
+    <string name="copy">Copy</string>
 </resources>

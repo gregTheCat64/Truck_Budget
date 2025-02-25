@@ -17,3 +17,25 @@ data class User(
     val real_name: String,
     val sex: String
 )
+
+class Person {
+    var name: String
+    var age: Int
+
+    init {
+        println("Initializing the object")
+    }
+
+    constructor(name:String) {
+        this.name = name
+        this.age = 0
+    }
+
+    constructor(age: Int): this("Unknown"){
+        this.age = age
+    }
+
+    constructor(name: String, age: Int): this(name){
+        this.age = age
+    }
+}

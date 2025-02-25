@@ -41,7 +41,11 @@ import ru.javacat.ui.utils.showCalendar
 import ru.javacat.ui.utils.showOneInputDialog
 import java.time.LocalDate
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.widget.PopupMenu
+import android.widget.TextView
 import ru.javacat.common.utils.asDayAndMonthShortly
 import ru.javacat.common.utils.toPrettyNumber
 import ru.javacat.common.utils.toPrettyPrice
@@ -90,6 +94,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
                 sentDocsNumber = it
                 updateOrderToDb()
                 binding.docsNumber.text = it
+                if (it.isNotEmpty()){
+                    binding.copyBtn.isGone = false
+                } else binding.docsNumber.text = ""
             }
         }
     }
@@ -237,16 +244,25 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             }else Toast.makeText(requireContext(), "Номер не был найден", Toast.LENGTH_SHORT).show()
         }
 
-
+        binding.copyBtn.setOnClickListener {
+            val textToCopy = binding.docsNumber.text.toString()
+            if (sentDocsNumber!= null) {
+                copyToClipboard(textToCopy)
+            }else {
+                Toast.makeText(requireContext(), "Поле пустое", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initUi(order: Order) {
-        Log.i("OrderFrag", "order: $order")
+        Log.i("OrderFrag", "init ui in order: $order")
         isPaid = order.isPaidByCustomer
         routeId = order.routeId
         companyPhoneNumber = order.customer?.companyPhone
         managerPhoneNumber = order.manager?.phoneNumber
         sentDocsNumber = order.sentDocsNumber
+
+        binding.copyBtn.isGone = sentDocsNumber == null
 
         //тайтл
         val title = if (order.id == 0L) {
@@ -271,8 +287,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         }
         val typeOfUploadString = typeOfUploadList.joinToString(separator = "/")
 
-
-        //TODO добавить в груз - способ погрузки - палеты, валом и тд
 
         val cargoText =  "${order.cargo?.cargoName} "
         val extraCargoInfoText = "$typeOfUploadString, ${order.cargo?.cargoWeight} т / ${order.cargo?.cargoVolume} м3"
@@ -315,11 +329,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
 
             if (order.contractor?.company?.id != -1L){
                 contractorsPriceLayout.isGone = false
-                val contractorsPriceText = "${order.contractorPrice?.toPrettyPrice()}, ${getString(R.string.rub)}"
-                val contractorPriceExtraText =  "${order.payTypeToContractor?.toRussian()}, ${order.daysToPayToContractor} б. дней"
+                val contractorsPriceText = "${order.contractorPrice?.toPrettyPrice()}, ${getString(R.string.rub)}, ${order.payTypeToContractor?.toRussian()}, ${order.daysToPayToContractor} б. дней "
 
                 binding.contractorsPrice.text = contractorsPriceText
-                binding.contractorPriceExtraTv.text = contractorPriceExtraText
+
 
                 if (order.isPaidToContractor){
                     setPaidUi(binding.contractorPaidStatusTv)
@@ -331,10 +344,30 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
             }
         }
 
+
+        val pointsList = order.points
+        pointsList.forEach {
+            val pointText = "${it.location}, ${it.arrivalDate.asDayAndMonthFully()}"
+            binding.pointsListLayout.addView(
+                TextView(requireContext()).apply {
+                    text = pointText
+                    setPadding(0, 8,0,0)
+
+                }
+            )
+        }
+
         //adapter
-        pointsAdapter = OneLinePointAdapter()
-        binding.pointsRecView.adapter = pointsAdapter
-        pointsAdapter.submitList(order.points)
+        //pointsAdapter = OneLinePointAdapter()
+        //binding.pointsRecView.adapter = pointsAdapter
+        //pointsAdapter.submitList(order.points)
+    }
+
+    private fun copyToClipboard(text: String) {
+        val clipboard = activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("simple text", text)
+        clipboard.setPrimaryClip(clip)
+        //Toast.makeText(requireContext(), "Скопировано в буфер обмена", Toast.LENGTH_SHORT).show()
     }
 
     private fun setPaidUi(view: Chip) {

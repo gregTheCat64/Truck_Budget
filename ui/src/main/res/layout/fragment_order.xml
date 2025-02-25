@@ -141,7 +141,7 @@
             <include layout="@layout/horizon_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 />
 
 
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/cargo" />
 
 
@@ -187,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginBottom="8dp"
+
                 style="@style/TextAppearance.InfoValue"
                 android:text="@string/cargo_description" />
 
@@ -204,24 +204,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:text="@string/route"
                 />
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pointsRecView"
+            <LinearLayout
+                android:id="@+id/pointsListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="32dp"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                tools:itemCount="2"
-                tools:listitem="@layout/point_item_oneline" />
+                />
 
 
             <include layout="@layout/horizon_line" />
@@ -234,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/payment" />
 
             <TextView
@@ -243,7 +239,6 @@
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
                 android:layout_marginTop="8dp"
                 android:text="@string/cost"
-
                 style="@style/TextAppearance.InfoDescription"
                 android:hint="@string/cost" />
 
@@ -255,47 +250,34 @@
                     android:layout_marginStart="@dimen/frag_company_text_start_margin"
                     android:text="@string/order_price" />
 
-
-            <TextView
-                android:id="@+id/payDayTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginTop="8dp"
-                style="@style/TextAppearance.InfoDescription"
-                android:text="@string/payment_date"
-                android:hint="@string/payment_date" />
-
-            <TextView
-                android:id="@+id/payDayValueTv"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@drawable/baseline_edit_24"
-                android:text="@string/push_to_add" />
-
-            <TextView
-                android:id="@+id/payStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginTop="8dp"
-                style="@style/TextAppearance.InfoDescription"
-                android:text="@string/payment_status"
-                android:hint="@string/payment_status" />
-
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/paidStatusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginBottom="8dp"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:text="@string/paid" />
 
+
+            <TextView
+                android:id="@+id/payDayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+
+                style="@style/TextAppearance.InfoDescription"
+                android:text="@string/payment_date"
+                android:hint="@string/payment_date" />
+
+            <TextView
+                android:id="@+id/payDayValueTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoValue"
+                android:text="@string/push_to_add" />
 
             <LinearLayout
                 android:id="@+id/contractorsPriceLayout"
@@ -319,23 +301,6 @@
                     android:layout_height="wrap_content"
                      />
 
-                <TextView
-                    android:id="@+id/contractorPriceExtraTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                    android:text=""
-                    />
-
-                <TextView
-                    android:id="@+id/contractorPayStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/payment_status" />
-
-
                 <com.google.android.material.chip.Chip
                     android:id="@+id/contractorPaidStatusTv"
                     android:layout_width="wrap_content"
@@ -348,18 +313,12 @@
             </LinearLayout>
 
 
-
-            <LinearLayout
-                android:id="@+id/contractorLayout"
-                android:layout_width="match_parent"
+            <include
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:orientation="vertical">
-
-
-            </LinearLayout>
-
-            <include layout="@layout/horizon_line" />
+                layout="@layout/horizon_line"
+                android:layout_marginTop="8dp"
+                />
 
             <TextView
                 style="@style/TextAppearance.InfoTitle"
@@ -367,7 +326,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/frag_company_text_start_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/documents" />
 
             <TextView
@@ -380,14 +339,31 @@
                 android:hint="@string/sending_documents_track_number" />
 
 
-            <TextView
-                android:id="@+id/docsNumber"
-                style="@style/Widget.Material3.Button.TextButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@drawable/baseline_edit_24"
-                android:text="@string/push_to_add" />
+                android:orientation="horizontal"
+
+                >
+                <TextView
+                    android:id="@+id/docsNumber"
+                    style="@style/TextAppearance.InfoValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                    android:text="@string/push_to_add" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/copyBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    app:icon="@drawable/baseline_content_copy_24"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
 
 
             <TextView
@@ -401,18 +377,14 @@
 
             <TextView
                 android:id="@+id/docsReceivedDateTvValue"
-                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@drawable/baseline_edit_24"
+                android:layout_marginStart="@dimen/frag_company_text_start_margin"
+                android:layout_marginTop="8dp"
+                style="@style/TextAppearance.InfoValue"
                 android:text="@string/push_to_add" />
 
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -212,4 +212,5 @@
     <string name="will_replace_data_on_yandex_disk">Новый пользователь. На Яндекс диске будет создана резервная копия локальных данных.</string>
     <string name="which_data_base_we_use">Какую базу данных использовать?</string>
     <string name="old_user">Старый пользователь</string>
+    <string name="copy">Копировать</string>
 </resources>
