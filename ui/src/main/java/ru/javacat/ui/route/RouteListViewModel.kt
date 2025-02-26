@@ -47,6 +47,12 @@ class RouteListViewModel @Inject constructor(
         }
     }
 
+    fun getCompanyRoutes(year: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getCompanyRoutes(year)
+        }
+    }
+
     fun uploadBdToYandexDisk(
         token: String,
         onComplete: (ApiResult<String>) -> Unit

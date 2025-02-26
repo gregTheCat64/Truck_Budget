@@ -63,7 +63,7 @@ class EditOrderViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateEditedRoute(id: Long) {
+    fun updateEditedRoute(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = routeRepository.getById(id)
             if (result != null) {

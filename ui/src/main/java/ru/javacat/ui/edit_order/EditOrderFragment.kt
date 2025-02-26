@@ -164,8 +164,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
         binding.pointsRecView.adapter = pointsAdapter
 
-
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.editedRoute.collectLatest { route ->
@@ -630,8 +628,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 currentOrder?.let { checkCargo() }
             }
         })
-
-
 
         binding.priceTv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

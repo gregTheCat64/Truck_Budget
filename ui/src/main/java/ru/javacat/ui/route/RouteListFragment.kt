@@ -66,16 +66,23 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         val isDbModified = sharedPreferences.getBoolean("db_modified", false)
         val tokenValue = sharedPreferences.getString("yandex_token", null)
         val isAuthorized = sharedPreferences.getBoolean("authorized", false)
+        val isAllowedToUpload = sharedPreferences.getBoolean("allowed", false)
 
         Log.i(TAG, "isModified: $isDbModified")
         Log.i(TAG, "isAuthorized: $isAuthorized")
+        Log.i(TAG, "isAllowedToUpload: $isAllowedToUpload")
 
         Log.i(TAG, "onViewCreated")
-        binding.chooseYearBtn.text = YearHolder.selectedYear.toString()
+        val currentYear = YearHolder.selectedYear
+
+        binding.chooseYearBtn.text = currentYear.toString()
         updateList()
 
+        binding.autoUpdateBtn.isChecked = isAllowedToUpload
+
+
         //если бд изменена, отправляем на яндекс
-        if (isDbModified && isAuthorized){
+        if (isDbModified && isAuthorized && isAllowedToUpload){
             Log.i(TAG, "ismodified: $isDbModified isAuthorized: $isAuthorized")
 
             viewModel.uploadBdToYandexDisk(tokenValue!!){ result ->
@@ -129,6 +136,24 @@ class RouteListFragment : BaseFragment<FragmentRouteListBinding>() {
         binding.newExtendedRouteBtn.setOnClickListener {
             toNewRoute()
         }
+
+        binding.autoUpdateBtn.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), "Автоматическая синхронизация включена", Toast.LENGTH_SHORT).show()
+                sharedPreferences.edit().putBoolean("allowed", true).apply()
+            } else {
+                sharedPreferences.edit().putBoolean("allowed", false).apply()
+                Toast.makeText(requireContext(), "Автоматическая синхронизация отключена", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.myTransportBtn.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.getCompanyRoutes(year = currentYear)
+            } else viewModel.getAllRoutes(currentYear)
+        }
+
+
 
         val orderClickListener: (Order) -> Unit = {order ->
             val bundle = Bundle()

@@ -215,4 +215,5 @@
     <string name="which_data_base_we_use">Which data base we use?</string>
     <string name="old_user">Old user</string>
     <string name="copy">Copy</string>
+    <string name="my_transport">My transport</string>
 </resources>

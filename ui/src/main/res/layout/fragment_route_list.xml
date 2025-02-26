@@ -29,16 +29,34 @@
                 android:layout_marginTop="16dp"
                 />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chooseYearBtn"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="22dp"
-                android:checkable="false"
-                android:checked="true"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="end"
-                />
+                android:layout_gravity="end|center_vertical"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/autoUpdateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Sync"
+
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chooseYearBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="22dp"
+                    android:checkable="false"
+                    android:checked="true"
+
+                    />
+
+            </LinearLayout>
+
+
         </FrameLayout>
 
 
@@ -72,15 +90,41 @@
 
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/routesList"
-        android:visibility="visible"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:listitem="@layout/route_item"/>
+        >
+
+        <FrameLayout
+            android:id="@+id/filterLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/myTransportBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end"
+                android:text="@string/my_transport"
+                />
+
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/routesList"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:listitem="@layout/route_item"/>
+    </LinearLayout>
+
+
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/newExtendedRouteBtn"

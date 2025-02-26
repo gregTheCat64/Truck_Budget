@@ -213,4 +213,5 @@
     <string name="which_data_base_we_use">Какую базу данных использовать?</string>
     <string name="old_user">Старый пользователь</string>
     <string name="copy">Копировать</string>
+    <string name="my_transport">Мой транспорт</string>
 </resources>

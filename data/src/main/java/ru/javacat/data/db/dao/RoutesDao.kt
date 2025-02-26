@@ -8,8 +8,6 @@ import androidx.room.Upsert
 import ru.javacat.data.db.entities.DbRoute
 import ru.javacat.data.db.models.DbMonthlyProfit
 import ru.javacat.data.db.models.DbRouteWithOrders
-import ru.javacat.domain.models.MonthlyProfit
-import java.time.Year
 
 @Dao
 interface RoutesDao {
@@ -21,6 +19,10 @@ interface RoutesDao {
     @Transaction
     @Query("SELECT * FROM routes_table WHERE strftime('%Y', startDate) = :year ORDER BY id DESC")
     fun getAllRoutesByYear(year: String): List<DbRouteWithOrders>
+
+
+    @Query("SELECT * FROM routes_table WHERE contractorId = -1 AND strftime('%Y', startDate) = :year ORDER BY id DESC")
+    fun getCompanyRoutes(year: String): List<DbRouteWithOrders>
 
     @Query(
         """
