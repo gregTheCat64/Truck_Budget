@@ -61,25 +61,8 @@ class EditPointsFragment: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
-//
-//        requireActivity().addMenuProvider(object : MenuProvider{
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                menuInflater.inflate(R.menu.menu_empty, menu)
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//               when (menuItem.itemId) {
-//                   android.R.id.home -> {
-//                       findNavController().navigateUp()
-//                       return true
-//                   }
-//                   else -> return false
-//               }
-//            }
-//        }, viewLifecycleOwner)
+    ): View {
+
         binding = FragmentEditPointsBinding.inflate(layoutInflater)
 
         return binding.root

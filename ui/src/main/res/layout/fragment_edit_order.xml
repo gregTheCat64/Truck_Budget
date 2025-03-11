@@ -254,19 +254,15 @@
             </LinearLayout>
 
 
-
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pointsRecView"
+            <LinearLayout
+                android:id="@+id/pointsListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="36dp"
-                android:layout_marginEnd="36dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/point_item_with_rmv_btn" />
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addPointBtn"

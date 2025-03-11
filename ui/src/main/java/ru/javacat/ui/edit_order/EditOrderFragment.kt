@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -24,14 +25,17 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.javacat.common.utils.asDayAndMonthFully
 import ru.javacat.domain.models.Order
 import ru.javacat.domain.models.PayType
+import ru.javacat.domain.models.Point
 import ru.javacat.domain.models.Route
 import ru.javacat.ui.BaseFragment
 import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.PointWithRemoveAdapter
 import ru.javacat.ui.databinding.FragmentEditOrderBinding
+import ru.javacat.ui.databinding.PointItemWithRmvBtnBinding
 
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
@@ -159,10 +163,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
         //adapter
-        pointsAdapter = PointWithRemoveAdapter {
-            viewModel.removePoint(it)
-        }
-        binding.pointsRecView.adapter = pointsAdapter
+//        pointsAdapter = PointWithRemoveAdapter {
+//            viewModel.removePoint(it)
+//        }
+//        binding.pointsRecView.adapter = pointsAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -326,15 +330,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     }
 
     private fun initUi(order: Order) {
-//        val title = if (order.id == 0L) {
-//            "Новая заявка"
-//        } else {
-//            "Заявка № ${order.id}"
-//        }
-        //binding.orderTitle.text = title
-        //(activity as AppCompatActivity).supportActionBar?.title = title
         binding.actionBar.title.text = getString(R.string.edit)
         currentOrder = order
+
+        binding.pointsListLayout.removeAllViews()
 
         order.daysToPay?.let {
             val value = "$it"
@@ -418,7 +417,23 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         binding.sideCheck.isChecked = order.cargo?.isSideLoad == true
         binding.upCheck.isChecked =  order.cargo?.isTopLoad == true
 
-        pointsAdapter.submitList(order.points)
+        //pointsAdapter.submitList(order.points)
+        val pointClickListener: (Point) -> Unit = {point ->
+            Toast.makeText(requireContext(), "clicked ${point.location}", Toast.LENGTH_SHORT).show()
+        }
+
+        val pointRemoveClickListener: (Point) -> Unit = {point ->
+            viewModel.removePoint(point)
+        }
+
+        val pointViews = order.points.toListView(
+            binding.pointsListLayout,
+            pointClickListener,
+            pointRemoveClickListener
+        )
+        pointViews.forEach {
+            binding.pointsListLayout.addView(it)
+        }
 
         paintOrder(R.drawable.unfilled_circle)
     }
@@ -666,5 +681,18 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         })
     }
 
+}
 
+fun List<Point>.toListView(parent: ViewGroup, onPointClick: (Point) -> Unit, onRemoveClick: (Point) -> Unit): List<View> = this.map { point ->
+    val inflater = LayoutInflater.from(parent.context)
+    val binding = PointItemWithRmvBtnBinding.inflate(inflater, parent, false)
+
+    binding.pointNameTv.text = point.location.toString()
+    binding.pointDateTv.text = point.arrivalDate.asDayAndMonthFully()
+
+    binding.removeBtn.setOnClickListener { _ -> onRemoveClick(point)}
+
+    binding.root.setOnClickListener { _ -> onPointClick(point) }
+
+    binding.root
 }

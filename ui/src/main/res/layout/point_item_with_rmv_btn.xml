@@ -1,48 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/card_corner_radius"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
+    android:layout_margin="4dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            >
+            <TextView
+                android:id="@+id/pointDateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="19 января"
+                android:textStyle="bold"
+
+                />
+            <TextView
+                android:id="@+id/pointNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Саратов"
+
+                />
+
+        </LinearLayout>
 
 
-
-    <TextView
-        android:id="@+id/pointDateTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="19 января"
-        android:textStyle="bold"
-
-        />
-
-    <TextView
-        android:id="@+id/pointNameTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Саратов"
-        android:layout_marginStart="8dp"
-        />
-    </LinearLayout>
-
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/removeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/remove"
-        android:textColor="@color/red"
         android:layout_gravity="end"
-        android:src="@drawable/baseline_delete_outline_24"
-        android:layout_marginStart="16dp"
-
+        style="@style/Widget.Material3.Button.IconButton"
+        app:icon="@drawable/baseline_delete_outline_24"
         />
-</FrameLayout>
+
+</androidx.cardview.widget.CardView>
