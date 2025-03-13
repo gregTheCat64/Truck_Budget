@@ -21,12 +21,12 @@ import ru.javacat.domain.models.Point
 //    ]
 //)
 data class DbPoint(
-    val id: String,
+    val position: Int,
     //val orderId: String,
     val location: String,
     val arrivalDate: String
 ) {
     fun toPointModel() = Point(
-        id, location, arrivalDate.toLocalDate()
+        position, location, arrivalDate.toLocalDate()
     )
 }

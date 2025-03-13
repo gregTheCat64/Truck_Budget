@@ -40,6 +40,7 @@ import ru.javacat.ui.databinding.PointItemWithRmvBtnBinding
 import ru.javacat.ui.utils.FragConstants
 import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @AndroidEntryPoint
@@ -201,7 +202,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         binding.addPointBtn.setOnClickListener {
             binding.scroll.smoothScrollTo(0, binding.routeCheckTitle.top-paddingToScroll)
-            changingPoints()
+            changingPoints(null)
         }
 
         binding.cargoEditText.setOnClickListener {
@@ -419,7 +420,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         //pointsAdapter.submitList(order.points)
         val pointClickListener: (Point) -> Unit = {point ->
-            Toast.makeText(requireContext(), "clicked ${point.location}", Toast.LENGTH_SHORT).show()
+            changingPoints(point)
+            //Toast.makeText(requireContext(), "clicked ${point.location}", Toast.LENGTH_SHORT).show()
         }
 
         val pointRemoveClickListener: (Point) -> Unit = {point ->
@@ -611,9 +613,20 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         dialogFragment.show(parentFragmentManager, "")
     }
 
-    private fun changingPoints() {
-        //findNavController().navigate(R.id.editPointsFragment)
+    private fun changingPoints(point: Point?) {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+        val dateString = point?.arrivalDate?.format(formatter)
+
+        println("point position is ${point?.position}")
+        val bundle = Bundle().apply {
+            putInt("position", point?.position?:0)
+            putString("location", point?.location)
+            putString("date", dateString)
+        }
+
         val dialogFragment = EditPointsFragment()
+        dialogFragment.arguments = bundle
+
         dialogFragment.show(parentFragmentManager, "")
     }
 

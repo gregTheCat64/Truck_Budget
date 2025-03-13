@@ -40,6 +40,8 @@ import ru.javacat.ui.adapters.LocationAdapter
 import ru.javacat.ui.adapters.my_adapter.OnModelWithRemoveBtnListener
 import ru.javacat.ui.databinding.FragmentEditPointsBinding
 import ru.javacat.ui.utils.showCalendar
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class EditPointsFragment: BottomSheetDialogFragment() {
@@ -57,11 +59,21 @@ class EditPointsFragment: BottomSheetDialogFragment() {
     private var currentOrder: Order? = null
     private var locationsFound: Boolean = false
 
+    private var locationName: String? = null
+    private var arrivalDate: LocalDate? = null
+    private var position: Int = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        arguments?.let { bundle ->
+            position = bundle.getInt("position")
+            locationName = bundle.getString("location")
+            val dateString = bundle.getString("date")
+            arrivalDate = dateString?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
+        }
 
         binding = FragmentEditPointsBinding.inflate(layoutInflater)
 
@@ -75,6 +87,7 @@ class EditPointsFragment: BottomSheetDialogFragment() {
         initUi()
         addEditTextListeners()
 
+        //навигация
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loadState.collectLatest {
@@ -96,32 +109,22 @@ class EditPointsFragment: BottomSheetDialogFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.editedOrder.collectLatest {
                 it?.let { currentOrder = it }
+                if (arrivalDate == null) {
+                    calculateDate()
+                    println("я тут тут тут")
+                    //binding.okBtn.isGone = false
+                }
             }
         }
 
+            //Работа с датой:
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.pointDate.collectLatest {
+                    println("получили, обновляем дату в форме $it")
                     binding.dateTextView.setText(it.asDayAndMonthFully())
                 }
             }
-        }
-
-        //ДАТА:
-        viewLifecycleOwner.lifecycleScope.launch {
-            //если городов в маршруте пока нет, мы берем дату последней заявки, плюс один день
-            //если города в заявке есть, то берем дату последнего, плюс один день
-            if (currentOrder?.points?.isEmpty() == true){
-                if (currentRoute?.orderList?.isNotEmpty() == true){
-                    val lastDate = currentRoute?.orderList?.last()?.points?.last()?.arrivalDate
-                    //val lastDate =
-                    lastDate?.plusDays(1)?.let { viewModel.setPointDate(it) }
-                }
-            } else {
-                val lastDate = currentOrder?.points?.last()?.arrivalDate
-                lastDate?.plusDays(1)?.let { viewModel.setPointDate(it) }
-            }
-
         }
 
         binding.minusDayBtn.setOnClickListener {
@@ -143,16 +146,23 @@ class EditPointsFragment: BottomSheetDialogFragment() {
             if (!locationsFound && locationName.isNotEmpty()) {
                 val newLocation = Location(null, locationName)
                 viewModel.insertNewLocation(newLocation)
-                addPoint(locationName)
+                addPoint(locationName, position)
             } else Toast.makeText(requireContext(), getString(R.string.fill_requested_fields), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun initUi(){
+
         viewModel.getLocations()
+
+        if (locationName != null && arrivalDate != null){
+            binding.locationEditText.setText(locationName)
+            viewModel.setPointDate(arrivalDate!!)
+        }
+
         locationAdapter = LocationAdapter(object : OnModelWithRemoveBtnListener{
             override fun onItem(model: BaseNameModel<Long>) {
-                addPoint(model.nameToShow)
+                addPoint(model.nameToShow, position)
             }
 
             override fun onRemove(model: BaseNameModel<Long>) {
@@ -177,11 +187,32 @@ class EditPointsFragment: BottomSheetDialogFragment() {
         }
     }
 
-    private fun addPoint(locationName: String) {
-        val pointDate = viewModel.pointDate.value
+    private fun addPoint(locationName: String, position: Int) {
+        //val pointDate = viewModel.pointDate.value
+        //val newPoint = Point(0, locationName, pointDate)
+        viewModel.addPoint(locationName, position)
+    }
 
-        val newPoint = Point("", locationName, pointDate)
-        viewModel.addPoint(newPoint)
+    //если городов в маршруте пока нет, мы берем дату последней заявки, плюс один день
+    //если города в заявке есть, то берем дату последнего, плюс один день
+    private fun calculateDate(){
+        println("считаем дату")
+        println("currentorder points: ${currentOrder?.points}")
+        if (currentOrder?.points?.isEmpty() == true){
+            if (currentRoute?.orderList?.isNotEmpty() == true){
+                val lastDate = currentRoute?.orderList?.last()?.points?.last()?.arrivalDate
+                lastDate?.plusDays(1)?.let {
+                    println("дата равна $it")
+                    viewModel.setPointDate(it)
+                }
+
+            }
+        } else {
+            val lastDate = currentOrder?.points?.last()?.arrivalDate
+            lastDate?.plusDays(1)?.let {
+                println("дата равна $it")
+                viewModel.setPointDate(it) }
+        }
     }
 
     private fun addEditTextListeners() {
@@ -191,7 +222,7 @@ class EditPointsFragment: BottomSheetDialogFragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchLocations(p0.toString())
                 binding.okBtn.isVisible = !p0.isNullOrEmpty()
-                binding.okBtn.text = "Cоздать место: $p0"
+                binding.okBtn.text = "Cоздать точку: $p0"
 //                if (!locationsFound){
 //                    binding.addPointBtn.isVisible = true
 //                    binding.addPointBtn.text = "Сохранить $p0"
@@ -199,12 +230,8 @@ class EditPointsFragment: BottomSheetDialogFragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-//                if (!locationsFound){
-//                    binding.addPointBtn.isVisible = true
-//                    binding.addPointBtn.text = "Сохранить $p0"
-//                } else  binding.addPointBtn.isVisible = false
+
             }
         })
-
     }
 }

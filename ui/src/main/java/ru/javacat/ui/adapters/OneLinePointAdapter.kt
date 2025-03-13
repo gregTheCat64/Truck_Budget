@@ -34,7 +34,7 @@ class OneLinePointAdapter: ListAdapter<Point, OneLinePointAdapter.Holder>(Compar
 
     class Comparator: DiffUtil.ItemCallback<Point>(){
         override fun areItemsTheSame(oldItem: Point, newItem: Point): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.position == newItem.position
         }
 
         override fun areContentsTheSame(oldItem: Point, newItem: Point): Boolean {

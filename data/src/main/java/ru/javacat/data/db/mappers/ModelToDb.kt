@@ -73,7 +73,7 @@ fun Order.toDb() = DbOrder(
 )
 
 fun Point.toDb() = DbPoint(
-    id,  location, arrivalDate.toString()
+    position,  location, arrivalDate.toString()
 )
 
 fun Truck.toDb() = DbTruck(

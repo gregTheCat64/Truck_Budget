@@ -65,26 +65,41 @@ class EditPointsViewModel @Inject constructor(
     }
 
     fun setPointDate(localDate: LocalDate) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _pointDate.emit(localDate)
         }
     }
 
     fun increaseDay() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _pointDate.emit(_pointDate.value.plusDays(1))
         }
     }
 
     fun decreaseDay() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _pointDate.emit(_pointDate.value.minusDays(1))
         }
     }
 
-    fun addPoint(point: Point) {
+    fun addPoint(locationName: String, position: Int) {
         pointList = editedOrder.value?.points?.toMutableList()!!
-        pointList.add(point)
+        val refinedPosition = if (position == 0) {
+            (pointList.lastOrNull()?.position ?: 0) + 1
+        } else {
+            //pointList.removeAt(position-1)
+            position
+        }
+        println("refinedPosition = $refinedPosition")
+        val point = Point(refinedPosition, locationName, pointDate.value)
+
+        if (position == 0) {
+            pointList.add(point)
+        } else {
+            pointList[refinedPosition-1] = point
+        }
+
+        //добавить редактирование
         viewModelScope.launch(Dispatchers.IO) {
             Log.i("OrderVM", "points: $pointList")
             _loadState.emit(LoadState.Loading)

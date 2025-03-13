@@ -95,7 +95,6 @@ class OrderRepositoryImpl @Inject constructor(
         }
 
         _orders.emit(orders)
-
     }
 
     override suspend fun setOrderFlag(isEdited: Boolean) {
@@ -108,11 +107,11 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun insert(order: Order): Long {
-        Log.i("orderRepo", "inserting order: $order")
+    override suspend fun insert(t: Order): Long {
+        Log.i("orderRepo", "inserting order: $t")
         val result = dbQuery {
             switchDatabaseModified(context, true)
-            ordersDao.insertOrder(order.toDb())
+            ordersDao.insertOrder(t.toDb())
         }
         _isOrderEdited.emit(false)
         return result
