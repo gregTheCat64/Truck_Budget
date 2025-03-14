@@ -51,6 +51,10 @@ class OrderRepositoryImpl @Inject constructor(
         _orders.emit(ordersDao.getAllOrders().map {it.toOrderModel() })
     }
 
+    override suspend fun getLastOrders(numberOfOrders: Int): List<Order> {
+        return ordersDao.getLastOrders(numberOfOrders).map { it.toOrderModel() }
+    }
+
     override suspend fun getAllByYear(year: Int) {
         _orders.emit(ordersDao.getAllOrdersByYear(year.toString()).map {it.toOrderModel() })
     }

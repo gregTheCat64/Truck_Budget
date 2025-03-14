@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditPointsViewModel @Inject constructor(
-    private val routeRepository: RouteRepository,
+    routeRepository: RouteRepository,
     private val locationRepository: LocationRepository,
     private val orderRepository: OrderRepository
 ): ViewModel() {
@@ -36,7 +36,7 @@ class EditPointsViewModel @Inject constructor(
     private val _locations = MutableStateFlow<List<Location>?>(null)
     val locations = _locations.asStateFlow()
 
-    var pointList = mutableListOf<Point>()
+    private var pointList = mutableListOf<Point>()
 
     private var _pointDate = MutableStateFlow<LocalDate>(LocalDate.now())
     val pointDate: StateFlow<LocalDate> = _pointDate

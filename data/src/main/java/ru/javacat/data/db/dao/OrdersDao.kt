@@ -26,6 +26,10 @@ interface OrdersDao {
     @Query("SELECT * FROM orders_table  ORDER BY id DESC LIMIT 1")
     fun getLastOrder(): DbOrderWithCustomer?
 
+    @Transaction
+    @Query("SELECT *FROM orders_table  ORDER BY id DESC LIMIT :numberOfOrders")
+    fun getLastOrders(numberOfOrders: Int): List<DbOrderWithCustomer>
+
     @Query("""
         SELECT COUNT(*) FROM orders_table 
         WHERE   contractorId = -1 AND

@@ -9,6 +9,8 @@ interface OrderRepository: BaseRepository<Order, Long> {
     val lastOrder: Order?
     suspend fun getUnpaidOrders()
 
+    suspend fun getLastOrders(numberOfOrders: Int): List<Order>
+
     suspend fun getCompanyOrdersCountByYear(year: String): Int
     suspend fun getNotCompanyOrdersCountByYear(year: String): Int
 

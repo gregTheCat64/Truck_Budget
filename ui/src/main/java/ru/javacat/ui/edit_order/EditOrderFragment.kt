@@ -35,6 +35,7 @@ import ru.javacat.ui.LoadState
 import ru.javacat.ui.R
 import ru.javacat.ui.adapters.PointWithRemoveAdapter
 import ru.javacat.ui.databinding.FragmentEditOrderBinding
+import ru.javacat.ui.databinding.OrderMiniItemBinding
 import ru.javacat.ui.databinding.PointItemWithRmvBtnBinding
 
 import ru.javacat.ui.utils.FragConstants
@@ -42,6 +43,7 @@ import ru.javacat.ui.utils.FragConstants.IS_NEW_ORDER
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+const val NUMBER_OF_LAST_ORDERS = 6
 
 @AndroidEntryPoint
 class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
@@ -52,7 +54,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         }
 
     private val viewModel: EditOrderViewModel by viewModels()
-    private lateinit var pointsAdapter: PointWithRemoveAdapter
+    //private lateinit var pointsAdapter: PointWithRemoveAdapter
 
     private var currentOrder: Order? = null
     private var currentRoute: Route? = null
@@ -134,6 +136,27 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 binding.weightTv.setText("20")
             }
             isLastOrderLoaded = true
+        }
+
+        viewModel.getLastOrders(NUMBER_OF_LAST_ORDERS)
+
+        val orderClickListener: (Order) -> Unit = {order ->
+            Toast.makeText(requireContext(), "clicked ${order.customer}", Toast.LENGTH_SHORT).show()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.lastOrdersList.collectLatest { orderList ->
+                    Log.i("EditOrderFrag", "collecting Order List: $orderList")
+                    val orderListViews = orderList?.toOrderListView(
+                        binding.lastOrders,
+                        orderClickListener
+                    )
+                    orderListViews?.forEach {
+                        binding.lastOrders.addView(it)
+                    }
+                }
+            }
         }
 
 
@@ -428,7 +451,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             viewModel.removePoint(point)
         }
 
-        val pointViews = order.points.toListView(
+        val pointViews = order.points.toPointListView(
             binding.pointsListLayout,
             pointClickListener,
             pointRemoveClickListener
@@ -436,6 +459,8 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         pointViews.forEach {
             binding.pointsListLayout.addView(it)
         }
+
+
 
         paintOrder(R.drawable.unfilled_circle)
     }
@@ -696,7 +721,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
 }
 
-fun List<Point>.toListView(parent: ViewGroup, onPointClick: (Point) -> Unit, onRemoveClick: (Point) -> Unit): List<View> = this.map { point ->
+fun List<Point>.toPointListView(parent: ViewGroup, onPointClick: (Point) -> Unit, onRemoveClick: (Point) -> Unit): List<View> = this.map { point ->
     val inflater = LayoutInflater.from(parent.context)
     val binding = PointItemWithRmvBtnBinding.inflate(inflater, parent, false)
 
@@ -706,6 +731,25 @@ fun List<Point>.toListView(parent: ViewGroup, onPointClick: (Point) -> Unit, onR
     binding.removeBtn.setOnClickListener { _ -> onRemoveClick(point)}
 
     binding.root.setOnClickListener { _ -> onPointClick(point) }
+
+    binding.root
+}
+
+fun List<Order>.toOrderListView(parent: ViewGroup, onOrderClick: (Order) -> Unit): List<View> = this.map { order ->
+    val inflater = LayoutInflater.from(parent.context)
+    val binding = OrderMiniItemBinding.inflate(inflater, parent, false)
+
+    val locationsString = mutableListOf<String>()
+
+    order.points.forEach {
+        locationsString.add(it.location + " ")
+    }
+
+    binding.customerName.text = order.customer?.shortName
+    binding.income.text = order.price.toString()
+    binding.points.text = locationsString.toString()
+
+    binding.root.setOnClickListener { onOrderClick(order) }
 
     binding.root
 }

@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.javacat.domain.models.Cargo
 import ru.javacat.domain.models.Company
@@ -28,7 +30,10 @@ class EditOrderViewModel @Inject constructor(
     val editedOrder = orderRepository.editedItem
     val editedRoute = routeRepository.editedItem
 
-    val isOrderEdited = orderRepository.isEdited
+    private val _lastOrdersList = MutableStateFlow<List<Order>?>(null)
+    val  lastOrdersList = _lastOrdersList.asStateFlow()
+
+    //val isOrderEdited = orderRepository.isEdited
 
     private val _loadState = MutableSharedFlow<LoadState>()
     val loadState = _loadState.asSharedFlow()
@@ -39,6 +44,12 @@ class EditOrderViewModel @Inject constructor(
 
     fun getEditedRoute(): Route? {
         return routeRepository.editedItem.value
+    }
+
+    fun getLastOrders(numberOfOrders: Int) {
+        viewModelScope.launch (Dispatchers.IO) {
+            _lastOrdersList.emit(orderRepository.getLastOrders(numberOfOrders))
+        }
     }
 
     fun createEmptyOrder(){

@@ -121,7 +121,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            tools:listitem="@layout/route_item"/>
+            tools:listitem="@layout/route_nested_orders_item"/>
     </LinearLayout>
 
 
