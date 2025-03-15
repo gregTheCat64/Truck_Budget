@@ -58,6 +58,18 @@ class EditOrderViewModel @Inject constructor(
         }
     }
 
+    fun restoreOldOrder(order: Order) {
+        viewModelScope.launch {
+            _loadState.emit(LoadState.Loading)
+            try {
+                orderRepository.updateEditedItem(order)
+                _loadState.emit(LoadState.Success.OK)
+            } catch (e: Exception) {
+                _loadState.emit(LoadState.Error(e.message.toString()))
+            }
+        }
+    }
+
     fun updateEditedOrder(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _loadState.emit(LoadState.Loading)

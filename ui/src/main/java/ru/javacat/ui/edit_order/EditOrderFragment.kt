@@ -96,34 +96,21 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         routeIdArg = arguments?.getLong(FragConstants.ROUTE_ID)
 
         //если ордерайди не пришел, значит заказ - новый
-        if (orderIdArg != 0L) needToRestore = true
+        if (orderIdArg != 0L && orderIdArg != null) needToRestore = true
 
         Log.i("EditOrderFrag", "orderId: $orderIdArg")
         Log.i("EditOrderFrag", "routeId: $routeIdArg")
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        Log.i("EditOrderFrag", "onCreateView")
-        Log.i("EditOrderFrag", "needToRestore>: $needToRestore")
-
-        //(activity as AppCompatActivity).supportActionBar?.hide()
-        //(activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_cancel_24)
-
-
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val paddingToScroll = 200
 
+        //флаг того что заявка уже восстановлена,
+        //чтобы предотвратить повторную загрузку рейса
         if (!isLastOrderLoaded) {
             if (needToRestore) {
                 Log.i("EditOrderFrag", "restoring Order")
@@ -138,10 +125,24 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             isLastOrderLoaded = true
         }
 
+        //собираем последние заявки для отображения
         viewModel.getLastOrders(NUMBER_OF_LAST_ORDERS)
 
         val orderClickListener: (Order) -> Unit = {order ->
-            Toast.makeText(requireContext(), "clicked ${order.customer}", Toast.LENGTH_SHORT).show()
+            val refinedPoints = order.points
+            var i: Long = 0
+            if (refinedPoints.isNotEmpty()){
+                refinedPoints.forEach {
+                    it.arrivalDate = LocalDate.now().plusDays(i)
+                    i++
+                    println("point date = ${it.arrivalDate}")
+                }
+            }
+            val refinedOrder = order.copy(id = currentOrder?.id?:0, points = refinedPoints)
+            viewModel.restoreOldOrder(refinedOrder)
+            initUi(refinedOrder)
+
+            //Toast.makeText(requireContext(), "clicked ${order.customer}", Toast.LENGTH_SHORT).show()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -166,7 +167,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                 viewModel.editedOrder.collectLatest { order ->
                     if (order != null) {
                         Log.i("EditOrderFrag", "collecting Order: $order")
-                        currentOrder = order
+                        //currentOrder = order
                         initUi(order)
 
                         //в режиме редактирования восстанавливаем Рейс во флоу
@@ -186,11 +187,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             }
         }
 
-        //adapter
-//        pointsAdapter = PointWithRemoveAdapter {
-//            viewModel.removePoint(it)
-//        }
-//        binding.pointsRecView.adapter = pointsAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -198,7 +194,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
                     Log.i("EditOrderFrag", "currentRoute: $route")
                     currentRoute = route
 
-                    //если рейс привлеченный - поле с ценой для перевозчика видимо!
+                    //если рейс привлеченный - поле с ценой для перевозчика видно!
                     Log.i("EditOrderFrag", "order comp id: ${currentRoute?.contractor?.company?.id}")
                     binding.contractorsFrame.isGone =
                         currentRoute?.contractor?.company?.id == FragConstants.MY_COMPANY_ID
@@ -444,7 +440,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         //pointsAdapter.submitList(order.points)
         val pointClickListener: (Point) -> Unit = {point ->
             changingPoints(point)
-            //Toast.makeText(requireContext(), "clicked ${point.location}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "clicked ${point.position}", Toast.LENGTH_SHORT).show()
         }
 
         val pointRemoveClickListener: (Point) -> Unit = {point ->
@@ -459,8 +455,6 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         pointViews.forEach {
             binding.pointsListLayout.addView(it)
         }
-
-
 
         paintOrder(R.drawable.unfilled_circle)
     }
@@ -739,15 +733,17 @@ fun List<Order>.toOrderListView(parent: ViewGroup, onOrderClick: (Order) -> Unit
     val inflater = LayoutInflater.from(parent.context)
     val binding = OrderMiniItemBinding.inflate(inflater, parent, false)
 
-    val locationsString = mutableListOf<String>()
+    val locationsList = mutableListOf<String>()
 
     order.points.forEach {
-        locationsString.add(it.location + " ")
+        locationsList.add(it.location)
     }
+
+    val locationStringList = locationsList.joinToString("-")
 
     binding.customerName.text = order.customer?.shortName
     binding.income.text = order.price.toString()
-    binding.points.text = locationsString.toString()
+    binding.points.text = locationStringList
 
     binding.root.setOnClickListener { onOrderClick(order) }
 

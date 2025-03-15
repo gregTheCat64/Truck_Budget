@@ -5,5 +5,5 @@ import java.time.LocalDate
 data class Point(
     val position: Int,
     val location: String,
-    val arrivalDate: LocalDate
+    var arrivalDate: LocalDate
 )

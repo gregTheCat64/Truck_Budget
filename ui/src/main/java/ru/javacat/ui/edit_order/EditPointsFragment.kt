@@ -190,6 +190,7 @@ class EditPointsFragment: BottomSheetDialogFragment() {
     private fun addPoint(locationName: String, position: Int) {
         //val pointDate = viewModel.pointDate.value
         //val newPoint = Point(0, locationName, pointDate)
+        println("position-> $position")
         viewModel.addPoint(locationName, position)
     }
 
