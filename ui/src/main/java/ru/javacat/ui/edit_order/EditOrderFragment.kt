@@ -130,16 +130,23 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
 
         val orderClickListener: (Order) -> Unit = {order ->
             val refinedPoints = order.points
-            var i: Long = 0
+            var i: Long = 1
             if (refinedPoints.isNotEmpty()){
                 refinedPoints.forEach {
+                    //переупорядочиваем даты от сегодняшнего дня
                     it.arrivalDate = LocalDate.now().plusDays(i)
+
+                    //переупорядочиваем позицию на случай если они запутаны
+                    it.position = i.toInt()
                     i++
                     println("point date = ${it.arrivalDate}")
+                    println("position = ${it.position}")
+
                 }
             }
             val refinedOrder = order.copy(id = currentOrder?.id?:0, points = refinedPoints)
             viewModel.restoreOldOrder(refinedOrder)
+            Toast.makeText(requireContext(), "Шаблон применен", Toast.LENGTH_SHORT).show()
             initUi(refinedOrder)
 
             //Toast.makeText(requireContext(), "clicked ${order.customer}", Toast.LENGTH_SHORT).show()
@@ -352,6 +359,10 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
     private fun initUi(order: Order) {
         binding.actionBar.title.text = getString(R.string.edit)
         currentOrder = order
+
+        if (order.id != 0L) {
+            binding.lastOrders.isGone = true
+        }
 
         binding.pointsListLayout.removeAllViews()
 
@@ -566,6 +577,14 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
         val routeId = currentRoute?.id ?: 0
         val id = currentOrder?.id ?: 0
 
+        //Переупорядочиваем позиции точек, на случай если удалялись точки и порядок сломался
+        val refinedPoints = currentOrder?.points
+        var i = 0
+        refinedPoints?.forEach {
+            it.position = i + 1
+            i++
+        }
+
         val newContractor = currentOrder?.contractor ?: currentRoute?.contractor
 
         val newCargo = if (newCargoWeight != null && newCargoVolume != null) {
@@ -586,6 +605,7 @@ class EditOrderFragment : BaseFragment<FragmentEditOrderBinding>() {
             val newOrder = currentOrder?.copy(
                 id,
                 routeId = routeId,
+                points = refinedPoints?: emptyList(),
                 price = newPrice,
                 daysToPay = newDaysToPay,
                 payType = newPayType?:PayType.WITHOUT_FEE,
