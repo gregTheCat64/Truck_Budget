@@ -205,6 +205,8 @@ class FinishRouteFragment : BaseFragment<FragmentFinishRouteBinding>() {
                 binding.extraPointsResult.setText("Итого: $extraPointsResult руб.")
                 binding.salaryEditText.setText(countedSalary.toString())
                 binding.revenueTv.setText(revenue.toString())
+
+                binding.resultInfoLayout.isGone = false
             } else {
                 println("salary = $salaryCountMethod, revenue = $revenue, extrExp = $extraExpenses, fuelPrice = $fuelPrice," +
                         " fuelUsedUp = $fuelUsedUp, routeDur = $routeDuration, costPerDiem = $costPerDiem, salaryCountMethod = $salaryCountMethod" +

@@ -217,4 +217,7 @@
     <string name="copy">Copy</string>
     <string name="my_transport">My transport</string>
     <string name="add_to_templates">Add to templates</string>
+    <string name="vehicleInfo">Vehicle info</string>
+    <string name="route_advance">Route advance</string>
+    <string name="result">Result</string>
 </resources>

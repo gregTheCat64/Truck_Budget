@@ -138,18 +138,19 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             ).show()
         }
 
-        if (route.isFinished){
-            binding.calculateBtn.text = "Пересчитать"
-            binding.paymentChip.isGone = false
-        }
+
+        binding.contractorName.text = route.contractor!!.company!!.nameToShow
+        binding.truckDriverName.text = route.contractor!!.driver?.nameToShow
+        binding.vehicleInfo.text = route.contractor!!.truck?.nameToShow
 
         //TODO привезти этот блок в порядок
             //Моя компания
         if (route.contractor?.company?.id == FragConstants.MY_COMPANY_ID) {
             if (route.contractor?.driver?.id != -1L) {
                 //Мой водитель
-                binding.myTransportLayout.isVisible = true
-                binding.contractorName.text = route.contractor!!.driver?.nameToShow
+
+                binding.myTransportLayout.isGone = false
+                binding.contractorLayout.isGone = true
 
                 val subsistenceExp = route.salaryParameters?.costPerDiem?.let {
                     route.routeDetails?.routeDuration?.times(it)
@@ -203,9 +204,16 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
         } else {
             //привлеченный транспорт
             binding.myTransportLayout.isGone = true
-            binding.contractorName.text = "${route.contractor!!.company?.nameToShow} (${route.contractor!!.driver?.nameToShow})"
         }
 
+        //если рейс не завершен убираем лишнюю информацию
+        if (route.isFinished){
+            binding.calculateBtn.text = "Пересчитать"
+            binding.paymentChip.isGone = false
+        } else {
+            binding.myTransportLayout.isGone = true
+            binding.resultInfoLayout.isGone = true
+        }
 
         //кнопка редактирования видима если рейс не пустой или рейс завершен
         binding.calculateBtn.isGone = route.orderList.isEmpty()
@@ -214,13 +222,12 @@ class RouteCalculationInfoFragment : BaseFragment<FragmentRouteCalculationInfoBi
             binding.profitTv.text = "$it ${getString(R.string.rub)}"
         }
 
-
         route.moneyToPay?.let {
-            if (route.moneyToPay!! > 0F ){
+            if (route.moneyToPay!! < 0F ){
                 binding.moneyToPayLabel.text = "Остаток с рейса"
-                binding.moneyToPayTv.text = "$it ${getString(R.string.rub)}"
-            } else {
                 binding.moneyToPayTv.text = "${it*-1} ${getString(R.string.rub)}"
+            } else {
+                binding.moneyToPayTv.text = "$it ${getString(R.string.rub)}"
             }
 
         }

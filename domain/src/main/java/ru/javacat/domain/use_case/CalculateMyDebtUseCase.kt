@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class CalculateMyDebtUseCase @Inject constructor() {
     operator fun invoke(prepayment: Int, totalExpenses: Float): Float {
-        return (prepayment - totalExpenses)
+        return (prepayment - totalExpenses)*-1
     }
 }
